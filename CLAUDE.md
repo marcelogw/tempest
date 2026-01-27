@@ -9,6 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Essential Commands
 
 ### Development
+
 ```bash
 npm run dev          # Start development server
 npm run build        # Production build (TypeScript errors ignored)
@@ -29,6 +30,7 @@ The application uses a single centralized Zustand store (`lib/expense-store.ts`)
 - **Current month**: Active month for views and operations
 
 **Critical patterns**:
+
 - All month data access goes through `getMonthData(month)` which auto-initializes missing months
 - Never mutate store state directly - use provided actions (`addExpense`, `updateIncome`, etc.)
 - Store includes sample data generator for last 6 months (useful for development)
@@ -54,6 +56,7 @@ components/
 ```
 
 **Component patterns**:
+
 - All expense components are client components (`'use client'`)
 - Components access store via `useExpenseStore()` hook
 - Form components use controlled inputs with local state, then submit to store
@@ -65,7 +68,8 @@ components/
 
 **Credit Cards**: `nubank_pri`, `nubank_ma`, `mercadopago`, `itau`
 
-**Expense Types**: 
+**Expense Types**:
+
 - `fixed` - recurring monthly (rent, insurance, subscriptions)
 - `variable` - one-time or irregular expenses
 
@@ -114,6 +118,7 @@ components/
 ### Internationalization
 
 All user-facing text is in **Brazilian Portuguese**:
+
 - Currency: BRL (R$) using `formatCurrencyBRL()` and `formatShortCurrencyBRL()`
 - Date formats: Use `pt-BR` locale
 - Labels and descriptions: Portuguese only

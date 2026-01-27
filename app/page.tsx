@@ -12,7 +12,7 @@ export default function ExpenseManagementApp() {
   const availableYears = getAvailableYears()
 
   return (
-    <div className="flex h-screen bg-background">
+    <div className="bg-background flex h-screen">
       <Sidebar
         activeView={activeView}
         onViewChange={setActiveView}

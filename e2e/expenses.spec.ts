@@ -96,7 +96,9 @@ test.describe('Expense Management', () => {
     await expenseItem.locator('button[aria-label="Remover"]').click()
 
     // Verifica que sumiu
-    await expect(page.locator('[data-testid="expense-item"]:has-text("Teste Deletar")')).not.toBeVisible({ timeout: 3000 })
+    await expect(
+      page.locator('[data-testid="expense-item"]:has-text("Teste Deletar")')
+    ).not.toBeVisible({ timeout: 3000 })
   })
 })
 
@@ -109,7 +111,9 @@ test.describe('Installment Management', () => {
 
   test('should add installment purchase', async ({ page }) => {
     // Procura botão de adicionar parcelamento
-    const installmentButton = page.locator('button:has-text("Parcelamento"), button:has-text("Adicionar Parcelamento")')
+    const installmentButton = page.locator(
+      'button:has-text("Parcelamento"), button:has-text("Adicionar Parcelamento")'
+    )
 
     if (await installmentButton.isVisible({ timeout: 2000 })) {
       await installmentButton.click()

@@ -1,7 +1,5 @@
 'use client'
 
-import React from "react"
-
 import { useState } from 'react'
 import { Plus, Trash2, CreditCard, Calendar } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -35,7 +33,8 @@ interface InstallmentsProps {
 }
 
 export function Installments({ currentMonth }: InstallmentsProps) {
-  const { installments, addInstallment, removeInstallment, getInstallmentsForMonth } = useExpenseStore()
+  const { installments, addInstallment, removeInstallment, getInstallmentsForMonth } =
+    useExpenseStore()
   const [isOpen, setIsOpen] = useState(false)
   const [name, setName] = useState('')
   const [card, setCard] = useState<CreditCardType>('nubank_pri')
@@ -43,7 +42,7 @@ export function Installments({ currentMonth }: InstallmentsProps) {
   const [amount, setAmount] = useState('')
 
   const currentInstallments = getInstallmentsForMonth(currentMonth)
-  
+
   // Calculate total installments amount for this month
   const totalInstallmentsAmount = currentInstallments.reduce(
     (sum, { installment }) => sum + installment.amountPerInstallment,
@@ -74,14 +73,14 @@ export function Installments({ currentMonth }: InstallmentsProps) {
     <Card className="bg-card border-border">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-base font-semibold flex items-center gap-2">
+          <CardTitle className="flex items-center gap-2 text-base font-semibold">
             <CreditCard className="h-4 w-4 text-purple-500" />
             Parcelamentos
           </CardTitle>
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-              <Button size="sm" variant="outline" className="h-7 text-xs bg-transparent">
-                <Plus className="h-3 w-3 mr-1" />
+              <Button size="sm" variant="outline" className="h-7 bg-transparent text-xs">
+                <Plus className="mr-1 h-3 w-3" />
                 Novo
               </Button>
             </DialogTrigger>
@@ -112,7 +111,7 @@ export function Installments({ currentMonth }: InstallmentsProps) {
                         <SelectItem key={cardKey} value={cardKey}>
                           <div className="flex items-center gap-2">
                             <div
-                              className="w-2 h-2 rounded-full"
+                              className="h-2 w-2 rounded-full"
                               style={{ backgroundColor: creditCardColors[cardKey] }}
                             />
                             {creditCardLabels[cardKey]}
@@ -153,7 +152,12 @@ export function Installments({ currentMonth }: InstallmentsProps) {
                 </div>
 
                 <div className="flex justify-end gap-2 pt-2">
-                  <Button type="button" variant="outline" onClick={() => setIsOpen(false)} className="bg-transparent">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setIsOpen(false)}
+                    className="bg-transparent"
+                  >
                     Cancelar
                   </Button>
                   <Button type="submit">Criar Parcelamento</Button>
@@ -165,7 +169,7 @@ export function Installments({ currentMonth }: InstallmentsProps) {
       </CardHeader>
       <CardContent className="space-y-3">
         {currentInstallments.length === 0 ? (
-          <p className="text-sm text-muted-foreground text-center py-4">
+          <p className="text-muted-foreground py-4 text-center text-sm">
             Nenhum parcelamento ativo este mes
           </p>
         ) : (
@@ -174,31 +178,31 @@ export function Installments({ currentMonth }: InstallmentsProps) {
               {currentInstallments.map(({ installment, currentNumber }) => (
                 <div
                   key={installment.id}
-                  className="flex items-center justify-between p-3 rounded-lg bg-muted/50 border border-border"
+                  className="bg-muted/50 border-border flex items-center justify-between rounded-lg border p-3"
                 >
                   <div className="flex items-center gap-3">
                     <div
-                      className="w-2 h-8 rounded-full"
+                      className="h-8 w-2 rounded-full"
                       style={{ backgroundColor: creditCardColors[installment.card] }}
                     />
                     <div>
                       <p className="text-sm font-medium">
                         {installment.name} {currentNumber}/{installment.totalInstallments}
                       </p>
-                      <p className="text-xs text-muted-foreground flex items-center gap-1">
+                      <p className="text-muted-foreground flex items-center gap-1 text-xs">
                         <CreditCard className="h-3 w-3" />
                         {creditCardLabels[installment.card]}
                       </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold text-foreground">
+                    <span className="text-foreground text-sm font-semibold">
                       {formatCurrencyBRL(installment.amountPerInstallment)}
                     </span>
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-7 w-7 text-muted-foreground hover:text-destructive"
+                      className="text-muted-foreground hover:text-destructive h-7 w-7"
                       onClick={() => removeInstallment(installment.id)}
                     >
                       <Trash2 className="h-3.5 w-3.5" />
@@ -207,8 +211,8 @@ export function Installments({ currentMonth }: InstallmentsProps) {
                 </div>
               ))}
             </div>
-            
-            <div className="pt-2 border-t border-border">
+
+            <div className="border-border border-t pt-2">
               <div className="flex items-center justify-between text-sm">
                 <span className="text-muted-foreground">Total Parcelamentos</span>
                 <span className="font-semibold text-purple-600">
@@ -218,11 +222,11 @@ export function Installments({ currentMonth }: InstallmentsProps) {
             </div>
           </>
         )}
-        
+
         {/* Show all active installments overview */}
         {installments.length > 0 && (
-          <div className="pt-3 border-t border-border">
-            <p className="text-xs text-muted-foreground mb-2 flex items-center gap-1">
+          <div className="border-border border-t pt-3">
+            <p className="text-muted-foreground mb-2 flex items-center gap-1 text-xs">
               <Calendar className="h-3 w-3" />
               Todos os parcelamentos ativos ({installments.length})
             </p>
@@ -231,10 +235,10 @@ export function Installments({ currentMonth }: InstallmentsProps) {
                 const [startYear, startMonth] = inst.startMonth.split('-').map(Number)
                 const endDate = new Date(startYear, startMonth - 1 + inst.totalInstallments - 1, 1)
                 const endMonth = `${endDate.getFullYear()}-${String(endDate.getMonth() + 1).padStart(2, '0')}`
-                
+
                 return (
                   <div key={inst.id} className="flex items-center justify-between text-xs">
-                    <span className="text-muted-foreground truncate max-w-[140px]">
+                    <span className="text-muted-foreground max-w-[140px] truncate">
                       {inst.name}
                     </span>
                     <span className="text-muted-foreground">

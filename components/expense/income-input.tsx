@@ -61,12 +61,17 @@ export function IncomeInput({
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="income" className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-            <DollarSign className="h-4 w-4 text-accent" />
+          <Label
+            htmlFor="income"
+            className="text-muted-foreground flex items-center gap-2 text-sm font-medium"
+          >
+            <DollarSign className="text-accent h-4 w-4" />
             Renda Mensal
           </Label>
           <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">R$</span>
+            <span className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2">
+              R$
+            </span>
             <Input
               id="income"
               type="number"
@@ -83,12 +88,17 @@ export function IncomeInput({
 
         <div className="grid grid-cols-2 gap-3">
           <div className="space-y-2">
-            <Label htmlFor="investments" className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-primary" />
+            <Label
+              htmlFor="investments"
+              className="text-muted-foreground flex items-center gap-2 text-sm font-medium"
+            >
+              <TrendingUp className="text-primary h-4 w-4" />
               Investimentos
             </Label>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">R$</span>
+              <span className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2">
+                R$
+              </span>
               <Input
                 id="investments"
                 type="number"
@@ -104,12 +114,17 @@ export function IncomeInput({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="savings" className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-              <PiggyBank className="h-4 w-4 text-chart-2" />
+            <Label
+              htmlFor="savings"
+              className="text-muted-foreground flex items-center gap-2 text-sm font-medium"
+            >
+              <PiggyBank className="text-chart-2 h-4 w-4" />
               Poupanca
             </Label>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">R$</span>
+              <span className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2">
+                R$
+              </span>
               <Input
                 id="savings"
                 type="number"

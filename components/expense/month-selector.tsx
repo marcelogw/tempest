@@ -82,7 +82,7 @@ export function MonthSelector({ currentMonth, onMonthChange }: MonthSelectorProp
       </Button>
 
       <Select value={getCurrentMonthNumber()} onValueChange={handleMonthSelect}>
-        <SelectTrigger className="min-w-[140px] h-8">
+        <SelectTrigger className="h-8 min-w-[140px]">
           <SelectValue>
             <span className="font-semibold capitalize">{formatMonth(currentMonth)}</span>
           </SelectValue>

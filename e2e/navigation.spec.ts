@@ -83,7 +83,10 @@ test.describe('Month Navigation', () => {
     await page.waitForTimeout(200)
 
     // Verifica que o dropdown abriu (opções visíveis)
-    const optionsVisible = await page.locator('[role="option"]').first().isVisible({ timeout: 2000 })
+    const optionsVisible = await page
+      .locator('[role="option"]')
+      .first()
+      .isVisible({ timeout: 2000 })
     expect(optionsVisible).toBeTruthy()
   })
 
@@ -120,6 +123,8 @@ test.describe('Dashboard Year Filtering', () => {
 
     // Verify dashboard shows current year in card descriptions
     const yearText = currentYear.toString()
-    await expect(page.locator(`text=/Comparacao de ${yearText}|Baseado nos dados de ${yearText}/i`).first()).toBeVisible()
+    await expect(
+      page.locator(`text=/Comparacao de ${yearText}|Baseado nos dados de ${yearText}/i`).first()
+    ).toBeVisible()
   })
 })

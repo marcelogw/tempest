@@ -1,15 +1,11 @@
 import { describe, it, expect } from 'vitest'
-import {
-  formatCurrencyBRL,
-  formatShortCurrencyBRL,
-  categoryLabels
-} from '@/lib/expense-store'
+import { formatCurrencyBRL, formatShortCurrencyBRL, categoryLabels } from '@/lib/expense-store'
 
 describe('Currency Formatting', () => {
   describe('formatCurrencyBRL', () => {
     it('should format positive values correctly', () => {
       expect(formatCurrencyBRL(1500)).toBe('R$\u00A01.500')
-      expect(formatCurrencyBRL(2500.50)).toBe('R$\u00A02.501')
+      expect(formatCurrencyBRL(2500.5)).toBe('R$\u00A02.501')
       expect(formatCurrencyBRL(10000)).toBe('R$\u00A010.000')
     })
 

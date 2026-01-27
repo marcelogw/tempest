@@ -12,7 +12,11 @@ test.describe('Dashboard Filtering', () => {
     await page.click(`[role="option"]:has-text("${currentYear}")`)
 
     // Verify dashboard shows current year in cards
-    await expect(page.locator(`text=/Comparacao de ${currentYear}|Baseado nos dados de ${currentYear}/i`).first()).toBeVisible()
+    await expect(
+      page
+        .locator(`text=/Comparacao de ${currentYear}|Baseado nos dados de ${currentYear}/i`)
+        .first()
+    ).toBeVisible()
   })
 
   test('should show dashboard for different years', async ({ page }) => {
@@ -40,7 +44,10 @@ test.describe('Dashboard Charts', () => {
     await page.waitForLoadState('networkidle')
 
     // Verifica se há elementos do Recharts (gráficos)
-    const hasChart = await page.locator('.recharts-wrapper, [class*="recharts"]').first().isVisible({ timeout: 5000 })
+    const hasChart = await page
+      .locator('.recharts-wrapper, [class*="recharts"]')
+      .first()
+      .isVisible({ timeout: 5000 })
     expect(hasChart).toBeTruthy()
   })
 
@@ -83,8 +90,14 @@ test.describe('Monthly View', () => {
     await page.waitForSelector('[data-testid="month-selector"]')
 
     // Verifica que há seções separadas
-    const hasFixedSection = await page.locator('text=/fixa|fixas/i').first().isVisible({ timeout: 3000 })
-    const hasVariableSection = await page.locator('text=/variável|variáveis/i').first().isVisible({ timeout: 3000 })
+    const hasFixedSection = await page
+      .locator('text=/fixa|fixas/i')
+      .first()
+      .isVisible({ timeout: 3000 })
+    const hasVariableSection = await page
+      .locator('text=/variável|variáveis/i')
+      .first()
+      .isVisible({ timeout: 3000 })
 
     expect(hasFixedSection || hasVariableSection).toBeTruthy()
   })
@@ -130,7 +143,7 @@ test.describe('Data Persistence', () => {
     const monthSelector = page.locator('[data-testid="month-selector"]')
 
     // Get current month text
-    const initialMonth = await monthSelector.textContent()
+    const _initialMonth = await monthSelector.textContent()
 
     // Change to different month using arrows
     await monthSelector.locator('button').last().click()

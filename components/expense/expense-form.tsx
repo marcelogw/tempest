@@ -1,6 +1,5 @@
 'use client'
 
-import React from "react"
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -72,7 +71,8 @@ export function ExpenseForm({ type, onSubmit, currentMonth }: ExpenseFormProps) 
         <DialogHeader>
           <DialogTitle>Adicionar Despesa {type === 'fixed' ? 'Fixa' : 'Variavel'}</DialogTitle>
           <DialogDescription>
-            Insira os detalhes da sua despesa {type === 'fixed' ? 'fixa' : 'variavel'}. Clique em salvar quando terminar.
+            Insira os detalhes da sua despesa {type === 'fixed' ? 'fixa' : 'variavel'}. Clique em
+            salvar quando terminar.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 py-4">
@@ -115,7 +115,12 @@ export function ExpenseForm({ type, onSubmit, currentMonth }: ExpenseFormProps) 
             </Select>
           </div>
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => setOpen(false)} className="bg-transparent">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setOpen(false)}
+              className="bg-transparent"
+            >
               Cancelar
             </Button>
             <Button type="submit">Salvar Despesa</Button>

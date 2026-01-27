@@ -1,0 +1,33 @@
+# Build outputs
+.next
+out
+dist
+build
+coverage
+.vercel
+
+# Dependencies
+node_modules
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Test artifacts
+playwright-report
+test-results
+
+# Environment files
+.env
+.env*.local
+
+# Config files
+*.config.js
+*.config.mjs
+*.config.ts
+
+# Generated files
+.next/types
+next-env.d.ts
+
+# UI components (external)
+components/ui

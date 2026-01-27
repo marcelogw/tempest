@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-export type ExpenseCategory = 
+export type ExpenseCategory =
   | 'credit_card'
   | 'groceries'
   | 'utilities'
@@ -63,7 +63,9 @@ interface ExpenseStore {
   initializeMonth: (month: string) => void
   addInstallment: (installment: Omit<Installment, 'id'>) => void
   removeInstallment: (installmentId: string) => void
-  getInstallmentsForMonth: (month: string) => Array<{ installment: Installment; currentNumber: number }>
+  getInstallmentsForMonth: (
+    month: string
+  ) => Array<{ installment: Installment; currentNumber: number }>
 }
 
 const generateId = () => Math.random().toString(36).substring(2, 9)
@@ -81,39 +83,130 @@ const createEmptyMonth = (month: string): MonthlyData => ({
 const generateSampleData = (): Record<string, MonthlyData> => {
   const data: Record<string, MonthlyData> = {}
   const now = new Date()
-  
+
   for (let i = 5; i >= 0; i--) {
     const date = new Date(now.getFullYear(), now.getMonth() - i, 1)
     const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
-    
+
     const baseIncome = 8000 + Math.random() * 4000
     const variability = 0.8 + Math.random() * 0.4
-    
+
     data[monthKey] = {
       month: monthKey,
       income: Math.round(baseIncome),
       fixedExpenses: [
-        { id: generateId(), description: 'Aluguel', amount: 2500, category: 'other', type: 'fixed', date: monthKey + '-01' },
-        { id: generateId(), description: 'Seguro do Carro', amount: 280, category: 'transportation', type: 'fixed', date: monthKey + '-01' },
-        { id: generateId(), description: 'Conta de Celular', amount: 120, category: 'utilities', type: 'fixed', date: monthKey + '-01' },
-        { id: generateId(), description: 'Internet', amount: 150, category: 'utilities', type: 'fixed', date: monthKey + '-01' },
-        { id: generateId(), description: 'Academia', amount: 120, category: 'healthcare', type: 'fixed', date: monthKey + '-01' },
+        {
+          id: generateId(),
+          description: 'Aluguel',
+          amount: 2500,
+          category: 'other',
+          type: 'fixed',
+          date: monthKey + '-01',
+        },
+        {
+          id: generateId(),
+          description: 'Seguro do Carro',
+          amount: 280,
+          category: 'transportation',
+          type: 'fixed',
+          date: monthKey + '-01',
+        },
+        {
+          id: generateId(),
+          description: 'Conta de Celular',
+          amount: 120,
+          category: 'utilities',
+          type: 'fixed',
+          date: monthKey + '-01',
+        },
+        {
+          id: generateId(),
+          description: 'Internet',
+          amount: 150,
+          category: 'utilities',
+          type: 'fixed',
+          date: monthKey + '-01',
+        },
+        {
+          id: generateId(),
+          description: 'Academia',
+          amount: 120,
+          category: 'healthcare',
+          type: 'fixed',
+          date: monthKey + '-01',
+        },
       ],
       variableExpenses: [
-        { id: generateId(), description: 'Cartao de Credito - Amazon', amount: Math.round(350 * variability), category: 'credit_card', type: 'variable', date: monthKey + '-05' },
-        { id: generateId(), description: 'Supermercado - Extra', amount: Math.round(850 * variability), category: 'groceries', type: 'variable', date: monthKey + '-08' },
-        { id: generateId(), description: 'Combustivel', amount: Math.round(400 * variability), category: 'transportation', type: 'variable', date: monthKey + '-10' },
-        { id: generateId(), description: 'Netflix e Spotify', amount: 75, category: 'subscriptions', type: 'variable', date: monthKey + '-12' },
-        { id: generateId(), description: 'Restaurantes', amount: Math.round(450 * variability), category: 'dining', type: 'variable', date: monthKey + '-15' },
-        { id: generateId(), description: 'Cartao de Credito - Magazine Luiza', amount: Math.round(500 * variability), category: 'credit_card', type: 'variable', date: monthKey + '-18' },
-        { id: generateId(), description: 'Cinema', amount: Math.round(120 * variability), category: 'entertainment', type: 'variable', date: monthKey + '-20' },
-        { id: generateId(), description: 'Supermercado - Pao de Acucar', amount: Math.round(450 * variability), category: 'groceries', type: 'variable', date: monthKey + '-22' },
+        {
+          id: generateId(),
+          description: 'Cartao de Credito - Amazon',
+          amount: Math.round(350 * variability),
+          category: 'credit_card',
+          type: 'variable',
+          date: monthKey + '-05',
+        },
+        {
+          id: generateId(),
+          description: 'Supermercado - Extra',
+          amount: Math.round(850 * variability),
+          category: 'groceries',
+          type: 'variable',
+          date: monthKey + '-08',
+        },
+        {
+          id: generateId(),
+          description: 'Combustivel',
+          amount: Math.round(400 * variability),
+          category: 'transportation',
+          type: 'variable',
+          date: monthKey + '-10',
+        },
+        {
+          id: generateId(),
+          description: 'Netflix e Spotify',
+          amount: 75,
+          category: 'subscriptions',
+          type: 'variable',
+          date: monthKey + '-12',
+        },
+        {
+          id: generateId(),
+          description: 'Restaurantes',
+          amount: Math.round(450 * variability),
+          category: 'dining',
+          type: 'variable',
+          date: monthKey + '-15',
+        },
+        {
+          id: generateId(),
+          description: 'Cartao de Credito - Magazine Luiza',
+          amount: Math.round(500 * variability),
+          category: 'credit_card',
+          type: 'variable',
+          date: monthKey + '-18',
+        },
+        {
+          id: generateId(),
+          description: 'Cinema',
+          amount: Math.round(120 * variability),
+          category: 'entertainment',
+          type: 'variable',
+          date: monthKey + '-20',
+        },
+        {
+          id: generateId(),
+          description: 'Supermercado - Pao de Acucar',
+          amount: Math.round(450 * variability),
+          category: 'groceries',
+          type: 'variable',
+          date: monthKey + '-22',
+        },
       ],
       investments: Math.round(800 + Math.random() * 400),
       savings: Math.round(600 + Math.random() * 600),
     }
   }
-  
+
   return data
 }
 
@@ -130,7 +223,7 @@ const getMonthDiff = (startMonth: string, targetMonth: string): number => {
 }
 
 // Helper to get month key from start month and offset
-const getMonthFromOffset = (startMonth: string, offset: number): string => {
+export const getMonthFromOffset = (startMonth: string, offset: number): string => {
   const [year, month] = startMonth.split('-').map(Number)
   const date = new Date(year, month - 1 + offset, 1)
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
@@ -207,7 +300,7 @@ export const useExpenseStore = create<ExpenseStore>()(
           })
         }
       },
-      
+
       getMonthData: (month) => {
         const { monthlyData, initializeMonth } = get()
         if (!monthlyData[month]) {
@@ -216,7 +309,7 @@ export const useExpenseStore = create<ExpenseStore>()(
         }
         return monthlyData[month]
       },
-      
+
       updateIncome: (month, income) => {
         const { monthlyData, initializeMonth } = get()
         initializeMonth(month)
@@ -230,7 +323,7 @@ export const useExpenseStore = create<ExpenseStore>()(
           },
         })
       },
-      
+
       updateInvestments: (month, investments) => {
         const { monthlyData, initializeMonth } = get()
         initializeMonth(month)
@@ -244,7 +337,7 @@ export const useExpenseStore = create<ExpenseStore>()(
           },
         })
       },
-      
+
       updateSavings: (month, savings) => {
         const { monthlyData, initializeMonth } = get()
         initializeMonth(month)
@@ -258,13 +351,13 @@ export const useExpenseStore = create<ExpenseStore>()(
           },
         })
       },
-      
+
       addExpense: (month, expense, type) => {
         const { monthlyData, initializeMonth } = get()
         initializeMonth(month)
         const currentData = get().monthlyData[month]
         const newExpense = { ...expense, id: generateId() }
-        
+
         set({
           monthlyData: {
             ...monthlyData,
@@ -278,12 +371,12 @@ export const useExpenseStore = create<ExpenseStore>()(
           },
         })
       },
-      
+
       removeExpense: (month, expenseId, type) => {
         const { monthlyData } = get()
         const currentData = monthlyData[month]
         if (!currentData) return
-        
+
         set({
           monthlyData: {
             ...monthlyData,
@@ -296,12 +389,12 @@ export const useExpenseStore = create<ExpenseStore>()(
           },
         })
       },
-      
+
       updateExpense: (month, expense, type) => {
         const { monthlyData } = get()
         const currentData = monthlyData[month]
         if (!currentData) return
-        
+
         set({
           monthlyData: {
             ...monthlyData,
@@ -314,7 +407,7 @@ export const useExpenseStore = create<ExpenseStore>()(
           },
         })
       },
-      
+
       addInstallment: (installment) => {
         const newInstallment: Installment = {
           ...installment,
@@ -324,17 +417,17 @@ export const useExpenseStore = create<ExpenseStore>()(
           installments: [...get().installments, newInstallment],
         })
       },
-      
+
       removeInstallment: (installmentId) => {
         set({
           installments: get().installments.filter((i) => i.id !== installmentId),
         })
       },
-      
+
       getInstallmentsForMonth: (month) => {
         const { installments } = get()
         const result: Array<{ installment: Installment; currentNumber: number }> = []
-        
+
         for (const inst of installments) {
           const diff = getMonthDiff(inst.startMonth, month)
           // Check if this month is within the installment period
@@ -345,7 +438,7 @@ export const useExpenseStore = create<ExpenseStore>()(
             })
           }
         }
-        
+
         return result
       },
     }),

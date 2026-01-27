@@ -112,8 +112,22 @@ describe('Month Logic', () => {
     it('should include years from monthlyData', () => {
       useExpenseStore.setState({
         monthlyData: {
-          '2023-05': { month: '2023-05', income: 0, fixedExpenses: [], variableExpenses: [], investments: 0, savings: 0 },
-          '2024-06': { month: '2024-06', income: 0, fixedExpenses: [], variableExpenses: [], investments: 0, savings: 0 },
+          '2023-05': {
+            month: '2023-05',
+            income: 0,
+            fixedExpenses: [],
+            variableExpenses: [],
+            investments: 0,
+            savings: 0,
+          },
+          '2024-06': {
+            month: '2024-06',
+            income: 0,
+            fixedExpenses: [],
+            variableExpenses: [],
+            investments: 0,
+            savings: 0,
+          },
         },
       })
 
@@ -129,9 +143,30 @@ describe('Month Logic', () => {
 
       useExpenseStore.setState({
         monthlyData: {
-          '2023-05': { month: '2023-05', income: 0, fixedExpenses: [], variableExpenses: [], investments: 0, savings: 0 },
-          '2024-06': { month: '2024-06', income: 0, fixedExpenses: [], variableExpenses: [], investments: 0, savings: 0 },
-          [`${currentYear}-01`]: { month: `${currentYear}-01`, income: 0, fixedExpenses: [], variableExpenses: [], investments: 0, savings: 0 },
+          '2023-05': {
+            month: '2023-05',
+            income: 0,
+            fixedExpenses: [],
+            variableExpenses: [],
+            investments: 0,
+            savings: 0,
+          },
+          '2024-06': {
+            month: '2024-06',
+            income: 0,
+            fixedExpenses: [],
+            variableExpenses: [],
+            investments: 0,
+            savings: 0,
+          },
+          [`${currentYear}-01`]: {
+            month: `${currentYear}-01`,
+            income: 0,
+            fixedExpenses: [],
+            variableExpenses: [],
+            investments: 0,
+            savings: 0,
+          },
         },
       })
 
@@ -145,16 +180,37 @@ describe('Month Logic', () => {
     it('should not duplicate years', () => {
       useExpenseStore.setState({
         monthlyData: {
-          '2024-01': { month: '2024-01', income: 0, fixedExpenses: [], variableExpenses: [], investments: 0, savings: 0 },
-          '2024-06': { month: '2024-06', income: 0, fixedExpenses: [], variableExpenses: [], investments: 0, savings: 0 },
-          '2024-12': { month: '2024-12', income: 0, fixedExpenses: [], variableExpenses: [], investments: 0, savings: 0 },
+          '2024-01': {
+            month: '2024-01',
+            income: 0,
+            fixedExpenses: [],
+            variableExpenses: [],
+            investments: 0,
+            savings: 0,
+          },
+          '2024-06': {
+            month: '2024-06',
+            income: 0,
+            fixedExpenses: [],
+            variableExpenses: [],
+            investments: 0,
+            savings: 0,
+          },
+          '2024-12': {
+            month: '2024-12',
+            income: 0,
+            fixedExpenses: [],
+            variableExpenses: [],
+            investments: 0,
+            savings: 0,
+          },
         },
       })
 
       const { getAvailableYears } = useExpenseStore.getState()
       const years = getAvailableYears()
 
-      const year2024Count = years.filter(y => y === '2024').length
+      const year2024Count = years.filter((y) => y === '2024').length
       expect(year2024Count).toBe(1)
     })
   })
@@ -163,10 +219,38 @@ describe('Month Logic', () => {
     it('should filter months by year', () => {
       useExpenseStore.setState({
         monthlyData: {
-          '2024-11': { month: '2024-11', income: 0, fixedExpenses: [], variableExpenses: [], investments: 0, savings: 0 },
-          '2024-12': { month: '2024-12', income: 0, fixedExpenses: [], variableExpenses: [], investments: 0, savings: 0 },
-          '2025-01': { month: '2025-01', income: 0, fixedExpenses: [], variableExpenses: [], investments: 0, savings: 0 },
-          '2025-02': { month: '2025-02', income: 0, fixedExpenses: [], variableExpenses: [], investments: 0, savings: 0 },
+          '2024-11': {
+            month: '2024-11',
+            income: 0,
+            fixedExpenses: [],
+            variableExpenses: [],
+            investments: 0,
+            savings: 0,
+          },
+          '2024-12': {
+            month: '2024-12',
+            income: 0,
+            fixedExpenses: [],
+            variableExpenses: [],
+            investments: 0,
+            savings: 0,
+          },
+          '2025-01': {
+            month: '2025-01',
+            income: 0,
+            fixedExpenses: [],
+            variableExpenses: [],
+            investments: 0,
+            savings: 0,
+          },
+          '2025-02': {
+            month: '2025-02',
+            income: 0,
+            fixedExpenses: [],
+            variableExpenses: [],
+            investments: 0,
+            savings: 0,
+          },
         },
       })
 
@@ -186,9 +270,30 @@ describe('Month Logic', () => {
     it('should return months in ascending order', () => {
       useExpenseStore.setState({
         monthlyData: {
-          '2024-12': { month: '2024-12', income: 0, fixedExpenses: [], variableExpenses: [], investments: 0, savings: 0 },
-          '2024-03': { month: '2024-03', income: 0, fixedExpenses: [], variableExpenses: [], investments: 0, savings: 0 },
-          '2024-07': { month: '2024-07', income: 0, fixedExpenses: [], variableExpenses: [], investments: 0, savings: 0 },
+          '2024-12': {
+            month: '2024-12',
+            income: 0,
+            fixedExpenses: [],
+            variableExpenses: [],
+            investments: 0,
+            savings: 0,
+          },
+          '2024-03': {
+            month: '2024-03',
+            income: 0,
+            fixedExpenses: [],
+            variableExpenses: [],
+            investments: 0,
+            savings: 0,
+          },
+          '2024-07': {
+            month: '2024-07',
+            income: 0,
+            fixedExpenses: [],
+            variableExpenses: [],
+            investments: 0,
+            savings: 0,
+          },
         },
       })
 

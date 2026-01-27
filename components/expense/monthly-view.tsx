@@ -23,7 +23,7 @@ export function MonthlyView() {
   } = useExpenseStore()
 
   const monthData = getMonthData(currentMonth)
-  
+
   // Get previous month data for comparison
   const date = new Date(currentMonth + '-01')
   date.setMonth(date.getMonth() - 1)
@@ -41,7 +41,7 @@ export function MonthlyView() {
     0
   )
 
-  const totalExpenses = 
+  const totalExpenses =
     monthData.fixedExpenses.reduce((sum, e) => sum + e.amount, 0) +
     monthData.variableExpenses.reduce((sum, e) => sum + e.amount, 0) +
     installmentsTotal
@@ -49,24 +49,21 @@ export function MonthlyView() {
   const allExpenses = [...monthData.fixedExpenses, ...monthData.variableExpenses]
 
   return (
-    <div className="flex-1 flex flex-col min-h-0">
-      <header className="flex-shrink-0 border-b border-border bg-card px-6 py-4">
+    <div className="flex min-h-0 flex-1 flex-col">
+      <header className="border-border bg-card flex-shrink-0 border-b px-6 py-4">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Visao Mensal</h1>
-            <p className="text-sm text-muted-foreground">
+            <h1 className="text-foreground text-2xl font-bold">Visao Mensal</h1>
+            <p className="text-muted-foreground text-sm">
               Acompanhe sua renda, despesas e alocacoes
             </p>
           </div>
-          <MonthSelector 
-            currentMonth={currentMonth} 
-            onMonthChange={setCurrentMonth} 
-          />
+          <MonthSelector currentMonth={currentMonth} onMonthChange={setCurrentMonth} />
         </div>
       </header>
 
       <main className="flex-1 overflow-y-auto p-6">
-        <div className="max-w-7xl mx-auto space-y-6">
+        <div className="mx-auto max-w-7xl space-y-6">
           <SummaryCards
             income={monthData.income}
             totalExpenses={totalExpenses}
@@ -75,8 +72,8 @@ export function MonthlyView() {
             previousMonthExpenses={prevMonthTotalExpenses}
           />
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-1 space-y-6">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+            <div className="space-y-6 lg:col-span-1">
               <IncomeInput
                 income={monthData.income}
                 investments={monthData.investments}
@@ -88,9 +85,9 @@ export function MonthlyView() {
               <Installments currentMonth={currentMonth} />
               <CategoryBreakdown expenses={allExpenses} />
             </div>
-            
+
             <div className="lg:col-span-2">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <ExpenseList
                   title="Despesas Fixas"
                   expenses={monthData.fixedExpenses}

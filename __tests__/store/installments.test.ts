@@ -240,14 +240,14 @@ describe('Installment Logic', () => {
       // Março: ambos
       const mar = getInstallmentsForMonth('2025-03')
       expect(mar).toHaveLength(2)
-      expect(mar.find(i => i.installment.name === 'Item A')?.currentNumber).toBe(3)
-      expect(mar.find(i => i.installment.name === 'Item B')?.currentNumber).toBe(1)
+      expect(mar.find((i) => i.installment.name === 'Item A')?.currentNumber).toBe(3)
+      expect(mar.find((i) => i.installment.name === 'Item B')?.currentNumber).toBe(1)
 
       // Agosto: ambos ainda (Item B é o 6º/último mês)
       const aug = getInstallmentsForMonth('2025-08')
       expect(aug).toHaveLength(2)
-      expect(aug.find(i => i.installment.name === 'Item A')?.currentNumber).toBe(8)
-      expect(aug.find(i => i.installment.name === 'Item B')?.currentNumber).toBe(6)
+      expect(aug.find((i) => i.installment.name === 'Item A')?.currentNumber).toBe(8)
+      expect(aug.find((i) => i.installment.name === 'Item B')?.currentNumber).toBe(6)
 
       // Setembro: Item B terminou
       const sep = getInstallmentsForMonth('2025-09')

@@ -23,7 +23,13 @@ interface SidebarProps {
   onYearChange: (year: string) => void
 }
 
-export function Sidebar({ activeView, onViewChange, currentYear, availableYears, onYearChange }: SidebarProps) {
+export function Sidebar({
+  activeView,
+  onViewChange,
+  currentYear,
+  availableYears,
+  onYearChange,
+}: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false)
 
   const navItems = [
@@ -48,17 +54,17 @@ export function Sidebar({ activeView, onViewChange, currentYear, availableYears,
   return (
     <aside
       className={cn(
-        'flex flex-col bg-sidebar text-sidebar-foreground border-r border-sidebar-border transition-all duration-300',
+        'bg-sidebar text-sidebar-foreground border-sidebar-border flex flex-col border-r transition-all duration-300',
         collapsed ? 'w-16' : 'w-64'
       )}
     >
-      <div className="flex items-center justify-between p-4 border-b border-sidebar-border">
+      <div className="border-sidebar-border flex items-center justify-between border-b p-4">
         {!collapsed && (
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">GF</span>
+            <div className="bg-primary flex h-8 w-8 items-center justify-center rounded-lg">
+              <span className="text-primary-foreground text-sm font-bold">GF</span>
             </div>
-            <span className="font-semibold text-lg">GestaoFinanceira</span>
+            <span className="text-lg font-semibold">GestaoFinanceira</span>
           </div>
         )}
         <Button
@@ -73,8 +79,8 @@ export function Sidebar({ activeView, onViewChange, currentYear, availableYears,
 
       {/* Seção de Ano */}
       {!collapsed && (
-        <div className="p-4 border-b border-sidebar-border">
-          <p className="px-1 py-2 text-xs font-medium text-sidebar-foreground/60 uppercase tracking-wider">
+        <div className="border-sidebar-border border-b p-4">
+          <p className="text-sidebar-foreground/60 px-1 py-2 text-xs font-medium tracking-wider uppercase">
             Período
           </p>
           <YearSelector
@@ -88,7 +94,7 @@ export function Sidebar({ activeView, onViewChange, currentYear, availableYears,
       <nav className="flex-1 p-2">
         <div className="space-y-1">
           {!collapsed && (
-            <p className="px-3 py-2 text-xs font-medium text-sidebar-foreground/60 uppercase tracking-wider">
+            <p className="text-sidebar-foreground/60 px-3 py-2 text-xs font-medium tracking-wider uppercase">
               Navegacao
             </p>
           )}
@@ -97,7 +103,7 @@ export function Sidebar({ activeView, onViewChange, currentYear, availableYears,
               key={item.id}
               onClick={() => onViewChange(item.id)}
               className={cn(
-                'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
+                'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
                 activeView === item.id
                   ? 'bg-sidebar-primary text-sidebar-primary-foreground'
                   : 'text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
@@ -111,7 +117,7 @@ export function Sidebar({ activeView, onViewChange, currentYear, availableYears,
 
         <div className="mt-6 space-y-1">
           {!collapsed && (
-            <p className="px-3 py-2 text-xs font-medium text-sidebar-foreground/60 uppercase tracking-wider">
+            <p className="text-sidebar-foreground/60 px-3 py-2 text-xs font-medium tracking-wider uppercase">
               Acesso Rapido
             </p>
           )}
@@ -119,7 +125,7 @@ export function Sidebar({ activeView, onViewChange, currentYear, availableYears,
             <button
               key={item.label}
               className={cn(
-                'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
+                'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
                 'text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
               )}
             >
@@ -130,10 +136,10 @@ export function Sidebar({ activeView, onViewChange, currentYear, availableYears,
         </div>
       </nav>
 
-      <div className="p-2 border-t border-sidebar-border">
+      <div className="border-sidebar-border border-t p-2">
         <button
           className={cn(
-            'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
+            'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
             'text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
           )}
         >

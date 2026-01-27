@@ -35,8 +35,8 @@ export function YearSelector({ currentYear, availableYears, onYearChange }: Year
       </Button>
 
       <Select value={currentYear} onValueChange={onYearChange}>
-        <SelectTrigger className="w-[120px] h-8">
-          <Calendar className="h-4 w-4 mr-1" />
+        <SelectTrigger className="h-8 w-[120px]">
+          <Calendar className="mr-1 h-4 w-4" />
           <SelectValue />
         </SelectTrigger>
         <SelectContent>

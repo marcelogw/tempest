@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**SpendWise** - Personal expense management application for tracking income, expenses, investments, and savings across months. Built with Next.js 16 (App Router), React 19, TypeScript, and Tailwind CSS v4.
+**Tempest** - Personal expense management application for tracking income, expenses, investments, and savings across months. Built with Next.js 16 (App Router), React 19, TypeScript, and Tailwind CSS v4.
 
 ## Essential Commands
 

@@ -8,7 +8,7 @@ const _inter = Inter({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'SpendWise - Expense Management',
+  title: 'Tempest - Expense Management',
   description: 'Track your income, expenses, investments and savings with ease',
   generator: 'v0.app',
   icons: {

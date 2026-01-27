@@ -1,18 +1,20 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-export type ExpenseCategory =
-  | 'credit_card'
-  | 'groceries'
-  | 'utilities'
-  | 'entertainment'
-  | 'transportation'
-  | 'healthcare'
-  | 'dining'
-  | 'shopping'
-  | 'subscriptions'
-  | 'installment'
-  | 'other'
+// Category types for dynamic user-configurable categories
+export type CategoryIcon = string | null
+
+export type Category = {
+  id: string // unique identifier (kebab-case)
+  label: string // display name (Portuguese)
+  color: string // hex color from palette
+  icon: CategoryIcon // optional lucide icon name
+  isSystem: boolean // true for 'outros' (can't be deleted)
+  order: number // for custom ordering
+}
+
+// Changed from union type to string for dynamic categories
+export type ExpenseCategory = string
 
 export type CreditCard = 'nubank_pri' | 'nubank_ma' | 'mercadopago' | 'itau'
 
@@ -45,9 +47,105 @@ export interface MonthlyData {
   savings: number
 }
 
+// Predefined color palette for categories (15-20 colors from design system)
+export const CATEGORY_COLOR_PALETTE = [
+  '#ef4444',
+  '#f97316',
+  '#f59e0b',
+  '#eab308',
+  '#84cc16',
+  '#22c55e',
+  '#10b981',
+  '#14b8a6',
+  '#06b6d4',
+  '#0ea5e9',
+  '#3b82f6',
+  '#6366f1',
+  '#8b5cf6',
+  '#a855f7',
+  '#d946ef',
+  '#ec4899',
+  '#f43f5e',
+  '#64748b',
+  '#78716c',
+  '#71717a',
+]
+
+// Default categories on first initialization
+export const DEFAULT_CATEGORIES: Category[] = [
+  {
+    id: 'mercado',
+    label: 'Mercado',
+    color: '#10b981',
+    icon: 'ShoppingCart',
+    isSystem: false,
+    order: 0,
+  },
+  {
+    id: 'transporte',
+    label: 'Transporte',
+    color: '#3b82f6',
+    icon: 'Car',
+    isSystem: false,
+    order: 1,
+  },
+  { id: 'saude', label: 'Saúde', color: '#ef4444', icon: 'Heart', isSystem: false, order: 2 },
+  { id: 'lazer', label: 'Lazer', color: '#f59e0b', icon: 'PartyPopper', isSystem: false, order: 3 },
+  {
+    id: 'alimentacao',
+    label: 'Alimentação',
+    color: '#ec4899',
+    icon: 'Utensils',
+    isSystem: false,
+    order: 4,
+  },
+  {
+    id: 'educacao',
+    label: 'Educação',
+    color: '#8b5cf6',
+    icon: 'GraduationCap',
+    isSystem: false,
+    order: 5,
+  },
+  { id: 'moradia', label: 'Moradia', color: '#06b6d4', icon: 'Home', isSystem: false, order: 6 },
+  {
+    id: 'assinaturas',
+    label: 'Assinaturas',
+    color: '#14b8a6',
+    icon: 'RefreshCw',
+    isSystem: false,
+    order: 7,
+  },
+  {
+    id: 'cartao-credito',
+    label: 'Cartão de Crédito',
+    color: '#6366f1',
+    icon: 'CreditCard',
+    isSystem: false,
+    order: 8,
+  },
+  {
+    id: 'parcelamento',
+    label: 'Parcelamento',
+    color: '#f97316',
+    icon: 'Calendar',
+    isSystem: false,
+    order: 9,
+  },
+  {
+    id: 'outros',
+    label: 'Outros',
+    color: '#64748b',
+    icon: 'MoreHorizontal',
+    isSystem: true,
+    order: 10,
+  },
+]
+
 interface ExpenseStore {
   monthlyData: Record<string, MonthlyData>
   installments: Installment[]
+  categories: Category[]
   currentMonth: string
   currentYear: string
   setCurrentMonth: (month: string) => void
@@ -77,6 +175,14 @@ interface ExpenseStore {
   getInstallmentsForMonth: (
     month: string
   ) => Array<{ installment: Installment; currentNumber: number }>
+  // Category management actions
+  initializeCategories: () => void
+  addCategory: (label: string, color: string, icon?: string | null) => void
+  updateCategory: (id: string, updates: Partial<Omit<Category, 'id' | 'isSystem'>>) => void
+  deleteCategory: (id: string) => void
+  reorderCategories: (orderedIds: string[]) => void
+  getCategoryById: (id: string) => Category | undefined
+  validateCategory: (categoryId: string) => string
 }
 
 const generateId = () => Math.random().toString(36).substring(2, 9)
@@ -121,7 +227,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           id: generateId(),
           description: 'Aluguel',
           amount: 2500,
-          category: 'other',
+          category: 'moradia',
           type: 'fixed',
           date: monthKey + '-01',
         },
@@ -129,7 +235,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           id: generateId(),
           description: 'Seguro do Carro',
           amount: 280,
-          category: 'transportation',
+          category: 'transporte',
           type: 'fixed',
           date: monthKey + '-01',
         },
@@ -137,7 +243,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           id: generateId(),
           description: 'Conta de Celular',
           amount: 120,
-          category: 'utilities',
+          category: 'outros',
           type: 'fixed',
           date: monthKey + '-01',
         },
@@ -145,7 +251,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           id: generateId(),
           description: 'Internet',
           amount: 150,
-          category: 'utilities',
+          category: 'outros',
           type: 'fixed',
           date: monthKey + '-01',
         },
@@ -153,7 +259,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           id: generateId(),
           description: 'Academia',
           amount: 120,
-          category: 'healthcare',
+          category: 'saude',
           type: 'fixed',
           date: monthKey + '-01',
         },
@@ -163,7 +269,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           id: generateId(),
           description: 'Cartao de Credito - Amazon',
           amount: Math.round(350 * variability),
-          category: 'credit_card',
+          category: 'cartao-credito',
           type: 'variable',
           date: monthKey + '-05',
         },
@@ -171,7 +277,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           id: generateId(),
           description: 'Supermercado - Extra',
           amount: Math.round(850 * variability),
-          category: 'groceries',
+          category: 'mercado',
           type: 'variable',
           date: monthKey + '-08',
         },
@@ -179,7 +285,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           id: generateId(),
           description: 'Combustivel',
           amount: Math.round(400 * variability),
-          category: 'transportation',
+          category: 'transporte',
           type: 'variable',
           date: monthKey + '-10',
         },
@@ -187,7 +293,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           id: generateId(),
           description: 'Netflix e Spotify',
           amount: 75,
-          category: 'subscriptions',
+          category: 'assinaturas',
           type: 'variable',
           date: monthKey + '-12',
         },
@@ -195,7 +301,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           id: generateId(),
           description: 'Restaurantes',
           amount: Math.round(450 * variability),
-          category: 'dining',
+          category: 'alimentacao',
           type: 'variable',
           date: monthKey + '-15',
         },
@@ -203,7 +309,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           id: generateId(),
           description: 'Cartao de Credito - Magazine Luiza',
           amount: Math.round(500 * variability),
-          category: 'credit_card',
+          category: 'cartao-credito',
           type: 'variable',
           date: monthKey + '-18',
         },
@@ -211,7 +317,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           id: generateId(),
           description: 'Cinema',
           amount: Math.round(120 * variability),
-          category: 'entertainment',
+          category: 'lazer',
           type: 'variable',
           date: monthKey + '-20',
         },
@@ -219,7 +325,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           id: generateId(),
           description: 'Supermercado - Pao de Acucar',
           amount: Math.round(450 * variability),
-          category: 'groceries',
+          category: 'mercado',
           type: 'variable',
           date: monthKey + '-22',
         },
@@ -256,6 +362,7 @@ export const useExpenseStore = create<ExpenseStore>()(
     (set, get) => ({
       monthlyData: generateSampleData(),
       installments: [],
+      categories: DEFAULT_CATEGORIES,
       currentMonth: getCurrentMonth(),
       currentYear: new Date().getFullYear().toString(),
 
@@ -558,40 +665,119 @@ export const useExpenseStore = create<ExpenseStore>()(
 
         return result
       },
+
+      // Category management actions
+      initializeCategories: () => {
+        const { categories } = get()
+        if (categories.length === 0) {
+          set({ categories: DEFAULT_CATEGORIES })
+        }
+      },
+
+      addCategory: (label, color, icon = null) => {
+        const { categories } = get()
+        const id = label
+          .toLowerCase()
+          .replace(/\s+/g, '-')
+          .replace(/[^\w-]/g, '')
+
+        // Check for duplicate IDs
+        if (categories.find((c) => c.id === id)) {
+          throw new Error('Category with this name already exists')
+        }
+
+        const newCategory: Category = {
+          id,
+          label,
+          color,
+          icon,
+          isSystem: false,
+          order: categories.length,
+        }
+
+        set({ categories: [...categories, newCategory] })
+      },
+
+      updateCategory: (id, updates) => {
+        const { categories } = get()
+        const category = categories.find((c) => c.id === id)
+
+        if (!category) {
+          throw new Error('Category not found')
+        }
+
+        if (category.isSystem && updates.label) {
+          throw new Error('Cannot rename system category')
+        }
+
+        set({
+          categories: categories.map((c) => (c.id === id ? { ...c, ...updates } : c)),
+        })
+      },
+
+      deleteCategory: (id) => {
+        const { categories, monthlyData } = get()
+        const category = categories.find((c) => c.id === id)
+
+        if (!category) {
+          throw new Error('Category not found')
+        }
+
+        if (category.isSystem) {
+          throw new Error('Cannot delete system category')
+        }
+
+        // Reassign all expenses to 'outros'
+        const updatedMonthlyData = { ...monthlyData }
+        Object.keys(updatedMonthlyData).forEach((month) => {
+          const monthData = updatedMonthlyData[month]
+
+          updatedMonthlyData[month] = {
+            ...monthData,
+            fixedExpenses: monthData.fixedExpenses.map((e) =>
+              e.category === id ? { ...e, category: 'outros' } : e
+            ),
+            variableExpenses: monthData.variableExpenses.map((e) =>
+              e.category === id ? { ...e, category: 'outros' } : e
+            ),
+          }
+        })
+
+        set({
+          categories: categories.filter((c) => c.id !== id),
+          monthlyData: updatedMonthlyData,
+        })
+      },
+
+      reorderCategories: (orderedIds) => {
+        const { categories } = get()
+        const reordered = orderedIds
+          .map((id, index) => {
+            const category = categories.find((c) => c.id === id)
+            if (!category) return null
+            return { ...category, order: index }
+          })
+          .filter(Boolean) as Category[]
+
+        set({ categories: reordered })
+      },
+
+      getCategoryById: (id) => {
+        const { categories } = get()
+        return categories.find((c) => c.id === id)
+      },
+
+      validateCategory: (categoryId) => {
+        const { categories } = get()
+        const exists = categories.find((c) => c.id === categoryId)
+        return exists ? categoryId : 'outros'
+      },
     }),
     {
       name: 'expense-store',
     }
   )
 )
-
-export const categoryLabels: Record<ExpenseCategory, string> = {
-  credit_card: 'Cartao de Credito',
-  groceries: 'Supermercado',
-  utilities: 'Contas',
-  entertainment: 'Entretenimento',
-  transportation: 'Transporte',
-  healthcare: 'Saude',
-  dining: 'Restaurantes',
-  shopping: 'Compras',
-  subscriptions: 'Assinaturas',
-  installment: 'Parcelamento',
-  other: 'Outros',
-}
-
-export const categoryColors: Record<ExpenseCategory, string> = {
-  credit_card: '#3b82f6',
-  groceries: '#22c55e',
-  utilities: '#f59e0b',
-  entertainment: '#ec4899',
-  transportation: '#8b5cf6',
-  healthcare: '#14b8a6',
-  dining: '#f97316',
-  shopping: '#6366f1',
-  subscriptions: '#06b6d4',
-  installment: '#a855f7',
-  other: '#64748b',
-}
 
 export const creditCardLabels: Record<CreditCard, string> = {
   nubank_pri: 'Nubank Pri',

@@ -1,11 +1,20 @@
 'use client'
 
 import { useMemo } from 'react'
+import * as LucideIcons from 'lucide-react'
+import {
+  TrendingUp,
+  TrendingDown,
+  Calendar,
+  Target,
+  Wallet,
+  ArrowUpRight,
+  ArrowDownRight,
+  type LucideIcon,
+} from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import {
   useExpenseStore,
-  categoryLabels,
-  categoryColors,
   formatCurrencyBRL,
   formatShortCurrencyBRL,
   type ExpenseCategory,
@@ -27,19 +36,10 @@ import {
   AreaChart,
   Area,
 } from 'recharts'
-import {
-  TrendingUp,
-  TrendingDown,
-  Calendar,
-  Target,
-  Wallet,
-  ArrowUpRight,
-  ArrowDownRight,
-} from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 export function DashboardView() {
-  const { monthlyData, currentYear } = useExpenseStore()
+  const { monthlyData, currentYear, categories, getCategoryById } = useExpenseStore()
 
   // Get sorted months data
   const monthsData = useMemo(() => {
@@ -71,44 +71,30 @@ export function DashboardView() {
 
   // Calculate category averages across all months
   const categoryAverages = useMemo(() => {
-    const categoryTotals: Record<ExpenseCategory, number[]> = {
-      credit_card: [],
-      groceries: [],
-      utilities: [],
-      entertainment: [],
-      transportation: [],
-      healthcare: [],
-      dining: [],
-      shopping: [],
-      subscriptions: [],
-      installment: [],
-      other: [],
-    }
+    // Initialize categoryTotals dynamically from store categories
+    const categoryTotals: Record<ExpenseCategory, number[]> = {}
+    categories.forEach((cat) => {
+      categoryTotals[cat.id] = []
+    })
 
     Object.values(monthlyData)
       .filter((month) => month.month.startsWith(currentYear))
       .forEach((month) => {
-        const monthCategoryTotals: Record<ExpenseCategory, number> = {
-          credit_card: 0,
-          groceries: 0,
-          utilities: 0,
-          entertainment: 0,
-          transportation: 0,
-          healthcare: 0,
-          dining: 0,
-          shopping: 0,
-          subscriptions: 0,
-          installment: 0,
-          other: 0,
-        }
-
+        // Initialize month category totals dynamically
+        const monthCategoryTotals: Record<ExpenseCategory, number> = {}
+        categories.forEach((cat) => {
+          monthCategoryTotals[cat.id] = 0
+        })
         ;[...month.fixedExpenses, ...month.variableExpenses].forEach((expense) => {
-          monthCategoryTotals[expense.category] += expense.amount
+          // Use expense category or fallback to 'outros'
+          const categoryId =
+            categoryTotals[expense.category] !== undefined ? expense.category : 'outros'
+          monthCategoryTotals[categoryId] = (monthCategoryTotals[categoryId] || 0) + expense.amount
         })
 
         Object.entries(monthCategoryTotals).forEach(([cat, total]) => {
-          if (total > 0) {
-            categoryTotals[cat as ExpenseCategory].push(total)
+          if (total > 0 && categoryTotals[cat]) {
+            categoryTotals[cat].push(total)
           }
         })
       })
@@ -116,13 +102,13 @@ export function DashboardView() {
     return Object.entries(categoryTotals)
       .filter(([, values]) => values.length > 0)
       .map(([category, values]) => ({
-        category: category as ExpenseCategory,
+        category,
         average: values.reduce((sum, v) => sum + v, 0) / values.length,
         total: values.reduce((sum, v) => sum + v, 0),
         months: values.length,
       }))
       .sort((a, b) => b.average - a.average)
-  }, [monthlyData, currentYear])
+  }, [monthlyData, currentYear, categories])
 
   // Calculate insights
   const insights = useMemo(() => {
@@ -161,12 +147,15 @@ export function DashboardView() {
 
   // Pie chart data
   const pieData = useMemo(() => {
-    return categoryAverages.slice(0, 6).map((item) => ({
-      name: categoryLabels[item.category],
-      value: item.average,
-      color: categoryColors[item.category],
-    }))
-  }, [categoryAverages])
+    return categoryAverages.slice(0, 6).map((item) => {
+      const category = getCategoryById(item.category) || getCategoryById('outros')
+      return {
+        name: category?.label || 'Outros',
+        value: item.average,
+        color: category?.color || '#64748b',
+      }
+    })
+  }, [categoryAverages, getCategoryById])
 
   const chartColors = {
     income: '#22c55e',
@@ -547,26 +536,37 @@ export function DashboardView() {
                 </CardHeader>
                 <CardContent className="pt-0">
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-                    {categoryAverages.map((item) => (
-                      <div
-                        key={item.category}
-                        className="bg-secondary/50 hover:bg-secondary rounded-lg p-4 transition-colors"
-                      >
-                        <div className="mb-2 flex items-center gap-2">
-                          <div
-                            className="h-3 w-3 rounded-full"
-                            style={{ backgroundColor: categoryColors[item.category] }}
-                          />
-                          <span className="text-foreground text-sm font-medium">
-                            {categoryLabels[item.category]}
-                          </span>
+                    {categoryAverages.map((item) => {
+                      const category = getCategoryById(item.category) || getCategoryById('outros')
+                      const IconComponent = category?.icon
+                        ? (LucideIcons as unknown as Record<string, LucideIcon>)[category.icon]
+                        : null
+                      const color = category?.color || '#64748b'
+                      const label = category?.label || 'Outros'
+
+                      return (
+                        <div
+                          key={item.category}
+                          className="bg-secondary/50 hover:bg-secondary rounded-lg p-4 transition-colors"
+                        >
+                          <div className="mb-2 flex items-center gap-2">
+                            {IconComponent ? (
+                              <IconComponent className="h-4 w-4" style={{ color }} />
+                            ) : (
+                              <div
+                                className="h-3 w-3 rounded-full"
+                                style={{ backgroundColor: color }}
+                              />
+                            )}
+                            <span className="text-foreground text-sm font-medium">{label}</span>
+                          </div>
+                          <p className="text-foreground text-lg font-bold">
+                            {formatCurrencyBRL(item.average)}
+                          </p>
+                          <p className="text-muted-foreground text-xs">media mensal</p>
                         </div>
-                        <p className="text-foreground text-lg font-bold">
-                          {formatCurrencyBRL(item.average)}
-                        </p>
-                        <p className="text-muted-foreground text-xs">media mensal</p>
-                      </div>
-                    ))}
+                      )
+                    })}
                   </div>
                 </CardContent>
               </Card>

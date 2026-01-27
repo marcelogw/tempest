@@ -4,13 +4,9 @@ import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Trash2, Lock, Shuffle, Pencil, Repeat } from 'lucide-react'
-import {
-  type Expense,
-  categoryLabels,
-  categoryColors,
-  formatCurrencyBRL,
-} from '@/lib/expense-store'
+import * as LucideIcons from 'lucide-react'
+import { Trash2, Lock, Shuffle, Pencil, Repeat, type LucideIcon } from 'lucide-react'
+import { type Expense, formatCurrencyBRL, useExpenseStore } from '@/lib/expense-store'
 import { ExpenseForm } from './expense-form'
 import { ExpenseEditDialog } from './expense-edit-dialog'
 import { cn } from '@/lib/utils'
@@ -34,6 +30,7 @@ export function ExpenseList({
   onUpdate,
   currentMonth,
 }: ExpenseListProps) {
+  const getCategoryById = useExpenseStore((state) => state.getCategoryById)
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null)
   const total = expenses.reduce((sum, exp) => sum + exp.amount, 0)
 
@@ -84,16 +81,25 @@ export function ExpenseList({
                       <Repeat className="text-muted-foreground h-3 w-3 flex-shrink-0" />
                     )}
                   </div>
-                  <Badge
-                    variant="outline"
-                    className="mt-1 text-xs"
-                    style={{
-                      borderColor: categoryColors[expense.category],
-                      color: categoryColors[expense.category],
-                    }}
-                  >
-                    {categoryLabels[expense.category]}
-                  </Badge>
+                  {(() => {
+                    const category = getCategoryById(expense.category) || getCategoryById('outros')
+                    const IconComponent = category?.icon
+                      ? (LucideIcons as unknown as Record<string, LucideIcon>)[category.icon]
+                      : null
+                    return (
+                      <Badge
+                        variant="outline"
+                        className="mt-1 text-xs"
+                        style={{
+                          borderColor: category?.color || '#64748b',
+                          color: category?.color || '#64748b',
+                        }}
+                      >
+                        {IconComponent && <IconComponent className="mr-1 h-3 w-3" />}
+                        {category?.label || 'Outros'}
+                      </Badge>
+                    )
+                  })()}
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-foreground text-sm font-semibold">

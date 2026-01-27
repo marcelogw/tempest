@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { formatCurrencyBRL, formatShortCurrencyBRL, categoryLabels } from '@/lib/expense-store'
+import { formatCurrencyBRL, formatShortCurrencyBRL, DEFAULT_CATEGORIES } from '@/lib/expense-store'
 
 describe('Currency Formatting', () => {
   describe('formatCurrencyBRL', () => {
@@ -59,39 +59,36 @@ describe('Currency Formatting', () => {
   })
 })
 
-describe('Category Labels', () => {
-  it('should have all category labels in Portuguese', () => {
-    expect(categoryLabels.credit_card).toBe('Cartao de Credito')
-    expect(categoryLabels.groceries).toBe('Supermercado')
-    expect(categoryLabels.utilities).toBe('Contas')
-    expect(categoryLabels.entertainment).toBe('Entretenimento')
-    expect(categoryLabels.transportation).toBe('Transporte')
-    expect(categoryLabels.healthcare).toBe('Saude')
-    expect(categoryLabels.dining).toBe('Restaurantes')
-    expect(categoryLabels.shopping).toBe('Compras')
-    expect(categoryLabels.subscriptions).toBe('Assinaturas')
-    expect(categoryLabels.installment).toBe('Parcelamento')
-    expect(categoryLabels.other).toBe('Outros')
+describe('Default Categories', () => {
+  it('should have all default categories with labels in Portuguese', () => {
+    expect(DEFAULT_CATEGORIES).toHaveLength(11)
+
+    const mercado = DEFAULT_CATEGORIES.find((c) => c.id === 'mercado')
+    expect(mercado?.label).toBe('Mercado')
+
+    const transporte = DEFAULT_CATEGORIES.find((c) => c.id === 'transporte')
+    expect(transporte?.label).toBe('Transporte')
+
+    const outros = DEFAULT_CATEGORIES.find((c) => c.id === 'outros')
+    expect(outros?.label).toBe('Outros')
+    expect(outros?.isSystem).toBe(true)
   })
 
-  it('should have labels for all category types', () => {
-    const categories = [
-      'credit_card',
-      'groceries',
-      'utilities',
-      'entertainment',
-      'transportation',
-      'healthcare',
-      'dining',
-      'shopping',
-      'subscriptions',
-      'installment',
-      'other',
-    ]
-
-    categories.forEach((category) => {
-      expect(categoryLabels[category as keyof typeof categoryLabels]).toBeDefined()
-      expect(categoryLabels[category as keyof typeof categoryLabels].length).toBeGreaterThan(0)
+  it('should have required properties for all categories', () => {
+    DEFAULT_CATEGORIES.forEach((category) => {
+      expect(category.id).toBeDefined()
+      expect(category.id.length).toBeGreaterThan(0)
+      expect(category.label).toBeDefined()
+      expect(category.label.length).toBeGreaterThan(0)
+      expect(category.color).toMatch(/^#[0-9a-f]{6}$/i)
+      expect(typeof category.order).toBe('number')
+      expect(typeof category.isSystem).toBe('boolean')
     })
+  })
+
+  it('should have "outros" as system category', () => {
+    const systemCategories = DEFAULT_CATEGORIES.filter((c) => c.isSystem)
+    expect(systemCategories).toHaveLength(1)
+    expect(systemCategories[0].id).toBe('outros')
   })
 })

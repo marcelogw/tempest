@@ -20,8 +20,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { type Expense, type ExpenseCategory, categoryLabels } from '@/lib/expense-store'
-import { Info } from 'lucide-react'
+import { type Expense, type ExpenseCategory, useExpenseStore } from '@/lib/expense-store'
+import * as Icons from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 
 interface ExpenseEditDialogProps {
   expense: Expense
@@ -40,6 +41,7 @@ export function ExpenseEditDialog({
   onSubmit,
   currentMonth,
 }: ExpenseEditDialogProps) {
+  const categories = useExpenseStore((state) => state.categories)
   const [description, setDescription] = useState(expense.description)
   const [amount, setAmount] = useState(expense.amount.toString())
   const [category, setCategory] = useState<ExpenseCategory>(expense.category)
@@ -85,7 +87,7 @@ export function ExpenseEditDialog({
 
         {isRecurringFixed && (
           <div className="bg-primary/10 text-primary flex items-start gap-2 rounded-md p-3 text-sm">
-            <Info className="mt-0.5 h-4 w-4 flex-shrink-0" />
+            <Icons.Info className="mt-0.5 h-4 w-4 flex-shrink-0" />
             <p>
               Esta é uma despesa recorrente. As alterações serão aplicadas a partir deste mês em
               todos os meses futuros.
@@ -121,16 +123,28 @@ export function ExpenseEditDialog({
 
           <div className="space-y-2">
             <Label htmlFor="edit-category">Categoria</Label>
-            <Select value={category} onValueChange={(v) => setCategory(v as ExpenseCategory)}>
+            <Select value={category} onValueChange={setCategory}>
               <SelectTrigger>
                 <SelectValue placeholder="Selecione a categoria" />
               </SelectTrigger>
               <SelectContent>
-                {Object.entries(categoryLabels).map(([value, label]) => (
-                  <SelectItem key={value} value={value}>
-                    {label}
-                  </SelectItem>
-                ))}
+                {categories
+                  .sort((a, b) => a.order - b.order)
+                  .map((cat) => {
+                    const IconComponent = cat.icon
+                      ? (Icons as unknown as Record<string, LucideIcon>)[cat.icon]
+                      : null
+                    return (
+                      <SelectItem key={cat.id} value={cat.id}>
+                        <div className="flex items-center gap-2">
+                          {IconComponent && (
+                            <IconComponent className="h-4 w-4" style={{ color: cat.color }} />
+                          )}
+                          <span>{cat.label}</span>
+                        </div>
+                      </SelectItem>
+                    )
+                  })}
               </SelectContent>
             </Select>
           </div>

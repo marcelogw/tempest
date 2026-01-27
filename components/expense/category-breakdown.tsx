@@ -1,12 +1,13 @@
 'use client'
 
+import * as Icons from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   type Expense,
   type ExpenseCategory,
-  categoryLabels,
-  categoryColors,
   formatCurrencyBRL,
+  useExpenseStore,
 } from '@/lib/expense-store'
 
 interface CategoryBreakdownProps {
@@ -14,6 +15,8 @@ interface CategoryBreakdownProps {
 }
 
 export function CategoryBreakdown({ expenses }: CategoryBreakdownProps) {
+  const getCategoryById = useExpenseStore((state) => state.getCategoryById)
+
   // Group expenses by category
   const categoryTotals = expenses.reduce(
     (acc, expense) => {
@@ -28,7 +31,7 @@ export function CategoryBreakdown({ expenses }: CategoryBreakdownProps) {
   // Sort by amount (highest first)
   const sortedCategories = Object.entries(categoryTotals)
     .sort(([, a], [, b]) => b - a)
-    .slice(0, 6) as [ExpenseCategory, number][]
+    .slice(0, 6)
 
   return (
     <Card className="border-border/50 shadow-sm">
@@ -41,17 +44,25 @@ export function CategoryBreakdown({ expenses }: CategoryBreakdownProps) {
             Nenhuma despesa registrada ainda
           </p>
         ) : (
-          sortedCategories.map(([category, amount]) => {
+          sortedCategories.map(([categoryId, amount]) => {
             const percentage = totalExpenses > 0 ? (amount / totalExpenses) * 100 : 0
+            const category = getCategoryById(categoryId) || getCategoryById('outros')
+            const IconComponent = category?.icon
+              ? (Icons as unknown as Record<string, LucideIcon>)[category.icon]
+              : null
+            const color = category?.color || '#64748b'
+            const label = category?.label || 'Outros'
+
             return (
-              <div key={category} className="space-y-2">
+              <div key={categoryId} className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
                   <div className="flex items-center gap-2">
-                    <div
-                      className="h-3 w-3 rounded-full"
-                      style={{ backgroundColor: categoryColors[category] }}
-                    />
-                    <span className="text-foreground font-medium">{categoryLabels[category]}</span>
+                    {IconComponent ? (
+                      <IconComponent className="h-4 w-4" style={{ color }} />
+                    ) : (
+                      <div className="h-3 w-3 rounded-full" style={{ backgroundColor: color }} />
+                    )}
+                    <span className="text-foreground font-medium">{label}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-muted-foreground">{percentage.toFixed(0)}%</span>
@@ -65,7 +76,7 @@ export function CategoryBreakdown({ expenses }: CategoryBreakdownProps) {
                     className="h-full rounded-full transition-all duration-500"
                     style={{
                       width: `${percentage}%`,
-                      backgroundColor: categoryColors[category],
+                      backgroundColor: color,
                     }}
                   />
                 </div>

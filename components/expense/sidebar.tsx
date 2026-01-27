@@ -14,6 +14,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { YearSelector } from './year-selector'
+import { CategorySettings } from './category-settings'
 
 interface SidebarProps {
   activeView: 'dashboard' | 'monthly'
@@ -31,6 +32,7 @@ export function Sidebar({
   onYearChange,
 }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
 
   const navItems = [
     {
@@ -138,6 +140,7 @@ export function Sidebar({
 
       <div className="border-sidebar-border border-t p-2">
         <button
+          onClick={() => setSettingsOpen(true)}
           className={cn(
             'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
             'text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
@@ -147,6 +150,8 @@ export function Sidebar({
           {!collapsed && <span>Configuracoes</span>}
         </button>
       </div>
+
+      <CategorySettings open={settingsOpen} onOpenChange={setSettingsOpen} />
     </aside>
   )
 }

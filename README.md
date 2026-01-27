@@ -109,8 +109,15 @@ All components access state through the `useExpenseStore()` hook.
 
 ## License
 
-Private project - All rights reserved.
+MIT License - see [LICENSE](LICENSE) file for details.
 
 ## Contributing
 
-This is a personal project. Contributions are not currently accepted.
+Contributions are welcome! Feel free to:
+
+- 🐛 Report bugs and issues
+- 💡 Suggest new features or improvements
+- 🔧 Submit pull requests
+- 📖 Improve documentation
+
+Please ensure your code follows the existing patterns and includes appropriate tests.

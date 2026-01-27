@@ -1,0 +1,130 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { DollarSign, TrendingUp, PiggyBank } from 'lucide-react'
+
+interface IncomeInputProps {
+  income: number
+  investments: number
+  savings: number
+  onIncomeChange: (value: number) => void
+  onInvestmentsChange: (value: number) => void
+  onSavingsChange: (value: number) => void
+}
+
+export function IncomeInput({
+  income,
+  investments,
+  savings,
+  onIncomeChange,
+  onInvestmentsChange,
+  onSavingsChange,
+}: IncomeInputProps) {
+  const [incomeValue, setIncomeValue] = useState(income.toString())
+  const [investmentsValue, setInvestmentsValue] = useState(investments.toString())
+  const [savingsValue, setSavingsValue] = useState(savings.toString())
+
+  useEffect(() => {
+    setIncomeValue(income.toString())
+  }, [income])
+
+  useEffect(() => {
+    setInvestmentsValue(investments.toString())
+  }, [investments])
+
+  useEffect(() => {
+    setSavingsValue(savings.toString())
+  }, [savings])
+
+  const handleIncomeBlur = () => {
+    const value = parseFloat(incomeValue) || 0
+    onIncomeChange(value)
+  }
+
+  const handleInvestmentsBlur = () => {
+    const value = parseFloat(investmentsValue) || 0
+    onInvestmentsChange(value)
+  }
+
+  const handleSavingsBlur = () => {
+    const value = parseFloat(savingsValue) || 0
+    onSavingsChange(value)
+  }
+
+  return (
+    <Card className="border-border/50 shadow-sm">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-base font-semibold">Renda e Alocacoes</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="income" className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+            <DollarSign className="h-4 w-4 text-accent" />
+            Renda Mensal
+          </Label>
+          <div className="relative">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">R$</span>
+            <Input
+              id="income"
+              type="number"
+              min="0"
+              step="0.01"
+              value={incomeValue}
+              onChange={(e) => setIncomeValue(e.target.value)}
+              onBlur={handleIncomeBlur}
+              className="pl-10"
+              placeholder="0,00"
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
+          <div className="space-y-2">
+            <Label htmlFor="investments" className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+              <TrendingUp className="h-4 w-4 text-primary" />
+              Investimentos
+            </Label>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">R$</span>
+              <Input
+                id="investments"
+                type="number"
+                min="0"
+                step="0.01"
+                value={investmentsValue}
+                onChange={(e) => setInvestmentsValue(e.target.value)}
+                onBlur={handleInvestmentsBlur}
+                className="pl-10"
+                placeholder="0,00"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="savings" className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+              <PiggyBank className="h-4 w-4 text-chart-2" />
+              Poupanca
+            </Label>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">R$</span>
+              <Input
+                id="savings"
+                type="number"
+                min="0"
+                step="0.01"
+                value={savingsValue}
+                onChange={(e) => setSavingsValue(e.target.value)}
+                onBlur={handleSavingsBlur}
+                className="pl-10"
+                placeholder="0,00"
+              />
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}

@@ -1,0 +1,252 @@
+'use client'
+
+import React from "react"
+
+import { useState } from 'react'
+import { Plus, Trash2, CreditCard, Calendar } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import {
+  useExpenseStore,
+  creditCardLabels,
+  creditCardColors,
+  formatCurrencyBRL,
+  type CreditCard as CreditCardType,
+} from '@/lib/expense-store'
+
+interface InstallmentsProps {
+  currentMonth: string
+}
+
+export function Installments({ currentMonth }: InstallmentsProps) {
+  const { installments, addInstallment, removeInstallment, getInstallmentsForMonth } = useExpenseStore()
+  const [isOpen, setIsOpen] = useState(false)
+  const [name, setName] = useState('')
+  const [card, setCard] = useState<CreditCardType>('nubank_pri')
+  const [totalInstallments, setTotalInstallments] = useState('')
+  const [amount, setAmount] = useState('')
+
+  const currentInstallments = getInstallmentsForMonth(currentMonth)
+  
+  // Calculate total installments amount for this month
+  const totalInstallmentsAmount = currentInstallments.reduce(
+    (sum, { installment }) => sum + installment.amountPerInstallment,
+    0
+  )
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!name || !totalInstallments || !amount) return
+
+    addInstallment({
+      name,
+      card,
+      totalInstallments: parseInt(totalInstallments),
+      amountPerInstallment: parseFloat(amount),
+      startMonth: currentMonth,
+    })
+
+    // Reset form
+    setName('')
+    setCard('nubank_pri')
+    setTotalInstallments('')
+    setAmount('')
+    setIsOpen(false)
+  }
+
+  return (
+    <Card className="bg-card border-border">
+      <CardHeader className="pb-3">
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-base font-semibold flex items-center gap-2">
+            <CreditCard className="h-4 w-4 text-purple-500" />
+            Parcelamentos
+          </CardTitle>
+          <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogTrigger asChild>
+              <Button size="sm" variant="outline" className="h-7 text-xs bg-transparent">
+                <Plus className="h-3 w-3 mr-1" />
+                Novo
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle>Novo Parcelamento</DialogTitle>
+              </DialogHeader>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="name">Nome</Label>
+                  <Input
+                    id="name"
+                    placeholder="Ex: Tablet Samsung"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="card">Cartao</Label>
+                  <Select value={card} onValueChange={(v) => setCard(v as CreditCardType)}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {(Object.keys(creditCardLabels) as CreditCardType[]).map((cardKey) => (
+                        <SelectItem key={cardKey} value={cardKey}>
+                          <div className="flex items-center gap-2">
+                            <div
+                              className="w-2 h-2 rounded-full"
+                              style={{ backgroundColor: creditCardColors[cardKey] }}
+                            />
+                            {creditCardLabels[cardKey]}
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="installments">Parcelas</Label>
+                    <Input
+                      id="installments"
+                      type="number"
+                      min="2"
+                      max="48"
+                      placeholder="10"
+                      value={totalInstallments}
+                      onChange={(e) => setTotalInstallments(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="amount">Valor por Parcela</Label>
+                    <Input
+                      id="amount"
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      placeholder="150.00"
+                      value={amount}
+                      onChange={(e) => setAmount(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="flex justify-end gap-2 pt-2">
+                  <Button type="button" variant="outline" onClick={() => setIsOpen(false)} className="bg-transparent">
+                    Cancelar
+                  </Button>
+                  <Button type="submit">Criar Parcelamento</Button>
+                </div>
+              </form>
+            </DialogContent>
+          </Dialog>
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        {currentInstallments.length === 0 ? (
+          <p className="text-sm text-muted-foreground text-center py-4">
+            Nenhum parcelamento ativo este mes
+          </p>
+        ) : (
+          <>
+            <div className="space-y-2">
+              {currentInstallments.map(({ installment, currentNumber }) => (
+                <div
+                  key={installment.id}
+                  className="flex items-center justify-between p-3 rounded-lg bg-muted/50 border border-border"
+                >
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="w-2 h-8 rounded-full"
+                      style={{ backgroundColor: creditCardColors[installment.card] }}
+                    />
+                    <div>
+                      <p className="text-sm font-medium">
+                        {installment.name} {currentNumber}/{installment.totalInstallments}
+                      </p>
+                      <p className="text-xs text-muted-foreground flex items-center gap-1">
+                        <CreditCard className="h-3 w-3" />
+                        {creditCardLabels[installment.card]}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-semibold text-foreground">
+                      {formatCurrencyBRL(installment.amountPerInstallment)}
+                    </span>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7 text-muted-foreground hover:text-destructive"
+                      onClick={() => removeInstallment(installment.id)}
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <div className="pt-2 border-t border-border">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">Total Parcelamentos</span>
+                <span className="font-semibold text-purple-600">
+                  {formatCurrencyBRL(totalInstallmentsAmount)}
+                </span>
+              </div>
+            </div>
+          </>
+        )}
+        
+        {/* Show all active installments overview */}
+        {installments.length > 0 && (
+          <div className="pt-3 border-t border-border">
+            <p className="text-xs text-muted-foreground mb-2 flex items-center gap-1">
+              <Calendar className="h-3 w-3" />
+              Todos os parcelamentos ativos ({installments.length})
+            </p>
+            <div className="space-y-1">
+              {installments.map((inst) => {
+                const [startYear, startMonth] = inst.startMonth.split('-').map(Number)
+                const endDate = new Date(startYear, startMonth - 1 + inst.totalInstallments - 1, 1)
+                const endMonth = `${endDate.getFullYear()}-${String(endDate.getMonth() + 1).padStart(2, '0')}`
+                
+                return (
+                  <div key={inst.id} className="flex items-center justify-between text-xs">
+                    <span className="text-muted-foreground truncate max-w-[140px]">
+                      {inst.name}
+                    </span>
+                    <span className="text-muted-foreground">
+                      {inst.startMonth.replace('-', '/')} - {endMonth.replace('-', '/')}
+                    </span>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  )
+}

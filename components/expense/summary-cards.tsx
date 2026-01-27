@@ -1,0 +1,141 @@
+'use client'
+
+import { Card, CardContent } from '@/components/ui/card'
+import { 
+  TrendingUp, 
+  TrendingDown, 
+  Wallet, 
+  PiggyBank, 
+  CreditCard,
+  ArrowUpRight,
+  ArrowDownRight,
+} from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { formatCurrencyBRL } from '@/lib/expense-store'
+
+interface SummaryCardsProps {
+  income: number
+  totalExpenses: number
+  investments: number
+  savings: number
+  previousMonthExpenses?: number
+}
+
+export function SummaryCards({
+  income,
+  totalExpenses,
+  investments,
+  savings,
+  previousMonthExpenses,
+}: SummaryCardsProps) {
+  const netBalance = income - totalExpenses - investments - savings
+  const expenseChange = previousMonthExpenses
+    ? ((totalExpenses - previousMonthExpenses) / previousMonthExpenses) * 100
+    : 0
+
+  const cards = [
+    {
+      title: 'Renda Total',
+      value: income,
+      icon: Wallet,
+      color: 'text-accent',
+      bgColor: 'bg-accent/10',
+      trend: null,
+    },
+    {
+      title: 'Total de Despesas',
+      value: totalExpenses,
+      icon: CreditCard,
+      color: 'text-destructive',
+      bgColor: 'bg-destructive/10',
+      trend: expenseChange,
+      trendLabel: 'vs mes anterior',
+    },
+    {
+      title: 'Investimentos',
+      value: investments,
+      icon: TrendingUp,
+      color: 'text-primary',
+      bgColor: 'bg-primary/10',
+      trend: null,
+    },
+    {
+      title: 'Poupanca',
+      value: savings,
+      icon: PiggyBank,
+      color: 'text-chart-2',
+      bgColor: 'bg-chart-2/10',
+      trend: null,
+    },
+  ]
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {cards.map((card) => (
+        <Card key={card.title} className="border-border/50 shadow-sm hover:shadow-md transition-shadow">
+          <CardContent className="p-4">
+            <div className="flex items-start justify-between">
+              <div className="space-y-1">
+                <p className="text-sm font-medium text-muted-foreground">{card.title}</p>
+                <p className="text-2xl font-bold text-foreground">{formatCurrencyBRL(card.value)}</p>
+                {card.trend !== null && (
+                  <div className="flex items-center gap-1 text-xs">
+                    {card.trend >= 0 ? (
+                      <>
+                        <ArrowUpRight className="h-3 w-3 text-destructive" />
+                        <span className="text-destructive">+{card.trend.toFixed(1)}%</span>
+                      </>
+                    ) : (
+                      <>
+                        <ArrowDownRight className="h-3 w-3 text-accent" />
+                        <span className="text-accent">{card.trend.toFixed(1)}%</span>
+                      </>
+                    )}
+                    <span className="text-muted-foreground">{card.trendLabel}</span>
+                  </div>
+                )}
+              </div>
+              <div className={cn('p-2.5 rounded-lg', card.bgColor)}>
+                <card.icon className={cn('h-5 w-5', card.color)} />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+      
+      <Card className={cn(
+        'col-span-1 sm:col-span-2 lg:col-span-4 border-border/50 shadow-sm',
+        netBalance >= 0 ? 'bg-accent/5' : 'bg-destructive/5'
+      )}>
+        <CardContent className="p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className={cn(
+                'p-2.5 rounded-lg',
+                netBalance >= 0 ? 'bg-accent/10' : 'bg-destructive/10'
+              )}>
+                {netBalance >= 0 ? (
+                  <TrendingUp className="h-5 w-5 text-accent" />
+                ) : (
+                  <TrendingDown className="h-5 w-5 text-destructive" />
+                )}
+              </div>
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">Saldo Liquido</p>
+                <p className="text-xs text-muted-foreground">
+                  Renda - Despesas - Investimentos - Poupanca
+                </p>
+              </div>
+            </div>
+            <p className={cn(
+              'text-2xl font-bold',
+              netBalance >= 0 ? 'text-accent' : 'text-destructive'
+            )}>
+              {formatCurrencyBRL(netBalance)}
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}

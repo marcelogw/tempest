@@ -24,6 +24,7 @@ export interface Expense {
   type: 'fixed' | 'variable'
   date: string
   installmentId?: string // Reference to parent installment
+  recurringGroupId?: string // Groups recurring fixed expenses across months
 }
 
 export interface Installment {
@@ -59,6 +60,16 @@ interface ExpenseStore {
   addExpense: (month: string, expense: Omit<Expense, 'id'>, type: 'fixed' | 'variable') => void
   removeExpense: (month: string, expenseId: string, type: 'fixed' | 'variable') => void
   updateExpense: (month: string, expense: Expense, type: 'fixed' | 'variable') => void
+  addFixedExpenseWithPropagation: (
+    month: string,
+    expense: Omit<Expense, 'id' | 'recurringGroupId'>
+  ) => void
+  removeFixedExpenseFromMonth: (startMonth: string, recurringGroupId: string) => void
+  updateFixedExpenseFromMonth: (
+    startMonth: string,
+    recurringGroupId: string,
+    updates: Partial<Omit<Expense, 'id' | 'recurringGroupId'>>
+  ) => void
   getMonthData: (month: string) => MonthlyData
   initializeMonth: (month: string) => void
   addInstallment: (installment: Omit<Installment, 'id'>) => void
@@ -69,6 +80,17 @@ interface ExpenseStore {
 }
 
 const generateId = () => Math.random().toString(36).substring(2, 9)
+
+const generateRecurringGroupId = () => `recur_${generateId()}`
+
+// Helper to get future months for propagation
+const getFutureMonths = (startMonth: string, count: number = 24): string[] => {
+  const months: string[] = []
+  for (let i = 1; i <= count; i++) {
+    months.push(getMonthFromOffset(startMonth, i))
+  }
+  return months
+}
 
 const createEmptyMonth = (month: string): MonthlyData => ({
   month,
@@ -406,6 +428,101 @@ export const useExpenseStore = create<ExpenseStore>()(
             },
           },
         })
+      },
+
+      addFixedExpenseWithPropagation: (month, expense) => {
+        const recurringGroupId = generateRecurringGroupId()
+        const futureMonths = getFutureMonths(month, 24)
+        const { initializeMonth } = get()
+
+        // Initialize current month
+        initializeMonth(month)
+
+        // Get updated state after initialization
+        const { monthlyData } = get()
+
+        // Add to current month with recurringGroupId
+        const newExpense: Expense = {
+          ...expense,
+          id: generateId(),
+          recurringGroupId,
+          type: 'fixed',
+        }
+
+        const updatedData = {
+          ...monthlyData,
+          [month]: {
+            ...monthlyData[month],
+            fixedExpenses: [...monthlyData[month].fixedExpenses, newExpense],
+          },
+        }
+
+        // Propagate to future months
+        futureMonths.forEach((targetMonth) => {
+          // Initialize month if it doesn't exist
+          if (!updatedData[targetMonth]) {
+            updatedData[targetMonth] = createEmptyMonth(targetMonth)
+          }
+
+          updatedData[targetMonth] = {
+            ...updatedData[targetMonth],
+            fixedExpenses: [
+              ...updatedData[targetMonth].fixedExpenses,
+              {
+                ...expense,
+                id: generateId(), // New ID for each month
+                recurringGroupId, // Same group ID
+                type: 'fixed',
+                date: targetMonth + '-01',
+              },
+            ],
+          }
+        })
+
+        set({ monthlyData: updatedData })
+      },
+
+      removeFixedExpenseFromMonth: (startMonth, recurringGroupId) => {
+        const { monthlyData } = get()
+        const updatedData = { ...monthlyData }
+
+        // Remove from startMonth and all future months
+        Object.keys(updatedData).forEach((monthKey) => {
+          if (monthKey >= startMonth) {
+            // String comparison works for YYYY-MM format
+            const monthData = updatedData[monthKey]
+            updatedData[monthKey] = {
+              ...monthData,
+              fixedExpenses: monthData.fixedExpenses.filter(
+                (e) => e.recurringGroupId !== recurringGroupId
+              ),
+            }
+          }
+        })
+
+        set({ monthlyData: updatedData })
+      },
+
+      updateFixedExpenseFromMonth: (startMonth, recurringGroupId, updates) => {
+        const { monthlyData } = get()
+        const updatedData = { ...monthlyData }
+
+        // Update from startMonth onwards
+        Object.keys(updatedData).forEach((monthKey) => {
+          if (monthKey >= startMonth) {
+            const monthData = updatedData[monthKey]
+            updatedData[monthKey] = {
+              ...monthData,
+              fixedExpenses: monthData.fixedExpenses.map((expense) =>
+                expense.recurringGroupId === recurringGroupId
+                  ? { ...expense, ...updates, date: monthKey + '-01' }
+                  : expense
+              ),
+            }
+          }
+        })
+
+        set({ monthlyData: updatedData })
       },
 
       addInstallment: (installment) => {

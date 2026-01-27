@@ -1,6 +1,6 @@
 'use client'
 
-import { useExpenseStore } from '@/lib/expense-store'
+import { useExpenseStore, type Expense } from '@/lib/expense-store'
 import { MonthSelector } from './month-selector'
 import { SummaryCards } from './summary-cards'
 import { ExpenseList } from './expense-list'
@@ -18,11 +18,67 @@ export function MonthlyView() {
     updateSavings,
     addExpense,
     removeExpense,
+    updateExpense,
+    addFixedExpenseWithPropagation,
+    removeFixedExpenseFromMonth,
+    updateFixedExpenseFromMonth,
     monthlyData,
     getInstallmentsForMonth,
   } = useExpenseStore()
 
   const monthData = getMonthData(currentMonth)
+
+  // Handlers for fixed expenses with propagation
+  const handleAddFixedExpense = (expense: Omit<Expense, 'id'>) => {
+    addFixedExpenseWithPropagation(currentMonth, expense)
+  }
+
+  const handleUpdateExpense = (expense: Expense, makeRecurring?: boolean) => {
+    if (expense.type === 'fixed') {
+      if (expense.recurringGroupId || makeRecurring) {
+        // Convert to recurring if makeRecurring is true
+        const groupId =
+          expense.recurringGroupId || `recur_${Math.random().toString(36).substring(2, 9)}`
+
+        // If converting to recurring, first remove the old non-recurring expense
+        if (makeRecurring && !expense.recurringGroupId) {
+          removeExpense(currentMonth, expense.id, 'fixed')
+          // Then add as new recurring expense
+          addFixedExpenseWithPropagation(currentMonth, {
+            description: expense.description,
+            amount: expense.amount,
+            category: expense.category,
+            type: 'fixed',
+            date: expense.date,
+          })
+        } else {
+          // Update recurring expense from this month onwards
+          updateFixedExpenseFromMonth(currentMonth, groupId, {
+            description: expense.description,
+            amount: expense.amount,
+            category: expense.category,
+          })
+        }
+      } else {
+        // Single month edit for non-recurring fixed expense
+        updateExpense(currentMonth, expense, 'fixed')
+      }
+    } else {
+      // Variable expense - single month edit only
+      updateExpense(currentMonth, expense, 'variable')
+    }
+  }
+
+  const handleRemoveFixedExpense = (expenseId: string) => {
+    const expense = monthData.fixedExpenses.find((e) => e.id === expenseId)
+    if (expense?.recurringGroupId) {
+      // Remove from this month onwards
+      removeFixedExpenseFromMonth(currentMonth, expense.recurringGroupId)
+    } else {
+      // Remove only from current month
+      removeExpense(currentMonth, expenseId, 'fixed')
+    }
+  }
 
   // Get previous month data for comparison
   const date = new Date(currentMonth + '-01')
@@ -92,8 +148,9 @@ export function MonthlyView() {
                   title="Despesas Fixas"
                   expenses={monthData.fixedExpenses}
                   type="fixed"
-                  onAdd={(expense) => addExpense(currentMonth, expense, 'fixed')}
-                  onRemove={(id) => removeExpense(currentMonth, id, 'fixed')}
+                  onAdd={handleAddFixedExpense}
+                  onRemove={handleRemoveFixedExpense}
+                  onUpdate={handleUpdateExpense}
                   currentMonth={currentMonth}
                 />
                 <ExpenseList
@@ -102,6 +159,7 @@ export function MonthlyView() {
                   type="variable"
                   onAdd={(expense) => addExpense(currentMonth, expense, 'variable')}
                   onRemove={(id) => removeExpense(currentMonth, id, 'variable')}
+                  onUpdate={handleUpdateExpense}
                   currentMonth={currentMonth}
                 />
               </div>

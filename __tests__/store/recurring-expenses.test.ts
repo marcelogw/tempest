@@ -3,7 +3,7 @@ import { useExpenseStore } from '@/lib/expense-store'
 
 describe('Recurring Fixed Expenses', () => {
   beforeEach(() => {
-    // Reset store antes de cada teste
+    // Reset store before each test
     useExpenseStore.setState({
       monthlyData: {},
       currentMonth: '2026-01',
@@ -43,11 +43,11 @@ describe('Recurring Fixed Expenses', () => {
         date: '2026-01-01',
       })
 
-      // Verificar mês atual
+      // Verify current month
       const jan2026 = getMonthData('2026-01')
       expect(jan2026.fixedExpenses).toHaveLength(1)
 
-      // Verificar propagação para meses futuros
+      // Verify propagation to future months
       const feb2026 = getMonthData('2026-02')
       expect(feb2026.fixedExpenses).toHaveLength(1)
       expect(feb2026.fixedExpenses[0].description).toBe('Plano de Celular')
@@ -61,7 +61,7 @@ describe('Recurring Fixed Expenses', () => {
       const dec2027 = getMonthData('2027-12')
       expect(dec2027.fixedExpenses).toHaveLength(1)
 
-      // Verificar que todos têm o mesmo recurringGroupId
+      // Verify that all have the same recurringGroupId
       const recurringGroupId = jan2026.fixedExpenses[0].recurringGroupId
       expect(feb2026.fixedExpenses[0].recurringGroupId).toBe(recurringGroupId)
       expect(dec2026.fixedExpenses[0].recurringGroupId).toBe(recurringGroupId)
@@ -79,11 +79,11 @@ describe('Recurring Fixed Expenses', () => {
         date: '2026-01-01',
       })
 
-      // Mês 24 (Jan 2028) deve ter
+      // Month 24 (Jan 2028) should have
       const jan2028 = getMonthData('2028-01')
       expect(jan2028.fixedExpenses).toHaveLength(1)
 
-      // Mês 25 (Fev 2028) não deve ter (não foi propagado)
+      // Month 25 (Feb 2028) should not have (was not propagated)
       const state = useExpenseStore.getState()
       expect(state.monthlyData['2028-02']).toBeUndefined()
     })
@@ -103,11 +103,11 @@ describe('Recurring Fixed Expenses', () => {
       const feb2026 = getMonthData('2026-02')
       const mar2026 = getMonthData('2026-03')
 
-      // IDs devem ser diferentes
+      // IDs should be different
       expect(jan2026.fixedExpenses[0].id).not.toBe(feb2026.fixedExpenses[0].id)
       expect(feb2026.fixedExpenses[0].id).not.toBe(mar2026.fixedExpenses[0].id)
 
-      // recurringGroupId deve ser o mesmo
+      // recurringGroupId should be the same
       expect(jan2026.fixedExpenses[0].recurringGroupId).toBe(
         feb2026.fixedExpenses[0].recurringGroupId
       )
@@ -135,7 +135,7 @@ describe('Recurring Fixed Expenses', () => {
       expect(jan2027.fixedExpenses).toHaveLength(1)
       expect(feb2027.fixedExpenses).toHaveLength(1)
 
-      // Verificar recurringGroupId atravessa anos
+      // Verify recurringGroupId crosses years
       const recurringGroupId = dec2026.fixedExpenses[0].recurringGroupId
       expect(jan2027.fixedExpenses[0].recurringGroupId).toBe(recurringGroupId)
       expect(feb2027.fixedExpenses[0].recurringGroupId).toBe(recurringGroupId)
@@ -158,14 +158,14 @@ describe('Recurring Fixed Expenses', () => {
       const jan2026 = getMonthData('2026-01')
       const recurringGroupId = jan2026.fixedExpenses[0].recurringGroupId!
 
-      // Remover a partir de Março
+      // Remove from March onwards
       removeFixedExpenseFromMonth('2026-03', recurringGroupId)
 
-      // Jan e Fev devem ter a despesa
+      // Jan and Feb should have the expense
       expect(getMonthData('2026-01').fixedExpenses).toHaveLength(1)
       expect(getMonthData('2026-02').fixedExpenses).toHaveLength(1)
 
-      // Mar e meses futuros não devem ter
+      // Mar and future months should not have
       expect(getMonthData('2026-03').fixedExpenses).toHaveLength(0)
       expect(getMonthData('2026-04').fixedExpenses).toHaveLength(0)
       expect(getMonthData('2026-05').fixedExpenses).toHaveLength(0)
@@ -176,7 +176,7 @@ describe('Recurring Fixed Expenses', () => {
       const { addFixedExpenseWithPropagation, removeFixedExpenseFromMonth, getMonthData } =
         useExpenseStore.getState()
 
-      // Adicionar duas despesas recorrentes diferentes
+      // Add two different recurring expenses
       addFixedExpenseWithPropagation('2026-01', {
         description: 'Plano de Celular',
         amount: 100,
@@ -198,13 +198,13 @@ describe('Recurring Fixed Expenses', () => {
 
       const cellphoneGroupId = jan2026.fixedExpenses[0].recurringGroupId!
 
-      // Remover apenas plano de celular a partir de Fev
+      // Remove only cellphone plan from Feb onwards
       removeFixedExpenseFromMonth('2026-02', cellphoneGroupId)
 
-      // Jan deve ter ambas
+      // Jan should have both
       expect(getMonthData('2026-01').fixedExpenses).toHaveLength(2)
 
-      // Fev deve ter apenas academia
+      // Feb should have only gym
       const feb2026 = getMonthData('2026-02')
       expect(feb2026.fixedExpenses).toHaveLength(1)
       expect(feb2026.fixedExpenses[0].description).toBe('Academia')
@@ -225,13 +225,13 @@ describe('Recurring Fixed Expenses', () => {
       const jan2026 = getMonthData('2026-01')
       const recurringGroupId = jan2026.fixedExpenses[0].recurringGroupId!
 
-      // Remover a partir de Dez 2026
+      // Remove from Dec 2026 onwards
       removeFixedExpenseFromMonth('2026-12', recurringGroupId)
 
-      // Meses antes de Dez 2026 devem ter
+      // Months before Dec 2026 should have
       expect(getMonthData('2026-11').fixedExpenses).toHaveLength(1)
 
-      // Dez 2026 e 2027 não devem ter
+      // Dec 2026 and 2027 should not have
       expect(getMonthData('2026-12').fixedExpenses).toHaveLength(0)
       expect(getMonthData('2027-01').fixedExpenses).toHaveLength(0)
       expect(getMonthData('2027-06').fixedExpenses).toHaveLength(0)
@@ -254,17 +254,17 @@ describe('Recurring Fixed Expenses', () => {
       const jan2026 = getMonthData('2026-01')
       const recurringGroupId = jan2026.fixedExpenses[0].recurringGroupId!
 
-      // Atualizar valor a partir de Abril
+      // Update value from April onwards
       updateFixedExpenseFromMonth('2026-04', recurringGroupId, {
         amount: 120,
       })
 
-      // Jan, Fev, Mar devem ter valor antigo
+      // Jan, Feb, Mar should have old value
       expect(getMonthData('2026-01').fixedExpenses[0].amount).toBe(100)
       expect(getMonthData('2026-02').fixedExpenses[0].amount).toBe(100)
       expect(getMonthData('2026-03').fixedExpenses[0].amount).toBe(100)
 
-      // Abr e meses futuros devem ter novo valor
+      // Apr and future months should have new value
       expect(getMonthData('2026-04').fixedExpenses[0].amount).toBe(120)
       expect(getMonthData('2026-05').fixedExpenses[0].amount).toBe(120)
       expect(getMonthData('2027-01').fixedExpenses[0].amount).toBe(120)
@@ -285,21 +285,21 @@ describe('Recurring Fixed Expenses', () => {
       const jan2026 = getMonthData('2026-01')
       const recurringGroupId = jan2026.fixedExpenses[0].recurringGroupId!
 
-      // Atualizar descrição e categoria a partir de Mar
+      // Update description and category from Mar onwards
       updateFixedExpenseFromMonth('2026-03', recurringGroupId, {
         description: 'Plano Novo Premium',
         category: 'subscriptions',
       })
 
-      // Jan e Fev devem ter dados antigos
+      // Jan and Feb should have old data
       expect(getMonthData('2026-01').fixedExpenses[0].description).toBe('Plano Velho')
       expect(getMonthData('2026-01').fixedExpenses[0].category).toBe('utilities')
 
-      // Mar e futuros devem ter dados novos
+      // Mar and future should have new data
       const mar2026 = getMonthData('2026-03')
       expect(mar2026.fixedExpenses[0].description).toBe('Plano Novo Premium')
       expect(mar2026.fixedExpenses[0].category).toBe('subscriptions')
-      expect(mar2026.fixedExpenses[0].amount).toBe(100) // Valor não mudou
+      expect(mar2026.fixedExpenses[0].amount).toBe(100) // Value did not change
     })
 
     it('should preserve recurringGroupId after update', () => {
@@ -321,7 +321,7 @@ describe('Recurring Fixed Expenses', () => {
         amount: 180,
       })
 
-      // recurringGroupId deve permanecer o mesmo
+      // recurringGroupId should remain the same
       expect(getMonthData('2026-01').fixedExpenses[0].recurringGroupId).toBe(originalGroupId)
       expect(getMonthData('2026-02').fixedExpenses[0].recurringGroupId).toBe(originalGroupId)
       expect(getMonthData('2026-03').fixedExpenses[0].recurringGroupId).toBe(originalGroupId)
@@ -346,7 +346,7 @@ describe('Recurring Fixed Expenses', () => {
         amount: 2700,
       })
 
-      // Verificar que dates são atualizadas corretamente
+      // Verify that dates are updated correctly
       expect(getMonthData('2026-05').fixedExpenses[0].date).toBe('2026-05-01')
       expect(getMonthData('2026-06').fixedExpenses[0].date).toBe('2026-06-01')
       expect(getMonthData('2026-07').fixedExpenses[0].date).toBe('2026-07-01')
@@ -357,7 +357,7 @@ describe('Recurring Fixed Expenses', () => {
     it('should handle fixed expenses without recurringGroupId', () => {
       const { addExpense, getMonthData } = useExpenseStore.getState()
 
-      // Adicionar despesa fixa sem propagação (legacy)
+      // Add fixed expense without propagation (legacy)
       addExpense(
         '2026-01',
         {
@@ -374,7 +374,7 @@ describe('Recurring Fixed Expenses', () => {
       expect(jan2026.fixedExpenses).toHaveLength(1)
       expect(jan2026.fixedExpenses[0].recurringGroupId).toBeUndefined()
 
-      // Não deve aparecer em meses futuros
+      // Should not appear in future months
       const state = useExpenseStore.getState()
       expect(state.monthlyData['2026-02']).toBeUndefined()
     })
@@ -383,7 +383,7 @@ describe('Recurring Fixed Expenses', () => {
       const { addExpense, addFixedExpenseWithPropagation, getMonthData } =
         useExpenseStore.getState()
 
-      // Adicionar despesa não-recorrente
+      // Add non-recurring expense
       addExpense(
         '2026-01',
         {
@@ -396,7 +396,7 @@ describe('Recurring Fixed Expenses', () => {
         'fixed'
       )
 
-      // Adicionar despesa recorrente
+      // Add recurring expense
       addFixedExpenseWithPropagation('2026-01', {
         description: 'Despesa Recorrente',
         amount: 200,
@@ -434,14 +434,14 @@ describe('Recurring Fixed Expenses', () => {
         date: '2026-03-01',
       })
 
-      // Jan deve ter apenas Internet
+      // Jan should have only Internet
       expect(getMonthData('2026-01').fixedExpenses).toHaveLength(1)
       expect(getMonthData('2026-01').fixedExpenses[0].description).toBe('Internet')
 
-      // Fev deve ter apenas Internet
+      // Feb should have only Internet
       expect(getMonthData('2026-02').fixedExpenses).toHaveLength(1)
 
-      // Mar e futuros devem ter ambas
+      // Mar and future should have both
       const mar2026 = getMonthData('2026-03')
       expect(mar2026.fixedExpenses).toHaveLength(2)
       expect(mar2026.fixedExpenses.map((e) => e.description).sort()).toEqual([
@@ -453,7 +453,7 @@ describe('Recurring Fixed Expenses', () => {
     it('should not propagate to past months', () => {
       const { addFixedExpenseWithPropagation, getMonthData } = useExpenseStore.getState()
 
-      // Adicionar despesa em Março
+      // Add expense in March
       addFixedExpenseWithPropagation('2026-03', {
         description: 'Nova Assinatura',
         amount: 50,
@@ -462,12 +462,12 @@ describe('Recurring Fixed Expenses', () => {
         date: '2026-03-01',
       })
 
-      // Verificar que meses passados não têm a despesa
+      // Verify that past months don't have the expense
       const state = useExpenseStore.getState()
       expect(state.monthlyData['2026-01']).toBeUndefined()
       expect(state.monthlyData['2026-02']).toBeUndefined()
 
-      // Mar e futuros devem ter
+      // Mar and future should have
       expect(getMonthData('2026-03').fixedExpenses).toHaveLength(1)
       expect(getMonthData('2026-04').fixedExpenses).toHaveLength(1)
     })

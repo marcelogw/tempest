@@ -24,13 +24,13 @@ test.describe('Dashboard Filtering', () => {
 
     const yearSelector = page.locator('[data-testid="year-selector"]')
 
-    // Verifica que o seletor de ano está visível
+    // Verify year selector is visible
     await expect(yearSelector).toBeVisible()
 
-    // Verifica que o dashboard tem cards
+    // Verify dashboard has cards
     await expect(page.locator('[data-slot="card"]').first()).toBeVisible()
 
-    // Verifica que há valores monetários exibidos
+    // Verify monetary values are displayed
     const hasMonetaryValues = await page.locator('text=/R\\$/').first().isVisible()
     expect(hasMonetaryValues).toBeTruthy()
   })
@@ -40,10 +40,10 @@ test.describe('Dashboard Charts', () => {
   test('should display monthly comparison chart', async ({ page }) => {
     await page.goto('/')
 
-    // Aguarda charts carregarem
+    // Wait for charts to load
     await page.waitForLoadState('networkidle')
 
-    // Verifica se há elementos do Recharts (gráficos)
+    // Verify there are Recharts elements (charts)
     const hasChart = await page
       .locator('.recharts-wrapper, [class*="recharts"]')
       .first()
@@ -60,10 +60,10 @@ test.describe('Dashboard Charts', () => {
     await yearSelector.locator('button[role="combobox"]').click()
     await page.click(`[role="option"]:has-text("${currentYear}")`)
 
-    // Verifica que há cards com estatísticas
+    // Verify there are cards with statistics
     await expect(page.locator('[data-slot="card"]').first()).toBeVisible()
 
-    // Verifica que há valores monetários no dashboard
+    // Verify there are monetary values in the dashboard
     await expect(page.locator('text=/R\\$/').first()).toBeVisible()
   })
 })
@@ -75,11 +75,11 @@ test.describe('Monthly View', () => {
 
     await page.waitForSelector('[data-testid="month-selector"]')
 
-    // Verifica que há seções de totais (Receita, Despesas Fixas, etc)
+    // Verify there are total sections (Income, Fixed Expenses, etc)
     const hasTotals = await page.locator('text=/total|receita|despesa/i').first().isVisible()
     expect(hasTotals).toBeTruthy()
 
-    // Verifica que há valores monetários
+    // Verify there are monetary values
     await expect(page.locator('text=/R\\$/').first()).toBeVisible()
   })
 
@@ -89,7 +89,7 @@ test.describe('Monthly View', () => {
 
     await page.waitForSelector('[data-testid="month-selector"]')
 
-    // Verifica que há seções separadas
+    // Verify there are separate sections
     const hasFixedSection = await page
       .locator('text=/fixa|fixas/i')
       .first()
@@ -111,10 +111,10 @@ test.describe('Data Persistence', () => {
     const currentYear = new Date().getFullYear()
     const targetYear = currentYear - 1
 
-    // Muda ano
+    // Change year
     await yearSelector.locator('button[role="combobox"]').click()
 
-    // Tenta selecionar ano anterior, se não existir, cria com setas
+    // Try to select previous year, if it doesn't exist, create with arrows
     const targetYearOption = page.locator(`[role="option"]:has-text("${targetYear}")`)
     if (await targetYearOption.isVisible({ timeout: 1000 })) {
       await targetYearOption.click()
@@ -122,7 +122,7 @@ test.describe('Data Persistence', () => {
       await yearSelector.locator('button').first().click()
     }
 
-    // Aguarda estado atualizar
+    // Wait for state to update
     await page.waitForTimeout(500)
 
     const selectedYear = await yearSelector.textContent()
@@ -130,7 +130,7 @@ test.describe('Data Persistence', () => {
     // Reload
     await page.reload()
 
-    // Verifica que manteve
+    // Verify it was kept
     await expect(yearSelector).toContainText(selectedYear || targetYear.toString())
   })
 
@@ -154,11 +154,11 @@ test.describe('Data Persistence', () => {
     // Reload
     await page.reload()
 
-    // Volta para Visão Mensal após reload
+    // Return to Monthly View after reload
     await page.click('text=Visao Mensal')
     await page.waitForSelector('[data-testid="month-selector"]')
 
-    // Verifica que manteve o mês selecionado
+    // Verify selected month was kept
     await expect(monthSelector).toContainText(selectedMonth || '')
   })
 
@@ -168,7 +168,7 @@ test.describe('Data Persistence', () => {
 
     await page.waitForSelector('[data-testid="month-selector"]')
 
-    // Adiciona despesa
+    // Add expense
     const addButton = page.locator('button:has-text("Adicionar Fixa")')
     await addButton.click()
 
@@ -183,10 +183,10 @@ test.describe('Data Persistence', () => {
     // Reload
     await page.reload()
 
-    // Volta para Visão Mensal
+    // Return to Monthly View
     await page.click('text=Visao Mensal')
 
-    // Verifica que permanece
+    // Verify it remains
     await expect(page.locator('text=Teste Persistencia')).toBeVisible({ timeout: 5000 })
   })
 })

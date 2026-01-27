@@ -4,7 +4,7 @@ test.describe('Year Navigation', () => {
   test('should change year using YearSelector arrows', async ({ page }) => {
     await page.goto('/')
 
-    // Year selector está na sidebar
+    // Year selector is in the sidebar
     const yearSelector = page.locator('[data-testid="year-selector"]')
 
     // Verify year selector is visible
@@ -25,14 +25,14 @@ test.describe('Year Navigation', () => {
 
     const yearSelector = page.locator('[data-testid="year-selector"]')
 
-    // Abre dropdown
+    // Open dropdown
     await yearSelector.locator('button[role="combobox"]').click()
 
     // Get current year and click it
     const currentYear = new Date().getFullYear()
     await page.click(`[role="option"]:has-text("${currentYear}")`)
 
-    // Verifica mudança
+    // Verify change
     await expect(yearSelector).toContainText(currentYear.toString())
   })
 
@@ -41,24 +41,24 @@ test.describe('Year Navigation', () => {
 
     const yearSelector = page.locator('[data-testid="year-selector"]')
 
-    // Navega para Visão Mensal
+    // Navigate to Monthly View
     await page.click('text=Visao Mensal')
 
-    // Aguarda o month selector aparecer
+    // Wait for month selector to appear
     await page.waitForSelector('[data-testid="month-selector"]')
 
     const monthSelector = page.locator('[data-testid="month-selector"]')
 
-    // Verifica que ambos os seletores estão visíveis
+    // Verify both selectors are visible
     await expect(monthSelector).toBeVisible()
     await expect(yearSelector).toBeVisible()
 
-    // Clica nas setas de navegação de mês algumas vezes
+    // Click month navigation arrows a few times
     const prevButton = monthSelector.locator('button').first()
     await prevButton.click()
     await page.waitForTimeout(300)
 
-    // Verifica que ainda está tudo visível (navegação funcionou)
+    // Verify everything is still visible (navigation worked)
     await expect(monthSelector).toBeVisible()
     await expect(yearSelector).toBeVisible()
   })
@@ -69,20 +69,20 @@ test.describe('Month Navigation', () => {
     await page.goto('/')
     await page.click('text=Visao Mensal')
 
-    // Aguarda o month selector aparecer
+    // Wait for month selector to appear
     await page.waitForSelector('[data-testid="month-selector"]')
 
     const monthSelector = page.locator('[data-testid="month-selector"]')
 
-    // Verifica que o selector está visível
+    // Verify selector is visible
     await expect(monthSelector).toBeVisible()
 
-    // Abre dropdown de mês
+    // Open month dropdown
     await monthSelector.locator('button[role="combobox"]').click()
 
     await page.waitForTimeout(200)
 
-    // Verifica que o dropdown abriu (opções visíveis)
+    // Verify dropdown opened (options visible)
     const optionsVisible = await page
       .locator('[role="option"]')
       .first()

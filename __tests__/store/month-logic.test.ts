@@ -3,7 +3,7 @@ import { useExpenseStore } from '@/lib/expense-store'
 
 describe('Month Logic', () => {
   beforeEach(() => {
-    // Reset store antes de cada teste
+    // Reset store before each test
     useExpenseStore.setState({
       monthlyData: {},
       currentMonth: '2025-01',
@@ -39,7 +39,7 @@ describe('Month Logic', () => {
     it('should not reinitialize existing month', () => {
       const { setCurrentMonth } = useExpenseStore.getState()
 
-      // Primeiro, cria mês com dados
+      // First, create month with data
       useExpenseStore.setState({
         monthlyData: {
           '2025-05': {

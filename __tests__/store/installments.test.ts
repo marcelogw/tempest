@@ -3,7 +3,7 @@ import { useExpenseStore } from '@/lib/expense-store'
 
 describe('Installment Logic', () => {
   beforeEach(() => {
-    // Reset store antes de cada teste
+    // Reset store before each test
     useExpenseStore.setState({
       monthlyData: {},
       currentMonth: '2025-01',
@@ -141,7 +141,7 @@ describe('Installment Logic', () => {
         startMonth: '2024-12',
       })
 
-      // 2º mês (2025-01)
+      // 2nd month (2025-01)
       const result = getInstallmentsForMonth('2025-01')
 
       expect(result).toHaveLength(1)
@@ -160,7 +160,7 @@ describe('Installment Logic', () => {
         startMonth: '2025-01',
       })
 
-      // Testa todos os 12 meses
+      // Test all 12 months
       for (let month = 1; month <= 12; month++) {
         const monthKey = `2025-${String(month).padStart(2, '0')}`
         const installments = getInstallmentsForMonth(monthKey)
@@ -182,11 +182,11 @@ describe('Installment Logic', () => {
         startMonth: '2025-03',
       })
 
-      // Antes do período (Janeiro e Fevereiro)
+      // Before the period (January and February)
       expect(getInstallmentsForMonth('2025-01')).toHaveLength(0)
       expect(getInstallmentsForMonth('2025-02')).toHaveLength(0)
 
-      // Durante o período (Março)
+      // During the period (March)
       const march = getInstallmentsForMonth('2025-03')
       expect(march).toHaveLength(1)
       expect(march[0].currentNumber).toBe(1)
@@ -203,12 +203,12 @@ describe('Installment Logic', () => {
         startMonth: '2025-01',
       })
 
-      // 6 meses = até junho
+      // 6 months = until June
       const june = getInstallmentsForMonth('2025-06')
       expect(june).toHaveLength(1)
       expect(june[0].currentNumber).toBe(6)
 
-      // Depois do período (Julho em diante)
+      // After the period (July onwards)
       expect(getInstallmentsForMonth('2025-07')).toHaveLength(0)
       expect(getInstallmentsForMonth('2025-08')).toHaveLength(0)
     })
@@ -232,24 +232,24 @@ describe('Installment Logic', () => {
         startMonth: '2025-03',
       })
 
-      // Janeiro: apenas Item A
+      // January: only Item A
       const jan = getInstallmentsForMonth('2025-01')
       expect(jan).toHaveLength(1)
       expect(jan[0].installment.name).toBe('Item A')
 
-      // Março: ambos
+      // March: both
       const mar = getInstallmentsForMonth('2025-03')
       expect(mar).toHaveLength(2)
       expect(mar.find((i) => i.installment.name === 'Item A')?.currentNumber).toBe(3)
       expect(mar.find((i) => i.installment.name === 'Item B')?.currentNumber).toBe(1)
 
-      // Agosto: ambos ainda (Item B é o 6º/último mês)
+      // August: both still (Item B is the 6th/last month)
       const aug = getInstallmentsForMonth('2025-08')
       expect(aug).toHaveLength(2)
       expect(aug.find((i) => i.installment.name === 'Item A')?.currentNumber).toBe(8)
       expect(aug.find((i) => i.installment.name === 'Item B')?.currentNumber).toBe(6)
 
-      // Setembro: Item B terminou
+      // September: Item B ended
       const sep = getInstallmentsForMonth('2025-09')
       expect(sep).toHaveLength(1)
       expect(sep[0].installment.name).toBe('Item A')
@@ -266,22 +266,22 @@ describe('Installment Logic', () => {
         startMonth: '2024-10',
       })
 
-      // Outubro 2024 (mês 1)
+      // October 2024 (month 1)
       const oct2024 = getInstallmentsForMonth('2024-10')
       expect(oct2024).toHaveLength(1)
       expect(oct2024[0].currentNumber).toBe(1)
 
-      // Janeiro 2025 (mês 4)
+      // January 2025 (month 4)
       const jan2025 = getInstallmentsForMonth('2025-01')
       expect(jan2025).toHaveLength(1)
       expect(jan2025[0].currentNumber).toBe(4)
 
-      // Setembro 2025 (mês 12 - último)
+      // September 2025 (month 12 - last)
       const sep2025 = getInstallmentsForMonth('2025-09')
       expect(sep2025).toHaveLength(1)
       expect(sep2025[0].currentNumber).toBe(12)
 
-      // Outubro 2025 (fora do período)
+      // October 2025 (outside period)
       expect(getInstallmentsForMonth('2025-10')).toHaveLength(0)
     })
 

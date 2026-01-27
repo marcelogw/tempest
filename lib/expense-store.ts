@@ -284,7 +284,7 @@ export const useExpenseStore = create<ExpenseStore>()(
       setCurrentYear: (year) => {
         set({ currentYear: year })
 
-        // Auto-ajustar currentMonth se não estiver no novo ano
+        // Auto-adjust currentMonth if not in the new year
         const { currentMonth } = get()
         const [monthYear] = currentMonth.split('-')
         if (monthYear !== year) {
@@ -295,13 +295,13 @@ export const useExpenseStore = create<ExpenseStore>()(
       getAvailableYears: () => {
         const { monthlyData } = get()
         const currentYear = new Date().getFullYear().toString()
-        const years = new Set<string>([currentYear]) // Sempre incluir ano atual
+        const years = new Set<string>([currentYear]) // Always include current year
 
         Object.keys(monthlyData).forEach((month) => {
           const [year] = month.split('-')
           years.add(year)
         })
-        return Array.from(years).sort((a, b) => b.localeCompare(a)) // Ordem decrescente
+        return Array.from(years).sort((a, b) => b.localeCompare(a)) // Descending order
       },
 
       getMonthsForYear: (year) => {

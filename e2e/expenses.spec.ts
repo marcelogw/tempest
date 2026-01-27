@@ -8,53 +8,53 @@ test.describe('Expense Management', () => {
   })
 
   test('should add fixed expense', async ({ page }) => {
-    // Click "Adicionar Fixa"
+    // Click "Add Fixed"
     const addButton = page.locator('button:has-text("Adicionar Fixa")')
     await addButton.click()
 
-    // Aguarda o formulário aparecer
+    // Wait for form to appear
     await page.waitForSelector('input[id="description"]', { state: 'visible' })
-    await page.waitForTimeout(300) // Aguarda animação do dialog
+    await page.waitForTimeout(300) // Wait for dialog animation
 
-    // Preenche formulário
+    // Fill form
     await page.fill('input[id="description"]', 'Internet Fibra')
     await page.fill('input[id="amount"]', '150')
 
-    // Salva
+    // Save
     await page.click('button[type="submit"]', { force: true })
 
-    // Verifica que apareceu na lista
+    // Verify it appeared in the list
     await expect(page.locator('text=Internet Fibra')).toBeVisible({ timeout: 5000 })
   })
 
   test('should add variable expense', async ({ page }) => {
-    // Se houver abas separadas para fixas e variáveis
+    // If there are separate tabs for fixed and variable
     const variableTab = page.locator('button:has-text("Variáveis")')
     if (await variableTab.isVisible()) {
       await variableTab.click()
     }
 
-    // Click adicionar despesa variável
+    // Click add variable expense
     const addButton = page.locator('button:has-text("Adicionar Variavel")')
     await addButton.click()
 
-    // Aguarda o formulário
+    // Wait for form
     await page.waitForSelector('input[id="description"]', { state: 'visible' })
-    await page.waitForTimeout(300) // Aguarda animação do dialog
+    await page.waitForTimeout(300) // Wait for dialog animation
 
-    // Preenche
+    // Fill
     await page.fill('input[id="description"]', 'Supermercado')
     await page.fill('input[id="amount"]', '250')
 
-    // Salva
+    // Save
     await page.click('button[type="submit"]', { force: true })
 
-    // Verifica
+    // Verify
     await expect(page.locator('text=Supermercado').first()).toBeVisible({ timeout: 5000 })
   })
 
   test('should show expense in list after adding', async ({ page }) => {
-    // Adiciona uma despesa
+    // Add an expense
     const addButton = page.locator('button:has-text("Adicionar Fixa")')
     await addButton.click()
 
@@ -66,14 +66,14 @@ test.describe('Expense Management', () => {
 
     await expect(page.locator('text=Teste Lista')).toBeVisible()
 
-    // Verifica que o item aparece com o valor correto
+    // Verify the item appears with the correct value
     const expenseItem = page.locator('[data-testid="expense-item"]:has-text("Teste Lista")')
     await expect(expenseItem).toBeVisible()
     await expect(expenseItem.locator('text=/150/')).toBeVisible()
   })
 
   test('should delete expense', async ({ page }) => {
-    // Primeiro adiciona uma despesa para deletar
+    // First add an expense to delete
     const addButton = page.locator('button:has-text("Adicionar Fixa")')
     await addButton.click()
 
@@ -85,17 +85,17 @@ test.describe('Expense Management', () => {
 
     await expect(page.locator('text=Teste Deletar')).toBeVisible()
 
-    // Encontra o expense-item e clica no botão de remover
+    // Find expense-item and click remove button
     const expenseItem = page.locator('[data-testid="expense-item"]:has-text("Teste Deletar")')
     await expect(expenseItem).toBeVisible()
 
-    // Hover para mostrar o botão (opacity-0 group-hover:opacity-100)
+    // Hover to show the button (opacity-0 group-hover:opacity-100)
     await expenseItem.hover()
 
-    // Clica no botão de remover
+    // Click remove button
     await expenseItem.locator('button[aria-label="Remover"]').click()
 
-    // Verifica que sumiu
+    // Verify it disappeared
     await expect(
       page.locator('[data-testid="expense-item"]:has-text("Teste Deletar")')
     ).not.toBeVisible({ timeout: 3000 })
@@ -110,7 +110,7 @@ test.describe('Installment Management', () => {
   })
 
   test('should add installment purchase', async ({ page }) => {
-    // Procura botão de adicionar parcelamento
+    // Look for add installment button
     const installmentButton = page.locator(
       'button:has-text("Parcelamento"), button:has-text("Adicionar Parcelamento")'
     )
@@ -118,23 +118,23 @@ test.describe('Installment Management', () => {
     if (await installmentButton.isVisible({ timeout: 2000 })) {
       await installmentButton.click()
 
-      // Preenche dados do parcelamento
+      // Fill installment data
       await page.waitForSelector('input[name="name"], input[placeholder*="Nome"]')
       await page.fill('input[name="name"], input[placeholder*="Nome"]', 'Notebook Dell')
       await page.fill('input[name="totalInstallments"], input[placeholder*="Parcelas"]', '12')
       await page.fill('input[name="amountPerInstallment"], input[type="number"]', '300')
 
-      // Seleciona cartão se houver dropdown
+      // Select card if there's a dropdown
       const cardSelect = page.locator('select[name="card"], button:has-text("Selecione")')
       if (await cardSelect.isVisible()) {
         await cardSelect.click()
         await page.click('[role="option"]:has-text("Nubank")').catch(() => {})
       }
 
-      // Salva
+      // Save
       await page.click('button:has-text("Salvar"), button:has-text("Adicionar")')
 
-      // Verifica
+      // Verify
       await expect(page.locator('text=Notebook Dell')).toBeVisible({ timeout: 5000 })
     }
   })

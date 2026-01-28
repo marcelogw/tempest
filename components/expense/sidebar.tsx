@@ -64,9 +64,9 @@ export function Sidebar({
         {!collapsed && (
           <div className="flex items-center gap-2">
             <div className="bg-primary flex h-8 w-8 items-center justify-center rounded-lg">
-              <span className="text-primary-foreground text-sm font-bold">GF</span>
+              <span className="text-primary-foreground text-sm font-bold">T</span>
             </div>
-            <span className="text-lg font-semibold">GestaoFinanceira</span>
+            <span className="text-lg font-semibold">Tempest</span>
           </div>
         )}
         <Button

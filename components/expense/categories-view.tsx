@@ -17,11 +17,10 @@ import {
   SortableContext,
   sortableKeyboardCoordinates,
   useSortable,
-  rectSortingStrategy,
+  verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -71,84 +70,88 @@ function SortableCategoryCard({
     : null
 
   return (
-    <Card
+    <div
       ref={setNodeRef}
       style={style}
       className={cn(
-        'group relative overflow-hidden transition-all duration-200',
-        isDragging ? 'ring-primary opacity-50 ring-2' : 'hover:shadow-lg',
-        'border-l-4'
+        'group relative flex items-center gap-3 px-4 py-3',
+        'border-border/50 border-b last:border-b-0',
+        'border-l-4 border-l-transparent',
+        'transition-all duration-200',
+        isDragging
+          ? 'bg-secondary/80 ring-primary z-10 shadow-lg ring-2'
+          : 'hover:bg-secondary/50 hover:shadow-md'
       )}
-      // @ts-expect-error - dynamic border color
       onMouseEnter={(e) => (e.currentTarget.style.borderLeftColor = category.color)}
       onMouseLeave={(e) => (e.currentTarget.style.borderLeftColor = 'transparent')}
     >
-      <CardContent className="p-6">
-        <div className="mb-4 flex items-start justify-between">
-          <div className="flex items-center gap-3">
-            <button
-              className="cursor-grab touch-none active:cursor-grabbing"
-              {...attributes}
-              {...listeners}
-            >
-              <Icons.GripVertical className="text-muted-foreground h-5 w-5 opacity-0 transition-opacity group-hover:opacity-100" />
-            </button>
-            <div
-              className="flex h-12 w-12 items-center justify-center rounded-lg transition-transform group-hover:scale-110"
-              style={{ backgroundColor: `${category.color}20` }}
-            >
-              {IconComponent ? (
-                <IconComponent className="h-6 w-6" style={{ color: category.color }} />
-              ) : (
-                <Icons.Tag className="h-6 w-6" style={{ color: category.color }} />
-              )}
-            </div>
-          </div>
+      {/* Grip Handle */}
+      <button
+        className="cursor-grab touch-none active:cursor-grabbing"
+        aria-label="Arrastar categoria"
+        {...attributes}
+        {...listeners}
+      >
+        <Icons.GripVertical className="text-muted-foreground h-5 w-5 opacity-0 transition-opacity group-hover:opacity-100" />
+      </button>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="opacity-0 transition-opacity group-hover:opacity-100"
-              >
-                <Icons.MoreVertical className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => onEdit(category)}>
-                <Icons.Pencil className="mr-2 h-4 w-4" />
-                Editar
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => onDelete(category)}
-                disabled={category.isSystem}
-                className="text-destructive focus:text-destructive"
-              >
-                <Icons.Trash2 className="mr-2 h-4 w-4" />
-                Excluir
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+      {/* Icon */}
+      <div
+        className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-lg transition-transform group-hover:scale-110"
+        style={{ backgroundColor: `${category.color}20` }}
+      >
+        {IconComponent ? (
+          <IconComponent className="h-3 w-3" style={{ color: category.color }} />
+        ) : (
+          <Icons.Tag className="h-3 w-3" style={{ color: category.color }} />
+        )}
+      </div>
 
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <h3 className="text-lg font-semibold" style={{ color: category.color }}>
-              {category.label}
-            </h3>
-            {category.isSystem && (
-              <Badge variant="outline" className="text-xs">
-                Sistema
-              </Badge>
-            )}
-          </div>
-          <p className="text-muted-foreground text-sm">
-            {expenseCount} {expenseCount === 1 ? 'despesa' : 'despesas'}
-          </p>
-        </div>
-      </CardContent>
-    </Card>
+      {/* Content Area */}
+      <div className="flex min-w-0 flex-1 items-center gap-2">
+        <h3 className="truncate text-sm font-semibold" style={{ color: category.color }}>
+          {category.label}
+        </h3>
+        {category.isSystem && (
+          <Badge variant="outline" className="flex-shrink-0 text-xs">
+            Sistema
+          </Badge>
+        )}
+      </div>
+
+      {/* Counter */}
+      <Badge variant="secondary" className="flex-shrink-0">
+        {expenseCount}
+      </Badge>
+
+      {/* Menu */}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 flex-shrink-0 opacity-0 transition-opacity group-hover:opacity-100"
+            aria-label={`Opções para ${category.label}`}
+          >
+            <Icons.MoreVertical className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={() => onEdit(category)}>
+            <Icons.Pencil className="mr-2 h-4 w-4" />
+            Editar
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => onDelete(category)}
+            disabled={category.isSystem}
+            className="text-destructive focus:text-destructive"
+          >
+            <Icons.Trash2 className="mr-2 h-4 w-4" />
+            Excluir
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   )
 }
 
@@ -262,7 +265,7 @@ export function CategoriesView() {
         </div>
 
         <div className="flex-1 overflow-y-auto p-6">
-          <div className="mx-auto max-w-7xl">
+          <div className="mx-auto max-w-4xl">
             <DndContext
               sensors={sensors}
               collisionDetection={closestCenter}
@@ -270,9 +273,9 @@ export function CategoriesView() {
             >
               <SortableContext
                 items={sortedCategories.map((c) => c.id)}
-                strategy={rectSortingStrategy}
+                strategy={verticalListSortingStrategy}
               >
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="border-border overflow-hidden rounded-lg border shadow-sm">
                   {sortedCategories.map((category) => (
                     <SortableCategoryCard
                       key={category.id}

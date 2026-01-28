@@ -48,6 +48,21 @@ export function MonthSelector({ currentMonth, onMonthChange }: MonthSelectorProp
     onMonthChange(newMonth)
   }
 
+  const getMonthStyle = (monthValue: string) => {
+    const now = new Date()
+    const currentRealMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
+    const [year] = currentMonth.split('-')
+    const monthKey = `${year}-${monthValue}`
+
+    if (monthKey === currentRealMonth) {
+      return 'text-primary font-semibold' // Current month
+    } else if (monthKey < currentRealMonth) {
+      return 'text-muted-foreground' // Past months
+    } else {
+      return 'text-foreground/70' // Future months
+    }
+  }
+
   const changeMonth = (direction: 'prev' | 'next') => {
     const [year, month] = currentMonth.split('-').map(Number)
     let newYear = year
@@ -90,7 +105,11 @@ export function MonthSelector({ currentMonth, onMonthChange }: MonthSelectorProp
         </SelectTrigger>
         <SelectContent>
           {MONTHS_PT.map((month) => (
-            <SelectItem key={month.value} value={month.value}>
+            <SelectItem
+              key={month.value}
+              value={month.value}
+              className={getMonthStyle(month.value)}
+            >
               {month.label}
             </SelectItem>
           ))}

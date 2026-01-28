@@ -170,6 +170,7 @@ interface ExpenseStore {
   ) => void
   getMonthData: (month: string) => MonthlyData
   initializeMonth: (month: string) => void
+  initializeYear: (year: string) => void
   addInstallment: (installment: Omit<Installment, 'id'>) => void
   removeInstallment: (installmentId: string) => void
   getInstallmentsForMonth: (
@@ -367,25 +368,16 @@ export const useExpenseStore = create<ExpenseStore>()(
       currentYear: new Date().getFullYear().toString(),
 
       setCurrentMonth: (month) => {
-        const { monthlyData } = get()
         const [year] = month.split('-')
+        const { initializeYear } = get()
 
-        // Initialize month if it doesn't exist
-        if (!monthlyData[month]) {
-          set({
-            currentMonth: month,
-            currentYear: year,
-            monthlyData: {
-              ...monthlyData,
-              [month]: createEmptyMonth(month),
-            },
-          })
-        } else {
-          set({
-            currentMonth: month,
-            currentYear: year,
-          })
-        }
+        // Initialize entire year to avoid gaps in months
+        initializeYear(year)
+
+        set({
+          currentMonth: month,
+          currentYear: year,
+        })
       },
 
       setCurrentYear: (year) => {
@@ -430,18 +422,39 @@ export const useExpenseStore = create<ExpenseStore>()(
         }
       },
 
+      initializeYear: (year) => {
+        const { monthlyData } = get()
+        const updatedData = { ...monthlyData }
+        let hasChanges = false
+
+        // Create all 12 months for the year if they don't exist
+        for (let monthNum = 1; monthNum <= 12; monthNum++) {
+          const monthKey = `${year}-${String(monthNum).padStart(2, '0')}`
+          if (!updatedData[monthKey]) {
+            updatedData[monthKey] = createEmptyMonth(monthKey)
+            hasChanges = true
+          }
+        }
+
+        if (hasChanges) {
+          set({ monthlyData: updatedData })
+        }
+      },
+
       getMonthData: (month) => {
-        const { monthlyData, initializeMonth } = get()
+        const { monthlyData, initializeYear } = get()
         if (!monthlyData[month]) {
-          initializeMonth(month)
+          const [year] = month.split('-')
+          initializeYear(year)
           return get().monthlyData[month]
         }
         return monthlyData[month]
       },
 
       updateIncome: (month, income) => {
-        const { monthlyData, initializeMonth } = get()
-        initializeMonth(month)
+        const { monthlyData, initializeYear } = get()
+        const [year] = month.split('-')
+        initializeYear(year)
         set({
           monthlyData: {
             ...monthlyData,
@@ -454,8 +467,9 @@ export const useExpenseStore = create<ExpenseStore>()(
       },
 
       updateInvestments: (month, investments) => {
-        const { monthlyData, initializeMonth } = get()
-        initializeMonth(month)
+        const { monthlyData, initializeYear } = get()
+        const [year] = month.split('-')
+        initializeYear(year)
         set({
           monthlyData: {
             ...monthlyData,
@@ -468,8 +482,9 @@ export const useExpenseStore = create<ExpenseStore>()(
       },
 
       updateSavings: (month, savings) => {
-        const { monthlyData, initializeMonth } = get()
-        initializeMonth(month)
+        const { monthlyData, initializeYear } = get()
+        const [year] = month.split('-')
+        initializeYear(year)
         set({
           monthlyData: {
             ...monthlyData,
@@ -482,8 +497,9 @@ export const useExpenseStore = create<ExpenseStore>()(
       },
 
       addExpense: (month, expense, type) => {
-        const { monthlyData, initializeMonth } = get()
-        initializeMonth(month)
+        const { monthlyData, initializeYear } = get()
+        const [year] = month.split('-')
+        initializeYear(year)
         const currentData = get().monthlyData[month]
         const newExpense = { ...expense, id: generateId() }
 
@@ -540,10 +556,11 @@ export const useExpenseStore = create<ExpenseStore>()(
       addFixedExpenseWithPropagation: (month, expense) => {
         const recurringGroupId = generateRecurringGroupId()
         const futureMonths = getFutureMonths(month, 24)
-        const { initializeMonth } = get()
+        const { initializeYear } = get()
 
-        // Initialize current month
-        initializeMonth(month)
+        // Initialize current year
+        const [year] = month.split('-')
+        initializeYear(year)
 
         // Get updated state after initialization
         const { monthlyData } = get()

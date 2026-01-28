@@ -113,6 +113,10 @@ export function CategoryFormDialog({
               onChange={(e) => setLabel(e.target.value)}
               placeholder="Ex: Transporte, Alimentação..."
               required
+              autoComplete="off"
+              data-1p-ignore
+              data-lpignore="true"
+              data-form-type="other"
             />
           </div>
 

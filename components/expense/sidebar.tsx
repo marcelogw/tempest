@@ -4,21 +4,20 @@ import { cn } from '@/lib/utils'
 import {
   LayoutDashboard,
   Calendar,
+  Shapes,
   TrendingUp,
   PiggyBank,
   CreditCard,
-  Settings,
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { YearSelector } from './year-selector'
-import { CategorySettings } from './category-settings'
 
 interface SidebarProps {
-  activeView: 'dashboard' | 'monthly'
-  onViewChange: (view: 'dashboard' | 'monthly') => void
+  activeView: 'dashboard' | 'monthly' | 'categories'
+  onViewChange: (view: 'dashboard' | 'monthly' | 'categories') => void
   currentYear: string
   availableYears: string[]
   onYearChange: (year: string) => void
@@ -32,7 +31,6 @@ export function Sidebar({
   onYearChange,
 }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false)
-  const [settingsOpen, setSettingsOpen] = useState(false)
 
   const navItems = [
     {
@@ -44,6 +42,11 @@ export function Sidebar({
       id: 'monthly' as const,
       label: 'Visao Mensal',
       icon: Calendar,
+    },
+    {
+      id: 'categories' as const,
+      label: 'Categorias',
+      icon: Shapes,
     },
   ]
 
@@ -137,21 +140,6 @@ export function Sidebar({
           ))}
         </div>
       </nav>
-
-      <div className="border-sidebar-border border-t p-2">
-        <button
-          onClick={() => setSettingsOpen(true)}
-          className={cn(
-            'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
-            'text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
-          )}
-        >
-          <Settings className="h-5 w-5 flex-shrink-0" />
-          {!collapsed && <span>Configuracoes</span>}
-        </button>
-      </div>
-
-      <CategorySettings open={settingsOpen} onOpenChange={setSettingsOpen} />
     </aside>
   )
 }

@@ -17,17 +17,11 @@ import {
   SortableContext,
   sortableKeyboardCoordinates,
   useSortable,
-  verticalListSortingStrategy,
+  rectSortingStrategy,
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -38,24 +32,31 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { Badge } from '@/components/ui/badge'
 import { useExpenseStore, type Category } from '@/lib/expense-store'
 import { CategoryFormDialog } from './category-form-dialog'
 import { useToast } from '@/hooks/use-toast'
+import { cn } from '@/lib/utils'
 
-type SortableCategoryItemProps = {
+type SortableCategoryCardProps = {
   category: Category
   expenseCount: number
   onEdit: (category: Category) => void
   onDelete: (category: Category) => void
 }
 
-function SortableCategoryItem({
+function SortableCategoryCard({
   category,
   expenseCount,
   onEdit,
   onDelete,
-}: SortableCategoryItemProps) {
+}: SortableCategoryCardProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: category.id,
   })
@@ -63,7 +64,6 @@ function SortableCategoryItem({
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: isDragging ? 0.5 : 1,
   }
 
   const IconComponent = category.icon
@@ -71,61 +71,88 @@ function SortableCategoryItem({
     : null
 
   return (
-    <div
+    <Card
       ref={setNodeRef}
       style={style}
-      className="bg-card hover:bg-accent/50 flex items-center gap-3 rounded-lg border p-3"
+      className={cn(
+        'group relative overflow-hidden transition-all duration-200',
+        isDragging ? 'ring-primary opacity-50 ring-2' : 'hover:shadow-lg',
+        'border-l-4'
+      )}
+      // @ts-expect-error - dynamic border color
+      onMouseEnter={(e) => (e.currentTarget.style.borderLeftColor = category.color)}
+      onMouseLeave={(e) => (e.currentTarget.style.borderLeftColor = 'transparent')}
     >
-      <button
-        className="cursor-grab touch-none active:cursor-grabbing"
-        {...attributes}
-        {...listeners}
-      >
-        <Icons.GripVertical className="text-muted-foreground h-5 w-5" />
-      </button>
+      <CardContent className="p-6">
+        <div className="mb-4 flex items-start justify-between">
+          <div className="flex items-center gap-3">
+            <button
+              className="cursor-grab touch-none active:cursor-grabbing"
+              {...attributes}
+              {...listeners}
+            >
+              <Icons.GripVertical className="text-muted-foreground h-5 w-5 opacity-0 transition-opacity group-hover:opacity-100" />
+            </button>
+            <div
+              className="flex h-12 w-12 items-center justify-center rounded-lg transition-transform group-hover:scale-110"
+              style={{ backgroundColor: `${category.color}20` }}
+            >
+              {IconComponent ? (
+                <IconComponent className="h-6 w-6" style={{ color: category.color }} />
+              ) : (
+                <Icons.Tag className="h-6 w-6" style={{ color: category.color }} />
+              )}
+            </div>
+          </div>
 
-      <div className="flex flex-1 items-center gap-3">
-        {IconComponent && <IconComponent className="h-5 w-5" style={{ color: category.color }} />}
-        <div className="flex-1">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="opacity-0 transition-opacity group-hover:opacity-100"
+              >
+                <Icons.MoreVertical className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => onEdit(category)}>
+                <Icons.Pencil className="mr-2 h-4 w-4" />
+                Editar
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => onDelete(category)}
+                disabled={category.isSystem}
+                className="text-destructive focus:text-destructive"
+              >
+                <Icons.Trash2 className="mr-2 h-4 w-4" />
+                Excluir
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+
+        <div className="space-y-2">
           <div className="flex items-center gap-2">
-            <span className="font-medium" style={{ color: category.color }}>
+            <h3 className="text-lg font-semibold" style={{ color: category.color }}>
               {category.label}
-            </span>
+            </h3>
             {category.isSystem && (
               <Badge variant="outline" className="text-xs">
                 Sistema
               </Badge>
             )}
           </div>
-          <span className="text-muted-foreground text-xs">
+          <p className="text-muted-foreground text-sm">
             {expenseCount} {expenseCount === 1 ? 'despesa' : 'despesas'}
-          </span>
+          </p>
         </div>
-      </div>
-
-      <div className="flex items-center gap-2">
-        <Button size="sm" variant="ghost" onClick={() => onEdit(category)}>
-          <Icons.Pencil className="h-4 w-4" />
-        </Button>
-        <Button
-          size="sm"
-          variant="ghost"
-          onClick={() => onDelete(category)}
-          disabled={category.isSystem}
-        >
-          <Icons.Trash2 className="h-4 w-4" />
-        </Button>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   )
 }
 
-type CategorySettingsProps = {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-}
-
-export function CategorySettings({ open, onOpenChange }: CategorySettingsProps) {
+export function CategoriesView() {
   const { categories, reorderCategories, deleteCategory, monthlyData } = useExpenseStore()
   const { toast } = useToast()
 
@@ -216,21 +243,26 @@ export function CategorySettings({ open, onOpenChange }: CategorySettingsProps) 
 
   return (
     <>
-      <Sheet open={open} onOpenChange={onOpenChange}>
-        <SheetContent side="right" className="w-full overflow-y-auto sm:max-w-[540px]">
-          <SheetHeader>
-            <SheetTitle>Categorias de Despesas</SheetTitle>
-            <SheetDescription>
-              Personalize as categorias para organizar suas despesas. Arraste para reordenar.
-            </SheetDescription>
-          </SheetHeader>
+      <div className="bg-background flex flex-1 flex-col overflow-hidden">
+        <div className="border-b p-6">
+          <div className="mx-auto max-w-7xl">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl font-bold tracking-tight">Gerenciar Categorias</h1>
+                <p className="text-muted-foreground mt-1">
+                  Personalize as categorias para organizar suas despesas. Arraste para reordenar.
+                </p>
+              </div>
+              <Button onClick={handleAddNew} size="lg" className="gap-2">
+                <Icons.Plus className="h-5 w-5" />
+                Nova Categoria
+              </Button>
+            </div>
+          </div>
+        </div>
 
-          <div className="mt-6 space-y-4">
-            <Button onClick={handleAddNew} className="w-full">
-              <Icons.Plus className="mr-2 h-4 w-4" />
-              Nova Categoria
-            </Button>
-
+        <div className="flex-1 overflow-y-auto p-6">
+          <div className="mx-auto max-w-7xl">
             <DndContext
               sensors={sensors}
               collisionDetection={closestCenter}
@@ -238,11 +270,11 @@ export function CategorySettings({ open, onOpenChange }: CategorySettingsProps) 
             >
               <SortableContext
                 items={sortedCategories.map((c) => c.id)}
-                strategy={verticalListSortingStrategy}
+                strategy={rectSortingStrategy}
               >
-                <div className="space-y-2">
+                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                   {sortedCategories.map((category) => (
-                    <SortableCategoryItem
+                    <SortableCategoryCard
                       key={category.id}
                       category={category}
                       expenseCount={expenseCounts[category.id] || 0}
@@ -254,8 +286,8 @@ export function CategorySettings({ open, onOpenChange }: CategorySettingsProps) 
               </SortableContext>
             </DndContext>
           </div>
-        </SheetContent>
-      </Sheet>
+        </div>
+      </div>
 
       <CategoryFormDialog
         open={formDialogOpen}

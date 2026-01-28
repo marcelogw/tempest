@@ -4,10 +4,11 @@ import { useState } from 'react'
 import { Sidebar } from '@/components/expense/sidebar'
 import { DashboardView } from '@/components/expense/dashboard-view'
 import { MonthlyView } from '@/components/expense/monthly-view'
+import { CategoriesView } from '@/components/expense/categories-view'
 import { useExpenseStore } from '@/lib/expense-store'
 
 export default function ExpenseManagementApp() {
-  const [activeView, setActiveView] = useState<'dashboard' | 'monthly'>('dashboard')
+  const [activeView, setActiveView] = useState<'dashboard' | 'monthly' | 'categories'>('dashboard')
   const { currentYear, setCurrentYear, getAvailableYears } = useExpenseStore()
   const availableYears = getAvailableYears()
 
@@ -20,7 +21,9 @@ export default function ExpenseManagementApp() {
         availableYears={availableYears}
         onYearChange={setCurrentYear}
       />
-      {activeView === 'dashboard' ? <DashboardView /> : <MonthlyView />}
+      {activeView === 'dashboard' && <DashboardView />}
+      {activeView === 'monthly' && <MonthlyView />}
+      {activeView === 'categories' && <CategoriesView />}
     </div>
   )
 }

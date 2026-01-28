@@ -32,7 +32,8 @@ interface MonthSelectorProps {
 
 export function MonthSelector({ currentMonth, onMonthChange }: MonthSelectorProps) {
   const formatMonth = (monthStr: string) => {
-    const d = new Date(monthStr + '-01')
+    const [year, month] = monthStr.split('-').map(Number)
+    const d = new Date(year, month - 1, 1)
     return d.toLocaleDateString('pt-BR', { month: 'long' })
   }
 

@@ -462,12 +462,12 @@ describe('Recurring Fixed Expenses', () => {
         date: '2026-03-01',
       })
 
-      // Verify that past months don't have the expense
-      const state = useExpenseStore.getState()
-      expect(state.monthlyData['2026-01']).toBeUndefined()
-      expect(state.monthlyData['2026-02']).toBeUndefined()
+      // Verify that past months exist but don't have the expense
+      // (months are created when year is initialized, but expense only propagates forward)
+      expect(getMonthData('2026-01').fixedExpenses).toHaveLength(0)
+      expect(getMonthData('2026-02').fixedExpenses).toHaveLength(0)
 
-      // Mar and future should have
+      // Mar and future should have the expense
       expect(getMonthData('2026-03').fixedExpenses).toHaveLength(1)
       expect(getMonthData('2026-04').fixedExpenses).toHaveLength(1)
     })

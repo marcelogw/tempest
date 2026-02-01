@@ -31,7 +31,7 @@ describe('Month Logic', () => {
       const state = useExpenseStore.getState()
       expect(state.monthlyData['2026-03']).toBeDefined()
       expect(state.monthlyData['2026-03'].month).toBe('2026-03')
-      expect(state.monthlyData['2026-03'].income).toBe(0)
+      expect(state.monthlyData['2026-03'].incomes).toEqual([])
       expect(state.monthlyData['2026-03'].fixedExpenses).toEqual([])
       expect(state.monthlyData['2026-03'].variableExpenses).toEqual([])
     })
@@ -44,7 +44,7 @@ describe('Month Logic', () => {
         monthlyData: {
           '2025-05': {
             month: '2025-05',
-            income: 5000,
+            incomes: [{ id: '1', description: 'Salário', amount: 5000 }],
             fixedExpenses: [],
             variableExpenses: [],
             investments: 1000,
@@ -56,7 +56,7 @@ describe('Month Logic', () => {
       setCurrentMonth('2025-05')
 
       const state = useExpenseStore.getState()
-      expect(state.monthlyData['2025-05'].income).toBe(5000)
+      expect(state.monthlyData['2025-05'].incomes[0].amount).toBe(5000)
       expect(state.monthlyData['2025-05'].investments).toBe(1000)
     })
   })
@@ -114,7 +114,7 @@ describe('Month Logic', () => {
         monthlyData: {
           '2023-05': {
             month: '2023-05',
-            income: 0,
+            incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
             investments: 0,
@@ -122,7 +122,7 @@ describe('Month Logic', () => {
           },
           '2024-06': {
             month: '2024-06',
-            income: 0,
+            incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
             investments: 0,
@@ -145,7 +145,7 @@ describe('Month Logic', () => {
         monthlyData: {
           '2023-05': {
             month: '2023-05',
-            income: 0,
+            incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
             investments: 0,
@@ -153,7 +153,7 @@ describe('Month Logic', () => {
           },
           '2024-06': {
             month: '2024-06',
-            income: 0,
+            incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
             investments: 0,
@@ -161,7 +161,7 @@ describe('Month Logic', () => {
           },
           [`${currentYear}-01`]: {
             month: `${currentYear}-01`,
-            income: 0,
+            incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
             investments: 0,
@@ -182,7 +182,7 @@ describe('Month Logic', () => {
         monthlyData: {
           '2024-01': {
             month: '2024-01',
-            income: 0,
+            incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
             investments: 0,
@@ -190,7 +190,7 @@ describe('Month Logic', () => {
           },
           '2024-06': {
             month: '2024-06',
-            income: 0,
+            incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
             investments: 0,
@@ -198,7 +198,7 @@ describe('Month Logic', () => {
           },
           '2024-12': {
             month: '2024-12',
-            income: 0,
+            incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
             investments: 0,
@@ -221,7 +221,7 @@ describe('Month Logic', () => {
         monthlyData: {
           '2024-11': {
             month: '2024-11',
-            income: 0,
+            incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
             investments: 0,
@@ -229,7 +229,7 @@ describe('Month Logic', () => {
           },
           '2024-12': {
             month: '2024-12',
-            income: 0,
+            incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
             investments: 0,
@@ -237,7 +237,7 @@ describe('Month Logic', () => {
           },
           '2025-01': {
             month: '2025-01',
-            income: 0,
+            incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
             investments: 0,
@@ -245,7 +245,7 @@ describe('Month Logic', () => {
           },
           '2025-02': {
             month: '2025-02',
-            income: 0,
+            incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
             investments: 0,
@@ -272,7 +272,7 @@ describe('Month Logic', () => {
         monthlyData: {
           '2024-12': {
             month: '2024-12',
-            income: 0,
+            incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
             investments: 0,
@@ -280,7 +280,7 @@ describe('Month Logic', () => {
           },
           '2024-03': {
             month: '2024-03',
-            income: 0,
+            incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
             investments: 0,
@@ -288,7 +288,7 @@ describe('Month Logic', () => {
           },
           '2024-07': {
             month: '2024-07',
-            income: 0,
+            incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
             investments: 0,
@@ -321,7 +321,7 @@ describe('Month Logic', () => {
 
       const state = useExpenseStore.getState()
       expect(state.monthlyData['2026-08']).toBeDefined()
-      expect(state.monthlyData['2026-08'].income).toBe(0)
+      expect(state.monthlyData['2026-08'].incomes).toEqual([])
     })
 
     it('should not overwrite existing month', () => {
@@ -329,7 +329,7 @@ describe('Month Logic', () => {
         monthlyData: {
           '2025-05': {
             month: '2025-05',
-            income: 3000,
+            incomes: [{ id: '1', description: 'Salário', amount: 3000 }],
             fixedExpenses: [],
             variableExpenses: [],
             investments: 500,
@@ -342,7 +342,7 @@ describe('Month Logic', () => {
       initializeMonth('2025-05')
 
       const state = useExpenseStore.getState()
-      expect(state.monthlyData['2025-05'].income).toBe(3000)
+      expect(state.monthlyData['2025-05'].incomes[0].amount).toBe(3000)
       expect(state.monthlyData['2025-05'].investments).toBe(500)
     })
   })
@@ -353,7 +353,7 @@ describe('Month Logic', () => {
         monthlyData: {
           '2025-03': {
             month: '2025-03',
-            income: 4000,
+            incomes: [{ id: '1', description: 'Salário', amount: 4000 }],
             fixedExpenses: [],
             variableExpenses: [],
             investments: 800,
@@ -365,7 +365,7 @@ describe('Month Logic', () => {
       const { getMonthData } = useExpenseStore.getState()
       const data = getMonthData('2025-03')
 
-      expect(data.income).toBe(4000)
+      expect(data.incomes[0].amount).toBe(4000)
       expect(data.investments).toBe(800)
     })
 
@@ -375,7 +375,7 @@ describe('Month Logic', () => {
 
       expect(data).toBeDefined()
       expect(data.month).toBe('2026-10')
-      expect(data.income).toBe(0)
+      expect(data.incomes).toEqual([])
     })
   })
 })

@@ -4,32 +4,33 @@ import { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { DollarSign, TrendingUp, PiggyBank } from 'lucide-react'
+import { TrendingUp, PiggyBank } from 'lucide-react'
+import { IncomeList } from './income-list'
+import type { Income } from '@/lib/expense-store'
 
-interface IncomeInputProps {
-  income: number
+interface IncomeSectionProps {
+  incomes: Income[]
   investments: number
   savings: number
-  onIncomeChange: (value: number) => void
+  onAddIncome: (income: Omit<Income, 'id'>, replicate: boolean) => void
+  onRemoveIncome: (id: string) => void
+  onUpdateIncome: (income: Income, makeRecurring?: boolean) => void
   onInvestmentsChange: (value: number) => void
   onSavingsChange: (value: number) => void
 }
 
-export function IncomeInput({
-  income,
+export function IncomeSection({
+  incomes,
   investments,
   savings,
-  onIncomeChange,
+  onAddIncome,
+  onRemoveIncome,
+  onUpdateIncome,
   onInvestmentsChange,
   onSavingsChange,
-}: IncomeInputProps) {
-  const [incomeValue, setIncomeValue] = useState(income.toString())
+}: IncomeSectionProps) {
   const [investmentsValue, setInvestmentsValue] = useState(investments.toString())
   const [savingsValue, setSavingsValue] = useState(savings.toString())
-
-  useEffect(() => {
-    setIncomeValue(income.toString())
-  }, [income])
 
   useEffect(() => {
     setInvestmentsValue(investments.toString())
@@ -38,11 +39,6 @@ export function IncomeInput({
   useEffect(() => {
     setSavingsValue(savings.toString())
   }, [savings])
-
-  const handleIncomeBlur = () => {
-    const value = parseFloat(incomeValue) || 0
-    onIncomeChange(value)
-  }
 
   const handleInvestmentsBlur = () => {
     const value = parseFloat(investmentsValue) || 0
@@ -59,34 +55,15 @@ export function IncomeInput({
       <CardHeader className="pb-3">
         <CardTitle className="text-base font-semibold">Renda e Alocacoes</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <Label
-            htmlFor="income"
-            className="text-muted-foreground flex items-center gap-2 text-sm font-medium"
-          >
-            <DollarSign className="text-accent h-4 w-4" />
-            Renda Mensal
-          </Label>
-          <div className="relative">
-            <span className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2">
-              R$
-            </span>
-            <Input
-              id="income"
-              type="number"
-              min="0"
-              step="0.01"
-              value={incomeValue}
-              onChange={(e) => setIncomeValue(e.target.value)}
-              onBlur={handleIncomeBlur}
-              className="pl-10"
-              placeholder="0,00"
-            />
-          </div>
-        </div>
+      <CardContent className="space-y-6">
+        <IncomeList
+          incomes={incomes}
+          onAdd={onAddIncome}
+          onRemove={onRemoveIncome}
+          onUpdate={onUpdateIncome}
+        />
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-3 border-t pt-2">
           <div className="space-y-2">
             <Label
               htmlFor="investments"

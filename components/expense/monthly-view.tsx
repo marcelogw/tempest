@@ -4,7 +4,7 @@ import { useExpenseStore, type Expense } from '@/lib/expense-store'
 import { MonthSelector } from './month-selector'
 import { SummaryCards } from './summary-cards'
 import { ExpenseList } from './expense-list'
-import { IncomeInput } from './income-input'
+import { IncomeSection } from './income-input'
 import { CategoryBreakdown } from './category-breakdown'
 import { Installments } from './installments'
 
@@ -13,6 +13,8 @@ export function MonthlyView() {
     currentMonth,
     setCurrentMonth,
     getMonthData,
+    addIncome,
+    removeIncome,
     updateIncome,
     updateInvestments,
     updateSavings,
@@ -104,6 +106,8 @@ export function MonthlyView() {
 
   const allExpenses = [...monthData.fixedExpenses, ...monthData.variableExpenses]
 
+  const totalIncome = monthData.incomes.reduce((sum, i) => sum + i.amount, 0)
+
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <header className="border-border bg-card flex-shrink-0 border-b px-6 py-4">
@@ -121,7 +125,7 @@ export function MonthlyView() {
       <main className="flex-1 overflow-y-auto p-6">
         <div className="mx-auto max-w-7xl space-y-6">
           <SummaryCards
-            income={monthData.income}
+            income={totalIncome}
             totalExpenses={totalExpenses}
             investments={monthData.investments}
             savings={monthData.savings}
@@ -130,11 +134,15 @@ export function MonthlyView() {
 
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
             <div className="space-y-6 lg:col-span-1">
-              <IncomeInput
-                income={monthData.income}
+              <IncomeSection
+                incomes={monthData.incomes}
                 investments={monthData.investments}
                 savings={monthData.savings}
-                onIncomeChange={(value) => updateIncome(currentMonth, value)}
+                onAddIncome={(income, replicate) => addIncome(currentMonth, income, replicate)}
+                onRemoveIncome={(id) => removeIncome(currentMonth, id)}
+                onUpdateIncome={(income, makeRecurring) =>
+                  updateIncome(currentMonth, income, makeRecurring)
+                }
                 onInvestmentsChange={(value) => updateInvestments(currentMonth, value)}
                 onSavingsChange={(value) => updateSavings(currentMonth, value)}
               />

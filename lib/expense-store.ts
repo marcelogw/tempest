@@ -38,9 +38,16 @@ export interface Installment {
   startMonth: string // YYYY-MM format
 }
 
+export interface Income {
+  id: string
+  description: string
+  amount: number
+  recurringGroupId?: string
+}
+
 export interface MonthlyData {
   month: string // Format: YYYY-MM
-  income: number
+  incomes: Income[]
   fixedExpenses: Expense[]
   variableExpenses: Expense[]
   investments: number
@@ -152,7 +159,10 @@ interface ExpenseStore {
   setCurrentYear: (year: string) => void
   getAvailableYears: () => string[]
   getMonthsForYear: (year: string) => MonthlyData[]
-  updateIncome: (month: string, income: number) => void
+
+  addIncome: (month: string, income: Omit<Income, 'id'>, replicate: boolean) => void
+  removeIncome: (month: string, incomeId: string) => void
+  updateIncome: (month: string, income: Income, makeRecurring?: boolean) => void
   updateInvestments: (month: string, investments: number) => void
   updateSavings: (month: string, savings: number) => void
   addExpense: (month: string, expense: Omit<Expense, 'id'>, type: 'fixed' | 'variable') => void
@@ -201,7 +211,7 @@ const getFutureMonths = (startMonth: string, count: number = 24): string[] => {
 
 const createEmptyMonth = (month: string): MonthlyData => ({
   month,
-  income: 0,
+  incomes: [],
   fixedExpenses: [],
   variableExpenses: [],
   investments: 0,
@@ -231,7 +241,14 @@ const generateSampleData = (): Record<string, MonthlyData> => {
 
     data[monthKey] = {
       month: monthKey,
-      income: Math.round(baseIncome),
+      incomes: [
+        {
+          id: generateSampleId(),
+          description: 'Salário',
+          amount: Math.round(baseIncome),
+          recurringGroupId: generateRecurringGroupId(),
+        },
+      ],
       fixedExpenses: [
         {
           id: generateSampleId(),
@@ -460,19 +477,134 @@ export const useExpenseStore = create<ExpenseStore>()(
         return monthlyData[month]
       },
 
-      updateIncome: (month, income) => {
-        const { monthlyData, initializeYear } = get()
+      addIncome: (month, income, replicate) => {
+        const { initializeYear } = get()
         const [year] = month.split('-')
         initializeYear(year)
-        set({
-          monthlyData: {
-            ...monthlyData,
-            [month]: {
-              ...get().monthlyData[month],
-              income,
-            },
-          },
-        })
+
+        const recurringGroupId = replicate ? generateRecurringGroupId() : undefined
+        const newIncome: Income = {
+          ...income,
+          id: generateId(),
+          recurringGroupId,
+        }
+
+        const { monthlyData } = get()
+        const updatedData = { ...monthlyData }
+
+        // Add to current month
+        if (!updatedData[month]) {
+          updatedData[month] = createEmptyMonth(month)
+        }
+        updatedData[month] = {
+          ...updatedData[month],
+          incomes: [...updatedData[month].incomes, newIncome],
+        }
+
+        // Propagate if requested
+        if (replicate) {
+          const futureMonths = getFutureMonths(month, 24)
+          futureMonths.forEach((targetMonth) => {
+            if (!updatedData[targetMonth]) {
+              updatedData[targetMonth] = createEmptyMonth(targetMonth)
+            }
+            updatedData[targetMonth] = {
+              ...updatedData[targetMonth],
+              incomes: [
+                ...updatedData[targetMonth].incomes,
+                {
+                  ...income,
+                  id: generateId(),
+                  recurringGroupId,
+                },
+              ],
+            }
+          })
+        }
+
+        set({ monthlyData: updatedData })
+      },
+
+      removeIncome: (month, incomeId) => {
+        const { monthlyData } = get()
+        const currentData = monthlyData[month]
+        if (!currentData) return
+
+        const incomeToRemove = currentData.incomes.find((i) => i.id === incomeId)
+        if (!incomeToRemove) return
+
+        const updatedData = { ...monthlyData }
+
+        if (incomeToRemove.recurringGroupId) {
+          // Remove from this month onwards
+          Object.keys(updatedData).forEach((monthKey) => {
+            if (monthKey >= month) {
+              const monthData = updatedData[monthKey]
+              updatedData[monthKey] = {
+                ...monthData,
+                incomes: monthData.incomes.filter(
+                  (i) => i.recurringGroupId !== incomeToRemove.recurringGroupId
+                ),
+              }
+            }
+          })
+        } else {
+          // Remove only from current month
+          updatedData[month] = {
+            ...currentData,
+            incomes: currentData.incomes.filter((i) => i.id !== incomeId),
+          }
+        }
+
+        set({ monthlyData: updatedData })
+      },
+
+      updateIncome: (month, income, makeRecurring) => {
+        const { monthlyData, removeIncome, addIncome } = get()
+
+        if (makeRecurring && !income.recurringGroupId) {
+          // Convert to recurring: remove old and add new with replication
+          // We need to handle this carefully to not lose the ID reference if we want to keep it,
+          // but addIncome generates new IDs.
+          // Simpler approach: Remove checking only ID locally, then add new.
+
+          // However, since we are inside the store, we can do it more manually if needed.
+          // But reusing addIncome is safer for consistency.
+          const { description, amount } = income
+          removeIncome(month, income.id)
+          addIncome(month, { description, amount }, true)
+          return
+        }
+
+        const updatedData = { ...monthlyData }
+
+        if (income.recurringGroupId) {
+          // Update this and future months
+          Object.keys(updatedData).forEach((monthKey) => {
+            if (monthKey >= month) {
+              const monthData = updatedData[monthKey]
+              updatedData[monthKey] = {
+                ...monthData,
+                incomes: monthData.incomes.map((i) =>
+                  i.recurringGroupId === income.recurringGroupId
+                    ? { ...i, description: income.description, amount: income.amount }
+                    : i
+                ),
+              }
+            }
+          })
+        } else {
+          // Update only current month
+          const currentData = monthlyData[month]
+          if (currentData) {
+            updatedData[month] = {
+              ...currentData,
+              incomes: currentData.incomes.map((i) => (i.id === income.id ? income : i)),
+            }
+          }
+        }
+
+        set({ monthlyData: updatedData })
       },
 
       updateInvestments: (month, investments) => {

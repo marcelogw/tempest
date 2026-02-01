@@ -3,16 +3,10 @@
 import { useState } from 'react'
 import * as Icons from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from '@/components/ui/command'
+import { Command, CommandInput } from '@/components/ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Button } from '@/components/ui/button'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 // Curated list of icons suitable for expense categories
 const CATEGORY_ICONS = [
@@ -114,6 +108,10 @@ export function IconSelector({ selectedIcon, onIconSelect }: IconSelectorProps) 
     ? (Icons as unknown as Record<string, LucideIcon>)[selectedIcon]
     : null
 
+  const filteredIcons = CATEGORY_ICONS.filter((icon) =>
+    icon.toLowerCase().includes(search.toLowerCase())
+  )
+
   return (
     <div className="space-y-2">
       <label className="text-sm font-medium">Ícone (opcional)</label>
@@ -139,41 +137,44 @@ export function IconSelector({ selectedIcon, onIconSelect }: IconSelectorProps) 
         <PopoverContent className="w-[400px] p-0" align="start">
           <Command>
             <CommandInput placeholder="Buscar ícone..." value={search} onValueChange={setSearch} />
-            <CommandEmpty>Nenhum ícone encontrado.</CommandEmpty>
-            <CommandList>
-              <CommandGroup>
-                <CommandItem
-                  value="none"
-                  onSelect={() => {
+          </Command>
+          <ScrollArea className="h-60">
+            <div className="p-2">
+              {filteredIcons.length === 0 && (
+                <p className="py-6 text-center text-sm">Nenhum ícone encontrado.</p>
+              )}
+              <div className="grid grid-cols-8 gap-1">
+                <Button
+                  variant={!selectedIcon ? 'default' : 'ghost'}
+                  size="icon"
+                  onClick={() => {
                     onIconSelect(null)
                     setOpen(false)
                   }}
                 >
-                  <Icons.X className="mr-2 h-4 w-4" />
-                  Sem ícone
-                </CommandItem>
-                {CATEGORY_ICONS.map((iconName) => {
+                  <Icons.X className="h-4 w-4" />
+                </Button>
+                {filteredIcons.map((iconName) => {
                   const IconComponent = (Icons as unknown as Record<string, LucideIcon>)[iconName]
                   if (!IconComponent) return null
 
                   return (
-                    <CommandItem
+                    <Button
                       key={iconName}
-                      value={iconName}
-                      onSelect={() => {
+                      variant={selectedIcon === iconName ? 'default' : 'ghost'}
+                      size="icon"
+                      onClick={() => {
                         onIconSelect(iconName)
                         setOpen(false)
                       }}
                     >
-                      <IconComponent className="mr-2 h-4 w-4" />
-                      {iconName}
-                      {selectedIcon === iconName && <Icons.Check className="ml-auto h-4 w-4" />}
-                    </CommandItem>
+                      <IconComponent className="h-4 w-4" />
+                    </Button>
                   )
                 })}
-              </CommandGroup>
-            </CommandList>
-          </Command>
+              </div>
+            </div>
+          </ScrollArea>
         </PopoverContent>
       </Popover>
     </div>

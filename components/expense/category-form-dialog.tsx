@@ -106,7 +106,7 @@ export function CategoryFormDialog({
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="label">Nome da Categoria</Label>
+            <Label htmlFor="label">Nome</Label>
             <Input
               id="label"
               value={label}

@@ -213,19 +213,28 @@ const generateSampleData = (): Record<string, MonthlyData> => {
   const data: Record<string, MonthlyData> = {}
   const now = new Date()
 
+  // Simple deterministic random number generator
+  let seed = 123456
+  const random = () => {
+    const x = Math.sin(seed++) * 10000
+    return x - Math.floor(x)
+  }
+
+  const generateSampleId = () => Math.floor(random() * 10000000).toString(36)
+
   for (let i = 5; i >= 0; i--) {
     const date = new Date(now.getFullYear(), now.getMonth() - i, 1)
     const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
 
-    const baseIncome = 8000 + Math.random() * 4000
-    const variability = 0.8 + Math.random() * 0.4
+    const baseIncome = 8000 + random() * 4000
+    const variability = 0.8 + random() * 0.4
 
     data[monthKey] = {
       month: monthKey,
       income: Math.round(baseIncome),
       fixedExpenses: [
         {
-          id: generateId(),
+          id: generateSampleId(),
           description: 'Aluguel',
           amount: 2500,
           category: 'moradia',
@@ -233,7 +242,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           date: monthKey + '-01',
         },
         {
-          id: generateId(),
+          id: generateSampleId(),
           description: 'Seguro do Carro',
           amount: 280,
           category: 'transporte',
@@ -241,7 +250,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           date: monthKey + '-01',
         },
         {
-          id: generateId(),
+          id: generateSampleId(),
           description: 'Conta de Celular',
           amount: 120,
           category: 'outros',
@@ -249,7 +258,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           date: monthKey + '-01',
         },
         {
-          id: generateId(),
+          id: generateSampleId(),
           description: 'Internet',
           amount: 150,
           category: 'outros',
@@ -257,7 +266,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           date: monthKey + '-01',
         },
         {
-          id: generateId(),
+          id: generateSampleId(),
           description: 'Academia',
           amount: 120,
           category: 'saude',
@@ -267,7 +276,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
       ],
       variableExpenses: [
         {
-          id: generateId(),
+          id: generateSampleId(),
           description: 'Cartao de Credito - Amazon',
           amount: Math.round(350 * variability),
           category: 'cartao-credito',
@@ -275,7 +284,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           date: monthKey + '-05',
         },
         {
-          id: generateId(),
+          id: generateSampleId(),
           description: 'Supermercado - Extra',
           amount: Math.round(850 * variability),
           category: 'mercado',
@@ -283,7 +292,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           date: monthKey + '-08',
         },
         {
-          id: generateId(),
+          id: generateSampleId(),
           description: 'Combustivel',
           amount: Math.round(400 * variability),
           category: 'transporte',
@@ -291,7 +300,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           date: monthKey + '-10',
         },
         {
-          id: generateId(),
+          id: generateSampleId(),
           description: 'Netflix e Spotify',
           amount: 75,
           category: 'assinaturas',
@@ -299,7 +308,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           date: monthKey + '-12',
         },
         {
-          id: generateId(),
+          id: generateSampleId(),
           description: 'Restaurantes',
           amount: Math.round(450 * variability),
           category: 'alimentacao',
@@ -307,7 +316,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           date: monthKey + '-15',
         },
         {
-          id: generateId(),
+          id: generateSampleId(),
           description: 'Cartao de Credito - Magazine Luiza',
           amount: Math.round(500 * variability),
           category: 'cartao-credito',
@@ -315,7 +324,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           date: monthKey + '-18',
         },
         {
-          id: generateId(),
+          id: generateSampleId(),
           description: 'Cinema',
           amount: Math.round(120 * variability),
           category: 'lazer',
@@ -323,7 +332,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           date: monthKey + '-20',
         },
         {
-          id: generateId(),
+          id: generateSampleId(),
           description: 'Supermercado - Pao de Acucar',
           amount: Math.round(450 * variability),
           category: 'mercado',
@@ -331,8 +340,8 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           date: monthKey + '-22',
         },
       ],
-      investments: Math.round(800 + Math.random() * 400),
-      savings: Math.round(600 + Math.random() * 600),
+      investments: Math.round(800 + random() * 400),
+      savings: Math.round(600 + random() * 600),
     }
   }
 

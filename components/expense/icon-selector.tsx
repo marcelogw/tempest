@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import * as Icons from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import { Command, CommandInput } from '@/components/ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -102,19 +101,14 @@ type IconSelectorProps = {
 
 export function IconSelector({ selectedIcon, onIconSelect }: IconSelectorProps) {
   const [open, setOpen] = useState(false)
-  const [search, setSearch] = useState('')
 
   const SelectedIconComponent = selectedIcon
     ? (Icons as unknown as Record<string, LucideIcon>)[selectedIcon]
     : null
 
-  const filteredIcons = CATEGORY_ICONS.filter((icon) =>
-    icon.toLowerCase().includes(search.toLowerCase())
-  )
-
   return (
     <div className="space-y-2">
-      <label className="text-sm font-medium">Ícone (opcional)</label>
+      <label className="text-sm font-medium">Ícone</label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
@@ -125,8 +119,7 @@ export function IconSelector({ selectedIcon, onIconSelect }: IconSelectorProps) 
           >
             {selectedIcon ? (
               <div className="flex items-center gap-2">
-                {SelectedIconComponent && <SelectedIconComponent className="h-4 w-4" />}
-                <span>{selectedIcon}</span>
+                {SelectedIconComponent && <SelectedIconComponent className="h-5 w-5" />}
               </div>
             ) : (
               <span className="text-muted-foreground">Selecionar ícone...</span>
@@ -135,40 +128,38 @@ export function IconSelector({ selectedIcon, onIconSelect }: IconSelectorProps) 
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[400px] p-0" align="start">
-          <Command>
-            <CommandInput placeholder="Buscar ícone..." value={search} onValueChange={setSearch} />
-          </Command>
-          <ScrollArea className="h-60">
-            <div className="p-2">
-              {filteredIcons.length === 0 && (
-                <p className="py-6 text-center text-sm">Nenhum ícone encontrado.</p>
-              )}
-              <div className="grid grid-cols-8 gap-1">
+          <ScrollArea className="h-[300px]">
+            <div className="p-4">
+              <div className="grid grid-cols-6 gap-2">
                 <Button
-                  variant={!selectedIcon ? 'default' : 'ghost'}
+                  variant={!selectedIcon ? 'default' : 'outline'}
                   size="icon"
+                  className="h-10 w-10"
                   onClick={() => {
                     onIconSelect(null)
                     setOpen(false)
                   }}
+                  title="Sem ícone"
                 >
-                  <Icons.X className="h-4 w-4" />
+                  <Icons.X className="h-5 w-5" />
                 </Button>
-                {filteredIcons.map((iconName) => {
+                {CATEGORY_ICONS.map((iconName) => {
                   const IconComponent = (Icons as unknown as Record<string, LucideIcon>)[iconName]
                   if (!IconComponent) return null
 
                   return (
                     <Button
                       key={iconName}
-                      variant={selectedIcon === iconName ? 'default' : 'ghost'}
+                      variant={selectedIcon === iconName ? 'default' : 'outline'}
                       size="icon"
+                      className="h-10 w-10"
                       onClick={() => {
                         onIconSelect(iconName)
                         setOpen(false)
                       }}
+                      title={iconName}
                     >
-                      <IconComponent className="h-4 w-4" />
+                      <IconComponent className="h-5 w-5" />
                     </Button>
                   )
                 })}

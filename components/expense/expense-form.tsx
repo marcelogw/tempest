@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/dialog'
 import * as Icons from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import { type ExpenseCategory, useExpenseStore } from '@/lib/expense-store'
+import { type ExpenseCategory, useExpenseStore, SYSTEM_CATEGORY_ID } from '@/lib/expense-store'
 
 interface ExpenseFormProps {
   type: 'fixed' | 'variable'
@@ -41,7 +41,7 @@ export function ExpenseForm({ type, onSubmit, currentMonth }: ExpenseFormProps) 
   const [open, setOpen] = useState(false)
   const [description, setDescription] = useState('')
   const [amount, setAmount] = useState('')
-  const [category, setCategory] = useState<ExpenseCategory>('outros')
+  const [category, setCategory] = useState<ExpenseCategory>(SYSTEM_CATEGORY_ID)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -57,7 +57,7 @@ export function ExpenseForm({ type, onSubmit, currentMonth }: ExpenseFormProps) 
 
     setDescription('')
     setAmount('')
-    setCategory('other')
+    setCategory(SYSTEM_CATEGORY_ID)
     setOpen(false)
   }
 

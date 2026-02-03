@@ -3,12 +3,18 @@ import { useExpenseStore } from '@/lib/expense-store'
 
 describe('Installment Logic', () => {
   beforeEach(() => {
-    // Reset store before each test
+    // Clear localStorage to prevent persist middleware from loading old data
+    if (typeof window !== 'undefined') {
+      localStorage.clear()
+    }
+
+    // Reset store before each test with all required fields
     useExpenseStore.setState({
       monthlyData: {},
       currentMonth: '2025-01',
       currentYear: '2025',
       installments: [],
+      categories: [],
     })
   })
 

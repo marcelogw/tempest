@@ -8,6 +8,7 @@ import {
   type ExpenseCategory,
   formatCurrencyBRL,
   useExpenseStore,
+  SYSTEM_CATEGORY_ID,
 } from '@/lib/expense-store'
 
 interface CategoryBreakdownProps {
@@ -46,7 +47,7 @@ export function CategoryBreakdown({ expenses }: CategoryBreakdownProps) {
         ) : (
           sortedCategories.map(([categoryId, amount]) => {
             const percentage = totalExpenses > 0 ? (amount / totalExpenses) * 100 : 0
-            const category = getCategoryById(categoryId) || getCategoryById('outros')
+            const category = getCategoryById(categoryId) || getCategoryById(SYSTEM_CATEGORY_ID)
             const IconComponent = category?.icon
               ? (Icons as unknown as Record<string, LucideIcon>)[category.icon]
               : null

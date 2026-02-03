@@ -3,9 +3,37 @@ import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Tempest - Expense Management',
-  description: 'Track your income, expenses, investments and savings with ease',
+  title: 'Tempest - Gerenciamento de Despesas',
+  description: 'Acompanhe suas receitas, despesas, investimentos e economia com facilidade',
   generator: 'v0.app',
+  keywords: [
+    'gerenciamento de despesas',
+    'controle financeiro',
+    'orçamento pessoal',
+    'finanças pessoais',
+    'investimentos',
+    'economia',
+  ],
+  authors: [{ name: 'Tempest' }],
+  creator: 'Tempest',
+  openGraph: {
+    type: 'website',
+    locale: 'pt_BR',
+    url: 'https://tempest.app',
+    title: 'Tempest - Gerenciamento de Despesas',
+    description: 'Acompanhe suas receitas, despesas, investimentos e economia com facilidade',
+    siteName: 'Tempest',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Tempest - Gerenciamento de Despesas',
+    description: 'Acompanhe suas receitas, despesas, investimentos e economia com facilidade',
+  },
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 5,
+  },
   icons: {
     icon: [
       {
@@ -31,7 +59,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <body className={`font-sans antialiased`}>
         {children}
         <Analytics />

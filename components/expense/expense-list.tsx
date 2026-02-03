@@ -6,7 +6,12 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import * as LucideIcons from 'lucide-react'
 import { Trash2, Lock, Shuffle, Pencil, Repeat, type LucideIcon } from 'lucide-react'
-import { type Expense, formatCurrencyBRL, useExpenseStore } from '@/lib/expense-store'
+import {
+  type Expense,
+  formatCurrencyBRL,
+  useExpenseStore,
+  SYSTEM_CATEGORY_ID,
+} from '@/lib/expense-store'
 import { ExpenseForm } from './expense-form'
 import { ExpenseEditDialog } from './expense-edit-dialog'
 import { cn } from '@/lib/utils'
@@ -82,7 +87,8 @@ export function ExpenseList({
                     )}
                   </div>
                   {(() => {
-                    const category = getCategoryById(expense.category) || getCategoryById('outros')
+                    const category =
+                      getCategoryById(expense.category) || getCategoryById(SYSTEM_CATEGORY_ID)
                     const IconComponent = category?.icon
                       ? (LucideIcons as unknown as Record<string, LucideIcon>)[category.icon]
                       : null

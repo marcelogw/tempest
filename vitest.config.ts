@@ -15,6 +15,27 @@ export default defineConfig({
       '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build}.config.*',
       '**/e2e/**', // Exclude E2E tests (run with Playwright)
     ],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html', 'lcov'],
+      exclude: [
+        '**/node_modules/**',
+        '**/dist/**',
+        '**/.next/**',
+        '**/coverage/**',
+        '**/e2e/**',
+        '**/components/ui/**', // shadcn/ui components
+        '**/*.config.{js,ts,mjs}',
+        '**/vitest.setup.ts',
+        '**/*.d.ts',
+      ],
+      thresholds: {
+        lines: 75,
+        functions: 75,
+        branches: 75,
+        statements: 75,
+      },
+    },
   },
   resolve: {
     alias: {

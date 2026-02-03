@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { addMonths, differenceInMonths } from 'date-fns'
 
 // Category types for dynamic user-configurable categories
 export type CategoryIcon = string | null
@@ -9,7 +10,7 @@ export type Category = {
   label: string // display name (Portuguese)
   color: string // hex color from palette
   icon: CategoryIcon // optional lucide icon name
-  isSystem: boolean // true for 'outros' (can't be deleted)
+  isSystem: boolean // true for SYSTEM_CATEGORY_ID (can't be deleted)
   order: number // for custom ordering
 }
 
@@ -53,6 +54,9 @@ export interface MonthlyData {
   investments: number
   savings: number
 }
+
+// System category ID constant
+export const SYSTEM_CATEGORY_ID = 'outros' as const
 
 // Predefined color palette for categories (15-20 colors from design system)
 export const CATEGORY_COLOR_PALETTE = [
@@ -140,7 +144,7 @@ export const DEFAULT_CATEGORIES: Category[] = [
     order: 9,
   },
   {
-    id: 'outros',
+    id: SYSTEM_CATEGORY_ID,
     label: 'Outros',
     color: '#64748b',
     icon: 'MoreHorizontal',
@@ -270,7 +274,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           id: generateSampleId(),
           description: 'Conta de Celular',
           amount: 120,
-          category: 'outros',
+          category: SYSTEM_CATEGORY_ID,
           type: 'fixed',
           date: monthKey + '-01',
         },
@@ -278,7 +282,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           id: generateSampleId(),
           description: 'Internet',
           amount: 150,
-          category: 'outros',
+          category: SYSTEM_CATEGORY_ID,
           type: 'fixed',
           date: monthKey + '-01',
         },
@@ -370,24 +374,51 @@ const getCurrentMonth = () => {
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
 }
 
-// Helper to calculate month difference
+// Helper to calculate month difference using date-fns
 const getMonthDiff = (startMonth: string, targetMonth: string): number => {
-  const [startYear, startM] = startMonth.split('-').map(Number)
-  const [targetYear, targetM] = targetMonth.split('-').map(Number)
-  return (targetYear - startYear) * 12 + (targetM - startM)
+  const startDate = new Date(startMonth + '-01')
+  const targetDate = new Date(targetMonth + '-01')
+  return differenceInMonths(targetDate, startDate)
 }
 
-// Helper to get month key from start month and offset
+// Helper to get month key from start month and offset using date-fns
 export const getMonthFromOffset = (startMonth: string, offset: number): string => {
-  const [year, month] = startMonth.split('-').map(Number)
-  const date = new Date(year, month - 1 + offset, 1)
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
+  const startDate = new Date(startMonth + '-01')
+  const resultDate = addMonths(startDate, offset)
+  return `${resultDate.getFullYear()}-${String(resultDate.getMonth() + 1).padStart(2, '0')}`
+}
+
+// Check if we should initialize with sample data
+const shouldUseSampleData = () => {
+  // Never use sample data in test environment
+  if (process.env.NODE_ENV === 'test' || (typeof process !== 'undefined' && process.env.VITEST)) {
+    return false
+  }
+
+  // Don't use sample data in production or if user has explicitly disabled it
+  if (typeof window !== 'undefined') {
+    const stored = localStorage.getItem('expense-store')
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored) as { state?: { monthlyData?: Record<string, unknown> } }
+        // If user already has data, don't override
+        if (parsed.state?.monthlyData && Object.keys(parsed.state.monthlyData).length > 0) {
+          return false
+        }
+      } catch {
+        // If parsing fails, use sample data in development only
+        return process.env.NODE_ENV === 'development'
+      }
+    }
+  }
+  // Use sample data in development by default
+  return process.env.NODE_ENV === 'development'
 }
 
 export const useExpenseStore = create<ExpenseStore>()(
   persist(
     (set, get) => ({
-      monthlyData: generateSampleData(),
+      monthlyData: shouldUseSampleData() ? generateSampleData() : {},
       installments: [],
       categories: DEFAULT_CATEGORIES,
       currentMonth: getCurrentMonth(),
@@ -885,7 +916,7 @@ export const useExpenseStore = create<ExpenseStore>()(
           throw new Error('Cannot delete system category')
         }
 
-        // Reassign all expenses to 'outros'
+        // Reassign all expenses to system category
         const updatedMonthlyData = { ...monthlyData }
         Object.keys(updatedMonthlyData).forEach((month) => {
           const monthData = updatedMonthlyData[month]
@@ -893,10 +924,10 @@ export const useExpenseStore = create<ExpenseStore>()(
           updatedMonthlyData[month] = {
             ...monthData,
             fixedExpenses: monthData.fixedExpenses.map((e) =>
-              e.category === id ? { ...e, category: 'outros' } : e
+              e.category === id ? { ...e, category: SYSTEM_CATEGORY_ID } : e
             ),
             variableExpenses: monthData.variableExpenses.map((e) =>
-              e.category === id ? { ...e, category: 'outros' } : e
+              e.category === id ? { ...e, category: SYSTEM_CATEGORY_ID } : e
             ),
           }
         })
@@ -928,7 +959,7 @@ export const useExpenseStore = create<ExpenseStore>()(
       validateCategory: (categoryId) => {
         const { categories } = get()
         const exists = categories.find((c) => c.id === categoryId)
-        return exists ? categoryId : 'outros'
+        return exists ? categoryId : SYSTEM_CATEGORY_ID
       },
     }),
     {

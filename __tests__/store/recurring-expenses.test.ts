@@ -3,12 +3,18 @@ import { useExpenseStore } from '@/lib/expense-store'
 
 describe('Recurring Fixed Expenses', () => {
   beforeEach(() => {
-    // Reset store before each test
+    // Clear localStorage to prevent persist middleware from loading old data
+    if (typeof window !== 'undefined') {
+      localStorage.clear()
+    }
+
+    // Reset store before each test with all required fields
     useExpenseStore.setState({
       monthlyData: {},
       currentMonth: '2026-01',
       currentYear: '2026',
       installments: [],
+      categories: [],
     })
   })
 

@@ -18,6 +18,7 @@ import {
   formatCurrencyBRL,
   formatShortCurrencyBRL,
   type ExpenseCategory,
+  SYSTEM_CATEGORY_ID,
 } from '@/lib/expense-store'
 import {
   LineChart,
@@ -51,6 +52,7 @@ export function DashboardView() {
       const fixedTotal = month.fixedExpenses.reduce((sum, e) => sum + e.amount, 0)
       const variableTotal = month.variableExpenses.reduce((sum, e) => sum + e.amount, 0)
       const totalExpenses = fixedTotal + variableTotal
+      const totalIncome = month.incomes.reduce((sum, i) => sum + i.amount, 0)
 
       const date = new Date(month.month + '-01')
       const monthLabel = date.toLocaleDateString('pt-BR', { month: 'short' })
@@ -58,13 +60,13 @@ export function DashboardView() {
       return {
         month: monthLabel,
         fullMonth: month.month,
-        income: month.income,
+        income: totalIncome,
         expenses: totalExpenses,
         fixed: fixedTotal,
         variable: variableTotal,
         investments: month.investments,
         savings: month.savings,
-        net: month.income - totalExpenses - month.investments - month.savings,
+        net: totalIncome - totalExpenses - month.investments - month.savings,
       }
     })
   }, [monthlyData, currentYear])
@@ -86,9 +88,9 @@ export function DashboardView() {
           monthCategoryTotals[cat.id] = 0
         })
         ;[...month.fixedExpenses, ...month.variableExpenses].forEach((expense) => {
-          // Use expense category or fallback to 'outros'
+          // Use expense category or fallback to system category
           const categoryId =
-            categoryTotals[expense.category] !== undefined ? expense.category : 'outros'
+            categoryTotals[expense.category] !== undefined ? expense.category : SYSTEM_CATEGORY_ID
           monthCategoryTotals[categoryId] = (monthCategoryTotals[categoryId] || 0) + expense.amount
         })
 
@@ -148,7 +150,7 @@ export function DashboardView() {
   // Pie chart data
   const pieData = useMemo(() => {
     return categoryAverages.slice(0, 6).map((item) => {
-      const category = getCategoryById(item.category) || getCategoryById('outros')
+      const category = getCategoryById(item.category) || getCategoryById(SYSTEM_CATEGORY_ID)
       return {
         name: category?.label || 'Outros',
         value: item.average,
@@ -537,7 +539,8 @@ export function DashboardView() {
                 <CardContent className="pt-0">
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
                     {categoryAverages.map((item) => {
-                      const category = getCategoryById(item.category) || getCategoryById('outros')
+                      const category =
+                        getCategoryById(item.category) || getCategoryById(SYSTEM_CATEGORY_ID)
                       const IconComponent = category?.icon
                         ? (LucideIcons as unknown as Record<string, LucideIcon>)[category.icon]
                         : null

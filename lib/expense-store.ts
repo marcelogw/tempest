@@ -376,14 +376,17 @@ const getCurrentMonth = () => {
 
 // Helper to calculate month difference using date-fns
 const getMonthDiff = (startMonth: string, targetMonth: string): number => {
-  const startDate = new Date(startMonth + '-01')
-  const targetDate = new Date(targetMonth + '-01')
+  const [startYear, startM] = startMonth.split('-').map(Number)
+  const [targetYear, targetM] = targetMonth.split('-').map(Number)
+  const startDate = new Date(startYear, startM - 1, 1) // month is 0-indexed
+  const targetDate = new Date(targetYear, targetM - 1, 1)
   return differenceInMonths(targetDate, startDate)
 }
 
 // Helper to get month key from start month and offset using date-fns
 export const getMonthFromOffset = (startMonth: string, offset: number): string => {
-  const startDate = new Date(startMonth + '-01')
+  const [year, month] = startMonth.split('-').map(Number)
+  const startDate = new Date(year, month - 1, 1) // month is 0-indexed in Date constructor
   const resultDate = addMonths(startDate, offset)
   return `${resultDate.getFullYear()}-${String(resultDate.getMonth() + 1).padStart(2, '0')}`
 }

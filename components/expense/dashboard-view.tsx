@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import * as LucideIcons from 'lucide-react'
 import {
   TrendingUp,
@@ -41,6 +41,12 @@ import { cn } from '@/lib/utils'
 
 export function DashboardView() {
   const { monthlyData, currentYear, categories, getCategoryById } = useExpenseStore()
+
+  // Prevent hydration mismatch by only rendering store-dependent content after mount
+  const [isHydrated, setIsHydrated] = useState(false)
+  useEffect(() => {
+    setIsHydrated(true)
+  }, [])
 
   // Get sorted months data
   const monthsData = useMemo(() => {
@@ -182,7 +188,16 @@ export function DashboardView() {
 
       <main className="flex-1 overflow-y-auto p-6">
         <div className="mx-auto max-w-7xl space-y-6">
-          {monthsData.length === 0 ? (
+          {!isHydrated ? (
+            <Card className="col-span-full">
+              <CardContent className="flex flex-col items-center justify-center py-12">
+                <div className="text-muted-foreground mb-4 h-12 w-12 animate-pulse">
+                  <Calendar className="h-12 w-12" />
+                </div>
+                <p className="text-foreground text-lg font-medium">Carregando...</p>
+              </CardContent>
+            </Card>
+          ) : monthsData.length === 0 ? (
             <Card className="col-span-full">
               <CardContent className="flex flex-col items-center justify-center py-12">
                 <Calendar className="text-muted-foreground mb-4 h-12 w-12" />

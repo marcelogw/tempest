@@ -393,25 +393,28 @@ export const getMonthFromOffset = (startMonth: string, offset: number): string =
 
 // Check if we should initialize with sample data
 const shouldUseSampleData = () => {
+  // Never use sample data on server (prevents hydration mismatch)
+  if (typeof window === 'undefined') {
+    return false
+  }
+
   // Never use sample data in test environment
   if (process.env.NODE_ENV === 'test' || (typeof process !== 'undefined' && process.env.VITEST)) {
     return false
   }
 
   // Don't use sample data in production or if user has explicitly disabled it
-  if (typeof window !== 'undefined') {
-    const stored = localStorage.getItem('expense-store')
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored) as { state?: { monthlyData?: Record<string, unknown> } }
-        // If user already has data, don't override
-        if (parsed.state?.monthlyData && Object.keys(parsed.state.monthlyData).length > 0) {
-          return false
-        }
-      } catch {
-        // If parsing fails, use sample data in development only
-        return process.env.NODE_ENV === 'development'
+  const stored = localStorage.getItem('expense-store')
+  if (stored) {
+    try {
+      const parsed = JSON.parse(stored) as { state?: { monthlyData?: Record<string, unknown> } }
+      // If user already has data, don't override
+      if (parsed.state?.monthlyData && Object.keys(parsed.state.monthlyData).length > 0) {
+        return false
       }
+    } catch {
+      // If parsing fails, use sample data in development only
+      return process.env.NODE_ENV === 'development'
     }
   }
   // Use sample data in development by default
@@ -502,13 +505,11 @@ export const useExpenseStore = create<ExpenseStore>()(
       },
 
       getMonthData: (month) => {
-        const { monthlyData, initializeYear } = get()
-        if (!monthlyData[month]) {
-          const [year] = month.split('-')
-          initializeYear(year)
-          return get().monthlyData[month]
-        }
-        return monthlyData[month]
+        const { monthlyData } = get()
+        // Return existing data or create empty month without state update
+        // This prevents setState during render errors
+        // Components should call initializeMonth in useEffect instead
+        return monthlyData[month] || createEmptyMonth(month)
       },
 
       addIncome: (month, income, replicate) => {

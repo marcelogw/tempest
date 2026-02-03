@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import { useExpenseStore, type Expense } from '@/lib/expense-store'
 import { MonthSelector } from './month-selector'
 import { SummaryCards } from './summary-cards'
@@ -12,7 +13,7 @@ export function MonthlyView() {
   const {
     currentMonth,
     setCurrentMonth,
-    getMonthData,
+    initializeMonth,
     addIncome,
     removeIncome,
     updateIncome,
@@ -28,7 +29,17 @@ export function MonthlyView() {
     getInstallmentsForMonth,
   } = useExpenseStore()
 
-  const monthData = getMonthData(currentMonth)
+  // Initialize month data in effect to avoid setState during render
+  useEffect(() => {
+    initializeMonth(currentMonth)
+  }, [currentMonth, initializeMonth])
+
+  const monthData = monthlyData[currentMonth]
+
+  // Guard: return null if month data not yet initialized
+  if (!monthData) {
+    return null
+  }
 
   // Handlers for fixed expenses with propagation
   const handleAddFixedExpense = (expense: Omit<Expense, 'id'>) => {

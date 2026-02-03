@@ -369,13 +369,28 @@ describe('Month Logic', () => {
       expect(data.investments).toBe(800)
     })
 
-    it('should initialize and return new month if not exists', () => {
+    it('should return empty month data if not exists without persisting', () => {
       const { getMonthData } = useExpenseStore.getState()
       const data = getMonthData('2026-10')
 
       expect(data).toBeDefined()
       expect(data.month).toBe('2026-10')
       expect(data.incomes).toEqual([])
+
+      // Verify it was NOT persisted to store
+      const state = useExpenseStore.getState()
+      expect(state.monthlyData['2026-10']).toBeUndefined()
+    })
+
+    it('should create new month data each time for non-existent months', () => {
+      const { getMonthData } = useExpenseStore.getState()
+      const data1 = getMonthData('2026-11')
+      const data2 = getMonthData('2026-11')
+
+      // Should be different object instances
+      expect(data1).not.toBe(data2)
+      expect(data1.month).toBe('2026-11')
+      expect(data2.month).toBe('2026-11')
     })
   })
 })

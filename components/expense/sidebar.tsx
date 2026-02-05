@@ -15,6 +15,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { YearSelector } from './year-selector'
+import { ThemeToggle } from '@/components/theme-toggle'
 
 interface SidebarProps {
   activeView: 'dashboard' | 'monthly' | 'categories' | 'cards' | 'settings'
@@ -147,7 +148,17 @@ export function Sidebar({
       </nav>
 
       {/* Configurações (bottom) */}
-      <div className="border-sidebar-border border-t p-2">
+      <div className="border-sidebar-border border-t p-2 space-y-1">
+        {!collapsed ? (
+          <div className="flex items-center justify-between px-3 py-2">
+            <span className="text-sm font-medium text-sidebar-foreground/80">Tema</span>
+            <ThemeToggle />
+          </div>
+        ) : (
+          <div className="flex items-center justify-center py-2">
+            <ThemeToggle />
+          </div>
+        )}
         <button
           onClick={() => onViewChange('settings')}
           className={cn(

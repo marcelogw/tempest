@@ -18,6 +18,7 @@ yarn-error.log*
 
 # env files
 .env*
+!.env.local.example
 
 # vercel
 .vercel
@@ -30,6 +31,7 @@ next-env.d.ts
 /test-results/
 /playwright-report/
 /.playwright/
+/coverage/
 
 # serena
 .serena

@@ -1,8 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useExpenseStore } from '@/lib/expense-store'
+import { useSyncStore } from '@/lib/sync-store'
+import { getSyncManager } from '@/lib/sync-manager'
+import { fetchAuthSession } from 'aws-amplify/auth'
 import { Button } from '@/components/ui/button'
+import { SyncCard } from './sync-card'
+import { AuthDialog } from './auth-dialog'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,13 +33,90 @@ import { AlertTriangle } from 'lucide-react'
 export function SettingsView() {
   const { deleteYearData, deleteAllData, getAvailableYears } = useExpenseStore()
   const { toast } = useToast()
+  const { setStatus, setUserEmail } = useSyncStore()
+  const searchParams = useSearchParams()
 
   const [deleteYearDialogOpen, setDeleteYearDialogOpen] = useState(false)
   const [deleteAllDialogOpen, setDeleteAllDialogOpen] = useState(false)
   const [selectedYear, setSelectedYear] = useState<string>('')
   const [confirmationText, setConfirmationText] = useState('')
+  const [authDialogOpen, setAuthDialogOpen] = useState(false)
 
   const availableYears = getAvailableYears()
+
+  // Check for auth callback success
+  useEffect(() => {
+    const authStatus = searchParams.get('auth')
+    const authMessage = searchParams.get('message')
+
+    if (authStatus === 'success') {
+      void handleAuthSuccess()
+    } else if (authStatus === 'error') {
+      toast({
+        title: 'Erro na autenticação',
+        description: authMessage || 'Não foi possível conectar a conta',
+        variant: 'destructive',
+      })
+    }
+  }, [searchParams, toast])
+
+  // Check if user is already authenticated on mount
+  useEffect(() => {
+    void checkAuthStatus()
+  }, [])
+
+  async function checkAuthStatus() {
+    try {
+      const session = await fetchAuthSession()
+      if (session.tokens?.idToken) {
+        const email = session.tokens.idToken.payload.email as string
+        setStatus('connected')
+        setUserEmail(email)
+      }
+    } catch (_error) {
+      // Not authenticated, stay disconnected
+    }
+  }
+
+  function handleConnect() {
+    setAuthDialogOpen(true)
+  }
+
+  async function handleDisconnect() {
+    const syncManager = getSyncManager()
+    await syncManager.disconnect()
+
+    toast({
+      title: 'Conta desconectada',
+      description: 'Seus dados locais foram mantidos',
+    })
+  }
+
+  async function handleAuthSuccess() {
+    setAuthDialogOpen(false)
+
+    // Get user email
+    try {
+      const session = await fetchAuthSession()
+      const email = session.tokens?.idToken?.payload.email as string
+      setUserEmail(email)
+
+      // Start upload
+      const syncManager = getSyncManager()
+      await syncManager.uploadInitialData()
+
+      toast({
+        title: 'Dados sincronizados com sucesso',
+        description: 'Seus dados foram enviados para a nuvem',
+      })
+    } catch (error) {
+      toast({
+        title: 'Erro ao sincronizar',
+        description: error instanceof Error ? error.message : 'Erro desconhecido',
+        variant: 'destructive',
+      })
+    }
+  }
 
   const handleDeleteYear = () => {
     if (!selectedYear) return
@@ -82,6 +165,9 @@ export function SettingsView() {
               <h2 className="mb-6 text-xl font-semibold">Gerenciamento de Dados</h2>
 
               <div className="space-y-4">
+                {/* Sync Card */}
+                <SyncCard onConnect={handleConnect} onDisconnect={() => void handleDisconnect()} />
+
                 {/* Card: Deletar Ano Específico */}
                 <div className="rounded-lg border p-4">
                   <h3 className="mb-2 text-base font-medium">Deletar dados de um ano</h3>
@@ -225,6 +311,13 @@ export function SettingsView() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Auth Dialog */}
+      <AuthDialog
+        open={authDialogOpen}
+        onOpenChange={setAuthDialogOpen}
+        onSuccess={() => void handleAuthSuccess()}
+      />
     </>
   )
 }

@@ -2,6 +2,7 @@
 
 import { generateClient } from 'aws-amplify/data'
 import type { Schema } from '@/amplify/data/resource'
+import { signOut } from 'aws-amplify/auth'
 import { useSyncStore } from './sync-store'
 import { useExpenseStore, type Expense } from './expense-store'
 
@@ -553,7 +554,13 @@ export class SyncManager {
    * Disconnect and clear sync state (keeps local data intact)
    */
   async disconnect(): Promise<void> {
-    await Promise.resolve() // ESLint: require-await
+    try {
+      // Sign out from Amplify Auth
+      await signOut()
+    } catch (error) {
+      console.warn('⚠️ Sign out error (will continue with local cleanup):', error)
+    }
+
     this.syncStore.disconnect()
     this.syncStore.clearIdMappings()
     console.log('🔌 Disconnected from cloud')

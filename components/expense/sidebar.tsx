@@ -10,14 +10,15 @@ import {
   CreditCard,
   ChevronLeft,
   ChevronRight,
+  Settings,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { YearSelector } from './year-selector'
 
 interface SidebarProps {
-  activeView: 'dashboard' | 'monthly' | 'categories' | 'cards'
-  onViewChange: (view: 'dashboard' | 'monthly' | 'categories' | 'cards') => void
+  activeView: 'dashboard' | 'monthly' | 'categories' | 'cards' | 'settings'
+  onViewChange: (view: 'dashboard' | 'monthly' | 'categories' | 'cards' | 'settings') => void
   currentYear: string
   availableYears: string[]
   onYearChange: (year: string) => void
@@ -52,6 +53,11 @@ export function Sidebar({
       id: 'cards' as const,
       label: 'Cartões',
       icon: CreditCard,
+    },
+    {
+      id: 'settings' as const,
+      label: 'Configurações',
+      icon: Settings,
     },
   ]
 

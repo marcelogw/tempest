@@ -215,6 +215,9 @@ interface ExpenseStore {
   getCardUsageForMonth: (cardId: string, month: string) => number
   getCardTotalCommitment: (cardId: string) => number
   getCardUsagePercentage: (cardId: string) => number | null
+  // Data management actions
+  deleteYearData: (year: string) => void
+  deleteAllData: () => void
 }
 
 const generateId = () => Math.random().toString(36).substring(2, 9)
@@ -1112,6 +1115,46 @@ export const useExpenseStore = create<ExpenseStore>()(
         const totalCommitment = get().getCardTotalCommitment(cardId)
 
         return (totalCommitment / card.limit) * 100
+      },
+
+      // Data management actions
+      deleteYearData: (year) => {
+        const { monthlyData, installments } = get()
+        const updatedMonthlyData = { ...monthlyData }
+
+        // Remove all months from the specified year
+        Object.keys(updatedMonthlyData).forEach((monthKey) => {
+          if (monthKey.startsWith(year)) {
+            delete updatedMonthlyData[monthKey]
+          }
+        })
+
+        // Remove installments that start in the deleted year
+        const updatedInstallments = installments.filter((inst) => {
+          const [instYear] = inst.startMonth.split('-')
+          return instYear !== year
+        })
+
+        set({
+          monthlyData: updatedMonthlyData,
+          installments: updatedInstallments,
+        })
+
+        // Reset current month if it was in the deleted year
+        const { currentMonth } = get()
+        const [currentYear] = currentMonth.split('-')
+        if (currentYear === year) {
+          set({ currentMonth: getCurrentMonth() })
+        }
+      },
+
+      deleteAllData: () => {
+        set({
+          monthlyData: {},
+          installments: [],
+          currentMonth: getCurrentMonth(),
+          currentYear: new Date().getFullYear().toString(),
+        })
       },
     }),
     {

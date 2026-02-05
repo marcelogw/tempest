@@ -15,7 +15,15 @@ describe('Installment Logic', () => {
       currentYear: '2025',
       installments: [],
       categories: [],
+      creditCards: [],
     })
+
+    // Create test credit cards
+    const { addCreditCard } = useExpenseStore.getState()
+    addCreditCard('Nubank Pri', '#8b5cf6', 3000)
+    addCreditCard('Nubank Ma', '#a855f7', 2000)
+    addCreditCard('MercadoPago', '#3b82f6', 5000)
+    addCreditCard('Itaú', '#f97316', 4000)
   })
 
   describe('addInstallment', () => {
@@ -24,7 +32,7 @@ describe('Installment Logic', () => {
 
       addInstallment({
         name: 'Notebook',
-        card: 'nubank_pri',
+        card: 'nubank-pri',
         totalInstallments: 12,
         amountPerInstallment: 300,
         startMonth: '2025-01',
@@ -63,7 +71,7 @@ describe('Installment Logic', () => {
 
       addInstallment({
         name: 'TV',
-        card: 'nubank_ma',
+        card: 'nubank-ma',
         totalInstallments: 6,
         amountPerInstallment: 400,
         startMonth: '2025-02',
@@ -90,7 +98,7 @@ describe('Installment Logic', () => {
 
       addInstallment({
         name: 'Celular',
-        card: 'nubank_pri',
+        card: 'nubank-pri',
         totalInstallments: 10,
         amountPerInstallment: 200,
         startMonth: '2025-01',
@@ -110,7 +118,7 @@ describe('Installment Logic', () => {
 
       addInstallment({
         name: 'Item 1',
-        card: 'nubank_pri',
+        card: 'nubank-pri',
         totalInstallments: 5,
         amountPerInstallment: 100,
         startMonth: '2025-01',
@@ -141,7 +149,7 @@ describe('Installment Logic', () => {
 
       addInstallment({
         name: 'Celular',
-        card: 'nubank_pri',
+        card: 'nubank-pri',
         totalInstallments: 10,
         amountPerInstallment: 200,
         startMonth: '2024-12',
@@ -160,7 +168,7 @@ describe('Installment Logic', () => {
 
       addInstallment({
         name: 'Geladeira',
-        card: 'nubank_ma',
+        card: 'nubank-ma',
         totalInstallments: 12,
         amountPerInstallment: 250,
         startMonth: '2025-01',
@@ -224,7 +232,7 @@ describe('Installment Logic', () => {
 
       addInstallment({
         name: 'Item A',
-        card: 'nubank_pri',
+        card: 'nubank-pri',
         totalInstallments: 12,
         amountPerInstallment: 100,
         startMonth: '2025-01',

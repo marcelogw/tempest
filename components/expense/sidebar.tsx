@@ -16,8 +16,8 @@ import { useState } from 'react'
 import { YearSelector } from './year-selector'
 
 interface SidebarProps {
-  activeView: 'dashboard' | 'monthly' | 'categories'
-  onViewChange: (view: 'dashboard' | 'monthly' | 'categories') => void
+  activeView: 'dashboard' | 'monthly' | 'categories' | 'cards'
+  onViewChange: (view: 'dashboard' | 'monthly' | 'categories' | 'cards') => void
   currentYear: string
   availableYears: string[]
   onYearChange: (year: string) => void
@@ -48,12 +48,16 @@ export function Sidebar({
       label: 'Categorias',
       icon: Shapes,
     },
+    {
+      id: 'cards' as const,
+      label: 'Cartões',
+      icon: CreditCard,
+    },
   ]
 
   const infoItems = [
     { label: 'Investimentos', icon: TrendingUp },
     { label: 'Poupanca', icon: PiggyBank },
-    { label: 'Cartoes', icon: CreditCard },
   ]
 
   return (

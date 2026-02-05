@@ -20,26 +20,23 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import {
-  useExpenseStore,
-  creditCardLabels,
-  creditCardColors,
-  formatCurrencyBRL,
-  type CreditCard as CreditCardType,
-} from '@/lib/expense-store'
+import { useExpenseStore, formatCurrencyBRL } from '@/lib/expense-store'
 
 interface InstallmentsProps {
   currentMonth: string
+  showAllInstallments?: boolean
 }
 
-export function Installments({ currentMonth }: InstallmentsProps) {
-  const { installments, addInstallment, removeInstallment, getInstallmentsForMonth } =
+export function Installments({ currentMonth, showAllInstallments = false }: InstallmentsProps) {
+  const { creditCards, installments, addInstallment, removeInstallment, getInstallmentsForMonth } =
     useExpenseStore()
   const [isOpen, setIsOpen] = useState(false)
   const [name, setName] = useState('')
-  const [card, setCard] = useState<CreditCardType>('nubank_pri')
+  const [card, setCard] = useState<string>('')
   const [totalInstallments, setTotalInstallments] = useState('')
   const [amount, setAmount] = useState('')
+
+  const sortedCards = [...creditCards].sort((a, b) => a.order - b.order)
 
   const currentInstallments = getInstallmentsForMonth(currentMonth)
 
@@ -90,31 +87,41 @@ export function Installments({ currentMonth }: InstallmentsProps) {
               </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="name">Nome</Label>
+                  <Label htmlFor="installment-name">Nome</Label>
                   <Input
-                    id="name"
+                    id="installment-name"
                     placeholder="Ex: Tablet Samsung"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
+                    autoComplete="off"
+                    data-1p-ignore
+                    data-lpignore="true"
+                    data-form-type="other"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="card">Cartao</Label>
-                  <Select value={card} onValueChange={(v) => setCard(v as CreditCardType)}>
+                  <Label htmlFor="card">Cartão</Label>
+                  <Select value={card} onValueChange={setCard} disabled={sortedCards.length === 0}>
                     <SelectTrigger>
-                      <SelectValue />
+                      <SelectValue
+                        placeholder={
+                          sortedCards.length === 0
+                            ? 'Crie um cartão primeiro'
+                            : 'Selecione o cartão'
+                        }
+                      />
                     </SelectTrigger>
                     <SelectContent>
-                      {(Object.keys(creditCardLabels) as CreditCardType[]).map((cardKey) => (
-                        <SelectItem key={cardKey} value={cardKey}>
+                      {sortedCards.map((c) => (
+                        <SelectItem key={c.id} value={c.id}>
                           <div className="flex items-center gap-2">
                             <div
                               className="h-2 w-2 rounded-full"
-                              style={{ backgroundColor: creditCardColors[cardKey] }}
+                              style={{ backgroundColor: c.color }}
                             />
-                            {creditCardLabels[cardKey]}
+                            {c.name}
                           </div>
                         </SelectItem>
                       ))}
@@ -175,41 +182,47 @@ export function Installments({ currentMonth }: InstallmentsProps) {
         ) : (
           <>
             <div className="space-y-2">
-              {currentInstallments.map(({ installment, currentNumber }) => (
-                <div
-                  key={installment.id}
-                  className="bg-muted/50 border-border flex items-center justify-between rounded-lg border p-3"
-                >
-                  <div className="flex items-center gap-3">
-                    <div
-                      className="h-8 w-2 rounded-full"
-                      style={{ backgroundColor: creditCardColors[installment.card] }}
-                    />
-                    <div>
-                      <p className="text-sm font-medium">
-                        {installment.name} {currentNumber}/{installment.totalInstallments}
-                      </p>
-                      <p className="text-muted-foreground flex items-center gap-1 text-xs">
-                        <CreditCard className="h-3 w-3" />
-                        {creditCardLabels[installment.card]}
-                      </p>
+              {currentInstallments.map(({ installment, currentNumber }) => {
+                const card = creditCards.find((c) => c.id === installment.card)
+                const cardColor = card?.color || '#64748b'
+                const cardName = card?.name || 'Cartão desconhecido'
+
+                return (
+                  <div
+                    key={installment.id}
+                    className="bg-muted/50 border-border flex items-center justify-between rounded-lg border p-3"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="h-8 w-2 rounded-full"
+                        style={{ backgroundColor: cardColor }}
+                      />
+                      <div>
+                        <p className="text-sm font-medium">
+                          {installment.name} {currentNumber}/{installment.totalInstallments}
+                        </p>
+                        <p className="text-muted-foreground flex items-center gap-1 text-xs">
+                          <CreditCard className="h-3 w-3" />
+                          {cardName}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-foreground text-sm font-semibold">
+                        {formatCurrencyBRL(installment.amountPerInstallment)}
+                      </span>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-muted-foreground hover:text-destructive h-7 w-7"
+                        onClick={() => removeInstallment(installment.id)}
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-foreground text-sm font-semibold">
-                      {formatCurrencyBRL(installment.amountPerInstallment)}
-                    </span>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="text-muted-foreground hover:text-destructive h-7 w-7"
-                      onClick={() => removeInstallment(installment.id)}
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </Button>
-                  </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
 
             <div className="border-border border-t pt-2">
@@ -224,7 +237,7 @@ export function Installments({ currentMonth }: InstallmentsProps) {
         )}
 
         {/* Show all active installments overview */}
-        {installments.length > 0 && (
+        {showAllInstallments && installments.length > 0 && (
           <div className="border-border border-t pt-3">
             <p className="text-muted-foreground mb-2 flex items-center gap-1 text-xs">
               <Calendar className="h-3 w-3" />

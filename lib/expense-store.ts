@@ -17,7 +17,14 @@ export type Category = {
 // Changed from union type to string for dynamic categories
 export type ExpenseCategory = string
 
-export type CreditCard = 'nubank_pri' | 'nubank_ma' | 'mercadopago' | 'itau'
+// Credit card management interface
+export type CreditCard = {
+  id: string // unique identifier (kebab-case from name)
+  name: string // display name
+  color: string // hex color from palette
+  limit: number | null // monthly limit in BRL (null = no limit)
+  order: number // for custom ordering
+}
 
 export interface Expense {
   id: string
@@ -33,7 +40,7 @@ export interface Expense {
 export interface Installment {
   id: string
   name: string
-  card: CreditCard
+  card: string // cardId reference (changed from union type)
   totalInstallments: number
   amountPerInstallment: number
   startMonth: string // YYYY-MM format
@@ -157,6 +164,7 @@ interface ExpenseStore {
   monthlyData: Record<string, MonthlyData>
   installments: Installment[]
   categories: Category[]
+  creditCards: CreditCard[]
   currentMonth: string
   currentYear: string
   setCurrentMonth: (month: string) => void
@@ -198,11 +206,30 @@ interface ExpenseStore {
   reorderCategories: (orderedIds: string[]) => void
   getCategoryById: (id: string) => Category | undefined
   validateCategory: (categoryId: string) => string
+  // Credit card management actions
+  addCreditCard: (name: string, color: string, limit?: number | null) => void
+  updateCreditCard: (id: string, updates: Partial<Omit<CreditCard, 'id'>>) => void
+  deleteCreditCard: (id: string, reassignToCardId?: string) => void
+  reorderCreditCards: (orderedIds: string[]) => void
+  getCreditCardById: (id: string) => CreditCard | undefined
+  getCardUsageForMonth: (cardId: string, month: string) => number
+  getCardTotalCommitment: (cardId: string) => number
+  getCardUsagePercentage: (cardId: string) => number | null
 }
 
 const generateId = () => Math.random().toString(36).substring(2, 9)
 
 const generateRecurringGroupId = () => `recur_${generateId()}`
+
+// Helper to normalize strings to kebab-case IDs (handles Portuguese accents)
+const normalizeToKebabCase = (str: string): string => {
+  return str
+    .normalize('NFD') // Decompose accents
+    .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+    .toLowerCase()
+    .replace(/\s+/g, '-') // Spaces to hyphens
+    .replace(/[^\w-]/g, '') // Remove non-word chars except hyphens
+}
 
 // Helper to get future months for propagation
 const getFutureMonths = (startMonth: string, count: number = 24): string[] => {
@@ -427,6 +454,7 @@ export const useExpenseStore = create<ExpenseStore>()(
       monthlyData: shouldUseSampleData() ? generateSampleData() : {},
       installments: [],
       categories: DEFAULT_CATEGORIES,
+      creditCards: [],
       currentMonth: getCurrentMonth(),
       currentYear: new Date().getFullYear().toString(),
 
@@ -869,10 +897,7 @@ export const useExpenseStore = create<ExpenseStore>()(
 
       addCategory: (label, color, icon = null) => {
         const { categories } = get()
-        const id = label
-          .toLowerCase()
-          .replace(/\s+/g, '-')
-          .replace(/[^\w-]/g, '')
+        const id = normalizeToKebabCase(label)
 
         // Check for duplicate IDs
         if (categories.find((c) => c.id === id)) {
@@ -965,26 +990,118 @@ export const useExpenseStore = create<ExpenseStore>()(
         const exists = categories.find((c) => c.id === categoryId)
         return exists ? categoryId : SYSTEM_CATEGORY_ID
       },
+
+      // Credit card management actions
+      addCreditCard: (name, color, limit = null) => {
+        const { creditCards } = get()
+        const id = normalizeToKebabCase(name)
+
+        if (creditCards.find((c) => c.id === id)) {
+          throw new Error('Já existe um cartão com esse nome')
+        }
+
+        const newCard: CreditCard = {
+          id,
+          name,
+          color,
+          limit,
+          order: creditCards.length,
+        }
+
+        set({ creditCards: [...creditCards, newCard] })
+      },
+
+      updateCreditCard: (id, updates) => {
+        const { creditCards } = get()
+        const index = creditCards.findIndex((c) => c.id === id)
+
+        if (index === -1) {
+          throw new Error('Cartão não encontrado')
+        }
+
+        const updated = [...creditCards]
+        updated[index] = { ...updated[index], ...updates }
+        set({ creditCards: updated })
+      },
+
+      deleteCreditCard: (id, reassignToCardId) => {
+        const { creditCards, installments } = get()
+        const cardIndex = creditCards.findIndex((c) => c.id === id)
+
+        if (cardIndex === -1) {
+          throw new Error('Cartão não encontrado')
+        }
+
+        const affectedInstallments = installments.filter((inst) => inst.card === id)
+
+        if (affectedInstallments.length > 0 && !reassignToCardId) {
+          throw new Error(
+            `Este cartão possui ${affectedInstallments.length} parcelamento(s) ativo(s)`
+          )
+        }
+
+        const updatedInstallments = installments.map((inst) =>
+          inst.card === id ? { ...inst, card: reassignToCardId! } : inst
+        )
+
+        const updatedCards = creditCards.filter((c) => c.id !== id)
+
+        set({
+          creditCards: updatedCards,
+          installments: updatedInstallments,
+        })
+      },
+
+      reorderCreditCards: (orderedIds) => {
+        const { creditCards } = get()
+        const reordered = orderedIds
+          .map((id) => creditCards.find((c) => c.id === id))
+          .filter(Boolean)
+          .map((card, index) => ({ ...card!, order: index }))
+
+        set({ creditCards: reordered })
+      },
+
+      getCreditCardById: (id) => {
+        return get().creditCards.find((c) => c.id === id)
+      },
+
+      getCardUsageForMonth: (cardId, month) => {
+        const { getInstallmentsForMonth } = get()
+        const installmentsInMonth = getInstallmentsForMonth(month)
+
+        return installmentsInMonth
+          .filter(({ installment }) => installment.card === cardId)
+          .reduce((sum, { installment }) => sum + installment.amountPerInstallment, 0)
+      },
+
+      getCardTotalCommitment: (cardId) => {
+        const { installments } = get()
+
+        return installments
+          .filter((inst) => inst.card === cardId)
+          .reduce((sum, inst) => {
+            const totalValue = inst.amountPerInstallment * inst.totalInstallments
+            return sum + totalValue
+          }, 0)
+      },
+
+      getCardUsagePercentage: (cardId) => {
+        const { creditCards } = get()
+        const card = creditCards.find((c) => c.id === cardId)
+
+        if (!card || card.limit === null) return null
+
+        const totalCommitment = get().getCardTotalCommitment(cardId)
+
+        return (totalCommitment / card.limit) * 100
+      },
     }),
     {
       name: 'expense-store',
     }
   )
 )
-
-export const creditCardLabels: Record<CreditCard, string> = {
-  nubank_pri: 'Nubank Pri',
-  nubank_ma: 'Nubank Ma',
-  mercadopago: 'MercadoPago',
-  itau: 'Itau',
-}
-
-export const creditCardColors: Record<CreditCard, string> = {
-  nubank_pri: '#8b5cf6',
-  nubank_ma: '#a855f7',
-  mercadopago: '#3b82f6',
-  itau: '#f97316',
-}
 
 export const formatCurrencyBRL = (value: number) => {
   return new Intl.NumberFormat('pt-BR', {

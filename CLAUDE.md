@@ -12,12 +12,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 npm run dev          # Start development server
-npm run build        # Production build (TypeScript errors ignored)
+npm run build        # Production build
 npm start           # Start production server
-npm run lint        # Run ESLint (currently not configured)
+npm run lint        # Run ESLint
+npm run typecheck   # Run TypeScript validation
 ```
-
-Note: TypeScript validation is disabled during builds (`ignoreBuildErrors: true` in next.config.mjs).
 
 ## Architecture
 

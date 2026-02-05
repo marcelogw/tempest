@@ -33,3 +33,8 @@ next-env.d.ts
 
 # serena
 .serena
+
+# amplify
+.amplify
+amplify_outputs*
+amplifyconfiguration*

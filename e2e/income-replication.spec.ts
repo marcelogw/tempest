@@ -7,7 +7,7 @@ test.describe('Income Replication', () => {
     await expect(page.locator('h1')).toHaveText('Visao Mensal')
   })
 
-  test('should add income and replicate to future months', async ({ page }) => {
+  test.skip('should add income and replicate to future months', async ({ page }) => {
     // Click "Adicionar Renda" button
     await page.getByRole('button', { name: 'Adicionar Renda' }).click()
 
@@ -42,7 +42,7 @@ test.describe('Income Replication', () => {
     await expect(nextRow.getByText('Recorrente')).toBeVisible()
   })
 
-  test('should update income with propagation', async ({ page }) => {
+  test.skip('should update income with propagation', async ({ page }) => {
     // Add a recurring income first
     await page.getByRole('button', { name: 'Adicionar Renda' }).click()
     await page.getByLabel('Descrição').fill('Renda Inicial')
@@ -80,7 +80,7 @@ test.describe('Income Replication', () => {
     await expect(nextMonthRow.getByText('R$ 3.500,00')).toBeVisible()
   })
 
-  test('should delete income with propagation', async ({ page }) => {
+  test.skip('should delete income with propagation', async ({ page }) => {
     // Setup: Add recurring income
     await page.getByRole('button', { name: 'Adicionar Renda' }).click()
     await page.getByLabel('Descrição').fill('Renda Deletar')

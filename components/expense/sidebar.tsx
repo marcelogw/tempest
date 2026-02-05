@@ -54,11 +54,6 @@ export function Sidebar({
       label: 'Cartões',
       icon: CreditCard,
     },
-    {
-      id: 'settings' as const,
-      label: 'Configurações',
-      icon: Settings,
-    },
   ]
 
   const infoItems = [
@@ -150,6 +145,22 @@ export function Sidebar({
           ))}
         </div>
       </nav>
+
+      {/* Configurações (bottom) */}
+      <div className="border-sidebar-border border-t p-2">
+        <button
+          onClick={() => onViewChange('settings')}
+          className={cn(
+            'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
+            activeView === 'settings'
+              ? 'bg-sidebar-primary text-sidebar-primary-foreground'
+              : 'text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
+          )}
+        >
+          <Settings className="h-5 w-5 flex-shrink-0" />
+          {!collapsed && <span>Configurações</span>}
+        </button>
+      </div>
     </aside>
   )
 }

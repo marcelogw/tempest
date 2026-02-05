@@ -418,6 +418,23 @@ export const getMonthFromOffset = (startMonth: string, offset: number): string =
   return `${resultDate.getFullYear()}-${String(resultDate.getMonth() + 1).padStart(2, '0')}`
 }
 
+// Helper to convert installments to synthetic expenses for category breakdown
+export const mapInstallmentsToExpenses = (
+  installments: Array<{ installment: Installment; currentNumber: number }>,
+  month: string,
+  categoryId: string = 'parcelamento'
+): Expense[] => {
+  return installments.map(({ installment, currentNumber }) => ({
+    id: `installment-${installment.id}`,
+    description: `${installment.name} (${currentNumber}/${installment.totalInstallments})`,
+    amount: installment.amountPerInstallment,
+    category: categoryId,
+    type: 'variable' as const,
+    date: month + '-01',
+    installmentId: installment.id,
+  }))
+}
+
 // Check if we should initialize with sample data
 const shouldUseSampleData = () => {
   // Never use sample data on server (prevents hydration mismatch)

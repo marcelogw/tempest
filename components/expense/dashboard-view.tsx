@@ -19,6 +19,7 @@ import {
   formatShortCurrencyBRL,
   type ExpenseCategory,
   SYSTEM_CATEGORY_ID,
+  mapInstallmentsToExpenses,
 } from '@/lib/expense-store'
 import {
   LineChart,
@@ -40,7 +41,8 @@ import {
 import { cn } from '@/lib/utils'
 
 export function DashboardView() {
-  const { monthlyData, currentYear, categories, getCategoryById } = useExpenseStore()
+  const { monthlyData, currentYear, categories, getCategoryById, getInstallmentsForMonth } =
+    useExpenseStore()
 
   // Prevent hydration mismatch by only rendering store-dependent content after mount
   const [isHydrated, setIsHydrated] = useState(false)
@@ -57,7 +59,15 @@ export function DashboardView() {
     return yearMonths.map((month) => {
       const fixedTotal = month.fixedExpenses.reduce((sum, e) => sum + e.amount, 0)
       const variableTotal = month.variableExpenses.reduce((sum, e) => sum + e.amount, 0)
-      const totalExpenses = fixedTotal + variableTotal
+
+      // Include installments in total expenses for accurate analytics
+      const monthInstallments = getInstallmentsForMonth(month.month)
+      const installmentsTotal = monthInstallments.reduce(
+        (sum, { installment }) => sum + installment.amountPerInstallment,
+        0
+      )
+      const totalExpenses = fixedTotal + variableTotal + installmentsTotal
+
       const totalIncome = month.incomes.reduce((sum, i) => sum + i.amount, 0)
 
       const date = new Date(month.month + '-01')
@@ -75,7 +85,7 @@ export function DashboardView() {
         net: totalIncome - totalExpenses - month.investments - month.savings,
       }
     })
-  }, [monthlyData, currentYear])
+  }, [monthlyData, currentYear, getInstallmentsForMonth])
 
   // Calculate category averages across all months
   const categoryAverages = useMemo(() => {
@@ -93,7 +103,19 @@ export function DashboardView() {
         categories.forEach((cat) => {
           monthCategoryTotals[cat.id] = 0
         })
-        ;[...month.fixedExpenses, ...month.variableExpenses].forEach((expense) => {
+
+        // Get installments for this month and convert to expenses
+        const monthInstallments = getInstallmentsForMonth(month.month)
+        const installmentExpenses = mapInstallmentsToExpenses(monthInstallments, month.month)
+
+        // Combine all expenses including installments for accurate category breakdown
+        const allMonthExpenses = [
+          ...month.fixedExpenses,
+          ...month.variableExpenses,
+          ...installmentExpenses,
+        ]
+
+        allMonthExpenses.forEach((expense) => {
           // Use expense category or fallback to system category
           const categoryId =
             categoryTotals[expense.category] !== undefined ? expense.category : SYSTEM_CATEGORY_ID

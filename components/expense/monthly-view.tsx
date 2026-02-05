@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { useExpenseStore, type Expense } from '@/lib/expense-store'
+import { useExpenseStore, type Expense, mapInstallmentsToExpenses } from '@/lib/expense-store'
 import { MonthSelector } from './month-selector'
 import { SummaryCards } from './summary-cards'
 import { ExpenseList } from './expense-list'
@@ -115,7 +115,15 @@ export function MonthlyView() {
     monthData.variableExpenses.reduce((sum, e) => sum + e.amount, 0) +
     installmentsTotal
 
-  const allExpenses = [...monthData.fixedExpenses, ...monthData.variableExpenses]
+  // Convert installments to synthetic expenses for category breakdown
+  const installmentExpenses = mapInstallmentsToExpenses(currentInstallments, currentMonth)
+
+  // Combine all expenses including installments for category analysis
+  const allExpenses = [
+    ...monthData.fixedExpenses,
+    ...monthData.variableExpenses,
+    ...installmentExpenses,
+  ]
 
   const totalIncome = monthData.incomes.reduce((sum, i) => sum + i.amount, 0)
 

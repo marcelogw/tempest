@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { getCurrentUser } from 'aws-amplify/auth'
 import { Badge } from '@/components/ui/badge'
 import { Database, Cloud, AlertCircle } from 'lucide-react'
+import { useAmplify } from '@/components/amplify-provider'
 
 /**
  * DataSourceIndicator - Shows which data source is active
@@ -14,14 +15,25 @@ import { Database, Cloud, AlertCircle } from 'lucide-react'
  * - Both
  */
 export function DataSourceIndicator() {
+  const { isConfigured } = useAmplify()
   const [dataSource, setDataSource] = useState<'local' | 'aws' | 'both' | 'checking'>('checking')
   const [userEmail, setUserEmail] = useState<string | null>(null)
 
   useEffect(() => {
     void checkDataSource()
-  }, [])
+  }, [isConfigured])
 
   async function checkDataSource() {
+    // If Amplify is not configured, only check localStorage
+    if (!isConfigured) {
+      const localData = localStorage.getItem('expense-store')
+      const hasLocalData =
+        localData &&
+        (JSON.parse(localData) as { state?: { monthlyData?: unknown } }).state?.monthlyData
+      setDataSource(hasLocalData ? 'local' : 'checking')
+      return
+    }
+
     try {
       // Check if Amplify auth is configured and user is logged in
       const user = await getCurrentUser()

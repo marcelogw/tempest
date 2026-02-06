@@ -6,6 +6,7 @@ import { useExpenseStore } from '@/lib/expense-store'
 import { useSyncStore } from '@/lib/sync-store'
 import { getSyncManager } from '@/lib/sync-manager'
 import { fetchAuthSession } from 'aws-amplify/auth'
+import { useAmplify } from '@/components/amplify-provider'
 import { Button } from '@/components/ui/button'
 import { SyncCard } from './sync-card'
 import { AuthDialog } from './auth-dialog'
@@ -31,6 +32,7 @@ import { useToast } from '@/hooks/use-toast'
 import { AlertTriangle } from 'lucide-react'
 
 export function SettingsView() {
+  const { isConfigured } = useAmplify()
   const { deleteYearData, deleteAllData, getAvailableYears } = useExpenseStore()
   const { toast } = useToast()
   const { setStatus, setUserEmail } = useSyncStore()
@@ -62,10 +64,14 @@ export function SettingsView() {
 
   // Check if user is already authenticated on mount
   useEffect(() => {
-    void checkAuthStatus()
-  }, [])
+    if (isConfigured) {
+      void checkAuthStatus()
+    }
+  }, [isConfigured])
 
   async function checkAuthStatus() {
+    if (!isConfigured) return
+
     try {
       const session = await fetchAuthSession()
       if (session.tokens?.idToken) {
@@ -94,6 +100,15 @@ export function SettingsView() {
 
   async function handleAuthSuccess() {
     setAuthDialogOpen(false)
+
+    if (!isConfigured) {
+      toast({
+        title: 'Amplify não configurado',
+        description: 'Execute "npx ampx sandbox" para habilitar sincronização',
+        variant: 'destructive',
+      })
+      return
+    }
 
     // Get user email
     try {

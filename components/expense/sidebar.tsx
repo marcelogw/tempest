@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { YearSelector } from './year-selector'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { TempestIconMark } from '@/components/brand/tempest-logo'
 
 interface SidebarProps {
   activeView: 'dashboard' | 'monthly' | 'categories' | 'cards' | 'settings'
@@ -72,10 +73,10 @@ export function Sidebar({
       <div className="border-sidebar-border flex items-center justify-between border-b p-4">
         {!collapsed && (
           <div className="flex items-center gap-2">
-            <div className="bg-primary flex h-8 w-8 items-center justify-center rounded-lg">
-              <span className="text-primary-foreground text-sm font-bold">T</span>
-            </div>
-            <span className="text-lg font-semibold">Tempest</span>
+            <TempestIconMark size={32} />
+            <span className="text-lg font-bold" style={{ fontFamily: 'var(--font-heading)' }}>
+              Tempest
+            </span>
           </div>
         )}
         <Button

@@ -67,6 +67,7 @@ export default tseslint.config(
       'dist/**',
       'coverage/**',
       '.vercel/**',
+      '.amplify/**', // Amplify build artifacts
       'playwright-report/**',
       'test-results/**',
       '*.config.{js,mjs,ts}',

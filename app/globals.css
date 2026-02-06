@@ -4,86 +4,96 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(0.98 0.005 250);
-  --foreground: oklch(0.15 0.02 250);
+  /* Tempest Brand Identity - Light Theme */
+  /* Primary: Bright Blue #1A8FE3 - trust, clarity */
+  /* Accent: Teal Green #22C997 - growth, success */
+  /* Warm: Coral #FF7849 - energy, friendliness */
+  --background: oklch(0.98 0.006 230);
+  --foreground: oklch(0.18 0.02 240);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.15 0.02 250);
+  --card-foreground: oklch(0.18 0.02 240);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.15 0.02 250);
-  --primary: oklch(0.55 0.2 250);
+  --popover-foreground: oklch(0.18 0.02 240);
+  --primary: oklch(0.62 0.17 230);
   --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.96 0.015 250);
-  --secondary-foreground: oklch(0.25 0.02 250);
-  --muted: oklch(0.94 0.01 250);
-  --muted-foreground: oklch(0.45 0.02 250);
-  --accent: oklch(0.7 0.18 165);
-  --accent-foreground: oklch(0.15 0.02 165);
-  --destructive: oklch(0.55 0.22 25);
+  --secondary: oklch(0.96 0.012 230);
+  --secondary-foreground: oklch(0.28 0.02 240);
+  --muted: oklch(0.95 0.008 230);
+  --muted-foreground: oklch(0.48 0.015 240);
+  --accent: oklch(0.72 0.16 168);
+  --accent-foreground: oklch(0.15 0.02 168);
+  --destructive: oklch(0.55 0.22 28);
   --destructive-foreground: oklch(0.99 0 0);
-  --border: oklch(0.9 0.01 250);
-  --input: oklch(0.92 0.01 250);
-  --ring: oklch(0.55 0.2 250);
-  --chart-1: oklch(0.55 0.2 250);
-  --chart-2: oklch(0.65 0.18 165);
-  --chart-3: oklch(0.7 0.2 45);
-  --chart-4: oklch(0.55 0.22 25);
-  --chart-5: oklch(0.6 0.15 310);
+  --border: oklch(0.91 0.008 230);
+  --input: oklch(0.93 0.008 230);
+  --ring: oklch(0.62 0.17 230);
+  --chart-1: oklch(0.62 0.17 230);
+  --chart-2: oklch(0.72 0.16 168);
+  --chart-3: oklch(0.68 0.18 42);
+  --chart-4: oklch(0.55 0.22 28);
+  --chart-5: oklch(0.62 0.14 300);
   --radius: 0.75rem;
-  --sidebar: oklch(0.18 0.025 250);
-  --sidebar-foreground: oklch(0.95 0 0);
-  --sidebar-primary: oklch(0.55 0.2 250);
+  --sidebar: oklch(0.20 0.025 230);
+  --sidebar-foreground: oklch(0.96 0 0);
+  --sidebar-primary: oklch(0.62 0.17 230);
   --sidebar-primary-foreground: oklch(0.99 0 0);
-  --sidebar-accent: oklch(0.25 0.03 250);
-  --sidebar-accent-foreground: oklch(0.95 0 0);
-  --sidebar-border: oklch(0.28 0.025 250);
-  --sidebar-ring: oklch(0.55 0.2 250);
-  --success: oklch(0.65 0.18 165);
+  --sidebar-accent: oklch(0.27 0.03 230);
+  --sidebar-accent-foreground: oklch(0.96 0 0);
+  --sidebar-border: oklch(0.30 0.025 230);
+  --sidebar-ring: oklch(0.62 0.17 230);
+  --success: oklch(0.72 0.16 168);
   --success-foreground: oklch(0.99 0 0);
-  --warning: oklch(0.75 0.18 80);
-  --warning-foreground: oklch(0.2 0.02 80);
+  --warning: oklch(0.75 0.16 75);
+  --warning-foreground: oklch(0.22 0.02 75);
+  --tempest-coral: oklch(0.68 0.18 42);
+  --tempest-coral-foreground: oklch(0.99 0 0);
 }
 
 .dark {
-  --background: oklch(0.12 0.02 250);
-  --foreground: oklch(0.95 0 0);
-  --card: oklch(0.16 0.02 250);
-  --card-foreground: oklch(0.95 0 0);
-  --popover: oklch(0.16 0.02 250);
-  --popover-foreground: oklch(0.95 0 0);
-  --primary: oklch(0.65 0.2 250);
-  --primary-foreground: oklch(0.1 0.02 250);
-  --secondary: oklch(0.22 0.025 250);
-  --secondary-foreground: oklch(0.95 0 0);
-  --muted: oklch(0.22 0.02 250);
-  --muted-foreground: oklch(0.65 0.01 250);
-  --accent: oklch(0.6 0.18 165);
-  --accent-foreground: oklch(0.1 0.02 165);
-  --destructive: oklch(0.5 0.2 25);
-  --destructive-foreground: oklch(0.95 0 0);
-  --border: oklch(0.25 0.02 250);
-  --input: oklch(0.22 0.02 250);
-  --ring: oklch(0.65 0.2 250);
-  --chart-1: oklch(0.65 0.2 250);
-  --chart-2: oklch(0.6 0.18 165);
-  --chart-3: oklch(0.75 0.18 45);
-  --chart-4: oklch(0.5 0.2 25);
-  --chart-5: oklch(0.65 0.15 310);
-  --sidebar: oklch(0.14 0.02 250);
-  --sidebar-foreground: oklch(0.95 0 0);
-  --sidebar-primary: oklch(0.65 0.2 250);
-  --sidebar-primary-foreground: oklch(0.1 0.02 250);
-  --sidebar-accent: oklch(0.22 0.025 250);
-  --sidebar-accent-foreground: oklch(0.95 0 0);
-  --sidebar-border: oklch(0.25 0.02 250);
-  --sidebar-ring: oklch(0.65 0.2 250);
-  --success: oklch(0.6 0.18 165);
-  --success-foreground: oklch(0.1 0.02 165);
-  --warning: oklch(0.7 0.16 80);
-  --warning-foreground: oklch(0.15 0.02 80);
+  /* Tempest Brand Identity - Dark Theme */
+  --background: oklch(0.14 0.018 230);
+  --foreground: oklch(0.96 0 0);
+  --card: oklch(0.18 0.018 230);
+  --card-foreground: oklch(0.96 0 0);
+  --popover: oklch(0.18 0.018 230);
+  --popover-foreground: oklch(0.96 0 0);
+  --primary: oklch(0.68 0.16 230);
+  --primary-foreground: oklch(0.12 0.02 230);
+  --secondary: oklch(0.24 0.02 230);
+  --secondary-foreground: oklch(0.96 0 0);
+  --muted: oklch(0.24 0.016 230);
+  --muted-foreground: oklch(0.68 0.01 230);
+  --accent: oklch(0.65 0.15 168);
+  --accent-foreground: oklch(0.12 0.02 168);
+  --destructive: oklch(0.52 0.2 28);
+  --destructive-foreground: oklch(0.96 0 0);
+  --border: oklch(0.27 0.018 230);
+  --input: oklch(0.24 0.016 230);
+  --ring: oklch(0.68 0.16 230);
+  --chart-1: oklch(0.68 0.16 230);
+  --chart-2: oklch(0.65 0.15 168);
+  --chart-3: oklch(0.72 0.16 42);
+  --chart-4: oklch(0.52 0.2 28);
+  --chart-5: oklch(0.66 0.14 300);
+  --sidebar: oklch(0.16 0.018 230);
+  --sidebar-foreground: oklch(0.96 0 0);
+  --sidebar-primary: oklch(0.68 0.16 230);
+  --sidebar-primary-foreground: oklch(0.12 0.02 230);
+  --sidebar-accent: oklch(0.24 0.02 230);
+  --sidebar-accent-foreground: oklch(0.96 0 0);
+  --sidebar-border: oklch(0.27 0.018 230);
+  --sidebar-ring: oklch(0.68 0.16 230);
+  --success: oklch(0.65 0.15 168);
+  --success-foreground: oklch(0.12 0.02 168);
+  --warning: oklch(0.72 0.14 75);
+  --warning-foreground: oklch(0.16 0.02 75);
+  --tempest-coral: oklch(0.72 0.16 42);
+  --tempest-coral-foreground: oklch(0.12 0.02 42);
 }
 
 @theme inline {
   --font-sans: var(--font-inter), 'Geist', 'Geist Fallback';
+  --font-heading: var(--font-nunito), var(--font-inter), 'Geist', 'Geist Fallback';
   --font-mono: 'Geist Mono', 'Geist Mono Fallback';
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -125,6 +135,8 @@
   --color-success-foreground: var(--success-foreground);
   --color-warning: var(--warning);
   --color-warning-foreground: var(--warning-foreground);
+  --color-tempest-coral: var(--tempest-coral);
+  --color-tempest-coral-foreground: var(--tempest-coral-foreground);
 }
 
 @layer base {
@@ -134,4 +146,71 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Tempest Brand Animations */
+@keyframes tempest-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes tempest-swirl-in {
+  0% {
+    stroke-dashoffset: 200;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes tempest-pulse {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+@keyframes tempest-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+.tempest-logo-animated {
+  animation: tempest-breathe 4s ease-in-out infinite;
+}
+
+.tempest-logo-animated .tempest-swirl path {
+  stroke-dasharray: 200;
+  animation: tempest-swirl-in 1.5s ease-out forwards;
+}
+
+.tempest-logo-animated .tempest-swirl path:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.tempest-logo-animated .tempest-swirl path:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.tempest-logo-animated circle {
+  animation: tempest-pulse 3s ease-in-out infinite;
+}
+
+.tempest-logo-animated circle:nth-of-type(2) {
+  animation-delay: 0.3s;
+}
+
+.tempest-float {
+  animation: tempest-float 3s ease-in-out infinite;
+}
+
+.tempest-float-delay {
+  animation: tempest-float 3s ease-in-out infinite 0.5s;
+}
+
+.tempest-float-delay-2 {
+  animation: tempest-float 3s ease-in-out infinite 1s;
 }

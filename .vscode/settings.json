@@ -17,5 +17,8 @@
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "files.eol": "\n"
+  "files.eol": "\n",
+  "files.readonlyInclude": {
+    "**/*": true
+  }
 }

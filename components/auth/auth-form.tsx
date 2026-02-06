@@ -16,6 +16,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { AlertCircle, Loader2 } from 'lucide-react'
+import { TempestLogo } from '@/components/brand/tempest-logo'
 
 type AuthFormProps = {
   onSuccess: () => void
@@ -152,9 +153,17 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
       <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Tempest</CardTitle>
-          <CardDescription>Gerenciamento de Despesas Pessoais</CardDescription>
+        <CardHeader className="flex flex-col items-center gap-3 text-center">
+          <TempestLogo variant="icon" size="md" animated />
+          <div>
+            <CardTitle
+              className="text-2xl"
+              style={{ fontFamily: 'var(--font-heading)' }}
+            >
+              Tempest
+            </CardTitle>
+            <CardDescription>Controle Financeiro Familiar</CardDescription>
+          </div>
         </CardHeader>
         <CardContent>
           {/* Google Sign In */}

@@ -8,79 +8,90 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Essential Commands
 
-### Development
-
 ```bash
 npm run dev          # Start development server
 npm run build        # Production build
-npm start           # Start production server
-npm run lint        # Run ESLint
-npm run typecheck   # Run TypeScript validation
+npm run lint         # Run ESLint
+npm run lint:fix     # Auto-fix lint issues
+npm run format       # Run Prettier
+npm run typecheck    # Run TypeScript validation
+npm run quality      # typecheck + lint + format:check (run before committing)
+
+npm run test                    # Run unit tests (Vitest)
+npm run test:ui                 # Vitest browser UI
+npm run test:coverage           # With coverage (75% threshold enforced)
+npx vitest run path/to/test     # Run a single test file
+npm run test:e2e                # Playwright E2E tests
 ```
+
+Husky pre-commit hook runs lint-staged (ESLint + Prettier) on `*.{ts,tsx}` files automatically.
 
 ## Architecture
 
-### State Management - Zustand Store Pattern
+### State Management — Zustand Store
 
-The application uses a single centralized Zustand store (`lib/expense-store.ts`) with localStorage persistence for all financial data. This is the **single source of truth** for:
+`lib/expense-store.ts` is the **single source of truth** for all financial data, persisted to localStorage. Key shapes:
 
-- **Monthly data**: Income, expenses (fixed/variable), investments, savings per month (keyed by YYYY-MM)
-- **Installments**: Credit card installment tracking across multiple months
-- **Current month**: Active month for views and operations
+- `monthlyData`: Record keyed by `YYYY-MM` → `{ fixedExpenses, variableExpenses, incomes, investments, savings }`
+- `categories`: User-configurable list (system + custom); includes `isSystem`, `color`, `icon`, `order`
+- `creditCards`: User-configurable list with `limit`, `color`, `order`
+- `installments`: Global installment plans tracking multi-month credit card purchases
+- `currentMonth`: Active month string
 
-**Critical patterns**:
+**Critical rules**:
 
-- All month data access goes through `getMonthData(month)` which auto-initializes missing months
-- Never mutate store state directly - use provided actions (`addExpense`, `updateIncome`, etc.)
-- Store includes sample data generator for last 6 months (useful for development)
-- Helper functions: `getMonthDiff()`, `getMonthFromOffset()` for month arithmetic
+- Access month data only via `getMonthData(month)` — it auto-initializes missing months
+- Month keys must be `YYYY-MM` format
+- Installment calculations depend on `getMonthDiff()` — never bypass
+- Store uses Zustand + Immer; write mutation-style updates inside `set()`
 
-### Component Organization
+### Internationalization (next-intl)
 
+The app supports **English (`en`) and Portuguese (`pt`)** via `next-intl`:
+
+- Message files: `messages/en.json`, `messages/pt.json`
+- Routing config: `i18n/routing.ts` — locales use cookie-based detection, **no URL prefixes**
+- Middleware: `middleware.ts` reads `NEXT_LOCALE` cookie or Accept-Language header, sets `x-next-intl-locale`
+- Default locale: `pt`
+
+All new user-facing strings must be added to **both** message files. Use `useTranslations()` from `next-intl` in components.
+
+### Formatting Utilities
+
+`lib/formatters.ts` provides locale-aware formatting:
+
+- `formatCurrency(value, locale, currency)` — full currency format
+- `formatShortCurrency(value, locale, currency)` — compact (e.g., `R$1.5k`)
+- `formatPercentage(value, locale, decimals)`
+- `formatCurrencyBRL()` / `formatShortCurrencyBRL()` — **deprecated** wrappers, avoid in new code
+
+### AWS Amplify Backend Sync
+
+`lib/sync-manager.ts` handles optional cloud sync via AWS Amplify Gen 2:
+
+- Schema defined in `amplify/data/resource.ts` — models: `Category`, `CreditCard`, `MonthlyData`, `Income`, `Expense`, `Installment`
+- Auth in `amplify/auth/resource.ts` — owner-based authorization on all models
+- Upload order matters (foreign key constraints): Categories/CreditCards/MonthlyData → Incomes/Expenses/Installments
+- `SyncManager` is a singleton (`getSyncManager()`); sync state is in `lib/sync-store.ts`
+- Download/merge (Phase 1.1) is not yet implemented
+
+### Testing
+
+Unit tests live in `__tests__/` (Vitest + jsdom). All tests requiring i18n must use the custom render wrapper from `__tests__/test-utils.tsx` instead of `@testing-library/react` directly:
+
+```typescript
+import { render, screen } from '@/__tests__/test-utils'
+// This wraps with NextIntlClientProvider using mock Portuguese messages
 ```
-components/
-├── expense/           # Domain-specific expense tracking components
-│   ├── dashboard-view.tsx    # 6-month analytics with charts (recharts)
-│   ├── monthly-view.tsx      # Single month detailed view
-│   ├── expense-list.tsx      # Display/edit expense items
-│   ├── expense-form.tsx      # Add new expense dialog
-│   ├── income-input.tsx      # Month income input
-│   ├── installments.tsx      # Credit card installment manager
-│   ├── category-breakdown.tsx # Expense category pie chart
-│   ├── summary-cards.tsx     # Summary statistics cards
-│   ├── month-selector.tsx    # Month navigation
-│   └── sidebar.tsx           # Main navigation (Dashboard/Monthly toggle)
-├── ui/                # shadcn/ui components (60+ components)
-└── theme-provider.tsx # next-themes wrapper
-```
 
-**Component patterns**:
+E2E tests use Playwright (`test:e2e`); they are excluded from Vitest runs.
 
-- All expense components are client components (`'use client'`)
-- Components access store via `useExpenseStore()` hook
-- Form components use controlled inputs with local state, then submit to store
-- Charts use recharts library with Portuguese labels and BRL currency formatting
+### Styling
 
-### Data Model
-
-**Expense Categories**: `credit_card`, `groceries`, `utilities`, `entertainment`, `transportation`, `healthcare`, `dining`, `shopping`, `subscriptions`, `installment`, `other`
-
-**Credit Cards**: `nubank_pri`, `nubank_ma`, `mercadopago`, `itau`
-
-**Expense Types**:
-
-- `fixed` - recurring monthly (rent, insurance, subscriptions)
-- `variable` - one-time or irregular expenses
-
-**Installments**: Separate tracking for multi-month credit card installments with auto-calculation of which installments apply to each month.
-
-### Styling System
-
-- **Tailwind CSS v4** (PostCSS plugin, not traditional config)
-- **shadcn/ui** design system (New York style variant)
+- Tailwind CSS v4 via PostCSS plugin (no `tailwind.config.*` file)
+- shadcn/ui (New York variant) — consume from `components/ui/`, never create custom primitives
 - CSS variables for theming in `app/globals.css`
 - `cn()` utility (clsx + tailwind-merge) for conditional classes
-- All colors and spacing use design tokens, not hardcoded values
 
 ### Path Aliases
 
@@ -91,37 +102,22 @@ components/
 @/           → / (project root)
 ```
 
-### Type Safety
-
-- Strict TypeScript enabled but build errors ignored
-- All store types exported from `lib/expense-store.ts`
-- Component props should be explicitly typed
-- Use `type` keyword for type aliases, not `interface` (matches codebase style)
-
 ## Development Guidelines
 
-### When Adding Features
+### Adding Features
 
-1. **New expense categories**: Update `ExpenseCategory` type, `categoryLabels`, and `categoryColors` in `expense-store.ts`
-2. **New charts/analytics**: Add to `dashboard-view.tsx`, use recharts library
-3. **New forms**: Follow pattern in `expense-form.tsx` (Dialog wrapper, controlled inputs, store submission)
-4. **New UI components**: Use shadcn/ui components from `components/ui/`, never create custom primitives
+- **New categories**: Categories are now user-configurable in the store — add system defaults in `expense-store.ts` (`defaultCategories`)
+- **New translations**: Add keys to both `messages/en.json` and `messages/pt.json`
+- **New forms**: Follow `expense-form.tsx` pattern — Dialog wrapper, controlled local state, submit to store
+- **New charts**: Add to `dashboard-view.tsx` using recharts; labels must come from i18n messages
+- **New formatters**: Use `lib/formatters.ts`; pass locale from component context
 
-### Store Modifications
+### Type Conventions
 
-- Always use immer-friendly patterns (store uses Zustand middleware)
-- Month keys must be `YYYY-MM` format (e.g., "2026-01")
-- Call `initializeMonth()` before accessing month data in new contexts
-- Installment calculations rely on `getMonthDiff()` - don't bypass this logic
-
-### Internationalization
-
-All user-facing text is in **Brazilian Portuguese**:
-
-- Currency: BRL (R$) using `formatCurrencyBRL()` and `formatShortCurrencyBRL()`
-- Date formats: Use `pt-BR` locale
-- Labels and descriptions: Portuguese only
+- Use `type` keyword, not `interface`
+- All store types exported from `lib/expense-store.ts`
+- Component props must be explicitly typed
 
 ## Vercel Analytics
 
-The app includes `@vercel/analytics` integration in the root layout. This is production-ready and should not be removed.
+`@vercel/analytics` is in the root layout. Do not remove it.

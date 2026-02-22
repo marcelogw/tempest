@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter, Nunito } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { NextIntlClientProvider } from 'next-intl'
+import { getMessages, getLocale } from 'next-intl/server'
 import { ThemeProvider } from '@/components/theme-provider'
 import { AmplifyProvider } from '@/components/amplify-provider'
 import { DataSourceIndicator } from '@/components/debug/data-source-indicator'
@@ -20,50 +22,57 @@ const nunito = Nunito({
   weight: ['400', '600', '700', '800'],
 })
 
-export const metadata: Metadata = {
-  title: 'Tempest - Gerenciamento de Despesas',
-  description: 'Acompanhe suas receitas, despesas, investimentos e economia com facilidade',
-  generator: 'v0.app',
-  keywords: [
-    'gerenciamento de despesas',
-    'controle financeiro',
-    'orçamento pessoal',
-    'finanças pessoais',
-    'investimentos',
-    'economia',
-  ],
-  authors: [{ name: 'Tempest' }],
-  creator: 'Tempest',
-  openGraph: {
-    type: 'website',
-    locale: 'pt_BR',
-    url: 'https://tempest.app',
-    title: 'Tempest - Gerenciamento de Despesas',
-    description: 'Acompanhe suas receitas, despesas, investimentos e economia com facilidade',
-    siteName: 'Tempest',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Tempest - Gerenciamento de Despesas',
-    description: 'Acompanhe suas receitas, despesas, investimentos e economia com facilidade',
-  },
-  icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.jpg',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.jpg',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale()
+
+  const localizedMetadata = {
+    en: {
+      title: 'Tempest - Expense Management',
+      description: 'Track your income, expenses, investments and savings with ease',
+    },
+    pt: {
+      title: 'Tempest - Gerenciamento de Despesas',
+      description: 'Acompanhe suas receitas, despesas, investimentos e economia com facilidade',
+    },
+  }
+
+  const meta = localizedMetadata[locale as keyof typeof localizedMetadata] || localizedMetadata.pt
+
+  return {
+    title: {
+      template: '%s | ' + meta.title,
+      default: meta.title,
+    },
+    description: meta.description,
+    generator: 'v0.app',
+    keywords: [
+      'expense management',
+      'financial control',
+      'personal budget',
+      'personal finances',
+      'investments',
+      'savings',
     ],
-    apple: '/apple-icon.jpg',
-  },
+    authors: [{ name: 'Tempest' }],
+    creator: 'Tempest',
+    icons: {
+      icon: [
+        {
+          url: '/icon-light-32x32.jpg',
+          media: '(prefers-color-scheme: light)',
+        },
+        {
+          url: '/icon-dark-32x32.jpg',
+          media: '(prefers-color-scheme: dark)',
+        },
+        {
+          url: '/icon.svg',
+          type: 'image/svg+xml',
+        },
+      ],
+      apple: '/apple-icon.jpg',
+    },
+  }
 }
 
 export const viewport: Viewport = {
@@ -72,26 +81,30 @@ export const viewport: Viewport = {
   maximumScale: 5,
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const messages = await getMessages()
+
   return (
-    <html lang="pt-BR" suppressHydrationWarning>
+    <html suppressHydrationWarning>
       <body className={`${inter.variable} ${nunito.variable} font-sans antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <AmplifyProvider>
-            {children}
-            <DataSourceIndicator />
-            <SyncStatusBadge />
-          </AmplifyProvider>
-        </ThemeProvider>
+        <NextIntlClientProvider messages={messages}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <AmplifyProvider>
+              {children}
+              <DataSourceIndicator />
+              <SyncStatusBadge />
+            </AmplifyProvider>
+          </ThemeProvider>
+        </NextIntlClientProvider>
         <Analytics />
       </body>
     </html>

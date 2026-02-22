@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils'
 import {
   LayoutDashboard,
@@ -33,34 +34,35 @@ export function Sidebar({
   availableYears,
   onYearChange,
 }: SidebarProps) {
+  const i = useTranslations()
   const [collapsed, setCollapsed] = useState(false)
 
   const navItems = [
     {
       id: 'dashboard' as const,
-      label: 'Painel',
+      label: i('ui.sidebar.dashboard'),
       icon: LayoutDashboard,
     },
     {
       id: 'monthly' as const,
-      label: 'Visao Mensal',
+      label: i('ui.sidebar.monthlyView'),
       icon: Calendar,
     },
     {
       id: 'categories' as const,
-      label: 'Categorias',
+      label: i('ui.sidebar.categories'),
       icon: Shapes,
     },
     {
       id: 'cards' as const,
-      label: 'Cartões',
+      label: i('ui.sidebar.cards'),
       icon: CreditCard,
     },
   ]
 
   const infoItems = [
-    { label: 'Investimentos', icon: TrendingUp },
-    { label: 'Poupanca', icon: PiggyBank },
+    { label: i('ui.sidebar.investments'), icon: TrendingUp },
+    { label: i('ui.sidebar.savings'), icon: PiggyBank },
   ]
 
   return (
@@ -93,7 +95,7 @@ export function Sidebar({
       {!collapsed && (
         <div className="border-sidebar-border border-b p-4">
           <p className="text-sidebar-foreground/60 px-1 py-2 text-xs font-medium tracking-wider uppercase">
-            Período
+            {i('ui.sidebar.period')}
           </p>
           <YearSelector
             currentYear={currentYear}
@@ -107,7 +109,7 @@ export function Sidebar({
         <div className="space-y-1">
           {!collapsed && (
             <p className="text-sidebar-foreground/60 px-3 py-2 text-xs font-medium tracking-wider uppercase">
-              Navegacao
+              {i('ui.sidebar.navigation')}
             </p>
           )}
           {navItems.map((item) => (
@@ -130,7 +132,7 @@ export function Sidebar({
         <div className="mt-6 space-y-1">
           {!collapsed && (
             <p className="text-sidebar-foreground/60 px-3 py-2 text-xs font-medium tracking-wider uppercase">
-              Acesso Rapido
+              {i('ui.sidebar.quickAccess')}
             </p>
           )}
           {infoItems.map((item) => (
@@ -149,10 +151,12 @@ export function Sidebar({
       </nav>
 
       {/* Configurações (bottom) */}
-      <div className="border-sidebar-border border-t p-2 space-y-1">
+      <div className="border-sidebar-border space-y-1 border-t p-2">
         {!collapsed ? (
           <div className="flex items-center justify-between px-3 py-2">
-            <span className="text-sm font-medium text-sidebar-foreground/80">Tema</span>
+            <span className="text-sidebar-foreground/80 text-sm font-medium">
+              {i('ui.sidebar.theme')}
+            </span>
             <ThemeToggle />
           </div>
         ) : (
@@ -170,7 +174,7 @@ export function Sidebar({
           )}
         >
           <Settings className="h-5 w-5 flex-shrink-0" />
-          {!collapsed && <span>Configurações</span>}
+          {!collapsed && <span>{i('ui.sidebar.settings')}</span>}
         </button>
       </div>
     </aside>

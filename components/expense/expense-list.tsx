@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -35,6 +36,7 @@ export function ExpenseList({
   onUpdate,
   currentMonth,
 }: ExpenseListProps) {
+  const i = useTranslations()
   const getCategoryById = useExpenseStore((state) => state.getCategoryById)
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null)
   const total = expenses.reduce((sum, exp) => sum + exp.amount, 0)
@@ -102,7 +104,7 @@ export function ExpenseList({
                         }}
                       >
                         {IconComponent && <IconComponent className="mr-1 h-3 w-3" />}
-                        {category?.label || 'Outros'}
+                        {category?.customLabel || i(`categories.${category?.id || 'other'}`)}
                       </Badge>
                     )
                   })()}

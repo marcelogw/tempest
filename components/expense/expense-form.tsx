@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -37,6 +38,7 @@ interface ExpenseFormProps {
 }
 
 export function ExpenseForm({ type, onSubmit, currentMonth }: ExpenseFormProps) {
+  const i = useTranslations()
   const categories = useExpenseStore((state) => state.categories)
   const [open, setOpen] = useState(false)
   const [description, setDescription] = useState('')
@@ -114,13 +116,14 @@ export function ExpenseForm({ type, onSubmit, currentMonth }: ExpenseFormProps) 
                     const IconComponent = cat.icon
                       ? (Icons as unknown as Record<string, LucideIcon>)[cat.icon]
                       : null
+                    const displayName = cat.customLabel || i(`categories.${cat.id}`)
                     return (
                       <SelectItem key={cat.id} value={cat.id}>
                         <div className="flex items-center gap-2">
                           {IconComponent && (
                             <IconComponent className="h-4 w-4" style={{ color: cat.color }} />
                           )}
-                          <span>{cat.label}</span>
+                          <span>{displayName}</span>
                         </div>
                       </SelectItem>
                     )

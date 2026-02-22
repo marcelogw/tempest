@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import * as Icons from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -16,6 +17,7 @@ interface CategoryBreakdownProps {
 }
 
 export function CategoryBreakdown({ expenses }: CategoryBreakdownProps) {
+  const i = useTranslations()
   const getCategoryById = useExpenseStore((state) => state.getCategoryById)
 
   // Group expenses by category
@@ -37,12 +39,14 @@ export function CategoryBreakdown({ expenses }: CategoryBreakdownProps) {
   return (
     <Card className="border-border/50 shadow-sm">
       <CardHeader className="pb-3">
-        <CardTitle className="text-base font-semibold">Gastos por Categoria</CardTitle>
+        <CardTitle className="text-base font-semibold">
+          {i('ui.dashboard.categoryBreakdown')}
+        </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {sortedCategories.length === 0 ? (
           <p className="text-muted-foreground py-4 text-center text-sm">
-            Nenhuma despesa registrada ainda
+            {i('ui.dashboard.noDataAvailable')}
           </p>
         ) : (
           sortedCategories.map(([categoryId, amount]) => {
@@ -52,7 +56,7 @@ export function CategoryBreakdown({ expenses }: CategoryBreakdownProps) {
               ? (Icons as unknown as Record<string, LucideIcon>)[category.icon]
               : null
             const color = category?.color || '#64748b'
-            const label = category?.label || 'Outros'
+            const label = category?.customLabel || i(`categories.${category?.id || 'other'}`)
 
             return (
               <div key={categoryId} className="space-y-2">

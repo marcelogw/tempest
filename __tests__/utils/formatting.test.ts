@@ -60,35 +60,38 @@ describe('Currency Formatting', () => {
 })
 
 describe('Default Categories', () => {
-  it('should have all default categories with labels in Portuguese', () => {
+  it('should have all default categories with English IDs (i18n keys)', () => {
     expect(DEFAULT_CATEGORIES).toHaveLength(11)
 
-    const mercado = DEFAULT_CATEGORIES.find((c) => c.id === 'mercado')
-    expect(mercado?.label).toBe('Mercado')
+    const groceries = DEFAULT_CATEGORIES.find((c) => c.id === 'groceries')
+    expect(groceries).toBeDefined()
+    expect(groceries?.customLabel).toBeUndefined() // System categories don't have customLabel
 
-    const transporte = DEFAULT_CATEGORIES.find((c) => c.id === 'transporte')
-    expect(transporte?.label).toBe('Transporte')
+    const transportation = DEFAULT_CATEGORIES.find((c) => c.id === 'transportation')
+    expect(transportation).toBeDefined()
+    expect(transportation?.customLabel).toBeUndefined()
 
-    const outros = DEFAULT_CATEGORIES.find((c) => c.id === 'outros')
-    expect(outros?.label).toBe('Outros')
-    expect(outros?.isSystem).toBe(true)
+    const other = DEFAULT_CATEGORIES.find((c) => c.id === 'other')
+    expect(other).toBeDefined()
+    expect(other?.isSystem).toBe(true)
+    expect(other?.customLabel).toBeUndefined()
   })
 
   it('should have required properties for all categories', () => {
     DEFAULT_CATEGORIES.forEach((category) => {
       expect(category.id).toBeDefined()
       expect(category.id.length).toBeGreaterThan(0)
-      expect(category.label).toBeDefined()
-      expect(category.label.length).toBeGreaterThan(0)
+      // System categories don't have customLabel (they use i18n via id)
+      expect(category.customLabel).toBeUndefined()
       expect(category.color).toMatch(/^#[0-9a-f]{6}$/i)
       expect(typeof category.order).toBe('number')
       expect(typeof category.isSystem).toBe('boolean')
     })
   })
 
-  it('should have "outros" as system category', () => {
+  it('should have "other" as system category', () => {
     const systemCategories = DEFAULT_CATEGORIES.filter((c) => c.isSystem)
     expect(systemCategories).toHaveLength(1)
-    expect(systemCategories[0].id).toBe('outros')
+    expect(systemCategories[0].id).toBe('other')
   })
 })

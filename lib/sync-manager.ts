@@ -4,7 +4,14 @@ import { generateClient } from 'aws-amplify/data'
 import type { Schema } from '@/amplify/data/resource'
 import { signOut } from 'aws-amplify/auth'
 import { useSyncStore } from './sync-store'
-import { useExpenseStore, type Expense } from './expense-store'
+import {
+  useExpenseStore,
+  type Category,
+  type CreditCard,
+  type Expense,
+  type Installment,
+  type MonthlyData,
+} from './expense-store'
 
 /**
  * SyncManager - Core synchronization logic between local Zustand store and AWS Amplify
@@ -20,7 +27,18 @@ import { useExpenseStore, type Expense } from './expense-store'
  * 4. Incomes (requires MonthlyData.id)
  * 5. Expenses (requires MonthlyData.id + Category.id)
  * 6. Installments (requires CreditCard.id)
+ *
+ * CRITICAL: Delete order must be reverse of upload (respect FK constraints):
+ * 1. Expenses
+ * 2. Incomes
+ * 3. Installments
+ * 4. MonthlyData
+ * 5. CreditCards
+ * 6. Categories
  */
+
+export type SyncScenario = 'local-only' | 'cloud-only' | 'both' | 'empty'
+
 export class SyncManager {
   private client: ReturnType<typeof generateClient<Schema>>
   private syncStore: ReturnType<typeof useSyncStore.getState>
@@ -33,6 +51,13 @@ export class SyncManager {
   }
 
   /**
+   * Generate a short random ID (same format as expense-store's generateId)
+   */
+  private generateShortId(): string {
+    return Math.random().toString(36).substring(2, 9)
+  }
+
+  /**
    * Divide array em chunks para processamento em lote
    */
   private chunkArray<T>(array: T[], chunkSize: number): T[][] {
@@ -41,6 +66,58 @@ export class SyncManager {
       chunks.push(array.slice(i, i + chunkSize))
     }
     return chunks
+  }
+
+  /**
+   * Generic paginator — fetches all pages of an Amplify list query.
+   *
+   * Amplify returns at most ~100 items per call and a nextToken when more
+   * pages exist. This helper keeps fetching until nextToken is null.
+   *
+   * Each caller passes a thin wrapper that converts an optional nextToken
+   * string into the Amplify-specific list options object, keeping the
+   * call sites type-safe without `any`.
+   */
+  private async fetchAllPages<T>(
+    fetcher: (nextToken?: string) => Promise<{ data: T[] | null; nextToken?: string | null }>
+  ): Promise<T[]> {
+    const all: T[] = []
+    let nextToken: string | undefined
+
+    do {
+      const result = await fetcher(nextToken)
+      if (result.data) all.push(...result.data)
+      nextToken = result.nextToken ?? undefined
+    } while (nextToken)
+
+    return all
+  }
+
+  /**
+   * Check whether the local expense store has meaningful user data.
+   *
+   * Default categories alone do NOT count — we look for credit cards,
+   * installments, or any month with actual transactions/allocations.
+   */
+  private hasLocalData(): boolean {
+    const store = useExpenseStore.getState()
+
+    if (store.creditCards.length > 0) return true
+    if (store.installments.length > 0) return true
+
+    for (const month of Object.values(store.monthlyData)) {
+      if (
+        month.incomes.length > 0 ||
+        month.fixedExpenses.length > 0 ||
+        month.variableExpenses.length > 0 ||
+        month.investments > 0 ||
+        month.savings > 0
+      ) {
+        return true
+      }
+    }
+
+    return false
   }
 
   /**
@@ -57,6 +134,75 @@ export class SyncManager {
   }
 
   /**
+   * Detect the sync scenario based on local + cloud data presence.
+   *
+   * Returns one of:
+   * - 'local-only': Only the local store has data  → upload
+   * - 'cloud-only': Only the cloud has data        → download
+   * - 'both':       Both sides have data           → conflict, user decides
+   * - 'empty':      Neither side has data          → nothing to do
+   */
+  async detectSyncScenario(): Promise<SyncScenario> {
+    const [hasCloud, hasLocal] = await Promise.all([
+      this.checkCloudData(),
+      Promise.resolve(this.hasLocalData()),
+    ])
+
+    if (hasLocal && hasCloud) return 'both'
+    if (hasLocal && !hasCloud) return 'local-only'
+    if (!hasLocal && hasCloud) return 'cloud-only'
+    return 'empty'
+  }
+
+  /**
+   * Smart sync initializer — detects the scenario and takes the right action.
+   *
+   * - local-only  → upload to cloud
+   * - cloud-only  → download from cloud
+   * - empty       → mark connected, nothing to transfer
+   * - both        → return 'both' so the caller can show a conflict dialog
+   *
+   * Returns the detected scenario so the caller can react (e.g. show dialog).
+   */
+  async initializeSync(): Promise<SyncScenario> {
+    this.syncStore.setStatus('syncing')
+    this.syncStore.setErrorMessage(null)
+
+    try {
+      const scenario = await this.detectSyncScenario()
+      console.log(`🔍 Sync scenario detected: ${scenario}`)
+
+      switch (scenario) {
+        case 'local-only':
+          await this.uploadInitialData()
+          break
+
+        case 'cloud-only':
+          await this.downloadCloudData()
+          break
+
+        case 'empty':
+          this.syncStore.setStatus('connected')
+          this.syncStore.setLastSyncTime(new Date())
+          break
+
+        case 'both':
+          // Leave status as 'syncing' — caller must show conflict dialog
+          break
+      }
+
+      return scenario
+    } catch (error) {
+      console.error('❌ Error during sync initialization:', error)
+      this.syncStore.setErrorMessage(
+        error instanceof Error ? error.message : 'Erro ao inicializar sincronização'
+      )
+      this.syncStore.setStatus('error')
+      throw error
+    }
+  }
+
+  /**
    * Upload initial data from localStorage to AWS
    * Phase 1.0: One-way sync (local → cloud) with parallelization
    */
@@ -68,12 +214,6 @@ export class SyncManager {
     const startTime = Date.now()
 
     try {
-      // Check if cloud already has data
-      const hasCloudData = await this.checkCloudData()
-      if (hasCloudData) {
-        throw new Error('Cloud já contém dados. Use a opção de merge para sincronizar.')
-      }
-
       console.log('🚀 Iniciando upload paralelo...')
 
       // FASE 1: Independentes (paralelo)
@@ -131,7 +271,7 @@ export class SyncManager {
         chunk.map(async (category) => {
           const { data } = await this.client.models.Category.create({
             categoryId: category.id,
-            label: category.label,
+            label: category.customLabel || category.id, // Map customLabel to label for backend
             color: category.color,
             icon: category.icon,
             isSystem: category.isSystem,
@@ -364,6 +504,248 @@ export class SyncManager {
   }
 
   // ===================================================================
+  // PHASE 1.1: Download & Merge
+  // ===================================================================
+
+  /**
+   * Delete ALL cloud records in reverse dependency order.
+   *
+   * Used when the user chooses "use local data" in a conflict scenario.
+   * After this, uploadInitialData() is called to push local data to a clean cloud.
+   */
+  private async clearCloudData(): Promise<void> {
+    console.log('🗑️ Clearing all cloud data...')
+    const startTime = Date.now()
+
+    // Fetch all records first (in parallel, no order needed for fetching)
+    const [expenses, incomes, installments, monthlyData, creditCards, categories] =
+      await Promise.all([
+        this.fetchAllPages((t) => this.client.models.Expense.list(t ? { nextToken: t } : {})),
+        this.fetchAllPages((t) => this.client.models.Income.list(t ? { nextToken: t } : {})),
+        this.fetchAllPages((t) => this.client.models.Installment.list(t ? { nextToken: t } : {})),
+        this.fetchAllPages((t) => this.client.models.MonthlyData.list(t ? { nextToken: t } : {})),
+        this.fetchAllPages((t) => this.client.models.CreditCard.list(t ? { nextToken: t } : {})),
+        this.fetchAllPages((t) => this.client.models.Category.list(t ? { nextToken: t } : {})),
+      ])
+
+    console.log(
+      `  Found: ${expenses.length} expenses, ${incomes.length} incomes, ` +
+        `${installments.length} installments, ${monthlyData.length} months, ` +
+        `${creditCards.length} cards, ${categories.length} categories`
+    )
+
+    // Delete in reverse dependency order (expenses first, categories last)
+    await Promise.all(expenses.map((e) => this.client.models.Expense.delete({ id: e.id })))
+    console.log(`  🗑️ ${expenses.length} expenses deleted`)
+
+    await Promise.all(incomes.map((i) => this.client.models.Income.delete({ id: i.id })))
+    console.log(`  🗑️ ${incomes.length} incomes deleted`)
+
+    await Promise.all(installments.map((i) => this.client.models.Installment.delete({ id: i.id })))
+    console.log(`  🗑️ ${installments.length} installments deleted`)
+
+    await Promise.all(monthlyData.map((m) => this.client.models.MonthlyData.delete({ id: m.id })))
+    console.log(`  🗑️ ${monthlyData.length} monthly data records deleted`)
+
+    await Promise.all(creditCards.map((c) => this.client.models.CreditCard.delete({ id: c.id })))
+    console.log(`  🗑️ ${creditCards.length} credit cards deleted`)
+
+    await Promise.all(categories.map((c) => this.client.models.Category.delete({ id: c.id })))
+    console.log(`  🗑️ ${categories.length} categories deleted`)
+
+    // Clear local ID mappings since cloud records no longer exist
+    this.syncStore.clearIdMappings()
+
+    const elapsed = ((Date.now() - startTime) / 1000).toFixed(1)
+    console.log(`✅ Cloud cleared in ${elapsed}s`)
+  }
+
+  /**
+   * Download all cloud data and replace the local Zustand store.
+   * Phase 1.1: One-way sync (cloud → local)
+   *
+   * ID mapping notes (based on the existing upload code):
+   * - Category.categoryId  = local kebab-case ID (e.g. 'groceries')  → use as Category.id
+   * - CreditCard.cardId    = local kebab-case ID (e.g. 'nubank')      → use as CreditCard.id
+   * - Expense.categoryId   = kebab-case string (NOT a UUID)           → use as Expense.category
+   * - Installment.cardId   = local card ID (kebab-case)               → use as Installment.card
+   * - Expense.installmentId references an old local short ID that no longer maps to
+   *   any downloaded installment, so it is cleared to avoid stale references.
+   */
+  async downloadCloudData(): Promise<void> {
+    this.syncStore.setStatus('syncing')
+    this.syncStore.setErrorMessage(null)
+
+    const startTime = Date.now()
+
+    try {
+      console.log('📥 Starting cloud data download...')
+
+      // Fetch all models in parallel (no ordering required for reads)
+      const [
+        cloudCategories,
+        cloudCards,
+        cloudMonthlyData,
+        cloudIncomes,
+        cloudExpenses,
+        cloudInstallments,
+      ] = await Promise.all([
+        this.fetchAllPages((t) => this.client.models.Category.list(t ? { nextToken: t } : {})),
+        this.fetchAllPages((t) => this.client.models.CreditCard.list(t ? { nextToken: t } : {})),
+        this.fetchAllPages((t) => this.client.models.MonthlyData.list(t ? { nextToken: t } : {})),
+        this.fetchAllPages((t) => this.client.models.Income.list(t ? { nextToken: t } : {})),
+        this.fetchAllPages((t) => this.client.models.Expense.list(t ? { nextToken: t } : {})),
+        this.fetchAllPages((t) => this.client.models.Installment.list(t ? { nextToken: t } : {})),
+      ])
+
+      console.log(
+        `  Downloaded: ${cloudCategories.length} categories, ${cloudCards.length} cards, ` +
+          `${cloudMonthlyData.length} months, ${cloudIncomes.length} incomes, ` +
+          `${cloudExpenses.length} expenses, ${cloudInstallments.length} installments`
+      )
+
+      // ── Categories ────────────────────────────────────────────────────
+      const categories: Category[] = cloudCategories.map((c) => {
+        // Update idMappings: local categoryId → cloud UUID
+        this.syncStore.addIdMapping('categories', c.categoryId, c.id)
+
+        return {
+          id: c.categoryId,
+          color: c.color,
+          icon: c.icon ?? null,
+          isSystem: c.isSystem,
+          order: c.order,
+          // customLabel is set only when it differs from the technical categoryId
+          customLabel: c.label !== c.categoryId ? c.label : undefined,
+        }
+      })
+
+      // ── Credit Cards ──────────────────────────────────────────────────
+      const creditCards: CreditCard[] = cloudCards.map((card) => {
+        this.syncStore.addIdMapping('creditCards', card.cardId, card.id)
+
+        return {
+          id: card.cardId,
+          name: card.name,
+          color: card.color,
+          limit: card.limit ?? null,
+          order: card.order,
+        }
+      })
+
+      // ── Installments ──────────────────────────────────────────────────
+      // The upload stores installment.card (local kebab-case) directly in
+      // the cloud's `cardId` field, so no UUID mapping is needed here.
+      const installments: Installment[] = cloudInstallments.map((inst) => ({
+        id: this.generateShortId(),
+        name: inst.name,
+        card: inst.cardId, // already local card ID (kebab-case)
+        totalInstallments: inst.totalInstallments,
+        amountPerInstallment: inst.amountPerInstallment,
+        startMonth: inst.startMonth,
+      }))
+
+      // ── Monthly Data ──────────────────────────────────────────────────
+      // Build a map from cloud UUID → month key (YYYY-MM) for income/expense lookup
+      const monthUuidToKey: Record<string, string> = {}
+      const monthlyDataMap: Record<string, MonthlyData> = {}
+
+      for (const m of cloudMonthlyData) {
+        monthUuidToKey[m.id] = m.month
+        this.syncStore.addIdMapping('monthlyData', m.month, m.id)
+
+        monthlyDataMap[m.month] = {
+          month: m.month,
+          investments: m.investments,
+          savings: m.savings,
+          incomes: [],
+          fixedExpenses: [],
+          variableExpenses: [],
+        }
+      }
+
+      // ── Incomes ───────────────────────────────────────────────────────
+      for (const income of cloudIncomes) {
+        const monthKey = monthUuidToKey[income.monthlyDataId]
+        if (!monthKey || !monthlyDataMap[monthKey]) continue
+
+        monthlyDataMap[monthKey].incomes.push({
+          id: this.generateShortId(),
+          description: income.description,
+          amount: income.amount,
+          recurringGroupId: income.recurringGroupId ?? undefined,
+        })
+      }
+
+      // ── Expenses ──────────────────────────────────────────────────────
+      // expense.categoryId is stored as kebab-case (e.g. 'groceries'), not a UUID.
+      // expense.installmentId is the old local short ID from the source device;
+      // it cannot be mapped to any newly generated installment ID, so we clear it.
+      for (const expense of cloudExpenses) {
+        const monthKey = monthUuidToKey[expense.monthlyDataId]
+        if (!monthKey || !monthlyDataMap[monthKey]) continue
+
+        const localExpense: Expense = {
+          id: this.generateShortId(),
+          description: expense.description,
+          amount: expense.amount,
+          category: expense.categoryId, // kebab-case, used directly
+          type: expense.type ?? 'variable',
+          date: expense.date,
+          installmentId: undefined, // cannot reconstruct cross-device installment links
+          recurringGroupId: expense.recurringGroupId ?? undefined,
+        }
+
+        if (expense.type === 'fixed') {
+          monthlyDataMap[monthKey].fixedExpenses.push(localExpense)
+        } else {
+          monthlyDataMap[monthKey].variableExpenses.push(localExpense)
+        }
+      }
+
+      // ── Replace local store ───────────────────────────────────────────
+      useExpenseStore.setState({
+        categories,
+        creditCards,
+        installments,
+        monthlyData: monthlyDataMap,
+      })
+
+      const elapsed = ((Date.now() - startTime) / 1000).toFixed(1)
+
+      this.syncStore.setStatus('connected')
+      this.syncStore.setLastSyncTime(new Date())
+
+      console.log(`✅ Download complete in ${elapsed}s`)
+    } catch (error) {
+      console.error('❌ Error downloading data:', error)
+      this.syncStore.setErrorMessage(
+        error instanceof Error ? error.message : 'Erro ao baixar dados da nuvem'
+      )
+      this.syncStore.setStatus('error')
+      throw error
+    }
+  }
+
+  /**
+   * Resolve a data conflict by choosing which side wins.
+   *
+   * 'use-cloud': Download cloud data, overwriting local store
+   * 'use-local': Clear cloud, then upload local data
+   */
+  async resolveConflict(strategy: 'use-cloud' | 'use-local'): Promise<void> {
+    console.log(`🔀 Resolving conflict: ${strategy}`)
+
+    if (strategy === 'use-cloud') {
+      await this.downloadCloudData()
+    } else {
+      // Clear remote, then re-upload everything from local
+      await this.clearCloudData()
+      await this.uploadInitialData()
+    }
+  }
+
+  // ===================================================================
   // BACKUP: Old sequential methods (kept for rollback safety)
   // These are the original non-parallel implementations
   // ===================================================================
@@ -380,7 +762,7 @@ export class SyncManager {
       try {
         const { data } = await this.client.models.Category.create({
           categoryId: category.id,
-          label: category.label,
+          label: category.customLabel || category.id, // Map customLabel to label for backend
           color: category.color,
           icon: category.icon,
           isSystem: category.isSystem,
@@ -540,14 +922,6 @@ export class SyncManager {
     }
 
     console.log(`✅ Installments uploaded`)
-  }
-
-  /**
-   * Download cloud data and merge with local (Phase 1.1 - TODO)
-   */
-  async downloadCloudData(): Promise<void> {
-    await Promise.resolve() // ESLint: require-await
-    throw new Error('Download not implemented yet (Phase 1.1)')
   }
 
   /**

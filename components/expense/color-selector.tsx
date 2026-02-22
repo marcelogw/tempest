@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { Check } from 'lucide-react'
 import { CATEGORY_COLOR_PALETTE } from '@/lib/expense-store'
 import { cn } from '@/lib/utils'
@@ -10,9 +11,11 @@ type ColorSelectorProps = {
 }
 
 export function ColorSelector({ selectedColor, onColorSelect }: ColorSelectorProps) {
+  const i = useTranslations()
+
   return (
     <div className="space-y-2">
-      <label className="text-sm font-medium">Cor</label>
+      <label className="text-sm font-medium">{i('ui.selectors.color')}</label>
       <div className="grid grid-cols-10 gap-2">
         {CATEGORY_COLOR_PALETTE.map((color) => (
           <button
@@ -26,7 +29,7 @@ export function ColorSelector({ selectedColor, onColorSelect }: ColorSelectorPro
                 : 'border-transparent'
             )}
             style={{ backgroundColor: color }}
-            aria-label={`Selecionar cor ${color}`}
+            aria-label={i('ui.selectors.selectColor', { color })}
           >
             {selectedColor === color && (
               <Check className="absolute inset-0 m-auto h-4 w-4 text-white drop-shadow-lg" />

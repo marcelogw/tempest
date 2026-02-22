@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+import { useTranslations } from 'next-intl'
 import * as Icons from 'lucide-react'
 import {
   DndContext,
@@ -57,6 +58,7 @@ type SortableCreditCardCardProps = {
   onEdit: (card: CreditCard) => void
   onDelete: (card: CreditCard) => void
   onDetails: (card: CreditCard) => void
+  i: (key: string, values?: Record<string, string | number>) => string
 }
 
 function SortableCreditCardCard({
@@ -66,6 +68,7 @@ function SortableCreditCardCard({
   onEdit,
   onDelete,
   onDetails,
+  i,
 }: SortableCreditCardCardProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: card.id,
@@ -103,7 +106,7 @@ function SortableCreditCardCard({
     >
       <button
         className="cursor-grab touch-none active:cursor-grabbing"
-        aria-label="Arrastar cartão"
+        aria-label={i('ui.creditCards.dragCard')}
         {...attributes}
         {...listeners}
       >
@@ -125,7 +128,7 @@ function SortableCreditCardCard({
 
       <div className="flex flex-shrink-0 items-center gap-2">
         <Badge variant="outline" className="text-xs">
-          {card.limit !== null ? formatCurrencyBRL(card.limit) : 'Sem limite'}
+          {card.limit !== null ? formatCurrencyBRL(card.limit) : i('ui.creditCards.noLimit')}
         </Badge>
         {usagePercentage !== null && (
           <Badge variant={getUsageBadgeVariant(usagePercentage)} className="text-xs">
@@ -141,7 +144,7 @@ function SortableCreditCardCard({
             variant="ghost"
             size="icon"
             className="h-8 w-8 flex-shrink-0 opacity-0 transition-opacity group-hover:opacity-100"
-            aria-label={`Opções para ${card.name}`}
+            aria-label={i('ui.creditCards.optionsFor', { name: card.name })}
           >
             <Icons.MoreVertical className="h-4 w-4" />
           </Button>
@@ -149,18 +152,18 @@ function SortableCreditCardCard({
         <DropdownMenuContent align="end">
           <DropdownMenuItem onClick={() => onEdit(card)}>
             <Icons.Pencil className="mr-2 h-4 w-4" />
-            Editar
+            {i('common.edit')}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => onDetails(card)}>
             <Icons.Info className="mr-2 h-4 w-4" />
-            Detalhes
+            {i('ui.creditCards.details')}
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => onDelete(card)}
             className="text-destructive focus:text-destructive"
           >
             <Icons.Trash2 className="mr-2 h-4 w-4" />
-            Excluir
+            {i('common.delete')}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -177,6 +180,7 @@ export function CreditCardsView() {
     getCardUsagePercentage,
   } = useExpenseStore()
   const { toast } = useToast()
+  const i = useTranslations()
 
   const [formDialogOpen, setFormDialogOpen] = useState(false)
   const [formMode, setFormMode] = useState<'add' | 'edit'>('add')
@@ -244,13 +248,13 @@ export function CreditCardsView() {
     try {
       deleteCreditCard(cardToDelete.id, affectedCount > 0 ? reassignCardId : undefined)
       toast({
-        title: 'Sucesso',
-        description: `Cartão "${cardToDelete.name}" excluído com sucesso.`,
+        title: i('toast.success.deleted'),
+        description: i('ui.creditCards.cardDeletedSuccess', { name: cardToDelete.name }),
       })
     } catch (error) {
       toast({
-        title: 'Erro',
-        description: error instanceof Error ? error.message : 'Erro ao excluir cartão.',
+        title: i('errors.generic'),
+        description: error instanceof Error ? error.message : i('ui.creditCards.deleteCardError'),
         variant: 'destructive',
       })
     } finally {
@@ -276,15 +280,16 @@ export function CreditCardsView() {
           <div className="mx-auto max-w-7xl">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-3xl font-bold tracking-tight">Gerenciar Cartões</h1>
+                <h1 className="text-3xl font-bold tracking-tight">
+                  {i('ui.creditCards.manageCards')}
+                </h1>
                 <p className="text-muted-foreground mt-1">
-                  Configure seus cartões de crédito e rastreie parcelamentos e limites. Arraste para
-                  reordenar.
+                  {i('ui.creditCards.manageDescription')}
                 </p>
               </div>
               <Button onClick={handleAddNew} size="lg" className="gap-2">
                 <Icons.Plus className="h-5 w-5" />
-                Novo Cartão
+                {i('ui.creditCards.newCard')}
               </Button>
             </div>
           </div>
@@ -296,14 +301,12 @@ export function CreditCardsView() {
               <div className="bg-muted/50 flex flex-col items-center justify-center gap-4 rounded-lg border-2 border-dashed p-12">
                 <Icons.CreditCard className="text-muted-foreground h-12 w-12" />
                 <div className="text-center">
-                  <h3 className="text-lg font-semibold">Nenhum cartão cadastrado</h3>
-                  <p className="text-muted-foreground mt-1">
-                    Crie seu primeiro cartão para começar a rastrear parcelamentos.
-                  </p>
+                  <h3 className="text-lg font-semibold">{i('ui.creditCards.noCardsTitle')}</h3>
+                  <p className="text-muted-foreground mt-1">{i('ui.creditCards.noCardsSubtext')}</p>
                 </div>
                 <Button onClick={handleAddNew} className="gap-2">
                   <Icons.Plus className="h-4 w-4" />
-                  Criar Primeiro Cartão
+                  {i('ui.creditCards.createFirstCard')}
                 </Button>
               </div>
             ) : (
@@ -326,6 +329,7 @@ export function CreditCardsView() {
                         onEdit={handleEdit}
                         onDelete={handleDeleteClick}
                         onDetails={handleDetails}
+                        i={i}
                       />
                     ))}
                   </div>
@@ -346,24 +350,24 @@ export function CreditCardsView() {
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Confirmar Exclusão</AlertDialogTitle>
+            <AlertDialogTitle>{i('ui.creditCards.confirmDeletion')}</AlertDialogTitle>
             <AlertDialogDescription asChild>
               <div className="space-y-3">
-                <p>
-                  Tem certeza que deseja excluir o cartão <strong>{cardToDelete?.name}</strong>?
-                </p>
+                <p>{i('ui.creditCards.sureDeleteCard', { name: cardToDelete?.name ?? '' })}</p>
                 {affectedInstallmentsCount > 0 && (
                   <>
                     <p className="text-destructive font-medium">
-                      Este cartão possui {affectedInstallmentsCount} parcelamento(s) ativo(s).
+                      {i('ui.creditCards.cardHasInstallments', {
+                        count: affectedInstallmentsCount,
+                      })}
                     </p>
                     <div className="space-y-2">
                       <label htmlFor="reassign-card" className="text-sm font-medium">
-                        Reatribuir parcelamentos para:
+                        {i('ui.creditCards.reassignInstallments')}
                       </label>
                       <Select value={reassignCardId} onValueChange={setReassignCardId}>
                         <SelectTrigger id="reassign-card">
-                          <SelectValue placeholder="Selecione um cartão" />
+                          <SelectValue placeholder={i('ui.creditCards.selectCard')} />
                         </SelectTrigger>
                         <SelectContent>
                           {availableCardsForReassign.map((c) => (
@@ -386,13 +390,13 @@ export function CreditCardsView() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogCancel>{i('common.cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDeleteConfirm}
               disabled={affectedInstallmentsCount > 0 && !reassignCardId}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              Excluir
+              {i('common.delete')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -416,23 +420,25 @@ export function CreditCardsView() {
             <div className="space-y-6">
               <div className="bg-muted/50 grid grid-cols-3 gap-4 rounded-lg p-4">
                 <div className="space-y-1">
-                  <p className="text-muted-foreground text-xs">Limite</p>
+                  <p className="text-muted-foreground text-xs">{i('ui.creditCards.limit')}</p>
                   <p className="text-lg font-semibold">
                     {detailsCard.limit !== null
                       ? formatCurrencyBRL(detailsCard.limit)
-                      : 'Sem limite'}
+                      : i('ui.creditCards.noLimit')}
                   </p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-muted-foreground text-xs">Uso</p>
+                  <p className="text-muted-foreground text-xs">{i('ui.creditCards.usage')}</p>
                   <p className="text-lg font-semibold">
                     {getCardUsagePercentage(detailsCard.id) !== null
                       ? `${getCardUsagePercentage(detailsCard.id)!.toFixed(1)}%`
-                      : 'N/A'}
+                      : i('ui.creditCards.na')}
                   </p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-muted-foreground text-xs">Parcelamentos</p>
+                  <p className="text-muted-foreground text-xs">
+                    {i('ui.creditCards.installments')}
+                  </p>
                   <p className="text-lg font-semibold">
                     {installments.filter((i) => i.card === detailsCard.id).length}
                   </p>
@@ -440,10 +446,10 @@ export function CreditCardsView() {
               </div>
 
               <div className="space-y-3">
-                <h3 className="text-sm font-semibold">Parcelamentos Ativos</h3>
+                <h3 className="text-sm font-semibold">{i('ui.creditCards.activeInstallments')}</h3>
                 {installments.filter((i) => i.card === detailsCard.id).length === 0 ? (
                   <p className="text-muted-foreground text-sm">
-                    Nenhum parcelamento ativo para este cartão.
+                    {i('ui.creditCards.noActiveInstallments')}
                   </p>
                 ) : (
                   <div className="space-y-2">

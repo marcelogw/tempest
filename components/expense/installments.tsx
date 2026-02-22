@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Plus, Trash2, CreditCard, Calendar } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -30,6 +31,7 @@ interface InstallmentsProps {
 export function Installments({ currentMonth, showAllInstallments = false }: InstallmentsProps) {
   const { creditCards, installments, addInstallment, removeInstallment, getInstallmentsForMonth } =
     useExpenseStore()
+  const i = useTranslations()
   const [isOpen, setIsOpen] = useState(false)
   const [name, setName] = useState('')
   const [card, setCard] = useState<string>('')
@@ -72,22 +74,22 @@ export function Installments({ currentMonth, showAllInstallments = false }: Inst
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-base font-semibold">
             <CreditCard className="h-4 w-4 text-purple-500" />
-            Parcelamentos
+            {i('ui.installments.title')}
           </CardTitle>
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
               <Button size="sm" variant="outline" className="h-7 bg-transparent text-xs">
                 <Plus className="mr-1 h-3 w-3" />
-                Novo
+                {i('common.add')}
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
               <DialogHeader>
-                <DialogTitle>Novo Parcelamento</DialogTitle>
+                <DialogTitle>{i('ui.installments.addInstallment')}</DialogTitle>
               </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="installment-name">Nome</Label>
+                  <Label htmlFor="installment-name">{i('ui.installments.installmentName')}</Label>
                   <Input
                     id="installment-name"
                     placeholder="Ex: Tablet Samsung"
@@ -102,14 +104,14 @@ export function Installments({ currentMonth, showAllInstallments = false }: Inst
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="card">Cartão</Label>
+                  <Label htmlFor="card">{i('ui.installments.creditCard')}</Label>
                   <Select value={card} onValueChange={setCard} disabled={sortedCards.length === 0}>
                     <SelectTrigger>
                       <SelectValue
                         placeholder={
                           sortedCards.length === 0
-                            ? 'Crie um cartão primeiro'
-                            : 'Selecione o cartão'
+                            ? i('ui.creditCards.createFirstCard')
+                            : i('ui.creditCards.selectCard')
                         }
                       />
                     </SelectTrigger>
@@ -131,7 +133,7 @@ export function Installments({ currentMonth, showAllInstallments = false }: Inst
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="installments">Parcelas</Label>
+                    <Label htmlFor="installments">{i('ui.installments.totalInstallments')}</Label>
                     <Input
                       id="installments"
                       type="number"
@@ -144,7 +146,7 @@ export function Installments({ currentMonth, showAllInstallments = false }: Inst
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="amount">Valor por Parcela</Label>
+                    <Label htmlFor="amount">{i('ui.installments.amountPerInstallment')}</Label>
                     <Input
                       id="amount"
                       type="number"
@@ -165,9 +167,9 @@ export function Installments({ currentMonth, showAllInstallments = false }: Inst
                     onClick={() => setIsOpen(false)}
                     className="bg-transparent"
                   >
-                    Cancelar
+                    {i('common.cancel')}
                   </Button>
-                  <Button type="submit">Criar Parcelamento</Button>
+                  <Button type="submit">{i('ui.installments.addInstallment')}</Button>
                 </div>
               </form>
             </DialogContent>
@@ -177,7 +179,7 @@ export function Installments({ currentMonth, showAllInstallments = false }: Inst
       <CardContent className="space-y-3">
         {currentInstallments.length === 0 ? (
           <p className="text-muted-foreground py-4 text-center text-sm">
-            Nenhum parcelamento ativo este mes
+            {i('ui.installments.noInstallments')}
           </p>
         ) : (
           <>
@@ -185,7 +187,7 @@ export function Installments({ currentMonth, showAllInstallments = false }: Inst
               {currentInstallments.map(({ installment, currentNumber }) => {
                 const card = creditCards.find((c) => c.id === installment.card)
                 const cardColor = card?.color || '#64748b'
-                const cardName = card?.name || 'Cartão desconhecido'
+                const cardName = card?.name || i('ui.creditCards.cardName')
 
                 return (
                   <div
@@ -227,7 +229,7 @@ export function Installments({ currentMonth, showAllInstallments = false }: Inst
 
             <div className="border-border border-t pt-2">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Total Parcelamentos</span>
+                <span className="text-muted-foreground">{i('ui.installments.title')}</span>
                 <span className="font-semibold text-purple-600">
                   {formatCurrencyBRL(totalInstallmentsAmount)}
                 </span>

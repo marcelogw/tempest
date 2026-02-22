@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import * as Icons from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
@@ -100,6 +101,7 @@ type IconSelectorProps = {
 }
 
 export function IconSelector({ selectedIcon, onIconSelect }: IconSelectorProps) {
+  const i = useTranslations()
   const [open, setOpen] = useState(false)
 
   const SelectedIconComponent = selectedIcon
@@ -108,7 +110,7 @@ export function IconSelector({ selectedIcon, onIconSelect }: IconSelectorProps) 
 
   return (
     <div className="space-y-2">
-      <label className="text-sm font-medium">Ícone</label>
+      <label className="text-sm font-medium">{i('ui.selectors.icon')}</label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
@@ -122,7 +124,7 @@ export function IconSelector({ selectedIcon, onIconSelect }: IconSelectorProps) 
                 {SelectedIconComponent && <SelectedIconComponent className="h-5 w-5" />}
               </div>
             ) : (
-              <span className="text-muted-foreground">Selecionar ícone...</span>
+              <span className="text-muted-foreground">{i('ui.selectors.selectIcon')}</span>
             )}
             <Icons.ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
@@ -139,7 +141,7 @@ export function IconSelector({ selectedIcon, onIconSelect }: IconSelectorProps) 
                     onIconSelect(null)
                     setOpen(false)
                   }}
-                  title="Sem ícone"
+                  title={i('ui.selectors.noIcon')}
                 >
                   <Icons.X className="h-5 w-5" />
                 </Button>

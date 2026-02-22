@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Trash2, Pencil, RefreshCw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -24,6 +25,7 @@ interface IncomeListProps {
 }
 
 export function IncomeList({ incomes, onRemove, onUpdate }: IncomeListProps) {
+  const i = useTranslations()
   const [editingIncome, setEditingIncome] = useState<Income | null>(null)
   const [description, setDescription] = useState('')
   const [amount, setAmount] = useState('')
@@ -52,7 +54,7 @@ export function IncomeList({ incomes, onRemove, onUpdate }: IncomeListProps) {
       <div className="max-h-[320px] space-y-2 overflow-y-auto">
         {sortedIncomes.length === 0 ? (
           <p className="text-muted-foreground py-8 text-center text-sm">
-            Nenhuma fonte de renda ainda. Clique em "Adicionar Renda" para adicionar.
+            {i('ui.income.noIncome')}
           </p>
         ) : (
           sortedIncomes.map((income) => (
@@ -74,7 +76,7 @@ export function IncomeList({ incomes, onRemove, onUpdate }: IncomeListProps) {
                   className="mt-1 text-xs"
                   style={{ borderColor: '#10b981', color: '#10b981' }}
                 >
-                  Renda
+                  {i('ui.income.income')}
                 </Badge>
               </div>
               <div className="flex items-center gap-2">
@@ -86,7 +88,7 @@ export function IncomeList({ incomes, onRemove, onUpdate }: IncomeListProps) {
                   size="icon"
                   className="text-muted-foreground hover:text-foreground hover:bg-secondary h-7 w-7 opacity-0 transition-opacity group-hover:opacity-100"
                   onClick={() => handleEditClick(income)}
-                  aria-label="Editar"
+                  aria-label={i('ui.income.editLabel')}
                 >
                   <Pencil className="h-3.5 w-3.5" />
                 </Button>
@@ -95,7 +97,7 @@ export function IncomeList({ incomes, onRemove, onUpdate }: IncomeListProps) {
                   size="icon"
                   className="text-destructive hover:text-destructive hover:bg-destructive/10 h-7 w-7 opacity-0 transition-opacity group-hover:opacity-100"
                   onClick={() => onRemove(income.id)}
-                  aria-label="Remover"
+                  aria-label={i('ui.income.removeLabel')}
                 >
                   <Trash2 className="h-3.5 w-3.5" />
                 </Button>
@@ -112,22 +114,22 @@ export function IncomeList({ incomes, onRemove, onUpdate }: IncomeListProps) {
         >
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle>Editar Renda</DialogTitle>
-              <DialogDescription>Altere as informações da renda.</DialogDescription>
+              <DialogTitle>{i('ui.income.editIncome')}</DialogTitle>
+              <DialogDescription>{i('ui.income.editDescription')}</DialogDescription>
             </DialogHeader>
             <form onSubmit={handleEditSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="edit-description">Descrição</Label>
+                <Label htmlFor="edit-description">{i('ui.income.description')}</Label>
                 <Input
                   id="edit-description"
-                  placeholder="Ex: Salário, Freelance..."
+                  placeholder={i('ui.income.placeholder')}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="edit-amount">Valor</Label>
+                <Label htmlFor="edit-amount">{i('ui.income.amount')}</Label>
                 <div className="relative">
                   <span className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2">
                     R$
@@ -157,19 +159,19 @@ export function IncomeList({ incomes, onRemove, onUpdate }: IncomeListProps) {
                     htmlFor="make-recurring"
                     className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                   >
-                    Tornar recorrente
+                    {i('ui.income.replicateToFuture')}
                   </Label>
                   <p className="text-muted-foreground text-xs">
-                    Se marcado, esta renda será replicada para os próximos 24 meses.
+                    {i('ui.income.replicateDescription')}
                   </p>
                 </div>
               </div>
 
               <DialogFooter>
                 <Button type="button" variant="outline" onClick={() => setEditingIncome(null)}>
-                  Cancelar
+                  {i('common.cancel')}
                 </Button>
-                <Button type="submit">Salvar Alterações</Button>
+                <Button type="submit">{i('ui.income.saveChanges')}</Button>
               </DialogFooter>
             </form>
           </DialogContent>

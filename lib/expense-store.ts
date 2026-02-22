@@ -1,17 +1,24 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { persist, createJSONStorage } from 'zustand/middleware'
 import { addMonths, differenceInMonths } from 'date-fns'
+import {
+  runMigrations,
+  needsMigration,
+  createBackup,
+  cleanupOldBackups,
+  CURRENT_SCHEMA_VERSION,
+} from './migrations'
 
 // Category types for dynamic user-configurable categories
 export type CategoryIcon = string | null
 
 export type Category = {
-  id: string // unique identifier (kebab-case)
-  label: string // display name (Portuguese)
+  id: string // unique identifier - used as i18n key (e.g., 'groceries', 'transportation')
   color: string // hex color from palette
   icon: CategoryIcon // optional lucide icon name
   isSystem: boolean // true for SYSTEM_CATEGORY_ID (can't be deleted)
   order: number // for custom ordering
+  customLabel?: string // optional custom label for user-created categories (not translated)
 }
 
 // Changed from union type to string for dynamic categories
@@ -63,7 +70,7 @@ export interface MonthlyData {
 }
 
 // System category ID constant
-export const SYSTEM_CATEGORY_ID = 'outros' as const
+export const SYSTEM_CATEGORY_ID = 'other' as const
 
 // Predefined color palette for categories (15-20 colors from design system)
 export const CATEGORY_COLOR_PALETTE = [
@@ -90,61 +97,56 @@ export const CATEGORY_COLOR_PALETTE = [
 ]
 
 // Default categories on first initialization
+// NOTE: IDs are technical keys used for i18n lookups (e.g., categories.groceries)
+// Labels are NOT stored - they come from i18n at runtime based on user locale
 export const DEFAULT_CATEGORIES: Category[] = [
   {
-    id: 'mercado',
-    label: 'Mercado',
+    id: 'groceries',
     color: '#10b981',
     icon: 'ShoppingCart',
     isSystem: false,
     order: 0,
   },
   {
-    id: 'transporte',
-    label: 'Transporte',
+    id: 'transportation',
     color: '#3b82f6',
     icon: 'Car',
     isSystem: false,
     order: 1,
   },
-  { id: 'saude', label: 'Saúde', color: '#ef4444', icon: 'Heart', isSystem: false, order: 2 },
-  { id: 'lazer', label: 'Lazer', color: '#f59e0b', icon: 'PartyPopper', isSystem: false, order: 3 },
+  { id: 'health', color: '#ef4444', icon: 'Heart', isSystem: false, order: 2 },
+  { id: 'leisure', color: '#f59e0b', icon: 'PartyPopper', isSystem: false, order: 3 },
   {
-    id: 'alimentacao',
-    label: 'Alimentação',
+    id: 'food',
     color: '#ec4899',
     icon: 'Utensils',
     isSystem: false,
     order: 4,
   },
   {
-    id: 'educacao',
-    label: 'Educação',
+    id: 'education',
     color: '#8b5cf6',
     icon: 'GraduationCap',
     isSystem: false,
     order: 5,
   },
-  { id: 'moradia', label: 'Moradia', color: '#06b6d4', icon: 'Home', isSystem: false, order: 6 },
+  { id: 'housing', color: '#06b6d4', icon: 'Home', isSystem: false, order: 6 },
   {
-    id: 'assinaturas',
-    label: 'Assinaturas',
+    id: 'subscriptions',
     color: '#14b8a6',
     icon: 'RefreshCw',
     isSystem: false,
     order: 7,
   },
   {
-    id: 'cartao-credito',
-    label: 'Cartão de Crédito',
+    id: 'credit-card',
     color: '#6366f1',
     icon: 'CreditCard',
     isSystem: false,
     order: 8,
   },
   {
-    id: 'parcelamento',
-    label: 'Parcelamento',
+    id: 'installment',
     color: '#f97316',
     icon: 'Calendar',
     isSystem: false,
@@ -152,7 +154,6 @@ export const DEFAULT_CATEGORIES: Category[] = [
   },
   {
     id: SYSTEM_CATEGORY_ID,
-    label: 'Outros',
     color: '#64748b',
     icon: 'MoreHorizontal',
     isSystem: true,
@@ -200,7 +201,7 @@ interface ExpenseStore {
   ) => Array<{ installment: Installment; currentNumber: number }>
   // Category management actions
   initializeCategories: () => void
-  addCategory: (label: string, color: string, icon?: string | null) => void
+  addCategory: (customLabel: string, color: string, icon?: string | null) => void
   updateCategory: (id: string, updates: Partial<Omit<Category, 'id' | 'isSystem'>>) => void
   deleteCategory: (id: string) => void
   reorderCategories: (orderedIds: string[]) => void
@@ -288,7 +289,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           id: generateSampleId(),
           description: 'Aluguel',
           amount: 2500,
-          category: 'moradia',
+          category: 'housing',
           type: 'fixed',
           date: monthKey + '-01',
         },
@@ -296,7 +297,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           id: generateSampleId(),
           description: 'Seguro do Carro',
           amount: 280,
-          category: 'transporte',
+          category: 'transportation',
           type: 'fixed',
           date: monthKey + '-01',
         },
@@ -320,7 +321,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           id: generateSampleId(),
           description: 'Academia',
           amount: 120,
-          category: 'saude',
+          category: 'health',
           type: 'fixed',
           date: monthKey + '-01',
         },
@@ -330,7 +331,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           id: generateSampleId(),
           description: 'Cartao de Credito - Amazon',
           amount: Math.round(350 * variability),
-          category: 'cartao-credito',
+          category: 'credit-card',
           type: 'variable',
           date: monthKey + '-05',
         },
@@ -338,7 +339,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           id: generateSampleId(),
           description: 'Supermercado - Extra',
           amount: Math.round(850 * variability),
-          category: 'mercado',
+          category: 'groceries',
           type: 'variable',
           date: monthKey + '-08',
         },
@@ -346,7 +347,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           id: generateSampleId(),
           description: 'Combustivel',
           amount: Math.round(400 * variability),
-          category: 'transporte',
+          category: 'transportation',
           type: 'variable',
           date: monthKey + '-10',
         },
@@ -354,7 +355,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           id: generateSampleId(),
           description: 'Netflix e Spotify',
           amount: 75,
-          category: 'assinaturas',
+          category: 'subscriptions',
           type: 'variable',
           date: monthKey + '-12',
         },
@@ -362,7 +363,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           id: generateSampleId(),
           description: 'Restaurantes',
           amount: Math.round(450 * variability),
-          category: 'alimentacao',
+          category: 'food',
           type: 'variable',
           date: monthKey + '-15',
         },
@@ -370,7 +371,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           id: generateSampleId(),
           description: 'Cartao de Credito - Magazine Luiza',
           amount: Math.round(500 * variability),
-          category: 'cartao-credito',
+          category: 'credit-card',
           type: 'variable',
           date: monthKey + '-18',
         },
@@ -378,7 +379,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           id: generateSampleId(),
           description: 'Cinema',
           amount: Math.round(120 * variability),
-          category: 'lazer',
+          category: 'leisure',
           type: 'variable',
           date: monthKey + '-20',
         },
@@ -386,7 +387,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           id: generateSampleId(),
           description: 'Supermercado - Pao de Acucar',
           amount: Math.round(450 * variability),
-          category: 'mercado',
+          category: 'groceries',
           type: 'variable',
           date: monthKey + '-22',
         },
@@ -915,9 +916,9 @@ export const useExpenseStore = create<ExpenseStore>()(
         }
       },
 
-      addCategory: (label, color, icon = null) => {
+      addCategory: (customLabel, color, icon = null) => {
         const { categories } = get()
-        const id = normalizeToKebabCase(label)
+        const id = normalizeToKebabCase(customLabel)
 
         // Check for duplicate IDs
         if (categories.find((c) => c.id === id)) {
@@ -926,7 +927,7 @@ export const useExpenseStore = create<ExpenseStore>()(
 
         const newCategory: Category = {
           id,
-          label,
+          customLabel, // User-created categories have custom labels (not i18n)
           color,
           icon,
           isSystem: false,
@@ -944,7 +945,8 @@ export const useExpenseStore = create<ExpenseStore>()(
           throw new Error('Category not found')
         }
 
-        if (category.isSystem && updates.label) {
+        // System categories cannot have customLabel changed (they use i18n)
+        if (category.isSystem && updates.customLabel) {
           throw new Error('Cannot rename system category')
         }
 
@@ -1159,22 +1161,63 @@ export const useExpenseStore = create<ExpenseStore>()(
     }),
     {
       name: 'expense-store',
+      version: CURRENT_SCHEMA_VERSION,
+      storage: createJSONStorage(() => ({
+        getItem: (name) => {
+          const item = localStorage.getItem(name)
+          if (!item) return null
+
+          try {
+            const parsed = JSON.parse(item) as Record<string, unknown>
+
+            // Check if migration is needed
+            if (needsMigration(parsed)) {
+              console.log('[Store] Migration needed, running migrations...')
+
+              // Create backup before migrating
+              try {
+                createBackup(parsed)
+                cleanupOldBackups()
+              } catch (error) {
+                console.error('[Store] Failed to create backup:', error)
+                // Continue anyway - migration is important
+              }
+
+              // Run migrations
+              const migrated = runMigrations(parsed, (parsed.version as number) || 1)
+
+              // Save migrated data immediately
+              localStorage.setItem(name, JSON.stringify(migrated))
+
+              console.log('[Store] Migration completed successfully')
+              return JSON.stringify(migrated)
+            }
+
+            return item
+          } catch (error) {
+            console.error('[Store] Error reading/migrating storage:', error)
+            return item
+          }
+        },
+        setItem: (name, value) => {
+          localStorage.setItem(name, value)
+        },
+        removeItem: (name) => {
+          localStorage.removeItem(name)
+        },
+      })),
     }
   )
 )
 
-export const formatCurrencyBRL = (value: number) => {
-  return new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(value)
-}
-
-export const formatShortCurrencyBRL = (value: number) => {
-  if (value >= 1000) {
-    return `R$${(value / 1000).toFixed(1)}k`
-  }
-  return `R$${value}`
-}
+// Re-export formatting functions for backward compatibility
+export {
+  formatCurrency,
+  formatShortCurrency,
+  formatCurrencyBRL,
+  formatShortCurrencyBRL,
+  formatNumber,
+  formatPercentage,
+  type SupportedCurrency,
+  type SupportedLocale,
+} from './formatters'

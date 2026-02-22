@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import {
   Dialog,
   DialogContent,
@@ -26,14 +27,14 @@ interface AuthDialogProps {
  * 5. Dialog closes
  */
 export function AuthDialog({ open, onOpenChange, onSuccess }: AuthDialogProps) {
+  const i = useTranslations()
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Conectar Conta</DialogTitle>
-          <DialogDescription>
-            Faça login para sincronizar seus dados na nuvem e acessar de qualquer dispositivo.
-          </DialogDescription>
+          <DialogTitle>{i('ui.auth.connectAccount')}</DialogTitle>
+          <DialogDescription>{i('ui.auth.loginDescription')}</DialogDescription>
         </DialogHeader>
         <AuthForm onSuccess={onSuccess} />
       </DialogContent>

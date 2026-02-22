@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import * as Icons from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import {
@@ -32,10 +33,11 @@ export function CategoryFormDialog({
   category,
   mode,
 }: CategoryFormDialogProps) {
+  const i = useTranslations()
   const { addCategory, updateCategory } = useExpenseStore()
   const { toast } = useToast()
 
-  const [label, setLabel] = useState('')
+  const [customLabel, setCustomLabel] = useState('')
   const [color, setColor] = useState(CATEGORY_COLOR_PALETTE[0])
   const [icon, setIcon] = useState<string | null>(null)
 
@@ -43,11 +45,11 @@ export function CategoryFormDialog({
   useEffect(() => {
     if (open) {
       if (mode === 'edit' && category) {
-        setLabel(category.label)
+        setCustomLabel(category.customLabel || '')
         setColor(category.color)
         setIcon(category.icon)
       } else {
-        setLabel('')
+        setCustomLabel('')
         setColor(CATEGORY_COLOR_PALETTE[0])
         setIcon(null)
       }
@@ -57,10 +59,10 @@ export function CategoryFormDialog({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!label.trim()) {
+    if (!customLabel.trim()) {
       toast({
-        title: 'Erro',
-        description: 'O nome da categoria é obrigatório.',
+        title: i('toast.error.saveFailed'),
+        description: i('validation.required', { field: i('ui.categories.categoryName') }),
         variant: 'destructive',
       })
       return
@@ -68,23 +70,23 @@ export function CategoryFormDialog({
 
     try {
       if (mode === 'edit' && category) {
-        updateCategory(category.id, { label, color, icon })
+        updateCategory(category.id, { customLabel, color, icon })
         toast({
-          title: 'Sucesso',
-          description: 'Categoria atualizada com sucesso!',
+          title: i('toast.success.updated'),
+          description: i('ui.categories.updateSuccess'),
         })
       } else {
-        addCategory(label, color, icon)
+        addCategory(customLabel, color, icon)
         toast({
-          title: 'Sucesso',
-          description: 'Categoria criada com sucesso!',
+          title: i('toast.success.created'),
+          description: i('ui.categories.createSuccess'),
         })
       }
       onOpenChange(false)
     } catch (error) {
       toast({
-        title: 'Erro',
-        description: error instanceof Error ? error.message : 'Erro ao salvar categoria.',
+        title: i('toast.error.saveFailed'),
+        description: error instanceof Error ? error.message : i('errors.generic'),
         variant: 'destructive',
       })
     }
@@ -96,22 +98,20 @@ export function CategoryFormDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>{mode === 'edit' ? 'Editar Categoria' : 'Nova Categoria'}</DialogTitle>
-          <DialogDescription>
-            {mode === 'edit'
-              ? 'Modifique os detalhes da categoria.'
-              : 'Crie uma nova categoria personalizada para suas despesas.'}
-          </DialogDescription>
+          <DialogTitle>
+            {mode === 'edit' ? i('ui.categories.editCategory') : i('ui.categories.addCategory')}
+          </DialogTitle>
+          <DialogDescription>{i('ui.categories.description')}</DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="label">Nome</Label>
+            <Label htmlFor="customLabel">{i('ui.categories.categoryName')}</Label>
             <Input
-              id="label"
-              value={label}
-              onChange={(e) => setLabel(e.target.value)}
-              placeholder="Ex: Transporte, Alimentação..."
+              id="customLabel"
+              value={customLabel}
+              onChange={(e) => setCustomLabel(e.target.value)}
+              placeholder={i('ui.categories.categoryName')}
               required
               autoComplete="off"
               data-1p-ignore
@@ -126,20 +126,20 @@ export function CategoryFormDialog({
 
           {/* Preview */}
           <div className="space-y-2">
-            <Label>Pré-visualização</Label>
+            <Label>{i('ui.categories.selectIcon')}</Label>
             <div className="flex items-center gap-2 rounded-md border p-3">
               {IconComponent && <IconComponent className="h-5 w-5" style={{ color }} />}
               <span className="font-medium" style={{ color }}>
-                {label || 'Nome da Categoria'}
+                {customLabel || i('ui.categories.categoryName')}
               </span>
             </div>
           </div>
 
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancelar
+              {i('common.cancel')}
             </Button>
-            <Button type="submit">{mode === 'edit' ? 'Salvar' : 'Criar'}</Button>
+            <Button type="submit">{mode === 'edit' ? i('common.save') : i('common.add')}</Button>
           </DialogFooter>
         </form>
       </DialogContent>

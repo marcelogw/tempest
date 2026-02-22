@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+import { useTranslations } from 'next-intl'
 import * as Icons from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import {
@@ -56,6 +57,7 @@ function SortableCategoryCard({
   onEdit,
   onDelete,
 }: SortableCategoryCardProps) {
+  const i = useTranslations()
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: category.id,
   })
@@ -68,6 +70,9 @@ function SortableCategoryCard({
   const IconComponent = category.icon
     ? (Icons as unknown as Record<string, LucideIcon>)[category.icon]
     : null
+
+  // Get display name: custom label for user categories, i18n for system categories
+  const displayName = category.customLabel || i(`categories.${category.id}`)
 
   return (
     <div
@@ -110,11 +115,11 @@ function SortableCategoryCard({
       {/* Content Area */}
       <div className="flex min-w-0 flex-1 items-center gap-2">
         <h3 className="truncate text-sm font-semibold" style={{ color: category.color }}>
-          {category.label}
+          {displayName}
         </h3>
         {category.isSystem && (
           <Badge variant="outline" className="flex-shrink-0 text-xs">
-            Sistema
+            {i('ui.categories.systemCategory')}
           </Badge>
         )}
       </div>
@@ -131,7 +136,7 @@ function SortableCategoryCard({
             variant="ghost"
             size="icon"
             className="h-8 w-8 flex-shrink-0 opacity-0 transition-opacity group-hover:opacity-100"
-            aria-label={`Opções para ${category.label}`}
+            aria-label={`${i('common.edit')} ${displayName}`}
           >
             <Icons.MoreVertical className="h-4 w-4" />
           </Button>
@@ -139,7 +144,7 @@ function SortableCategoryCard({
         <DropdownMenuContent align="end">
           <DropdownMenuItem onClick={() => onEdit(category)}>
             <Icons.Pencil className="mr-2 h-4 w-4" />
-            Editar
+            {i('common.edit')}
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => onDelete(category)}
@@ -147,7 +152,7 @@ function SortableCategoryCard({
             className="text-destructive focus:text-destructive"
           >
             <Icons.Trash2 className="mr-2 h-4 w-4" />
-            Excluir
+            {i('common.delete')}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -156,6 +161,7 @@ function SortableCategoryCard({
 }
 
 export function CategoriesView() {
+  const i = useTranslations()
   const { categories, reorderCategories, deleteCategory, monthlyData } = useExpenseStore()
   const { toast } = useToast()
 
@@ -220,16 +226,18 @@ export function CategoriesView() {
   const handleDeleteConfirm = () => {
     if (!categoryToDelete) return
 
+    const _displayName = categoryToDelete.customLabel || i(`categories.${categoryToDelete.id}`)
+
     try {
       deleteCategory(categoryToDelete.id)
       toast({
-        title: 'Sucesso',
-        description: `Categoria "${categoryToDelete.label}" excluída. Despesas movidas para "Outros".`,
+        title: i('toast.success.deleted'),
+        description: i('ui.categories.deleteSuccess'),
       })
     } catch (error) {
       toast({
-        title: 'Erro',
-        description: error instanceof Error ? error.message : 'Erro ao excluir categoria.',
+        title: i('toast.error.deleteFailed'),
+        description: error instanceof Error ? error.message : i('errors.generic'),
         variant: 'destructive',
       })
     } finally {
@@ -251,14 +259,12 @@ export function CategoriesView() {
           <div className="mx-auto max-w-7xl">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-3xl font-bold tracking-tight">Gerenciar Categorias</h1>
-                <p className="text-muted-foreground mt-1">
-                  Personalize as categorias para organizar suas despesas. Arraste para reordenar.
-                </p>
+                <h1 className="text-3xl font-bold tracking-tight">{i('ui.categories.title')}</h1>
+                <p className="text-muted-foreground mt-1">{i('ui.categories.description')}</p>
               </div>
               <Button onClick={handleAddNew} size="lg" className="gap-2">
                 <Icons.Plus className="h-5 w-5" />
-                Nova Categoria
+                {i('ui.categories.addCategory')}
               </Button>
             </div>
           </div>
@@ -302,36 +308,18 @@ export function CategoriesView() {
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Excluir Categoria?</AlertDialogTitle>
+            <AlertDialogTitle>{i('ui.categories.confirmDelete')}</AlertDialogTitle>
             <AlertDialogDescription>
-              {categoryToDelete && (
-                <>
-                  Você está prestes a excluir a categoria <strong>{categoryToDelete.label}</strong>.
-                  {expenseCounts[categoryToDelete.id] > 0 && (
-                    <>
-                      <br />
-                      <br />
-                      <strong>
-                        {expenseCounts[categoryToDelete.id]}{' '}
-                        {expenseCounts[categoryToDelete.id] === 1 ? 'despesa' : 'despesas'}
-                      </strong>{' '}
-                      serão automaticamente movidas para a categoria "Outros".
-                    </>
-                  )}
-                  <br />
-                  <br />
-                  Esta ação não pode ser desfeita.
-                </>
-              )}
+              {categoryToDelete && i('ui.categories.confirmDeleteWarning')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogCancel>{i('common.cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDeleteConfirm}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              Excluir
+              {i('common.delete')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@/__tests__/test-utils'
 import userEvent from '@testing-library/user-event'
 import { ExpenseEditDialog } from '@/components/expense/expense-edit-dialog'
 import type { Expense } from '@/lib/expense-store'

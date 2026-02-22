@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import {
   Dialog,
   DialogContent,
@@ -29,6 +30,7 @@ export function CreditCardFormDialog({
   card,
   mode,
 }: CreditCardFormDialogProps) {
+  const i = useTranslations()
   const { addCreditCard, updateCreditCard } = useExpenseStore()
   const { toast } = useToast()
 
@@ -55,8 +57,8 @@ export function CreditCardFormDialog({
 
     if (!name.trim()) {
       toast({
-        title: 'Erro',
-        description: 'O nome do cartão é obrigatório.',
+        title: i('errors.generic'),
+        description: i('forms.creditCard.cardNameRequired'),
         variant: 'destructive',
       })
       return
@@ -66,8 +68,8 @@ export function CreditCardFormDialog({
 
     if (limit !== null && (isNaN(limit) || limit <= 0)) {
       toast({
-        title: 'Erro',
-        description: 'O limite deve ser um valor maior que zero ou deixado vazio.',
+        title: i('errors.generic'),
+        description: i('forms.creditCard.limitValidation'),
         variant: 'destructive',
       })
       return
@@ -77,21 +79,21 @@ export function CreditCardFormDialog({
       if (mode === 'edit' && card) {
         updateCreditCard(card.id, { name, color, limit })
         toast({
-          title: 'Sucesso',
-          description: 'Cartão atualizado com sucesso!',
+          title: i('toast.success.updated'),
+          description: i('forms.creditCard.updateSuccess'),
         })
       } else {
         addCreditCard(name, color, limit)
         toast({
-          title: 'Sucesso',
-          description: 'Cartão criado com sucesso!',
+          title: i('toast.success.created'),
+          description: i('forms.creditCard.createSuccess'),
         })
       }
       onOpenChange(false)
     } catch (error) {
       toast({
-        title: 'Erro',
-        description: error instanceof Error ? error.message : 'Erro ao salvar cartão.',
+        title: i('errors.generic'),
+        description: error instanceof Error ? error.message : i('forms.creditCard.saveError'),
         variant: 'destructive',
       })
     }
@@ -104,22 +106,24 @@ export function CreditCardFormDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>{mode === 'edit' ? 'Editar Cartão' : 'Novo Cartão'}</DialogTitle>
+          <DialogTitle>
+            {mode === 'edit' ? i('forms.creditCard.editCard') : i('forms.creditCard.newCard')}
+          </DialogTitle>
           <DialogDescription>
             {mode === 'edit'
-              ? 'Modifique os detalhes do cartão de crédito.'
-              : 'Crie um novo cartão de crédito para rastreamento de parcelamentos.'}
+              ? i('forms.creditCard.editDescription')
+              : i('forms.creditCard.createDescription')}
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="card-name">Nome</Label>
+            <Label htmlFor="card-name">{i('forms.creditCard.cardName')}</Label>
             <Input
               id="card-name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Ex: Nubank Pri, Itaú..."
+              placeholder={i('forms.creditCard.cardNamePlaceholder')}
               required
               autoComplete="off"
               data-1p-ignore
@@ -131,34 +135,32 @@ export function CreditCardFormDialog({
           <ColorSelector selectedColor={color} onColorSelect={setColor} />
 
           <div className="space-y-2">
-            <Label htmlFor="card-limit">Limite (opcional)</Label>
+            <Label htmlFor="card-limit">{i('forms.creditCard.monthlyLimitOptional')}</Label>
             <Input
               id="card-limit"
               type="number"
               step="0.01"
               value={limitInput}
               onChange={(e) => setLimitInput(e.target.value)}
-              placeholder="0.00"
+              placeholder={i('forms.creditCard.limitPlaceholder')}
               autoComplete="off"
               data-1p-ignore
               data-lpignore="true"
               data-form-type="other"
             />
-            <p className="text-muted-foreground text-sm">
-              Deixe vazio para cartões sem limite definido.
-            </p>
+            <p className="text-muted-foreground text-sm">{i('forms.creditCard.limitHelp')}</p>
           </div>
 
           <div className="space-y-2">
-            <Label>Pré-visualização</Label>
+            <Label>{i('forms.creditCard.preview')}</Label>
             <div className="flex items-center gap-3 rounded-md border p-3">
               <div className="h-3 w-3 rounded-full" style={{ backgroundColor: color }} />
               <div className="flex flex-col gap-1">
-                <span className="font-medium">{name || 'Nome do Cartão'}</span>
+                <span className="font-medium">{name || i('forms.creditCard.previewCardName')}</span>
                 <span className="text-muted-foreground text-sm">
                   {limitValid && limit !== null
-                    ? `Limite: ${formatCurrencyBRL(limit)}`
-                    : 'Sem limite'}
+                    ? `${i('forms.creditCard.previewLimit')} ${formatCurrencyBRL(limit)}`
+                    : i('forms.creditCard.noLimit')}
                 </span>
               </div>
             </div>
@@ -166,9 +168,11 @@ export function CreditCardFormDialog({
 
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancelar
+              {i('common.cancel')}
             </Button>
-            <Button type="submit">{mode === 'edit' ? 'Salvar' : 'Criar'}</Button>
+            <Button type="submit">
+              {mode === 'edit' ? i('common.save') : i('forms.creditCard.createCard')}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

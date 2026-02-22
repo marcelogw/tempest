@@ -1,0 +1,494 @@
+{
+  "common": {
+    "appName": "Tempest",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "close": "Close",
+    "add": "Add",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "search": "Search",
+    "filter": "Filter",
+    "clear": "Clear",
+    "apply": "Apply",
+    "yes": "Yes",
+    "no": "No"
+  },
+
+  "categories": {
+    "groceries": "Groceries",
+    "transportation": "Transportation",
+    "health": "Health",
+    "leisure": "Leisure",
+    "food": "Food",
+    "education": "Education",
+    "housing": "Housing",
+    "subscriptions": "Subscriptions",
+    "credit-card": "Credit Card",
+    "installment": "Installment",
+    "other": "Other"
+  },
+
+  "ui": {
+    "dashboard": {
+      "title": "Dashboard",
+      "last6Months": "Last 6 Months",
+      "monthlyOverview": "Monthly Overview",
+      "totalIncome": "Total Income",
+      "totalExpenses": "Total Expenses",
+      "totalInvestments": "Total Investments",
+      "totalSavings": "Total Savings",
+      "balance": "Balance",
+      "average": "Average",
+      "categoryBreakdown": "Expense Breakdown by Category",
+      "expensesTrend": "Expenses Trend",
+      "incomeTrend": "Income Trend",
+      "savingsRate": "Savings Rate",
+      "investmentRate": "Investment Rate",
+      "noDataAvailable": "No data available for this period",
+      "viewDetails": "View Details"
+    },
+
+    "monthly": {
+      "title": "Monthly View",
+      "subtitle": "Track your income, expenses and allocations",
+      "fixedExpenses": "Fixed Expenses",
+      "variableExpenses": "Variable Expenses",
+      "incomeSection": "Income",
+      "fixedExpensesSection": "Fixed Expenses",
+      "variableExpensesSection": "Variable Expenses",
+      "investmentsSection": "Investments",
+      "savingsSection": "Savings",
+      "summary": "Summary",
+      "addIncome": "Add Income",
+      "addFixedExpense": "Add Fixed Expense",
+      "addVariableExpense": "Add Variable Expense",
+      "noIncome": "No income registered for this month",
+      "noFixedExpenses": "No fixed expenses for this month",
+      "noVariableExpenses": "No variable expenses for this month",
+      "total": "Total",
+      "finalBalance": "Final Balance",
+      "emptyState": "Start by adding your income and expenses"
+    },
+
+    "categories": {
+      "title": "Categories",
+      "description": "Manage your expense categories",
+      "addCategory": "Add Category",
+      "editCategory": "Edit Category",
+      "deleteCategory": "Delete Category",
+      "categoryName": "Category Name",
+      "categoryColor": "Color",
+      "categoryIcon": "Icon",
+      "selectIcon": "Select an icon",
+      "selectColor": "Select a color",
+      "noCategories": "No categories created yet",
+      "systemCategory": "System category (cannot be deleted)",
+      "confirmDelete": "Are you sure you want to delete this category?",
+      "confirmDeleteWarning": "This action cannot be undone. Expenses with this category will be moved to 'Other'.",
+      "createSuccess": "Category created successfully",
+      "updateSuccess": "Category updated successfully",
+      "deleteSuccess": "Category deleted successfully"
+    },
+
+    "creditCards": {
+      "title": "Credit Cards",
+      "description": "Manage your credit cards",
+      "addCard": "Add Credit Card",
+      "editCard": "Edit Credit Card",
+      "deleteCard": "Delete Credit Card",
+      "cardName": "Card Name",
+      "cardColor": "Color",
+      "cardLimit": "Monthly Limit",
+      "noLimit": "No limit",
+      "noCards": "No credit cards registered",
+      "confirmDelete": "Are you sure you want to delete this card?",
+      "confirmDeleteWarning": "This card has {count} active installment(s). They will be deleted as well.",
+      "createSuccess": "Credit card created successfully",
+      "updateSuccess": "Credit card updated successfully",
+      "deleteSuccess": "Credit card deleted successfully",
+      "manageCards": "Manage Cards",
+      "manageDescription": "Configure your credit cards and track installments and limits. Drag to reorder.",
+      "newCard": "New Card",
+      "noCardsTitle": "No cards registered",
+      "noCardsSubtext": "Create your first card to start tracking installments.",
+      "createFirstCard": "Create First Card",
+      "confirmDeletion": "Confirm Deletion",
+      "sureDeleteCard": "Are you sure you want to delete the card {name}?",
+      "cardHasInstallments": "This card has {count} active installment(s).",
+      "reassignInstallments": "Reassign installments to:",
+      "selectCard": "Select a card",
+      "dragCard": "Drag card",
+      "details": "Details",
+      "limit": "Limit",
+      "usage": "Usage",
+      "na": "N/A",
+      "installments": "Installments",
+      "activeInstallments": "Active Installments",
+      "noActiveInstallments": "No active installments for this card.",
+      "optionsFor": "Options for {name}",
+      "cardDeletedSuccess": "Card \"{name}\" deleted successfully.",
+      "deleteCardError": "Error deleting card."
+    },
+
+    "installments": {
+      "title": "Installments",
+      "description": "Manage your credit card installments",
+      "addInstallment": "Add Installment",
+      "editInstallment": "Edit Installment",
+      "deleteInstallment": "Delete Installment",
+      "installmentName": "Name",
+      "creditCard": "Credit Card",
+      "totalInstallments": "Total Installments",
+      "amountPerInstallment": "Amount per Installment",
+      "startMonth": "Start Month",
+      "currentInstallment": "Installment {current} of {total}",
+      "paid": "Paid",
+      "pending": "Pending",
+      "noInstallments": "No active installments",
+      "confirmDelete": "Are you sure you want to delete this installment?",
+      "confirmDeleteWarning": "This will remove all installments from your expenses.",
+      "createSuccess": "Installment created successfully",
+      "updateSuccess": "Installment updated successfully",
+      "deleteSuccess": "Installment deleted successfully",
+      "installmentOf": "{current} of {total}",
+      "remaining": "{count} remaining",
+      "completed": "completed"
+    },
+
+    "settings": {
+      "title": "Settings",
+      "preferences": "Preferences",
+      "languageDescription": "Choose the display language for the application",
+      "general": "General",
+      "language": "Language",
+      "theme": "Theme",
+      "currency": "Currency",
+      "data": "Data Management",
+      "sync": "Sync & Authentication",
+      "dataManagementTitle": "Data Management",
+      "selectYear": "Select year",
+      "dangerZone": "Danger Zone",
+      "accountDisconnected": "Account disconnected",
+      "localDataKept": "Your local data has been kept",
+      "amplifyNotConfiguredTitle": "Amplify not configured",
+      "amplifyNotConfiguredDesc": "Run \"npx ampx sandbox\" to enable sync",
+      "dataSyncedSuccess": "Data synced successfully",
+      "dataSyncedDesc": "Your data was sent to the cloud",
+      "syncError": "Error syncing",
+      "allYearDataDeleted": "All data from {year} has been removed successfully",
+      "appReset": "The application has been reset to initial state",
+      "managingDataPreferences": "Manage your data and system preferences",
+      "deleteYearData": "Delete data from a year",
+      "deleteYearDesc": "Remove all data (income, expenses, installments) from a specific year",
+      "chooseYear": "Choose a year...",
+      "deleteYear": "Delete Year",
+      "deleteAllTitle": "Delete All Data",
+      "deleteAllDesc": "Deletes ALL application data. This action cannot be undone.",
+      "confirmDeleteYear": "Confirm Deletion of Year {year}",
+      "willBeDeleted": "Will be deleted:",
+      "allIncomeFrom": "All income from {year}",
+      "allExpenses": "All fixed and variable expenses",
+      "allInstallments": "All installments started this year",
+      "cannotBeUndone": "This action cannot be undone.",
+      "deleteAllWarning": "⚠️ Warning: Delete All Data",
+      "irreversible": "IRREVERSIBLE",
+      "permanentlyDeleted": "Will be permanently deleted:",
+      "allMonthsData": "All months data (income, expenses, investments, savings)",
+      "allInstallmentsData": "All installments",
+      "allCreditCards": "All credit cards",
+      "allCategories": "All custom categories",
+      "typeDeleteAll": "Type DELETE ALL",
+      "typeDeleteAllPlaceholder": "Type DELETE ALL",
+      "deleteAllButton": "Delete All",
+      "dataDeleted": "Data deleted",
+      "deleteYearTitle": "Delete data from a specific year",
+      "deleteYearDescription": "Permanently remove all data (income, expenses, investments) from the selected year.",
+      "deleteAllDescription": "Permanently delete all application data.",
+      "deleteAllList": "All income, expenses, and installments from all months\nAll years of historical data\nAll custom categories and credit cards",
+      "typeToConfirm": "Type DELETE ALL to confirm",
+      "typePlaceholder": "Type DELETE ALL",
+      "confirmDeleteYearWarning": "This action cannot be undone. All data from {year} will be permanently deleted.",
+      "confirmDeleteAllTitle": "⚠️ Warning: Delete All Data",
+      "confirmDeleteAllDescription": "Are you sure you want to delete ALL application data? This action cannot be undone.",
+      "deleteYearSuccess": "Year {year} deleted successfully",
+      "deleteAllSuccess": "All data deleted successfully",
+      "amplifyNotConfigured": "Amplify not configured",
+      "amplifyNotConfiguredDescription": "To enable sync, you need to configure AWS Amplify first.",
+      "amplifyInstructions": "Run npx ampx sandbox in your terminal to start the Amplify sandbox.",
+      "exportData": "Export Data",
+      "importData": "Import Data",
+      "clearData": "Clear All Data",
+      "exportSuccess": "Data exported successfully",
+      "importSuccess": "Data imported successfully",
+      "clearSuccess": "All data cleared successfully",
+      "dataDownloadedSuccess": "Data restored from cloud",
+      "dataDownloadedDesc": "Your data was successfully downloaded from the cloud",
+      "conflictResolvedSuccess": "Conflict resolved successfully"
+    },
+
+    "auth": {
+      "title": "Authentication",
+      "signIn": "Sign In",
+      "signOut": "Sign Out",
+      "signInWithGoogle": "Sign in with Google",
+      "signInSuccess": "Signed in successfully",
+      "signOutSuccess": "Signed out successfully",
+      "authError": "Authentication error"
+    },
+
+    "sync": {
+      "title": "Sync",
+      "description": "Sync your data across devices",
+      "lastSync": "Last sync: {date}",
+      "syncNow": "Sync Now",
+      "autoSync": "Auto-sync",
+      "syncSuccess": "Data synced successfully",
+      "syncError": "Error syncing data",
+      "notSynced": "Not synced yet",
+      "cloudSync": "Cloud Sync",
+      "disconnectedDesc": "Back up your data and access from anywhere",
+      "connectedAs": "Connected as {email}",
+      "syncingData": "Sending data to the cloud...",
+      "disconnected": "Disconnected",
+      "connected": "Connected",
+      "syncing": "Syncing...",
+      "errorSync": "Sync Error",
+      "connectAccount": "Connect Account",
+      "disconnect": "Disconnect",
+      "tryAgain": "Try Again",
+      "loginTooltip": "Log in with Google or Email to sync your data",
+      "disconnectTooltip": "Your local data will be kept",
+      "localDataInfo": "💡 Your data is saved locally in the browser. Connect an account to back up and access from other devices.",
+      "conflictPending": "Conflict detected — waiting for your choice...",
+      "conflictTitle": "Data Conflict Detected",
+      "conflictDesc": "Data was found both on this device and in the cloud. Choose which version to keep. The other version will be permanently replaced.",
+      "useLocal": "Keep local data",
+      "useLocalDesc": "Cloud data will be replaced by this device's data",
+      "useCloud": "Use cloud data",
+      "useCloudDesc": "This device's data will be replaced by cloud data"
+    },
+
+    "income": {
+      "title": "Income and Allocations",
+      "newIncome": "New Income",
+      "addIncome": "Add Income",
+      "editIncome": "Edit Income",
+      "editDescription": "Change the income information.",
+      "description": "Description",
+      "amount": "Amount",
+      "replicateToFuture": "Make recurring",
+      "replicateDescription": "If checked, this income will be replicated for the next 24 months.",
+      "placeholder": "Ex: Salary, Freelance...",
+      "items": "items",
+      "noIncome": "No income source yet. Click \"Add Income\" to add.",
+      "saveChanges": "Save Changes",
+      "income": "Income",
+      "editLabel": "Edit",
+      "removeLabel": "Remove"
+    },
+
+    "sidebar": {
+      "period": "Period",
+      "navigation": "Navigation",
+      "quickAccess": "Quick Access",
+      "dashboard": "Dashboard",
+      "monthlyView": "Monthly View",
+      "categories": "Categories",
+      "cards": "Cards",
+      "investments": "Investments",
+      "savings": "Savings",
+      "theme": "Theme",
+      "settings": "Settings"
+    },
+
+    "summary": {
+      "totalIncome": "Total Income",
+      "totalExpenses": "Total Expenses",
+      "netBalance": "Net Balance",
+      "balanceFormula": "Income - Expenses - Investments - Savings",
+      "investments": "Investments",
+      "savings": "Savings",
+      "vsPreviousMonth": "vs previous month"
+    },
+
+    "selectors": {
+      "selectMonth": "Select month",
+      "selectIcon": "Select an icon...",
+      "noIcon": "No icon",
+      "selectColor": "Select color {color}",
+      "icon": "Icon",
+      "color": "Color"
+    },
+
+    "language": {
+      "label": "Language",
+      "pt": "Português",
+      "en": "English"
+    }
+  },
+
+  "forms": {
+    "expense": {
+      "description": {
+        "label": "Description",
+        "placeholder": "Enter expense description"
+      },
+      "amount": {
+        "label": "Amount",
+        "placeholder": "0.00"
+      },
+      "category": {
+        "label": "Category",
+        "placeholder": "Select a category"
+      },
+      "date": {
+        "label": "Date",
+        "placeholder": "Select date"
+      },
+      "type": {
+        "label": "Type",
+        "fixed": "Fixed",
+        "variable": "Variable"
+      },
+      "makeRecurring": "Make this a recurring expense"
+    },
+
+    "income": {
+      "description": {
+        "label": "Description",
+        "placeholder": "Enter income description"
+      },
+      "amount": {
+        "label": "Amount",
+        "placeholder": "0.00"
+      },
+      "makeRecurring": "Make this a recurring income",
+      "newIncome": "New Income",
+      "addIncomeForMonth": "Add an income source for this month.",
+      "replicateLabel": "Replicate to following months",
+      "replicateHelp": "If checked, this income will be added to the next 24 months.",
+      "amountPlaceholder": "0.00"
+    },
+
+    "installment": {
+      "name": {
+        "label": "Name",
+        "placeholder": "Enter installment name"
+      },
+      "card": {
+        "label": "Credit Card",
+        "placeholder": "Select a card"
+      },
+      "total": {
+        "label": "Total Installments",
+        "placeholder": "12"
+      },
+      "amount": {
+        "label": "Amount per Installment",
+        "placeholder": "0.00"
+      },
+      "startMonth": {
+        "label": "Start Month",
+        "placeholder": "Select month"
+      }
+    },
+
+    "creditCard": {
+      "newCard": "New Credit Card",
+      "editCard": "Edit Credit Card",
+      "createDescription": "Create a new credit card to track expenses.",
+      "editDescription": "Update your credit card information.",
+      "cardName": "Card Name",
+      "cardNamePlaceholder": "Ex: Nubank, Itaú...",
+      "monthlyLimit": "Monthly Limit",
+      "monthlyLimitOptional": "Monthly Limit (optional)",
+      "noLimit": "No limit",
+      "limitPlaceholder": "0.00",
+      "limitHelp": "Leave empty for cards without defined limit.",
+      "cardColor": "Card Color",
+      "preview": "Preview",
+      "previewCardName": "Card Name",
+      "previewLimit": "Limit:",
+      "createCard": "Create",
+      "cardNameRequired": "Card name is required.",
+      "limitValidation": "Limit must be greater than zero or left empty.",
+      "updateSuccess": "Card updated successfully!",
+      "createSuccess": "Card created successfully!",
+      "saveError": "Error saving card."
+    }
+  },
+
+  "validation": {
+    "required": "{field} is required",
+    "invalidFormat": "Invalid format for {field}",
+    "minValue": "{field} must be at least {min}",
+    "maxValue": "{field} cannot exceed {max}",
+    "positiveNumber": "{field} must be a positive number",
+    "invalidDate": "Invalid date",
+    "duplicateName": "A {type} with this name already exists"
+  },
+
+  "errors": {
+    "generic": "An error occurred. Please try again.",
+    "notFound": "{item} not found",
+    "duplicateCard": "A card with this name already exists",
+    "cardNotFound": "Card not found",
+    "cardHasInstallments": "This card has {count} active installment(s)",
+    "categoryNotFound": "Category not found",
+    "categoryHasExpenses": "This category has expenses. Please move them first.",
+    "cannotDeleteSystemCategory": "Cannot delete system category",
+    "invalidMonth": "Invalid month format",
+    "invalidAmount": "Invalid amount"
+  },
+
+  "toast": {
+    "success": {
+      "saved": "Saved successfully",
+      "deleted": "Deleted successfully",
+      "updated": "Updated successfully",
+      "created": "Created successfully"
+    },
+    "error": {
+      "saveFailed": "Failed to save",
+      "deleteFailed": "Failed to delete",
+      "updateFailed": "Failed to update",
+      "createFailed": "Failed to create"
+    }
+  },
+
+  "months": {
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December"
+  },
+
+  "monthsShort": {
+    "jan": "Jan",
+    "feb": "Feb",
+    "mar": "Mar",
+    "apr": "Apr",
+    "may": "May",
+    "jun": "Jun",
+    "jul": "Jul",
+    "aug": "Aug",
+    "sep": "Sep",
+    "oct": "Oct",
+    "nov": "Nov",
+    "dec": "Dec"
+  }
+}

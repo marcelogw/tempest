@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo, useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import * as LucideIcons from 'lucide-react'
 import {
   TrendingUp,
@@ -41,6 +42,7 @@ import {
 import { cn } from '@/lib/utils'
 
 export function DashboardView() {
+  const i = useTranslations()
   const { monthlyData, currentYear, categories, getCategoryById, getInstallmentsForMonth } =
     useExpenseStore()
 
@@ -180,12 +182,12 @@ export function DashboardView() {
     return categoryAverages.slice(0, 6).map((item) => {
       const category = getCategoryById(item.category) || getCategoryById(SYSTEM_CATEGORY_ID)
       return {
-        name: category?.label || 'Outros',
+        name: category?.customLabel || i(`categories.${category?.id || 'other'}`),
         value: item.average,
         color: category?.color || '#64748b',
       }
     })
-  }, [categoryAverages, getCategoryById])
+  }, [categoryAverages, getCategoryById, i])
 
   const chartColors = {
     income: '#22c55e',
@@ -582,7 +584,8 @@ export function DashboardView() {
                         ? (LucideIcons as unknown as Record<string, LucideIcon>)[category.icon]
                         : null
                       const color = category?.color || '#64748b'
-                      const label = category?.label || 'Outros'
+                      const label =
+                        category?.customLabel || i(`categories.${category?.id || 'other'}`)
 
                       return (
                         <div

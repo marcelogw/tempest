@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -10,31 +11,33 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-const MONTHS_PT = [
-  { value: '01', label: 'Janeiro', short: 'Jan' },
-  { value: '02', label: 'Fevereiro', short: 'Fev' },
-  { value: '03', label: 'Março', short: 'Mar' },
-  { value: '04', label: 'Abril', short: 'Abr' },
-  { value: '05', label: 'Maio', short: 'Mai' },
-  { value: '06', label: 'Junho', short: 'Jun' },
-  { value: '07', label: 'Julho', short: 'Jul' },
-  { value: '08', label: 'Agosto', short: 'Ago' },
-  { value: '09', label: 'Setembro', short: 'Set' },
-  { value: '10', label: 'Outubro', short: 'Out' },
-  { value: '11', label: 'Novembro', short: 'Nov' },
-  { value: '12', label: 'Dezembro', short: 'Dez' },
-]
-
 interface MonthSelectorProps {
   currentMonth: string
   onMonthChange: (month: string) => void
 }
 
 export function MonthSelector({ currentMonth, onMonthChange }: MonthSelectorProps) {
+  const i = useTranslations()
+
+  const MONTHS = [
+    { value: '01', label: i('months.january'), short: i('monthsShort.jan') },
+    { value: '02', label: i('months.february'), short: i('monthsShort.feb') },
+    { value: '03', label: i('months.march'), short: i('monthsShort.mar') },
+    { value: '04', label: i('months.april'), short: i('monthsShort.apr') },
+    { value: '05', label: i('months.may'), short: i('monthsShort.may') },
+    { value: '06', label: i('months.june'), short: i('monthsShort.jun') },
+    { value: '07', label: i('months.july'), short: i('monthsShort.jul') },
+    { value: '08', label: i('months.august'), short: i('monthsShort.aug') },
+    { value: '09', label: i('months.september'), short: i('monthsShort.sep') },
+    { value: '10', label: i('months.october'), short: i('monthsShort.oct') },
+    { value: '11', label: i('months.november'), short: i('monthsShort.nov') },
+    { value: '12', label: i('months.december'), short: i('monthsShort.dec') },
+  ]
+
   const formatMonth = (monthStr: string) => {
-    const [year, month] = monthStr.split('-').map(Number)
-    const d = new Date(year, month - 1, 1)
-    return d.toLocaleDateString('pt-BR', { month: 'long' })
+    const [, month] = monthStr.split('-')
+    const monthIndex = parseInt(month) - 1
+    return MONTHS[monthIndex].label
   }
 
   const getCurrentMonthNumber = () => {
@@ -104,7 +107,7 @@ export function MonthSelector({ currentMonth, onMonthChange }: MonthSelectorProp
           </SelectValue>
         </SelectTrigger>
         <SelectContent>
-          {MONTHS_PT.map((month) => (
+          {MONTHS.map((month) => (
             <SelectItem
               key={month.value}
               value={month.value}

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -41,6 +42,7 @@ export function ExpenseEditDialog({
   onSubmit,
   currentMonth,
 }: ExpenseEditDialogProps) {
+  const i = useTranslations()
   const categories = useExpenseStore((state) => state.categories)
   const [description, setDescription] = useState(expense.description)
   const [amount, setAmount] = useState(expense.amount.toString())
@@ -134,13 +136,14 @@ export function ExpenseEditDialog({
                     const IconComponent = cat.icon
                       ? (Icons as unknown as Record<string, LucideIcon>)[cat.icon]
                       : null
+                    const displayName = cat.customLabel || i(`categories.${cat.id}`)
                     return (
                       <SelectItem key={cat.id} value={cat.id}>
                         <div className="flex items-center gap-2">
                           {IconComponent && (
                             <IconComponent className="h-4 w-4" style={{ color: cat.color }} />
                           )}
-                          <span>{cat.label}</span>
+                          <span>{displayName}</span>
                         </div>
                       </SelectItem>
                     )

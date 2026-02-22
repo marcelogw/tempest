@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { useExpenseStore, type Expense, mapInstallmentsToExpenses } from '@/lib/expense-store'
 import { MonthSelector } from './month-selector'
 import { SummaryCards } from './summary-cards'
@@ -10,6 +11,7 @@ import { CategoryBreakdown } from './category-breakdown'
 import { Installments } from './installments'
 
 export function MonthlyView() {
+  const i = useTranslations()
   const {
     currentMonth,
     setCurrentMonth,
@@ -132,10 +134,8 @@ export function MonthlyView() {
       <header className="border-border bg-card flex-shrink-0 border-b px-6 py-4">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-foreground text-2xl font-bold">Visao Mensal</h1>
-            <p className="text-muted-foreground text-sm">
-              Acompanhe sua renda, despesas e alocacoes
-            </p>
+            <h1 className="text-foreground text-2xl font-bold">{i('ui.monthly.title')}</h1>
+            <p className="text-muted-foreground text-sm">{i('ui.monthly.subtitle')}</p>
           </div>
           <MonthSelector currentMonth={currentMonth} onMonthChange={setCurrentMonth} />
         </div>
@@ -172,7 +172,7 @@ export function MonthlyView() {
             <div className="lg:col-span-2">
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <ExpenseList
-                  title="Despesas Fixas"
+                  title={i('ui.monthly.fixedExpenses')}
                   expenses={monthData.fixedExpenses}
                   type="fixed"
                   onAdd={handleAddFixedExpense}
@@ -181,7 +181,7 @@ export function MonthlyView() {
                   currentMonth={currentMonth}
                 />
                 <ExpenseList
-                  title="Despesas Variaveis"
+                  title={i('ui.monthly.variableExpenses')}
                   expenses={monthData.variableExpenses}
                   type="variable"
                   onAdd={(expense) => addExpense(currentMonth, expense, 'variable')}

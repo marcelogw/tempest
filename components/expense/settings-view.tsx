@@ -1,10 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useTranslations, useLocale } from 'next-intl'
 import { useSearchParams } from 'next/navigation'
 import { useExpenseStore } from '@/lib/expense-store'
 import { useSyncStore } from '@/lib/sync-store'
-import { getSyncManager } from '@/lib/sync-manager'
+import { getSyncManager, type SyncScenario } from '@/lib/sync-manager'
 import { fetchAuthSession } from 'aws-amplify/auth'
 import { useAmplify } from '@/components/amplify-provider'
 import { Button } from '@/components/ui/button'
@@ -29,9 +30,12 @@ import {
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/hooks/use-toast'
-import { AlertTriangle } from 'lucide-react'
+import { AlertTriangle, Globe } from 'lucide-react'
+import { setLocaleCookie } from '@/lib/locale-cookie'
 
 export function SettingsView() {
+  const i = useTranslations()
+  const currentLocale = useLocale()
   const { isConfigured } = useAmplify()
   const { deleteYearData, deleteAllData, getAvailableYears } = useExpenseStore()
   const { toast } = useToast()
@@ -43,8 +47,15 @@ export function SettingsView() {
   const [selectedYear, setSelectedYear] = useState<string>('')
   const [confirmationText, setConfirmationText] = useState('')
   const [authDialogOpen, setAuthDialogOpen] = useState(false)
+  const [pendingScenario, setPendingScenario] = useState<SyncScenario | null>(null)
 
   const availableYears = getAvailableYears()
+
+  function handleLanguageChange(newLocale: string) {
+    setLocaleCookie(newLocale as 'en' | 'pt')
+    localStorage.setItem('locale', newLocale)
+    window.location.reload()
+  }
 
   // Check for auth callback success
   useEffect(() => {
@@ -55,8 +66,8 @@ export function SettingsView() {
       void handleAuthSuccess()
     } else if (authStatus === 'error') {
       toast({
-        title: 'Erro na autenticação',
-        description: authMessage || 'Não foi possível conectar a conta',
+        title: i('ui.auth.authError'),
+        description: authMessage || i('ui.auth.authError'),
         variant: 'destructive',
       })
     }
@@ -93,8 +104,8 @@ export function SettingsView() {
     await syncManager.disconnect()
 
     toast({
-      title: 'Conta desconectada',
-      description: 'Seus dados locais foram mantidos',
+      title: i('ui.settings.accountDisconnected'),
+      description: i('ui.settings.localDataKept'),
     })
   }
 
@@ -103,31 +114,60 @@ export function SettingsView() {
 
     if (!isConfigured) {
       toast({
-        title: 'Amplify não configurado',
-        description: 'Execute "npx ampx sandbox" para habilitar sincronização',
+        title: i('ui.settings.amplifyNotConfiguredTitle'),
+        description: i('ui.settings.amplifyNotConfiguredDesc'),
         variant: 'destructive',
       })
       return
     }
 
-    // Get user email
     try {
       const session = await fetchAuthSession()
       const email = session.tokens?.idToken?.payload.email as string
       setUserEmail(email)
 
-      // Start upload
       const syncManager = getSyncManager()
-      await syncManager.uploadInitialData()
+      const scenario = await syncManager.initializeSync()
 
+      if (scenario === 'both') {
+        // Surface the conflict dialog — user must choose which side wins
+        setPendingScenario('both')
+      } else if (scenario === 'cloud-only') {
+        toast({
+          title: i('ui.settings.dataDownloadedSuccess'),
+          description: i('ui.settings.dataDownloadedDesc'),
+        })
+      } else if (scenario === 'local-only' || scenario === 'empty') {
+        toast({
+          title: i('ui.settings.dataSyncedSuccess'),
+          description: i('ui.settings.dataSyncedDesc'),
+        })
+      }
+    } catch (error) {
       toast({
-        title: 'Dados sincronizados com sucesso',
-        description: 'Seus dados foram enviados para a nuvem',
+        title: i('ui.settings.syncError'),
+        description: error instanceof Error ? error.message : i('errors.generic'),
+        variant: 'destructive',
+      })
+    }
+  }
+
+  async function handleResolveConflict(strategy: 'use-cloud' | 'use-local') {
+    setPendingScenario(null)
+    try {
+      const syncManager = getSyncManager()
+      await syncManager.resolveConflict(strategy)
+      toast({
+        title: i('ui.settings.conflictResolvedSuccess'),
+        description:
+          strategy === 'use-cloud'
+            ? i('ui.settings.dataDownloadedDesc')
+            : i('ui.settings.dataSyncedDesc'),
       })
     } catch (error) {
       toast({
-        title: 'Erro ao sincronizar',
-        description: error instanceof Error ? error.message : 'Erro desconhecido',
+        title: i('ui.settings.syncError'),
+        description: error instanceof Error ? error.message : i('errors.generic'),
         variant: 'destructive',
       })
     }
@@ -141,8 +181,8 @@ export function SettingsView() {
     setSelectedYear('')
 
     toast({
-      title: 'Dados deletados',
-      description: `Todos os dados de ${selectedYear} foram removidos com sucesso.`,
+      title: i('ui.settings.dataDeleted'),
+      description: i('ui.settings.allYearDataDeleted', { year: selectedYear }),
     })
   }
 
@@ -154,8 +194,8 @@ export function SettingsView() {
     setConfirmationText('')
 
     toast({
-      title: 'Todos os dados foram deletados',
-      description: 'O aplicativo foi resetado para o estado inicial.',
+      title: i('ui.settings.dataDeleted'),
+      description: i('ui.settings.appReset'),
     })
   }
 
@@ -165,38 +205,70 @@ export function SettingsView() {
         {/* Header Section (sticky) */}
         <div className="border-b p-6">
           <div className="mx-auto max-w-7xl">
-            <h1 className="text-3xl font-bold tracking-tight">Configurações</h1>
-            <p className="text-muted-foreground mt-1">
-              Gerencie seus dados e preferências do sistema
-            </p>
+            <h1 className="text-3xl font-bold tracking-tight">{i('ui.settings.title')}</h1>
+            <p className="text-muted-foreground mt-1">{i('ui.settings.managingDataPreferences')}</p>
           </div>
         </div>
 
         {/* Content Section (scrollable) */}
         <div className="flex-1 overflow-y-auto p-6">
           <div className="mx-auto max-w-4xl space-y-6">
+            {/* Seção: Preferências */}
+            <div className="bg-card rounded-lg border p-6">
+              <h2 className="mb-6 text-xl font-semibold">{i('ui.settings.preferences')}</h2>
+
+              <div className="space-y-4">
+                {/* Card: Idioma */}
+                <div className="rounded-lg border p-4">
+                  <div className="flex items-start gap-3">
+                    <Globe className="text-muted-foreground mt-1 h-5 w-5 flex-shrink-0" />
+                    <div className="flex-1">
+                      <h3 className="mb-2 text-base font-medium">{i('ui.language.label')}</h3>
+                      <p className="text-muted-foreground mb-4 text-sm">
+                        {i('ui.settings.languageDescription')}
+                      </p>
+                      <Select value={currentLocale} onValueChange={handleLanguageChange}>
+                        <SelectTrigger className="w-full sm:w-[200px]">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="pt">🇧🇷 {i('ui.language.pt')}</SelectItem>
+                          <SelectItem value="en">🇺🇸 {i('ui.language.en')}</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Seção: Gerenciamento de Dados */}
             <div className="bg-card rounded-lg border p-6">
-              <h2 className="mb-6 text-xl font-semibold">Gerenciamento de Dados</h2>
+              <h2 className="mb-6 text-xl font-semibold">{i('ui.settings.dataManagementTitle')}</h2>
 
               <div className="space-y-4">
                 {/* Sync Card */}
-                <SyncCard onConnect={handleConnect} onDisconnect={() => void handleDisconnect()} />
+                <SyncCard
+                  onConnect={handleConnect}
+                  onDisconnect={() => void handleDisconnect()}
+                  pendingScenario={pendingScenario}
+                  onResolveConflict={(strategy) => void handleResolveConflict(strategy)}
+                />
 
                 {/* Card: Deletar Ano Específico */}
                 <div className="rounded-lg border p-4">
-                  <h3 className="mb-2 text-base font-medium">Deletar dados de um ano</h3>
+                  <h3 className="mb-2 text-base font-medium">{i('ui.settings.deleteYearData')}</h3>
                   <p className="text-muted-foreground mb-4 text-sm">
-                    Remove todos os dados (receitas, despesas, parcelamentos) de um ano específico
+                    {i('ui.settings.deleteYearDesc')}
                   </p>
                   <div className="flex items-end gap-3">
                     <div className="flex-1">
                       <label className="text-muted-foreground mb-2 block text-sm">
-                        Selecione o ano
+                        {i('ui.settings.selectYear')}
                       </label>
                       <Select value={selectedYear} onValueChange={setSelectedYear}>
                         <SelectTrigger>
-                          <SelectValue placeholder="Escolha um ano..." />
+                          <SelectValue placeholder={i('ui.settings.chooseYear')} />
                         </SelectTrigger>
                         <SelectContent>
                           {availableYears.map((year) => (
@@ -212,7 +284,7 @@ export function SettingsView() {
                       onClick={() => setDeleteYearDialogOpen(true)}
                       disabled={!selectedYear}
                     >
-                      Deletar Ano
+                      {i('ui.settings.deleteYear')}
                     </Button>
                   </div>
                 </div>
@@ -223,17 +295,17 @@ export function SettingsView() {
                     <AlertTriangle className="text-destructive mt-0.5 h-5 w-5 flex-shrink-0" />
                     <div className="flex-1">
                       <h3 className="text-destructive mb-2 text-base font-medium">
-                        Zona de Perigo
+                        {i('ui.settings.dangerZone')}
                       </h3>
                       <p className="text-muted-foreground mb-4 text-sm">
-                        Deleta TODOS os dados do aplicativo. Esta ação não pode ser desfeita.
+                        {i('ui.settings.deleteAllDesc')}
                       </p>
                       <Button
                         variant="destructive"
                         onClick={() => setDeleteAllDialogOpen(true)}
                         className="w-full sm:w-auto"
                       >
-                        Deletar Todos os Dados
+                        {i('ui.settings.deleteAllTitle')}
                       </Button>
                     </div>
                   </div>
@@ -248,31 +320,31 @@ export function SettingsView() {
       <AlertDialog open={deleteYearDialogOpen} onOpenChange={setDeleteYearDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Confirmar Exclusão do Ano {selectedYear}</AlertDialogTitle>
+            <AlertDialogTitle>
+              {i('ui.settings.confirmDeleteYear', { year: selectedYear })}
+            </AlertDialogTitle>
             <AlertDialogDescription asChild>
               <div className="space-y-3">
-                <p>
-                  Tem certeza que deseja excluir todos os dados de <strong>{selectedYear}</strong>?
-                </p>
+                <p>{i('ui.settings.confirmDeleteYear', { year: selectedYear })}</p>
                 <div className="bg-muted rounded-lg p-3">
-                  <p className="text-sm font-medium">Serão deletados:</p>
+                  <p className="text-sm font-medium">{i('ui.settings.willBeDeleted')}</p>
                   <ul className="mt-2 space-y-1 text-sm">
-                    <li>• Todas as receitas de {selectedYear}</li>
-                    <li>• Todas as despesas fixas e variáveis</li>
-                    <li>• Todos os parcelamentos iniciados neste ano</li>
+                    <li>• {i('ui.settings.allIncomeFrom', { year: selectedYear })}</li>
+                    <li>• {i('ui.settings.allExpenses')}</li>
+                    <li>• {i('ui.settings.allInstallments')}</li>
                   </ul>
                 </div>
-                <p className="text-destructive font-medium">Esta ação não pode ser desfeita.</p>
+                <p className="text-destructive font-medium">{i('ui.settings.cannotBeUndone')}</p>
               </div>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogCancel>{i('common.cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDeleteYear}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              Excluir Ano
+              {i('ui.settings.deleteYear')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -283,31 +355,26 @@ export function SettingsView() {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle className="text-destructive">
-              ⚠️ Atenção: Deletar Todos os Dados
+              {i('ui.settings.deleteAllWarning')}
             </AlertDialogTitle>
             <AlertDialogDescription asChild>
               <div className="space-y-3">
-                <p>
-                  Esta é uma ação <strong className="text-destructive">IRREVERSÍVEL</strong>.
-                </p>
+                <p>{i('ui.settings.irreversible')}</p>
                 <div className="bg-destructive/10 border-destructive/50 rounded-lg border p-3">
-                  <p className="text-sm font-medium">Serão deletados permanentemente:</p>
+                  <p className="text-sm font-medium">{i('ui.settings.permanentlyDeleted')}</p>
                   <ul className="mt-2 space-y-1 text-sm">
-                    <li>• Todos os dados de receitas e despesas</li>
-                    <li>• Todos os parcelamentos</li>
-                    <li>• Todas as configurações de categorias</li>
-                    <li>• Todas as configurações de cartões de crédito</li>
+                    <li>• {i('ui.settings.allMonthsData')}</li>
+                    <li>• {i('ui.settings.allInstallmentsData')}</li>
+                    <li>• {i('ui.settings.allCategories')}</li>
+                    <li>• {i('ui.settings.allCreditCards')}</li>
                   </ul>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-sm font-medium">
-                    Digite <code className="bg-muted rounded px-2 py-1">DELETAR TUDO</code> para
-                    confirmar:
-                  </p>
+                  <p className="text-sm font-medium">{i('ui.settings.typeDeleteAll')}</p>
                   <Input
                     value={confirmationText}
                     onChange={(e) => setConfirmationText(e.target.value)}
-                    placeholder="Digite DELETAR TUDO"
+                    placeholder={i('ui.settings.typeDeleteAllPlaceholder')}
                     className="font-mono"
                   />
                 </div>
@@ -315,13 +382,15 @@ export function SettingsView() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setConfirmationText('')}>Cancelar</AlertDialogCancel>
+            <AlertDialogCancel onClick={() => setConfirmationText('')}>
+              {i('common.cancel')}
+            </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDeleteAll}
               disabled={confirmationText !== 'DELETAR TUDO'}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90 disabled:opacity-50"
             >
-              Deletar Tudo
+              {i('ui.settings.deleteAllButton')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

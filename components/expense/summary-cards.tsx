@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { Card, CardContent } from '@/components/ui/card'
 import {
   TrendingUp,
@@ -28,6 +29,7 @@ export function SummaryCards({
   savings,
   previousMonthExpenses,
 }: SummaryCardsProps) {
+  const i = useTranslations()
   const netBalance = income - totalExpenses - investments - savings
   const expenseChange = previousMonthExpenses
     ? ((totalExpenses - previousMonthExpenses) / previousMonthExpenses) * 100
@@ -35,7 +37,7 @@ export function SummaryCards({
 
   const cards = [
     {
-      title: 'Renda Total',
+      title: i('ui.summary.totalIncome'),
       value: income,
       icon: Wallet,
       color: 'text-accent',
@@ -43,16 +45,16 @@ export function SummaryCards({
       trend: null,
     },
     {
-      title: 'Total de Despesas',
+      title: i('ui.summary.totalExpenses'),
       value: totalExpenses,
       icon: CreditCard,
       color: 'text-destructive',
       bgColor: 'bg-destructive/10',
       trend: expenseChange,
-      trendLabel: 'vs mes anterior',
+      trendLabel: i('ui.summary.vsPreviousMonth'),
     },
     {
-      title: 'Investimentos',
+      title: i('ui.summary.investments'),
       value: investments,
       icon: TrendingUp,
       color: 'text-primary',
@@ -60,7 +62,7 @@ export function SummaryCards({
       trend: null,
     },
     {
-      title: 'Poupanca',
+      title: i('ui.summary.savings'),
       value: savings,
       icon: PiggyBank,
       color: 'text-chart-2',
@@ -130,10 +132,10 @@ export function SummaryCards({
                 )}
               </div>
               <div>
-                <p className="text-muted-foreground text-sm font-medium">Saldo Liquido</p>
-                <p className="text-muted-foreground text-xs">
-                  Renda - Despesas - Investimentos - Poupanca
+                <p className="text-muted-foreground text-sm font-medium">
+                  {i('ui.summary.netBalance')}
                 </p>
+                <p className="text-muted-foreground text-xs">{i('ui.summary.balanceFormula')}</p>
               </div>
             </div>
             <p

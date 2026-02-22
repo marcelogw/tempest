@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -32,8 +33,10 @@ interface IncomeSectionProps {
 
 function AddIncomeDialog({
   onSubmit,
+  i,
 }: {
   onSubmit: (income: Omit<Income, 'id'>, replicate: boolean) => void
+  i: (key: string) => string
 }) {
   const [isOpen, setIsOpen] = useState(false)
   const [description, setDescription] = useState('')
@@ -63,27 +66,27 @@ function AddIncomeDialog({
       <DialogTrigger asChild>
         <Button size="sm" variant="outline" className="gap-1.5 bg-transparent">
           <Plus className="h-4 w-4" />
-          Novo
+          {i('common.add')}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Nova Renda</DialogTitle>
-          <DialogDescription>Adicione uma fonte de renda para este mês.</DialogDescription>
+          <DialogTitle>{i('forms.income.newIncome')}</DialogTitle>
+          <DialogDescription>{i('forms.income.addIncomeForMonth')}</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="new-description">Descrição</Label>
+            <Label htmlFor="new-description">{i('forms.income.description.label')}</Label>
             <Input
               id="new-description"
-              placeholder="Ex: Salário, Freelance..."
+              placeholder={i('forms.income.description.placeholder')}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="new-amount">Valor</Label>
+            <Label htmlFor="new-amount">{i('forms.income.amount.label')}</Label>
             <div className="relative">
               <span className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2">
                 R$
@@ -93,7 +96,7 @@ function AddIncomeDialog({
                 type="number"
                 step="0.01"
                 min="0"
-                placeholder="0,00"
+                placeholder={i('forms.income.amountPlaceholder')}
                 className="pl-10"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
@@ -113,19 +116,17 @@ function AddIncomeDialog({
                 htmlFor="new-replicate"
                 className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
-                Replicar para meses seguintes
+                {i('forms.income.replicateLabel')}
               </Label>
-              <p className="text-muted-foreground text-xs">
-                Se marcado, esta renda será adicionada nos próximos 24 meses.
-              </p>
+              <p className="text-muted-foreground text-xs">{i('forms.income.replicateHelp')}</p>
             </div>
           </div>
 
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => handleOpenChange(false)}>
-              Cancelar
+              {i('common.cancel')}
             </Button>
-            <Button type="submit">Adicionar</Button>
+            <Button type="submit">{i('common.add')}</Button>
           </DialogFooter>
         </form>
       </DialogContent>
@@ -143,6 +144,7 @@ export function IncomeSection({
   onInvestmentsChange,
   onSavingsChange,
 }: IncomeSectionProps) {
+  const i = useTranslations()
   const [investmentsValue, setInvestmentsValue] = useState(investments.toString())
   const [savingsValue, setSavingsValue] = useState(savings.toString())
 
@@ -174,9 +176,9 @@ export function IncomeSection({
             <div className="rounded-md bg-emerald-500/10 p-1.5">
               <DollarSign className="h-4 w-4 text-emerald-600" />
             </div>
-            <CardTitle className="text-base font-semibold">Renda e Alocações</CardTitle>
+            <CardTitle className="text-base font-semibold">{i('ui.income.title')}</CardTitle>
           </div>
-          <AddIncomeDialog onSubmit={onAddIncome} />
+          <AddIncomeDialog onSubmit={onAddIncome} i={i} />
         </div>
         <div className="flex items-center justify-between pt-2 text-sm">
           <span className="text-muted-foreground">{incomes.length} itens</span>

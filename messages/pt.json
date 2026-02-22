@@ -1,0 +1,496 @@
+{
+  "common": {
+    "appName": "Tempest",
+    "loading": "Carregando...",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "delete": "Excluir",
+    "confirm": "Confirmar",
+    "close": "Fechar",
+    "add": "Adicionar",
+    "back": "Voltar",
+    "next": "Próximo",
+    "previous": "Anterior",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "clear": "Limpar",
+    "apply": "Aplicar",
+    "yes": "Sim",
+    "no": "Não"
+  },
+
+  "categories": {
+    "groceries": "Mercado",
+    "transportation": "Transporte",
+    "health": "Saúde",
+    "leisure": "Lazer",
+    "food": "Alimentação",
+    "education": "Educação",
+    "housing": "Moradia",
+    "subscriptions": "Assinaturas",
+    "credit-card": "Cartão de Crédito",
+    "installment": "Parcelamento",
+    "other": "Outros"
+  },
+
+  "ui": {
+    "dashboard": {
+      "title": "Dashboard",
+      "last6Months": "Últimos 6 Meses",
+      "monthlyOverview": "Visão Mensal",
+      "totalIncome": "Receita Total",
+      "totalExpenses": "Despesas Totais",
+      "totalInvestments": "Investimentos Totais",
+      "totalSavings": "Poupança Total",
+      "balance": "Saldo",
+      "average": "Média",
+      "categoryBreakdown": "Distribuição de Gastos por Categoria",
+      "expensesTrend": "Tendência de Gastos",
+      "incomeTrend": "Tendência de Receita",
+      "savingsRate": "Taxa de Poupança",
+      "investmentRate": "Taxa de Investimento",
+      "noDataAvailable": "Nenhum dado disponível para este período",
+      "viewDetails": "Ver Detalhes"
+    },
+
+    "monthly": {
+      "title": "Visão Mensal",
+      "subtitle": "Acompanhe sua renda, despesas e alocações",
+      "fixedExpenses": "Despesas Fixas",
+      "variableExpenses": "Despesas Variáveis",
+      "incomeSection": "Receitas",
+      "fixedExpensesSection": "Gastos Fixos",
+      "variableExpensesSection": "Gastos Variáveis",
+      "investmentsSection": "Investimentos",
+      "savingsSection": "Poupança",
+      "summary": "Resumo",
+      "addIncome": "Adicionar Receita",
+      "addFixedExpense": "Adicionar Gasto Fixo",
+      "addVariableExpense": "Adicionar Gasto Variável",
+      "noIncome": "Nenhuma receita cadastrada para este mês",
+      "noFixedExpenses": "Nenhum gasto fixo para este mês",
+      "noVariableExpenses": "Nenhum gasto variável para este mês",
+      "total": "Total",
+      "finalBalance": "Saldo Final",
+      "emptyState": "Comece adicionando suas receitas e gastos"
+    },
+
+    "categories": {
+      "title": "Categorias",
+      "description": "Gerencie suas categorias de gastos",
+      "addCategory": "Adicionar Categoria",
+      "editCategory": "Editar Categoria",
+      "deleteCategory": "Excluir Categoria",
+      "categoryName": "Nome da Categoria",
+      "categoryColor": "Cor",
+      "categoryIcon": "Ícone",
+      "selectIcon": "Selecione um ícone",
+      "selectColor": "Selecione uma cor",
+      "noCategories": "Nenhuma categoria criada ainda",
+      "systemCategory": "Categoria do sistema (não pode ser excluída)",
+      "confirmDelete": "Tem certeza que deseja excluir esta categoria?",
+      "confirmDeleteWarning": "Esta ação não pode ser desfeita. Gastos com esta categoria serão movidos para 'Outros'.",
+      "createSuccess": "Categoria criada com sucesso",
+      "updateSuccess": "Categoria atualizada com sucesso",
+      "deleteSuccess": "Categoria excluída com sucesso"
+    },
+
+    "creditCards": {
+      "title": "Cartões de Crédito",
+      "description": "Gerencie seus cartões de crédito",
+      "addCard": "Adicionar Cartão",
+      "editCard": "Editar Cartão",
+      "deleteCard": "Excluir Cartão",
+      "cardName": "Nome do Cartão",
+      "cardColor": "Cor",
+      "cardLimit": "Limite Mensal",
+      "noLimit": "Sem limite",
+      "noCards": "Nenhum cartão de crédito cadastrado",
+      "confirmDelete": "Tem certeza que deseja excluir este cartão?",
+      "confirmDeleteWarning": "Este cartão possui {count} parcelamento(s) ativo(s). Eles também serão excluídos.",
+      "createSuccess": "Cartão criado com sucesso",
+      "updateSuccess": "Cartão atualizado com sucesso",
+      "deleteSuccess": "Cartão excluído com sucesso",
+      "manageCards": "Gerenciar Cartões",
+      "manageDescription": "Configure seus cartões de crédito e rastreie parcelamentos e limites. Arraste para reordenar.",
+      "newCard": "Novo Cartão",
+      "noCardsTitle": "Nenhum cartão cadastrado",
+      "noCardsSubtext": "Crie seu primeiro cartão para começar a rastrear parcelamentos.",
+      "createFirstCard": "Criar Primeiro Cartão",
+      "confirmDeletion": "Confirmar Exclusão",
+      "sureDeleteCard": "Tem certeza que deseja excluir o cartão {name}?",
+      "cardHasInstallments": "Este cartão possui {count} parcelamento(s) ativo(s).",
+      "reassignInstallments": "Reatribuir parcelamentos para:",
+      "selectCard": "Selecione um cartão",
+      "dragCard": "Arrastar cartão",
+      "details": "Detalhes",
+      "limit": "Limite",
+      "usage": "Uso",
+      "na": "N/D",
+      "installments": "Parcelamentos",
+      "activeInstallments": "Parcelamentos Ativos",
+      "noActiveInstallments": "Nenhum parcelamento ativo para este cartão.",
+      "optionsFor": "Opções para {name}",
+      "cardDeletedSuccess": "Cartão \"{name}\" excluído com sucesso.",
+      "deleteCardError": "Erro ao excluir cartão."
+    },
+
+    "installments": {
+      "title": "Parcelamentos",
+      "description": "Gerencie seus parcelamentos de cartão de crédito",
+      "addInstallment": "Adicionar Parcelamento",
+      "editInstallment": "Editar Parcelamento",
+      "deleteInstallment": "Excluir Parcelamento",
+      "installmentName": "Nome",
+      "creditCard": "Cartão de Crédito",
+      "totalInstallments": "Total de Parcelas",
+      "amountPerInstallment": "Valor por Parcela",
+      "startMonth": "Mês de Início",
+      "currentInstallment": "Parcela {current} de {total}",
+      "paid": "Pago",
+      "pending": "Pendente",
+      "noInstallments": "Nenhum parcelamento ativo",
+      "confirmDelete": "Tem certeza que deseja excluir este parcelamento?",
+      "confirmDeleteWarning": "Isso removerá todas as parcelas dos seus gastos.",
+      "createSuccess": "Parcelamento criado com sucesso",
+      "updateSuccess": "Parcelamento atualizado com sucesso",
+      "deleteSuccess": "Parcelamento excluído com sucesso",
+      "installmentOf": "{current} de {total}",
+      "remaining": "{count} restante(s)",
+      "completed": "completo"
+    },
+
+    "settings": {
+      "title": "Configurações",
+      "preferences": "Preferências",
+      "languageDescription": "Escolha o idioma de exibição da aplicação",
+      "general": "Geral",
+      "language": "Idioma",
+      "theme": "Tema",
+      "currency": "Moeda",
+      "data": "Gerenciamento de Dados",
+      "sync": "Sincronização e Autenticação",
+      "dataManagementTitle": "Gerenciamento de Dados",
+      "selectYear": "Selecione o ano",
+      "dangerZone": "Zona de Perigo",
+      "accountDisconnected": "Conta desconectada",
+      "localDataKept": "Seus dados locais foram mantidos",
+      "amplifyNotConfiguredTitle": "Amplify não configurado",
+      "amplifyNotConfiguredDesc": "Execute \"npx ampx sandbox\" para habilitar sincronização",
+      "dataSyncedSuccess": "Dados sincronizados com sucesso",
+      "dataSyncedDesc": "Seus dados foram enviados para a nuvem",
+      "syncError": "Erro ao sincronizar",
+      "allYearDataDeleted": "Todos os dados de {year} foram removidos com sucesso",
+      "appReset": "O aplicativo foi resetado para o estado inicial",
+      "managingDataPreferences": "Gerencie seus dados e preferências do sistema",
+      "deleteYearData": "Deletar dados de um ano",
+      "deleteYearDesc": "Remove todos os dados (receitas, despesas, parcelamentos) de um ano específico",
+      "chooseYear": "Escolha um ano...",
+      "deleteYear": "Deletar Ano",
+      "deleteAllTitle": "Deletar Todos os Dados",
+      "deleteAllDesc": "Deleta TODOS os dados do aplicativo. Esta ação não pode ser desfeita.",
+      "confirmDeleteYear": "Confirmar Exclusão do Ano {year}",
+      "willBeDeleted": "Serão deletados:",
+      "allIncomeFrom": "Todas as receitas de {year}",
+      "allExpenses": "Todas as despesas fixas e variáveis",
+      "allInstallments": "Todos os parcelamentos iniciados neste ano",
+      "cannotBeUndone": "Esta ação não pode ser desfeita.",
+      "deleteAllWarning": "⚠️ Atenção: Deletar Todos os Dados",
+      "irreversible": "IRREVERSÍVEL",
+      "permanentlyDeleted": "Serão deletados permanentemente:",
+      "allMonthsData": "Todos os dados de todos os meses (receitas, despesas, investimentos, poupança)",
+      "allInstallmentsData": "Todos os parcelamentos",
+      "allCreditCards": "Todos os cartões de crédito",
+      "allCategories": "Todas as categorias personalizadas",
+      "typeDeleteAll": "Digite DELETAR TUDO",
+      "typeDeleteAllPlaceholder": "Digite DELETAR TUDO",
+      "deleteAllButton": "Deletar Tudo",
+      "dataDeleted": "Dados deletados",
+      "deleteYearTitle": "Deletar dados de um ano",
+      "deleteYearDescription": "Remove permanentemente todos os dados (receitas, despesas, investimentos) do ano selecionado.",
+      "deleteAllDescription": "Deleta permanentemente todos os dados da aplicação.",
+      "deleteAllList": "Todas as receitas, despesas e parcelamentos de todos os meses\nTodos os anos de dados históricos\nTodas as categorias e cartões personalizados",
+      "typeToConfirm": "Digite DELETAR TUDO para confirmar",
+      "typePlaceholder": "Digite DELETAR TUDO",
+      "confirmDeleteYearWarning": "Esta ação não pode ser desfeita. Todos os dados de {year} serão permanentemente excluídos.",
+      "confirmDeleteAllTitle": "⚠️ Atenção: Deletar Todos os Dados",
+      "confirmDeleteAllDescription": "Tem certeza que deseja deletar TODOS os dados da aplicação? Esta ação não pode ser desfeita.",
+      "deleteYearSuccess": "Ano {year} deletado com sucesso",
+      "deleteAllSuccess": "Todos os dados deletados com sucesso",
+      "amplifyNotConfigured": "Amplify não configurado",
+      "amplifyNotConfiguredDescription": "Para habilitar a sincronização, você precisa configurar o AWS Amplify primeiro.",
+      "amplifyInstructions": "Execute npx ampx sandbox no seu terminal para iniciar o sandbox do Amplify.",
+      "exportData": "Exportar Dados",
+      "importData": "Importar Dados",
+      "clearData": "Limpar Todos os Dados",
+      "exportSuccess": "Dados exportados com sucesso",
+      "importSuccess": "Dados importados com sucesso",
+      "clearSuccess": "Todos os dados limpos com sucesso",
+      "dataDownloadedSuccess": "Dados restaurados da nuvem",
+      "dataDownloadedDesc": "Seus dados foram baixados da nuvem com sucesso",
+      "conflictResolvedSuccess": "Conflito resolvido com sucesso"
+    },
+
+    "auth": {
+      "title": "Autenticação",
+      "signIn": "Entrar",
+      "signOut": "Sair",
+      "signInWithGoogle": "Entrar com Google",
+      "signInSuccess": "Login realizado com sucesso",
+      "signOutSuccess": "Logout realizado com sucesso",
+      "authError": "Erro de autenticação",
+      "connectAccount": "Conectar Conta",
+      "loginDescription": "Faça login para sincronizar seus dados na nuvem e acessar de qualquer dispositivo."
+    },
+
+    "sync": {
+      "title": "Sincronização",
+      "description": "Sincronize seus dados entre dispositivos",
+      "lastSync": "Última sincronização: {date}",
+      "syncNow": "Sincronizar Agora",
+      "autoSync": "Sincronização automática",
+      "syncSuccess": "Dados sincronizados com sucesso",
+      "syncError": "Erro ao sincronizar dados",
+      "notSynced": "Ainda não sincronizado",
+      "cloudSync": "Sincronização na Nuvem",
+      "disconnectedDesc": "Faça backup dos seus dados e acesse de qualquer lugar",
+      "connectedAs": "Conectado como {email}",
+      "syncingData": "Enviando dados para a nuvem...",
+      "disconnected": "Desconectado",
+      "connected": "Conectado",
+      "syncing": "Sincronizando...",
+      "errorSync": "Erro na Sincronização",
+      "connectAccount": "Conectar Conta",
+      "disconnect": "Desconectar",
+      "tryAgain": "Tentar Novamente",
+      "loginTooltip": "Faça login com Google ou Email para sincronizar seus dados",
+      "disconnectTooltip": "Seus dados locais serão mantidos",
+      "localDataInfo": "💡 Seus dados são salvos localmente no navegador. Conecte uma conta para fazer backup e acessar de outros dispositivos.",
+      "conflictPending": "Conflito detectado — aguardando sua escolha...",
+      "conflictTitle": "Conflito de Dados Detectado",
+      "conflictDesc": "Foram encontrados dados tanto neste dispositivo quanto na nuvem. Escolha qual versão deseja manter. A outra versão será substituída permanentemente.",
+      "useLocal": "Manter dados locais",
+      "useLocalDesc": "Os dados da nuvem serão substituídos pelos dados deste dispositivo",
+      "useCloud": "Usar dados da nuvem",
+      "useCloudDesc": "Os dados deste dispositivo serão substituídos pelos dados da nuvem"
+    },
+
+    "income": {
+      "title": "Renda e Alocações",
+      "newIncome": "Nova Renda",
+      "addIncome": "Adicionar Renda",
+      "editIncome": "Editar Renda",
+      "editDescription": "Altere as informações da renda.",
+      "description": "Descrição",
+      "amount": "Valor",
+      "replicateToFuture": "Tornar recorrente",
+      "replicateDescription": "Se marcado, esta renda será replicada para os próximos 24 meses.",
+      "placeholder": "Ex: Salário, Freelance...",
+      "items": "itens",
+      "noIncome": "Nenhuma fonte de renda ainda. Clique em \"Adicionar Renda\" para adicionar.",
+      "saveChanges": "Salvar Alterações",
+      "income": "Renda",
+      "editLabel": "Editar",
+      "removeLabel": "Remover"
+    },
+
+    "sidebar": {
+      "period": "Período",
+      "navigation": "Navegação",
+      "quickAccess": "Acesso Rápido",
+      "dashboard": "Painel",
+      "monthlyView": "Visão Mensal",
+      "categories": "Categorias",
+      "cards": "Cartões",
+      "investments": "Investimentos",
+      "savings": "Poupança",
+      "theme": "Tema",
+      "settings": "Configurações"
+    },
+
+    "summary": {
+      "totalIncome": "Renda Total",
+      "totalExpenses": "Total de Despesas",
+      "netBalance": "Saldo Líquido",
+      "balanceFormula": "Renda - Despesas - Investimentos - Poupança",
+      "investments": "Investimentos",
+      "savings": "Poupança",
+      "vsPreviousMonth": "vs mês anterior"
+    },
+
+    "selectors": {
+      "selectMonth": "Selecione o mês",
+      "selectIcon": "Selecionar ícone...",
+      "noIcon": "Sem ícone",
+      "selectColor": "Selecionar cor {color}",
+      "icon": "Ícone",
+      "color": "Cor"
+    },
+
+    "language": {
+      "label": "Idioma",
+      "pt": "Português",
+      "en": "English"
+    }
+  },
+
+  "forms": {
+    "expense": {
+      "description": {
+        "label": "Descrição",
+        "placeholder": "Digite a descrição do gasto"
+      },
+      "amount": {
+        "label": "Valor",
+        "placeholder": "0,00"
+      },
+      "category": {
+        "label": "Categoria",
+        "placeholder": "Selecione uma categoria"
+      },
+      "date": {
+        "label": "Data",
+        "placeholder": "Selecione a data"
+      },
+      "type": {
+        "label": "Tipo",
+        "fixed": "Fixo",
+        "variable": "Variável"
+      },
+      "makeRecurring": "Tornar este um gasto recorrente"
+    },
+
+    "income": {
+      "description": {
+        "label": "Descrição",
+        "placeholder": "Digite a descrição da receita"
+      },
+      "amount": {
+        "label": "Valor",
+        "placeholder": "0,00"
+      },
+      "makeRecurring": "Tornar esta uma receita recorrente",
+      "newIncome": "Nova Renda",
+      "addIncomeForMonth": "Adicione uma fonte de renda para este mês.",
+      "replicateLabel": "Replicar para meses seguintes",
+      "replicateHelp": "Se marcado, esta renda será adicionada nos próximos 24 meses.",
+      "amountPlaceholder": "0,00"
+    },
+
+    "installment": {
+      "name": {
+        "label": "Nome",
+        "placeholder": "Digite o nome do parcelamento"
+      },
+      "card": {
+        "label": "Cartão de Crédito",
+        "placeholder": "Selecione um cartão"
+      },
+      "total": {
+        "label": "Total de Parcelas",
+        "placeholder": "12"
+      },
+      "amount": {
+        "label": "Valor por Parcela",
+        "placeholder": "0,00"
+      },
+      "startMonth": {
+        "label": "Mês de Início",
+        "placeholder": "Selecione o mês"
+      }
+    },
+
+    "creditCard": {
+      "newCard": "Novo Cartão de Crédito",
+      "editCard": "Editar Cartão de Crédito",
+      "createDescription": "Crie um novo cartão de crédito para rastreamento de parcelamentos.",
+      "editDescription": "Modifique os detalhes do cartão de crédito.",
+      "cardName": "Nome",
+      "cardNamePlaceholder": "Ex: Nubank, Itaú...",
+      "monthlyLimit": "Limite",
+      "monthlyLimitOptional": "Limite (opcional)",
+      "noLimit": "Sem limite",
+      "limitPlaceholder": "0,00",
+      "limitHelp": "Deixe vazio para cartões sem limite definido.",
+      "cardColor": "Cor",
+      "preview": "Pré-visualização",
+      "previewCardName": "Nome do Cartão",
+      "previewLimit": "Limite:",
+      "createCard": "Criar",
+      "cardNameRequired": "O nome do cartão é obrigatório.",
+      "limitValidation": "O limite deve ser um valor maior que zero ou deixado vazio.",
+      "updateSuccess": "Cartão atualizado com sucesso!",
+      "createSuccess": "Cartão criado com sucesso!",
+      "saveError": "Erro ao salvar cartão."
+    }
+  },
+
+  "validation": {
+    "required": "{field} é obrigatório",
+    "invalidFormat": "Formato inválido para {field}",
+    "minValue": "{field} deve ser no mínimo {min}",
+    "maxValue": "{field} não pode exceder {max}",
+    "positiveNumber": "{field} deve ser um número positivo",
+    "invalidDate": "Data inválida",
+    "duplicateName": "Já existe um(a) {type} com este nome"
+  },
+
+  "errors": {
+    "generic": "Ocorreu um erro. Por favor, tente novamente.",
+    "notFound": "{item} não encontrado",
+    "duplicateCard": "Já existe um cartão com esse nome",
+    "cardNotFound": "Cartão não encontrado",
+    "cardHasInstallments": "Este cartão possui {count} parcelamento(s) ativo(s)",
+    "categoryNotFound": "Categoria não encontrada",
+    "categoryHasExpenses": "Esta categoria possui gastos. Por favor, mova-os primeiro.",
+    "cannotDeleteSystemCategory": "Não é possível excluir categoria do sistema",
+    "invalidMonth": "Formato de mês inválido",
+    "invalidAmount": "Valor inválido"
+  },
+
+  "toast": {
+    "success": {
+      "saved": "Salvo com sucesso",
+      "deleted": "Excluído com sucesso",
+      "updated": "Atualizado com sucesso",
+      "created": "Criado com sucesso"
+    },
+    "error": {
+      "saveFailed": "Falha ao salvar",
+      "deleteFailed": "Falha ao excluir",
+      "updateFailed": "Falha ao atualizar",
+      "createFailed": "Falha ao criar"
+    }
+  },
+
+  "months": {
+    "january": "Janeiro",
+    "february": "Fevereiro",
+    "march": "Março",
+    "april": "Abril",
+    "may": "Maio",
+    "june": "Junho",
+    "july": "Julho",
+    "august": "Agosto",
+    "september": "Setembro",
+    "october": "Outubro",
+    "november": "Novembro",
+    "december": "Dezembro"
+  },
+
+  "monthsShort": {
+    "jan": "Jan",
+    "feb": "Fev",
+    "mar": "Mar",
+    "apr": "Abr",
+    "may": "Mai",
+    "jun": "Jun",
+    "jul": "Jul",
+    "aug": "Ago",
+    "sep": "Set",
+    "oct": "Out",
+    "nov": "Nov",
+    "dec": "Dez"
+  }
+}

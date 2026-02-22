@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen } from '@/__tests__/test-utils'
 import { userEvent } from '@testing-library/user-event'
 import { MonthSelector } from '@/components/expense/month-selector'
 import { beforeEach, describe, it, expect, vi } from 'vitest'

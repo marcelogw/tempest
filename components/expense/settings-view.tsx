@@ -27,9 +27,11 @@ import {
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/hooks/use-toast'
-import { AlertTriangle, Globe } from 'lucide-react'
+import { AlertTriangle, Globe, Users } from 'lucide-react'
 import { setLocaleCookie } from '@/lib/locale-cookie'
 import { fetchAuthSession } from 'aws-amplify/auth'
+import { InviteDialog } from '@/components/workspace/invite-dialog'
+import { MembersList } from '@/components/workspace/members-list'
 
 export function SettingsView() {
   const i = useTranslations()
@@ -40,6 +42,7 @@ export function SettingsView() {
   const { setStatus, setUserEmail } = useSyncStore()
   const router = useRouter()
 
+  const [inviteDialogOpen, setInviteDialogOpen] = useState(false)
   const [deleteYearDialogOpen, setDeleteYearDialogOpen] = useState(false)
   const [deleteAllDialogOpen, setDeleteAllDialogOpen] = useState(false)
   const [selectedYear, setSelectedYear] = useState<string>('')
@@ -149,6 +152,22 @@ export function SettingsView() {
               </div>
             </div>
 
+            {/* Seção: Minha Casa */}
+            {isConfigured && (
+              <div className="bg-card rounded-lg border p-6">
+                <div className="mb-6 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Users className="text-primary h-5 w-5" />
+                    <h2 className="text-xl font-semibold">{i('ui.workspace.title')}</h2>
+                  </div>
+                  <Button size="sm" onClick={() => setInviteDialogOpen(true)}>
+                    {i('ui.workspace.generateInvite')}
+                  </Button>
+                </div>
+                <MembersList />
+              </div>
+            )}
+
             {/* Seção: Gerenciamento de Dados */}
             <div className="bg-card rounded-lg border p-6">
               <h2 className="mb-6 text-xl font-semibold">{i('ui.settings.dataManagementTitle')}</h2>
@@ -217,6 +236,8 @@ export function SettingsView() {
           </div>
         </div>
       </div>
+
+      <InviteDialog open={inviteDialogOpen} onOpenChange={setInviteDialogOpen} />
 
       {/* Diálogo de Confirmação - Deletar Ano */}
       <AlertDialog open={deleteYearDialogOpen} onOpenChange={setDeleteYearDialogOpen}>

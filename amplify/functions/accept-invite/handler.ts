@@ -102,18 +102,24 @@ export const handler: Schema['acceptInvite']['functionHandler'] = async (event) 
     filter: { cognitoSub: { eq: callerSub } },
   })
 
-  if (!existingProfiles || existingProfiles.length === 0) {
-    const displayName =
-      (identity.claims['name'] as string | undefined) ??
-      (identity.claims['email'] as string | undefined) ??
-      callerSub
-    const email = (identity.claims['email'] as string | undefined) ?? ''
+  const displayName =
+    (identity.claims['name'] as string | undefined) ??
+    (identity.claims['email'] as string | undefined) ??
+    callerSub
+  const email = (identity.claims['email'] as string | undefined) ?? ''
 
+  if (!existingProfiles || existingProfiles.length === 0) {
     await dataClient.models.UserProfile.create({
       cognitoSub: callerSub,
       displayName,
       email,
       avatarColor: hashAvatarColor(callerSub),
+      workspaceGroup: invite.workspaceGroup,
+    })
+  } else {
+    await dataClient.models.UserProfile.update({
+      id: existingProfiles[0].id,
+      workspaceGroup: invite.workspaceGroup,
     })
   }
 

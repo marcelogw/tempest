@@ -19,7 +19,6 @@
     "yes": "Sim",
     "no": "Não"
   },
-
   "categories": {
     "groceries": "Mercado",
     "transportation": "Transporte",
@@ -33,7 +32,6 @@
     "installment": "Parcelamento",
     "other": "Outros"
   },
-
   "ui": {
     "dashboard": {
       "title": "Dashboard",
@@ -53,7 +51,6 @@
       "noDataAvailable": "Nenhum dado disponível para este período",
       "viewDetails": "Ver Detalhes"
     },
-
     "monthly": {
       "title": "Visão Mensal",
       "subtitle": "Acompanhe sua renda, despesas e alocações",
@@ -75,7 +72,6 @@
       "finalBalance": "Saldo Final",
       "emptyState": "Comece adicionando suas receitas e gastos"
     },
-
     "categories": {
       "title": "Categorias",
       "description": "Gerencie suas categorias de gastos",
@@ -95,7 +91,6 @@
       "updateSuccess": "Categoria atualizada com sucesso",
       "deleteSuccess": "Categoria excluída com sucesso"
     },
-
     "creditCards": {
       "title": "Cartões de Crédito",
       "description": "Gerencie seus cartões de crédito",
@@ -135,7 +130,6 @@
       "cardDeletedSuccess": "Cartão \"{name}\" excluído com sucesso.",
       "deleteCardError": "Erro ao excluir cartão."
     },
-
     "installments": {
       "title": "Parcelamentos",
       "description": "Gerencie seus parcelamentos de cartão de crédito",
@@ -160,7 +154,6 @@
       "remaining": "{count} restante(s)",
       "completed": "completo"
     },
-
     "settings": {
       "title": "Configurações",
       "preferences": "Preferências",
@@ -231,7 +224,6 @@
       "dataDownloadedDesc": "Seus dados foram baixados da nuvem com sucesso",
       "conflictResolvedSuccess": "Conflito resolvido com sucesso"
     },
-
     "auth": {
       "title": "Autenticação",
       "signIn": "Entrar",
@@ -243,7 +235,6 @@
       "connectAccount": "Conectar Conta",
       "loginDescription": "Faça login para sincronizar seus dados na nuvem e acessar de qualquer dispositivo."
     },
-
     "sync": {
       "title": "Sincronização",
       "description": "Sincronize seus dados entre dispositivos",
@@ -275,7 +266,6 @@
       "useCloud": "Usar dados da nuvem",
       "useCloudDesc": "Os dados deste dispositivo serão substituídos pelos dados da nuvem"
     },
-
     "income": {
       "title": "Renda e Alocações",
       "newIncome": "Nova Renda",
@@ -294,7 +284,6 @@
       "editLabel": "Editar",
       "removeLabel": "Remover"
     },
-
     "sidebar": {
       "period": "Período",
       "navigation": "Navegação",
@@ -308,7 +297,6 @@
       "theme": "Tema",
       "settings": "Configurações"
     },
-
     "summary": {
       "totalIncome": "Renda Total",
       "totalExpenses": "Total de Despesas",
@@ -318,7 +306,6 @@
       "savings": "Poupança",
       "vsPreviousMonth": "vs mês anterior"
     },
-
     "selectors": {
       "selectMonth": "Selecione o mês",
       "selectIcon": "Selecionar ícone...",
@@ -327,14 +314,33 @@
       "icon": "Ícone",
       "color": "Cor"
     },
-
     "language": {
       "label": "Idioma",
       "pt": "Português",
       "en": "English"
+    },
+    "workspace": {
+      "title": "Minha Casa",
+      "description": "Gerencie membros e convites da sua workspace",
+      "generateInvite": "Gerar Convite",
+      "inviteDialogTitle": "Código de Convite",
+      "inviteUrl": "Link de Convite",
+      "copyUrl": "Copiar Link",
+      "copied": "Copiado!",
+      "expiresAt": "Expira em {date}",
+      "regenerate": "Gerar Novo",
+      "generateError": "Erro ao gerar convite. Tente novamente.",
+      "members": "Membros",
+      "owner": "Proprietário",
+      "guest": "Membro",
+      "noGuest": "Nenhum membro convidado ainda. Use o botão acima para convidar.",
+      "remove": "Remover",
+      "confirmRemoveTitle": "Remover membro?",
+      "confirmRemoveDesc": "Este membro perderá acesso à workspace imediatamente.",
+      "removeSuccess": "Membro removido",
+      "removeError": "Erro ao remover membro. Tente novamente."
     }
   },
-
   "forms": {
     "expense": {
       "description": {
@@ -360,7 +366,6 @@
       },
       "makeRecurring": "Tornar este um gasto recorrente"
     },
-
     "income": {
       "description": {
         "label": "Descrição",
@@ -377,7 +382,6 @@
       "replicateHelp": "Se marcado, esta renda será adicionada nos próximos 24 meses.",
       "amountPlaceholder": "0,00"
     },
-
     "installment": {
       "name": {
         "label": "Nome",
@@ -400,7 +404,6 @@
         "placeholder": "Selecione o mês"
       }
     },
-
     "creditCard": {
       "newCard": "Novo Cartão de Crédito",
       "editCard": "Editar Cartão de Crédito",
@@ -425,7 +428,6 @@
       "saveError": "Erro ao salvar cartão."
     }
   },
-
   "validation": {
     "required": "{field} é obrigatório",
     "invalidFormat": "Formato inválido para {field}",
@@ -435,7 +437,6 @@
     "invalidDate": "Data inválida",
     "duplicateName": "Já existe um(a) {type} com este nome"
   },
-
   "errors": {
     "generic": "Ocorreu um erro. Por favor, tente novamente.",
     "notFound": "{item} não encontrado",
@@ -448,7 +449,6 @@
     "invalidMonth": "Formato de mês inválido",
     "invalidAmount": "Valor inválido"
   },
-
   "toast": {
     "success": {
       "saved": "Salvo com sucesso",
@@ -463,7 +463,6 @@
       "createFailed": "Falha ao criar"
     }
   },
-
   "onboarding": {
     "title": "Bem-vindo ao Tempest",
     "subtitle": "Configure sua conta para começar",
@@ -481,7 +480,6 @@
     "back": "Voltar",
     "loading": "Aguarde..."
   },
-
   "invite": {
     "title": "Convite para Workspace",
     "accept": "Aceitar Convite",
@@ -489,7 +487,6 @@
     "errorExpired": "Este convite expirou ou já foi usado.",
     "errorGeneric": "Erro ao processar o convite."
   },
-
   "months": {
     "january": "Janeiro",
     "february": "Fevereiro",
@@ -504,7 +501,6 @@
     "november": "Novembro",
     "december": "Dezembro"
   },
-
   "monthsShort": {
     "jan": "Jan",
     "feb": "Fev",

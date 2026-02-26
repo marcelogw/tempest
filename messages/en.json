@@ -19,7 +19,6 @@
     "yes": "Yes",
     "no": "No"
   },
-
   "categories": {
     "groceries": "Groceries",
     "transportation": "Transportation",
@@ -33,7 +32,6 @@
     "installment": "Installment",
     "other": "Other"
   },
-
   "ui": {
     "dashboard": {
       "title": "Dashboard",
@@ -53,7 +51,6 @@
       "noDataAvailable": "No data available for this period",
       "viewDetails": "View Details"
     },
-
     "monthly": {
       "title": "Monthly View",
       "subtitle": "Track your income, expenses and allocations",
@@ -75,7 +72,6 @@
       "finalBalance": "Final Balance",
       "emptyState": "Start by adding your income and expenses"
     },
-
     "categories": {
       "title": "Categories",
       "description": "Manage your expense categories",
@@ -95,7 +91,6 @@
       "updateSuccess": "Category updated successfully",
       "deleteSuccess": "Category deleted successfully"
     },
-
     "creditCards": {
       "title": "Credit Cards",
       "description": "Manage your credit cards",
@@ -135,7 +130,6 @@
       "cardDeletedSuccess": "Card \"{name}\" deleted successfully.",
       "deleteCardError": "Error deleting card."
     },
-
     "installments": {
       "title": "Installments",
       "description": "Manage your credit card installments",
@@ -160,7 +154,6 @@
       "remaining": "{count} remaining",
       "completed": "completed"
     },
-
     "settings": {
       "title": "Settings",
       "preferences": "Preferences",
@@ -231,7 +224,6 @@
       "dataDownloadedDesc": "Your data was successfully downloaded from the cloud",
       "conflictResolvedSuccess": "Conflict resolved successfully"
     },
-
     "auth": {
       "title": "Authentication",
       "signIn": "Sign In",
@@ -241,7 +233,6 @@
       "signOutSuccess": "Signed out successfully",
       "authError": "Authentication error"
     },
-
     "sync": {
       "title": "Sync",
       "description": "Sync your data across devices",
@@ -273,7 +264,6 @@
       "useCloud": "Use cloud data",
       "useCloudDesc": "This device's data will be replaced by cloud data"
     },
-
     "income": {
       "title": "Income and Allocations",
       "newIncome": "New Income",
@@ -292,7 +282,6 @@
       "editLabel": "Edit",
       "removeLabel": "Remove"
     },
-
     "sidebar": {
       "period": "Period",
       "navigation": "Navigation",
@@ -306,7 +295,6 @@
       "theme": "Theme",
       "settings": "Settings"
     },
-
     "summary": {
       "totalIncome": "Total Income",
       "totalExpenses": "Total Expenses",
@@ -316,7 +304,6 @@
       "savings": "Savings",
       "vsPreviousMonth": "vs previous month"
     },
-
     "selectors": {
       "selectMonth": "Select month",
       "selectIcon": "Select an icon...",
@@ -325,14 +312,33 @@
       "icon": "Icon",
       "color": "Color"
     },
-
     "language": {
       "label": "Language",
       "pt": "Português",
       "en": "English"
+    },
+    "workspace": {
+      "title": "My Home",
+      "description": "Manage members and invites for your workspace",
+      "generateInvite": "Generate Invite",
+      "inviteDialogTitle": "Invite Code",
+      "inviteUrl": "Invite Link",
+      "copyUrl": "Copy Link",
+      "copied": "Copied!",
+      "expiresAt": "Expires at {date}",
+      "regenerate": "Generate New",
+      "generateError": "Failed to generate invite. Please try again.",
+      "members": "Members",
+      "owner": "Owner",
+      "guest": "Member",
+      "noGuest": "No members invited yet. Use the button above to invite someone.",
+      "remove": "Remove",
+      "confirmRemoveTitle": "Remove member?",
+      "confirmRemoveDesc": "This member will immediately lose access to the workspace.",
+      "removeSuccess": "Member removed",
+      "removeError": "Failed to remove member. Please try again."
     }
   },
-
   "forms": {
     "expense": {
       "description": {
@@ -358,7 +364,6 @@
       },
       "makeRecurring": "Make this a recurring expense"
     },
-
     "income": {
       "description": {
         "label": "Description",
@@ -375,7 +380,6 @@
       "replicateHelp": "If checked, this income will be added to the next 24 months.",
       "amountPlaceholder": "0.00"
     },
-
     "installment": {
       "name": {
         "label": "Name",
@@ -398,7 +402,6 @@
         "placeholder": "Select month"
       }
     },
-
     "creditCard": {
       "newCard": "New Credit Card",
       "editCard": "Edit Credit Card",
@@ -423,7 +426,6 @@
       "saveError": "Error saving card."
     }
   },
-
   "validation": {
     "required": "{field} is required",
     "invalidFormat": "Invalid format for {field}",
@@ -433,7 +435,6 @@
     "invalidDate": "Invalid date",
     "duplicateName": "A {type} with this name already exists"
   },
-
   "errors": {
     "generic": "An error occurred. Please try again.",
     "notFound": "{item} not found",
@@ -446,7 +447,6 @@
     "invalidMonth": "Invalid month format",
     "invalidAmount": "Invalid amount"
   },
-
   "toast": {
     "success": {
       "saved": "Saved successfully",
@@ -461,7 +461,6 @@
       "createFailed": "Failed to create"
     }
   },
-
   "onboarding": {
     "title": "Welcome to Tempest",
     "subtitle": "Set up your account to get started",
@@ -479,7 +478,6 @@
     "back": "Back",
     "loading": "Please wait..."
   },
-
   "invite": {
     "title": "Workspace Invite",
     "accept": "Accept Invite",
@@ -487,7 +485,6 @@
     "errorExpired": "This invite has expired or has already been used.",
     "errorGeneric": "Error processing the invite."
   },
-
   "months": {
     "january": "January",
     "february": "February",
@@ -502,7 +499,6 @@
     "november": "November",
     "december": "December"
   },
-
   "monthsShort": {
     "jan": "Jan",
     "feb": "Feb",

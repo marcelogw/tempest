@@ -2,6 +2,7 @@ import { type ClientSchema, a, defineData } from '@aws-amplify/backend'
 import { createWorkspaceFn } from '../functions/create-workspace/resource'
 import { generateInviteCodeFn } from '../functions/generate-invite-code/resource'
 import { acceptInviteFn } from '../functions/accept-invite/resource'
+import { removeMemberFn } from '../functions/remove-member/resource'
 
 /**
  * Tempest - Personal Finance Management Schema
@@ -29,6 +30,7 @@ const schema = a
         displayName: a.string().required(),
         email: a.string().required(),
         avatarColor: a.string().required(), // hex color for initials avatar
+        workspaceGroup: a.string(), // "workspace-{uuid}" — set on create/join, used for member listing
       })
       .authorization((allow) => [allow.owner(), allow.authenticated().to(['read'])]),
 
@@ -84,6 +86,13 @@ const schema = a
       )
       .authorization((allow) => [allow.authenticated()])
       .handler(a.handler.function(acceptInviteFn)),
+
+    removeMember: a
+      .mutation()
+      .arguments({ workspaceId: a.string().required(), memberSub: a.string().required() })
+      .returns(a.customType({ success: a.boolean().required() }))
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(removeMemberFn)),
 
     // ─── Financial Models (workspace-scoped) ─────────────────────────────────────
 
@@ -177,6 +186,7 @@ const schema = a
     allow.resource(createWorkspaceFn),
     allow.resource(generateInviteCodeFn),
     allow.resource(acceptInviteFn),
+    allow.resource(removeMemberFn),
   ])
 
 export type Schema = ClientSchema<typeof schema>

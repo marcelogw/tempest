@@ -156,10 +156,7 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
         <CardHeader className="flex flex-col items-center gap-3 text-center">
           <TempestLogo variant="icon" size="md" animated />
           <div>
-            <CardTitle
-              className="text-2xl"
-              style={{ fontFamily: 'var(--font-heading)' }}
-            >
+            <CardTitle className="text-2xl" style={{ fontFamily: 'var(--font-heading)' }}>
               Tempest
             </CardTitle>
             <CardDescription>Controle Financeiro Familiar</CardDescription>

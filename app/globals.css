@@ -33,13 +33,13 @@
   --chart-4: oklch(0.55 0.22 28);
   --chart-5: oklch(0.62 0.14 300);
   --radius: 0.75rem;
-  --sidebar: oklch(0.20 0.025 230);
+  --sidebar: oklch(0.2 0.025 230);
   --sidebar-foreground: oklch(0.96 0 0);
   --sidebar-primary: oklch(0.62 0.17 230);
   --sidebar-primary-foreground: oklch(0.99 0 0);
   --sidebar-accent: oklch(0.27 0.03 230);
   --sidebar-accent-foreground: oklch(0.96 0 0);
-  --sidebar-border: oklch(0.30 0.025 230);
+  --sidebar-border: oklch(0.3 0.025 230);
   --sidebar-ring: oklch(0.62 0.17 230);
   --success: oklch(0.72 0.16 168);
   --success-foreground: oklch(0.99 0 0);
@@ -150,8 +150,13 @@
 
 /* Tempest Brand Animations */
 @keyframes tempest-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
 }
 
 @keyframes tempest-swirl-in {
@@ -169,13 +174,25 @@
 }
 
 @keyframes tempest-pulse {
-  0%, 100% { opacity: 0.85; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.15); }
+  0%,
+  100% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
 }
 
 @keyframes tempest-breathe {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.03); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
 }
 
 .tempest-logo-animated {

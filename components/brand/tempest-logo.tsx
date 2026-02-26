@@ -29,10 +29,10 @@ export function TempestLogo({
 
   const colors = {
     brand: {
-      primary: '#1A8FE3',     // Bright blue - trust, calm
-      secondary: '#22C997',   // Teal green - growth, success
-      accent: '#FF7849',      // Warm coral - energy, friendliness
-      text: '#1E293B',        // Dark slate - readability
+      primary: '#1A8FE3', // Bright blue - trust, calm
+      secondary: '#22C997', // Teal green - growth, success
+      accent: '#FF7849', // Warm coral - energy, friendliness
+      text: '#1E293B', // Dark slate - readability
     },
     'mono-light': {
       primary: '#FFFFFF',

@@ -321,7 +321,6 @@
     },
     "workspace": {
       "title": "Minha Casa",
-      "description": "Gerencie membros e convites da sua workspace",
       "generateInvite": "Gerar Convite",
       "inviteDialogTitle": "Código de Convite",
       "inviteUrl": "Link de Convite",
@@ -330,7 +329,6 @@
       "expiresAt": "Expira em {date}",
       "regenerate": "Gerar Novo",
       "generateError": "Erro ao gerar convite. Tente novamente.",
-      "members": "Membros",
       "owner": "Proprietário",
       "guest": "Membro",
       "noGuest": "Nenhum membro convidado ainda. Use o botão acima para convidar.",

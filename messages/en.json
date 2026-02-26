@@ -319,7 +319,6 @@
     },
     "workspace": {
       "title": "My Home",
-      "description": "Manage members and invites for your workspace",
       "generateInvite": "Generate Invite",
       "inviteDialogTitle": "Invite Code",
       "inviteUrl": "Invite Link",
@@ -328,7 +327,6 @@
       "expiresAt": "Expires at {date}",
       "regenerate": "Generate New",
       "generateError": "Failed to generate invite. Please try again.",
-      "members": "Members",
       "owner": "Owner",
       "guest": "Member",
       "noGuest": "No members invited yet. Use the button above to invite someone.",

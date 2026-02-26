@@ -69,18 +69,18 @@ export function MembersList() {
     setIsLoading(true)
 
     try {
-      const session = await fetchAuthSession()
-      const sub = session.tokens?.idToken?.payload.sub
-      setCurrentUserSub(sub ?? null)
-
       const client = getAmplifyClient()
 
-      const [workspaceResult, profilesResult] = await Promise.all([
+      const [session, workspaceResult, profilesResult] = await Promise.all([
+        fetchAuthSession(),
         client.models.Workspace.get({ id: workspaceId! }),
         client.models.UserProfile.list({
           filter: { workspaceGroup: { eq: workspaceGroup! } },
         }),
       ])
+
+      const sub = session.tokens?.idToken?.payload.sub
+      setCurrentUserSub(sub ?? null)
 
       setOwnerSub(workspaceResult.data?.ownerSub ?? null)
       setMembers(

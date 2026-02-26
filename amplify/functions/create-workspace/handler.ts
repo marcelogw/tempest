@@ -18,7 +18,7 @@ type CognitoIdentity = {
 }
 
 // Mirrors DEFAULT_CATEGORIES from lib/expense-store.ts.
-// Label falls back to categoryId (consistent with sync-manager.ts behavior).
+// Label falls back to categoryId (consistent with workspace-client.ts behavior).
 // i18n labels are resolved by the frontend at runtime.
 const DEFAULT_CATEGORIES = [
   { categoryId: 'groceries', color: '#10b981', icon: 'ShoppingCart', isSystem: false, order: 0 },

@@ -30,7 +30,7 @@ Husky pre-commit hook runs lint-staged (ESLint + Prettier) on `*.{ts,tsx}` files
 
 ### State Management — Zustand Store
 
-`lib/expense-store.ts` is the **single source of truth** for all financial data, persisted to localStorage. Key shapes:
+`lib/expense-store.ts` is the **runtime source of truth** for all financial data. Data is persisted to localStorage as a read cache; Amplify is the cloud source of truth. Key shapes:
 
 - `monthlyData`: Record keyed by `YYYY-MM` → `{ fixedExpenses, variableExpenses, incomes, investments, savings }`
 - `categories`: User-configurable list (system + custom); includes `isSystem`, `color`, `icon`, `order`
@@ -65,15 +65,30 @@ All new user-facing strings must be added to **both** message files. Use `useTra
 - `formatPercentage(value, locale, decimals)`
 - `formatCurrencyBRL()` / `formatShortCurrencyBRL()` — **deprecated** wrappers, avoid in new code
 
-### AWS Amplify Backend Sync
+### Cloud Architecture — Amplify Gen 2
 
-`lib/sync-manager.ts` handles optional cloud sync via AWS Amplify Gen 2:
+Tempest is **cloud-only**: Amplify is the source of truth; `localStorage` is a read cache.
 
-- Schema defined in `amplify/data/resource.ts` — models: `Category`, `CreditCard`, `MonthlyData`, `Income`, `Expense`, `Installment`
-- Auth in `amplify/auth/resource.ts` — owner-based authorization on all models
-- Upload order matters (foreign key constraints): Categories/CreditCards/MonthlyData → Incomes/Expenses/Installments
-- `SyncManager` is a singleton (`getSyncManager()`); sync state is in `lib/sync-store.ts`
-- Download/merge (Phase 1.1) is not yet implemented
+**Key files:**
+
+- `lib/workspace-client.ts` — `getAmplifyClient()` singleton; all Amplify CRUD calls
+- `lib/write-queue.ts` — `getWriteQueue()` singleton; queues mutations with retry
+- `lib/sync-store.ts` — runtime sync state: `workspaceId`, `workspaceGroup`, `status`, `userEmail`, `lastSyncedAt`
+- `lib/lambda-client.ts` — wrappers for Lambda-backed mutations (`createWorkspace`, `acceptInvite`, `generateInviteCode`, `removeMember`)
+- `lib/use-amplify-data.ts` — hook that loads workspace data into the store on mount
+
+**Workspace model:**
+
+- Each workspace maps to a Cognito Group (`workspace-{uuid}`)
+- All financial models include `workspaceGroup: string` and use `allow.groupDefinedIn('workspaceGroup')`
+- Max 2 members per workspace (enforced in `acceptInvite` Lambda)
+- `UserProfile` stores `cognitoSub`, `displayName`, `email`, `avatarColor`, `workspaceGroup`
+
+**Schema:** `amplify/data/resource.ts` — models: `Workspace`, `UserProfile`, `Invite`, `Category`, `CreditCard`, `MonthlyData`, `Income`, `Expense`, `Installment`
+
+**Smart sync:** On mount/focus, compares `Workspace.lastActivityAt` against `lastSyncedAt` — re-fetches only when cloud is newer.
+
+**Upload order** (foreign key constraints): Categories/CreditCards/MonthlyData → Incomes/Expenses/Installments
 
 ### Testing
 

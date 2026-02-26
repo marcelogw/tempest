@@ -41,7 +41,7 @@ function resolveLocale(request: NextRequest): string {
     : getLocaleFromHeaders(request.headers)
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname
 
   // Redirect legacy /en/* and /pt/* URLs to non-prefixed URLs

@@ -462,6 +462,32 @@
     }
   },
 
+  "onboarding": {
+    "title": "Welcome to Tempest",
+    "subtitle": "Set up your account to get started",
+    "createOption": "Create my home",
+    "createDescription": "Start with a new personal or family workspace",
+    "joinOption": "I have a code",
+    "joinDescription": "Join an existing workspace with an invite code",
+    "workspaceNameLabel": "Your home name",
+    "workspaceNamePlaceholder": "E.g.: Smith Home, Family...",
+    "createButton": "Create",
+    "joinButton": "Join",
+    "inviteCodeLabel": "Invite code",
+    "inviteCodePlaceholder": "Paste the code here",
+    "errorGeneric": "An error occurred. Please try again.",
+    "back": "Back",
+    "loading": "Please wait..."
+  },
+
+  "invite": {
+    "title": "Workspace Invite",
+    "accept": "Accept Invite",
+    "loading": "Processing...",
+    "errorExpired": "This invite has expired or has already been used.",
+    "errorGeneric": "Error processing the invite."
+  },
+
   "months": {
     "january": "January",
     "february": "February",

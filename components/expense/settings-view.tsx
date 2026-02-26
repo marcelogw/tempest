@@ -2,13 +2,12 @@
 
 import { useState, useEffect } from 'react'
 import { useTranslations, useLocale } from 'next-intl'
-import { useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useExpenseStore } from '@/lib/expense-store'
 import { useSyncStore } from '@/lib/sync-store'
 import { useAmplify } from '@/components/amplify-provider'
 import { Button } from '@/components/ui/button'
 import { SyncCard } from './sync-card'
-import { AuthDialog } from './auth-dialog'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -39,13 +38,12 @@ export function SettingsView() {
   const { deleteYearData, deleteAllData, getAvailableYears } = useExpenseStore()
   const { toast } = useToast()
   const { setStatus, setUserEmail } = useSyncStore()
-  const searchParams = useSearchParams()
+  const router = useRouter()
 
   const [deleteYearDialogOpen, setDeleteYearDialogOpen] = useState(false)
   const [deleteAllDialogOpen, setDeleteAllDialogOpen] = useState(false)
   const [selectedYear, setSelectedYear] = useState<string>('')
   const [confirmationText, setConfirmationText] = useState('')
-  const [authDialogOpen, setAuthDialogOpen] = useState(false)
 
   const availableYears = getAvailableYears()
 
@@ -55,24 +53,7 @@ export function SettingsView() {
     window.location.reload()
   }
 
-  // Check for auth callback success
-  useEffect(() => {
-    const authStatus = searchParams.get('auth')
-    const authMessage = searchParams.get('message')
-
-    if (authStatus === 'success') {
-      void handleAuthSuccess()
-    } else if (authStatus === 'error') {
-      toast({
-        title: i('ui.auth.authError'),
-        description: authMessage || i('ui.auth.authError'),
-        variant: 'destructive',
-      })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams, toast])
-
-  // Check if user is already authenticated on mount
+  // Populate sync store with authenticated user info on mount
   useEffect(() => {
     if (isConfigured) {
       void checkAuthStatus()
@@ -96,33 +77,7 @@ export function SettingsView() {
   }
 
   function handleConnect() {
-    setAuthDialogOpen(true)
-  }
-
-  async function handleAuthSuccess() {
-    setAuthDialogOpen(false)
-
-    if (!isConfigured) {
-      toast({
-        title: i('ui.settings.amplifyNotConfiguredTitle'),
-        description: i('ui.settings.amplifyNotConfiguredDesc'),
-        variant: 'destructive',
-      })
-      return
-    }
-
-    try {
-      const session = await fetchAuthSession()
-      const email = session.tokens?.idToken?.payload.email as string
-      setUserEmail(email)
-      setStatus('connected')
-    } catch (error) {
-      toast({
-        title: i('ui.settings.syncError'),
-        description: error instanceof Error ? error.message : i('errors.generic'),
-        variant: 'destructive',
-      })
-    }
+    router.push('/onboarding')
   }
 
   const handleDeleteYear = () => {
@@ -342,13 +297,6 @@ export function SettingsView() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-
-      {/* Auth Dialog */}
-      <AuthDialog
-        open={authDialogOpen}
-        onOpenChange={setAuthDialogOpen}
-        onSuccess={() => void handleAuthSuccess()}
-      />
     </>
   )
 }

@@ -7,14 +7,13 @@ import { Loader2 } from 'lucide-react'
 /**
  * OAuth Callback Page
  *
- * Handles redirect from Google OAuth after authentication
- * Amplify automatically processes the OAuth code in the URL
+ * Handles redirect from Google OAuth after authentication.
+ * Amplify automatically processes the OAuth code in the URL.
  *
  * Flow:
  * 1. Google redirects to /auth/callback?code=...
  * 2. Amplify SDK automatically exchanges code for tokens
- * 3. Redirect to /settings?auth=success
- * 4. Settings page triggers sync upload
+ * 3. Redirect to / — WorkspaceGate decides next step (onboarding or app)
  */
 
 function CallbackContent() {
@@ -28,14 +27,14 @@ function CallbackContent() {
 
     if (error) {
       console.error('OAuth error:', error, errorDescription)
-      router.push(`/settings?auth=error&message=${encodeURIComponent(errorDescription || error)}`)
+      router.push(`/auth?error=${encodeURIComponent(errorDescription || error)}`)
       return
     }
 
     // Amplify automatically handles the OAuth code exchange
-    // After a short delay, redirect to settings
+    // After a short delay, redirect to home — WorkspaceGate decides next step
     const timer = setTimeout(() => {
-      router.push('/settings?auth=success')
+      router.push('/')
     }, 1000)
 
     return () => clearTimeout(timer)

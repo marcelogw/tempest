@@ -464,6 +464,32 @@
     }
   },
 
+  "onboarding": {
+    "title": "Bem-vindo ao Tempest",
+    "subtitle": "Configure sua conta para começar",
+    "createOption": "Criar minha casa",
+    "createDescription": "Comece com uma nova workspace pessoal ou familiar",
+    "joinOption": "Tenho um código",
+    "joinDescription": "Entre em uma workspace existente com um código de convite",
+    "workspaceNameLabel": "Nome da sua casa",
+    "workspaceNamePlaceholder": "Ex: Casa Silva, Família...",
+    "createButton": "Criar",
+    "joinButton": "Entrar",
+    "inviteCodeLabel": "Código de convite",
+    "inviteCodePlaceholder": "Cole o código aqui",
+    "errorGeneric": "Ocorreu um erro. Tente novamente.",
+    "back": "Voltar",
+    "loading": "Aguarde..."
+  },
+
+  "invite": {
+    "title": "Convite para Workspace",
+    "accept": "Aceitar Convite",
+    "loading": "Processando...",
+    "errorExpired": "Este convite expirou ou já foi usado.",
+    "errorGeneric": "Erro ao processar o convite."
+  },
+
   "months": {
     "january": "Janeiro",
     "february": "Fevereiro",

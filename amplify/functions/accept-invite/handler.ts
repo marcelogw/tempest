@@ -8,6 +8,7 @@ import {
   ListUsersInGroupCommand,
 } from '@aws-sdk/client-cognito-identity-provider'
 import type { Schema } from '../../data/resource'
+import { hashAvatarColor } from '../shared/avatar'
 
 type CognitoIdentity = {
   sub: string
@@ -18,27 +19,6 @@ type CognitoIdentity = {
 const cognitoClient = new CognitoIdentityProviderClient({})
 
 const MAX_WORKSPACE_MEMBERS = 2
-
-function hashAvatarColor(sub: string): string {
-  let hash = 0
-  for (let i = 0; i < sub.length; i++) {
-    hash = (hash << 5) - hash + sub.charCodeAt(i)
-    hash |= 0
-  }
-  const palette = [
-    '#E57373',
-    '#F06292',
-    '#BA68C8',
-    '#9575CD',
-    '#7986CB',
-    '#64B5F6',
-    '#4DB6AC',
-    '#81C784',
-    '#FFD54F',
-    '#FF8A65',
-  ]
-  return palette[Math.abs(hash) % palette.length]
-}
 
 export const handler: Schema['acceptInvite']['functionHandler'] = async (event) => {
   const identity = event.identity as CognitoIdentity

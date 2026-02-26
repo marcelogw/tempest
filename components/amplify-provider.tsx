@@ -2,6 +2,8 @@
 
 import { createContext, useContext, useEffect, useState } from 'react'
 import { configureAmplify } from '@/lib/amplify-config'
+import { useWorkspaceSync } from '@/lib/hooks/use-workspace-sync'
+import { startBackgroundProcessor } from '@/lib/write-queue'
 
 type AmplifyContextType = {
   isConfigured: boolean
@@ -34,10 +36,13 @@ export function AmplifyProvider({ children }: AmplifyProviderProps) {
   const [isConfigured, setIsConfigured] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
+  useWorkspaceSync()
+
   useEffect(() => {
     const result = configureAmplify()
     setIsConfigured(result)
     setIsLoading(false)
+    startBackgroundProcessor()
   }, [])
 
   return (

@@ -1,0 +1,195 @@
+import * as workspaceClient from './workspace-client'
+
+export type WriteModel =
+  | 'Category'
+  | 'CreditCard'
+  | 'MonthlyData'
+  | 'Income'
+  | 'Expense'
+  | 'Installment'
+  | 'Workspace'
+
+export type WriteOp = 'create' | 'update' | 'delete'
+
+export type PendingWrite = {
+  id: string
+  model: WriteModel
+  operation: WriteOp
+  data: Record<string, unknown>
+  enqueuedAt: number
+  retries: number
+}
+
+const QUEUE_KEY = 'tempest-write-queue'
+const DEAD_LETTER_KEY = 'tempest-dead-letters'
+const MAX_RETRIES = 3
+
+let processorInterval: ReturnType<typeof setInterval> | null = null
+let focusListenerAdded = false
+
+function readQueue(): PendingWrite[] {
+  try {
+    const raw = localStorage.getItem(QUEUE_KEY)
+    return raw ? (JSON.parse(raw) as PendingWrite[]) : []
+  } catch {
+    return []
+  }
+}
+
+function saveQueue(queue: PendingWrite[]): void {
+  localStorage.setItem(QUEUE_KEY, JSON.stringify(queue))
+}
+
+export function enqueue(op: Omit<PendingWrite, 'id' | 'enqueuedAt' | 'retries'>): void {
+  const queue = readQueue()
+  queue.push({
+    ...op,
+    id: crypto.randomUUID(),
+    enqueuedAt: Date.now(),
+    retries: 0,
+  })
+  saveQueue(queue)
+}
+
+export function getPendingCount(): number {
+  return readQueue().length
+}
+
+export async function processQueue(): Promise<void> {
+  const queue = readQueue()
+  if (queue.length === 0) return
+
+  const remaining: PendingWrite[] = []
+  for (const item of queue) {
+    try {
+      await dispatch(item)
+    } catch {
+      if (item.retries >= MAX_RETRIES - 1) {
+        try {
+          const dead = JSON.parse(localStorage.getItem(DEAD_LETTER_KEY) ?? '[]') as PendingWrite[]
+          dead.push({ ...item, retries: item.retries + 1 })
+          localStorage.setItem(DEAD_LETTER_KEY, JSON.stringify(dead))
+        } catch {
+          // ignore dead letter write failures
+        }
+      } else {
+        remaining.push({ ...item, retries: item.retries + 1 })
+      }
+    }
+  }
+  saveQueue(remaining)
+}
+
+async function dispatch(item: PendingWrite): Promise<void> {
+  const { model, operation, data } = item
+
+  switch (`${model}:${operation}`) {
+    case 'Category:create':
+      await workspaceClient.createCategory(
+        data.id as string,
+        data as Parameters<typeof workspaceClient.createCategory>[1]
+      )
+      break
+    case 'Category:update':
+      await workspaceClient.updateCategory(
+        data.id as string,
+        data as Parameters<typeof workspaceClient.updateCategory>[1]
+      )
+      break
+    case 'Category:delete':
+      await workspaceClient.deleteCategory(data.id as string)
+      break
+
+    case 'CreditCard:create':
+      await workspaceClient.createCreditCard(
+        data.id as string,
+        data as Parameters<typeof workspaceClient.createCreditCard>[1]
+      )
+      break
+    case 'CreditCard:update':
+      await workspaceClient.updateCreditCard(
+        data.id as string,
+        data as Parameters<typeof workspaceClient.updateCreditCard>[1]
+      )
+      break
+    case 'CreditCard:delete':
+      await workspaceClient.deleteCreditCard(data.id as string)
+      break
+
+    case 'MonthlyData:create':
+      await workspaceClient.createMonthlyData(data.id as string, data.workspaceGroup as string)
+      break
+    case 'MonthlyData:update':
+      await workspaceClient.updateMonthlyData(
+        data.id as string,
+        data as Parameters<typeof workspaceClient.updateMonthlyData>[1]
+      )
+      break
+
+    case 'Income:create':
+      await workspaceClient.createIncome(data as Parameters<typeof workspaceClient.createIncome>[0])
+      break
+    case 'Income:update':
+      await workspaceClient.updateIncome(
+        data.id as string,
+        data as Parameters<typeof workspaceClient.updateIncome>[1]
+      )
+      break
+    case 'Income:delete':
+      await workspaceClient.deleteIncome(data.id as string)
+      break
+
+    case 'Expense:create':
+      await workspaceClient.createExpense(
+        data as Parameters<typeof workspaceClient.createExpense>[0]
+      )
+      break
+    case 'Expense:update':
+      await workspaceClient.updateExpense(
+        data.id as string,
+        data as Parameters<typeof workspaceClient.updateExpense>[1]
+      )
+      break
+    case 'Expense:delete':
+      await workspaceClient.deleteExpense(data.id as string)
+      break
+
+    case 'Installment:create':
+      await workspaceClient.createInstallment(
+        data as Parameters<typeof workspaceClient.createInstallment>[0]
+      )
+      break
+    case 'Installment:delete':
+      await workspaceClient.deleteInstallment(data.id as string)
+      break
+
+    case 'Workspace:update':
+      await workspaceClient.touchWorkspaceActivity(data.id as string)
+      break
+
+    default:
+      throw new Error(`Unknown dispatch: ${model}:${operation}`)
+  }
+}
+
+export function startBackgroundProcessor(): void {
+  if (processorInterval !== null) return
+
+  processorInterval = setInterval(() => {
+    void processQueue()
+  }, 30_000)
+
+  if (typeof window !== 'undefined' && !focusListenerAdded) {
+    window.addEventListener('focus', () => {
+      void processQueue()
+    })
+    focusListenerAdded = true
+  }
+}
+
+export function stopBackgroundProcessor(): void {
+  if (processorInterval !== null) {
+    clearInterval(processorInterval)
+    processorInterval = null
+  }
+}

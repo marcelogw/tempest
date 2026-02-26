@@ -5,8 +5,6 @@ import { useTranslations, useLocale } from 'next-intl'
 import { useSearchParams } from 'next/navigation'
 import { useExpenseStore } from '@/lib/expense-store'
 import { useSyncStore } from '@/lib/sync-store'
-import { getSyncManager, type SyncScenario } from '@/lib/sync-manager'
-import { fetchAuthSession } from 'aws-amplify/auth'
 import { useAmplify } from '@/components/amplify-provider'
 import { Button } from '@/components/ui/button'
 import { SyncCard } from './sync-card'
@@ -32,6 +30,7 @@ import { Input } from '@/components/ui/input'
 import { useToast } from '@/hooks/use-toast'
 import { AlertTriangle, Globe } from 'lucide-react'
 import { setLocaleCookie } from '@/lib/locale-cookie'
+import { fetchAuthSession } from 'aws-amplify/auth'
 
 export function SettingsView() {
   const i = useTranslations()
@@ -47,7 +46,6 @@ export function SettingsView() {
   const [selectedYear, setSelectedYear] = useState<string>('')
   const [confirmationText, setConfirmationText] = useState('')
   const [authDialogOpen, setAuthDialogOpen] = useState(false)
-  const [pendingScenario, setPendingScenario] = useState<SyncScenario | null>(null)
 
   const availableYears = getAvailableYears()
 
@@ -71,6 +69,7 @@ export function SettingsView() {
         variant: 'destructive',
       })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams, toast])
 
   // Check if user is already authenticated on mount
@@ -78,6 +77,7 @@ export function SettingsView() {
     if (isConfigured) {
       void checkAuthStatus()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isConfigured])
 
   async function checkAuthStatus() {
@@ -99,16 +99,6 @@ export function SettingsView() {
     setAuthDialogOpen(true)
   }
 
-  async function handleDisconnect() {
-    const syncManager = getSyncManager()
-    await syncManager.disconnect()
-
-    toast({
-      title: i('ui.settings.accountDisconnected'),
-      description: i('ui.settings.localDataKept'),
-    })
-  }
-
   async function handleAuthSuccess() {
     setAuthDialogOpen(false)
 
@@ -125,45 +115,7 @@ export function SettingsView() {
       const session = await fetchAuthSession()
       const email = session.tokens?.idToken?.payload.email as string
       setUserEmail(email)
-
-      const syncManager = getSyncManager()
-      const scenario = await syncManager.initializeSync()
-
-      if (scenario === 'both') {
-        // Surface the conflict dialog — user must choose which side wins
-        setPendingScenario('both')
-      } else if (scenario === 'cloud-only') {
-        toast({
-          title: i('ui.settings.dataDownloadedSuccess'),
-          description: i('ui.settings.dataDownloadedDesc'),
-        })
-      } else if (scenario === 'local-only' || scenario === 'empty') {
-        toast({
-          title: i('ui.settings.dataSyncedSuccess'),
-          description: i('ui.settings.dataSyncedDesc'),
-        })
-      }
-    } catch (error) {
-      toast({
-        title: i('ui.settings.syncError'),
-        description: error instanceof Error ? error.message : i('errors.generic'),
-        variant: 'destructive',
-      })
-    }
-  }
-
-  async function handleResolveConflict(strategy: 'use-cloud' | 'use-local') {
-    setPendingScenario(null)
-    try {
-      const syncManager = getSyncManager()
-      await syncManager.resolveConflict(strategy)
-      toast({
-        title: i('ui.settings.conflictResolvedSuccess'),
-        description:
-          strategy === 'use-cloud'
-            ? i('ui.settings.dataDownloadedDesc')
-            : i('ui.settings.dataSyncedDesc'),
-      })
+      setStatus('connected')
     } catch (error) {
       toast({
         title: i('ui.settings.syncError'),
@@ -248,12 +200,7 @@ export function SettingsView() {
 
               <div className="space-y-4">
                 {/* Sync Card */}
-                <SyncCard
-                  onConnect={handleConnect}
-                  onDisconnect={() => void handleDisconnect()}
-                  pendingScenario={pendingScenario}
-                  onResolveConflict={(strategy) => void handleResolveConflict(strategy)}
-                />
+                <SyncCard onConnect={handleConnect} />
 
                 {/* Card: Deletar Ano Específico */}
                 <div className="rounded-lg border p-4">

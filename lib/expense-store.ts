@@ -8,6 +8,16 @@ import {
   cleanupOldBackups,
   CURRENT_SCHEMA_VERSION,
 } from './migrations'
+import { useSyncStore } from './sync-store'
+import { enqueue } from './write-queue'
+import {
+  fetchWorkspaceData,
+  categoryKeyToCloudId,
+  categoryCloudIdToKey,
+  cardKeyToCloudId,
+  cardCloudIdToKey,
+  getWorkspaceLastActivity,
+} from './workspace-client'
 
 // Category types for dynamic user-configurable categories
 export type CategoryIcon = string | null
@@ -168,6 +178,8 @@ interface ExpenseStore {
   creditCards: CreditCard[]
   currentMonth: string
   currentYear: string
+  isLoading: boolean
+  workspaceId: string | null
   setCurrentMonth: (month: string) => void
   setCurrentYear: (year: string) => void
   getAvailableYears: () => string[]
@@ -219,11 +231,12 @@ interface ExpenseStore {
   // Data management actions
   deleteYearData: (year: string) => void
   deleteAllData: () => void
+  // Cloud sync actions
+  loadWorkspace: (workspaceId: string, workspaceGroup: string) => Promise<void>
+  checkAndSync: () => Promise<void>
 }
 
-const generateId = () => Math.random().toString(36).substring(2, 9)
-
-const generateRecurringGroupId = () => `recur_${generateId()}`
+const generateRecurringGroupId = () => `recur_${crypto.randomUUID()}`
 
 // Helper to normalize strings to kebab-case IDs (handles Portuguese accents)
 const normalizeToKebabCase = (str: string): string => {
@@ -478,6 +491,8 @@ export const useExpenseStore = create<ExpenseStore>()(
       creditCards: [],
       currentMonth: getCurrentMonth(),
       currentYear: new Date().getFullYear().toString(),
+      isLoading: false,
+      workspaceId: null,
 
       setCurrentMonth: (month) => {
         const [year] = month.split('-')
@@ -531,12 +546,21 @@ export const useExpenseStore = create<ExpenseStore>()(
               [month]: createEmptyMonth(month),
             },
           })
+          const { workspaceGroup } = useSyncStore.getState()
+          if (workspaceGroup) {
+            enqueue({
+              model: 'MonthlyData',
+              operation: 'create',
+              data: { id: month, workspaceGroup },
+            })
+          }
         }
       },
 
       initializeYear: (year) => {
         const { monthlyData } = get()
         const updatedData = { ...monthlyData }
+        const newMonths: string[] = []
         let hasChanges = false
 
         // Create all 12 months for the year if they don't exist
@@ -544,12 +568,23 @@ export const useExpenseStore = create<ExpenseStore>()(
           const monthKey = `${year}-${String(monthNum).padStart(2, '0')}`
           if (!updatedData[monthKey]) {
             updatedData[monthKey] = createEmptyMonth(monthKey)
+            newMonths.push(monthKey)
             hasChanges = true
           }
         }
 
         if (hasChanges) {
           set({ monthlyData: updatedData })
+          const { workspaceGroup } = useSyncStore.getState()
+          if (workspaceGroup) {
+            newMonths.forEach((month) => {
+              enqueue({
+                model: 'MonthlyData',
+                operation: 'create',
+                data: { id: month, workspaceGroup },
+              })
+            })
+          }
         }
       },
 
@@ -569,7 +604,7 @@ export const useExpenseStore = create<ExpenseStore>()(
         const recurringGroupId = replicate ? generateRecurringGroupId() : undefined
         const newIncome: Income = {
           ...income,
-          id: generateId(),
+          id: crypto.randomUUID(),
           recurringGroupId,
         }
 
@@ -585,20 +620,24 @@ export const useExpenseStore = create<ExpenseStore>()(
           incomes: [...updatedData[month].incomes, newIncome],
         }
 
-        // Propagate if requested
+        // Track replicated incomes for cloud sync
+        const replicatedIncomes: Array<{ id: string; targetMonth: string }> = []
+
         if (replicate) {
           const futureMonths = getFutureMonths(month, 24)
           futureMonths.forEach((targetMonth) => {
             if (!updatedData[targetMonth]) {
               updatedData[targetMonth] = createEmptyMonth(targetMonth)
             }
+            const replicaId = crypto.randomUUID()
+            replicatedIncomes.push({ id: replicaId, targetMonth })
             updatedData[targetMonth] = {
               ...updatedData[targetMonth],
               incomes: [
                 ...updatedData[targetMonth].incomes,
                 {
                   ...income,
-                  id: generateId(),
+                  id: replicaId,
                   recurringGroupId,
                 },
               ],
@@ -607,6 +646,37 @@ export const useExpenseStore = create<ExpenseStore>()(
         }
 
         set({ monthlyData: updatedData })
+
+        const { workspaceGroup, workspaceId } = useSyncStore.getState()
+        if (workspaceGroup && workspaceId) {
+          enqueue({
+            model: 'Income',
+            operation: 'create',
+            data: {
+              id: newIncome.id,
+              workspaceGroup,
+              description: newIncome.description,
+              amount: newIncome.amount,
+              recurringGroupId: newIncome.recurringGroupId ?? null,
+              monthlyDataId: month,
+            },
+          })
+          replicatedIncomes.forEach(({ id, targetMonth }) => {
+            enqueue({
+              model: 'Income',
+              operation: 'create',
+              data: {
+                id,
+                workspaceGroup,
+                description: income.description,
+                amount: income.amount,
+                recurringGroupId: recurringGroupId ?? null,
+                monthlyDataId: targetMonth,
+              },
+            })
+          })
+          enqueue({ model: 'Workspace', operation: 'update', data: { id: workspaceId } })
+        }
       },
 
       removeIncome: (month, incomeId) => {
@@ -618,12 +688,16 @@ export const useExpenseStore = create<ExpenseStore>()(
         if (!incomeToRemove) return
 
         const updatedData = { ...monthlyData }
+        const deletedIds: string[] = []
 
         if (incomeToRemove.recurringGroupId) {
           // Remove from this month onwards
           Object.keys(updatedData).forEach((monthKey) => {
             if (monthKey >= month) {
               const monthData = updatedData[monthKey]
+              monthData.incomes
+                .filter((i) => i.recurringGroupId === incomeToRemove.recurringGroupId)
+                .forEach((i) => deletedIds.push(i.id))
               updatedData[monthKey] = {
                 ...monthData,
                 incomes: monthData.incomes.filter(
@@ -633,7 +707,7 @@ export const useExpenseStore = create<ExpenseStore>()(
             }
           })
         } else {
-          // Remove only from current month
+          deletedIds.push(incomeId)
           updatedData[month] = {
             ...currentData,
             incomes: currentData.incomes.filter((i) => i.id !== incomeId),
@@ -641,6 +715,14 @@ export const useExpenseStore = create<ExpenseStore>()(
         }
 
         set({ monthlyData: updatedData })
+
+        const { workspaceGroup, workspaceId } = useSyncStore.getState()
+        if (workspaceGroup && workspaceId) {
+          deletedIds.forEach((id) => {
+            enqueue({ model: 'Income', operation: 'delete', data: { id } })
+          })
+          enqueue({ model: 'Workspace', operation: 'update', data: { id: workspaceId } })
+        }
       },
 
       updateIncome: (month, income, makeRecurring) => {
@@ -648,25 +730,25 @@ export const useExpenseStore = create<ExpenseStore>()(
 
         if (makeRecurring && !income.recurringGroupId) {
           // Convert to recurring: remove old and add new with replication
-          // We need to handle this carefully to not lose the ID reference if we want to keep it,
-          // but addIncome generates new IDs.
-          // Simpler approach: Remove checking only ID locally, then add new.
-
-          // However, since we are inside the store, we can do it more manually if needed.
-          // But reusing addIncome is safer for consistency.
           const { description, amount } = income
           removeIncome(month, income.id)
           addIncome(month, { description, amount }, true)
-          return
+          return // enqueue handled by removeIncome/addIncome
         }
 
         const updatedData = { ...monthlyData }
+        const updatedIds: string[] = []
 
         if (income.recurringGroupId) {
           // Update this and future months
           Object.keys(updatedData).forEach((monthKey) => {
             if (monthKey >= month) {
               const monthData = updatedData[monthKey]
+              monthData.incomes.forEach((i) => {
+                if (i.recurringGroupId === income.recurringGroupId) {
+                  updatedIds.push(i.id)
+                }
+              })
               updatedData[monthKey] = {
                 ...monthData,
                 incomes: monthData.incomes.map((i) =>
@@ -678,7 +760,7 @@ export const useExpenseStore = create<ExpenseStore>()(
             }
           })
         } else {
-          // Update only current month
+          updatedIds.push(income.id)
           const currentData = monthlyData[month]
           if (currentData) {
             updatedData[month] = {
@@ -689,6 +771,18 @@ export const useExpenseStore = create<ExpenseStore>()(
         }
 
         set({ monthlyData: updatedData })
+
+        const { workspaceGroup, workspaceId } = useSyncStore.getState()
+        if (workspaceGroup && workspaceId) {
+          updatedIds.forEach((id) => {
+            enqueue({
+              model: 'Income',
+              operation: 'update',
+              data: { id, description: income.description, amount: income.amount },
+            })
+          })
+          enqueue({ model: 'Workspace', operation: 'update', data: { id: workspaceId } })
+        }
       },
 
       updateInvestments: (month, investments) => {
@@ -704,6 +798,11 @@ export const useExpenseStore = create<ExpenseStore>()(
             },
           },
         })
+        const { workspaceGroup, workspaceId } = useSyncStore.getState()
+        if (workspaceGroup && workspaceId) {
+          enqueue({ model: 'MonthlyData', operation: 'update', data: { id: month, investments } })
+          enqueue({ model: 'Workspace', operation: 'update', data: { id: workspaceId } })
+        }
       },
 
       updateSavings: (month, savings) => {
@@ -719,6 +818,11 @@ export const useExpenseStore = create<ExpenseStore>()(
             },
           },
         })
+        const { workspaceGroup, workspaceId } = useSyncStore.getState()
+        if (workspaceGroup && workspaceId) {
+          enqueue({ model: 'MonthlyData', operation: 'update', data: { id: month, savings } })
+          enqueue({ model: 'Workspace', operation: 'update', data: { id: workspaceId } })
+        }
       },
 
       addExpense: (month, expense, type) => {
@@ -726,7 +830,7 @@ export const useExpenseStore = create<ExpenseStore>()(
         const [year] = month.split('-')
         initializeYear(year)
         const currentData = get().monthlyData[month]
-        const newExpense = { ...expense, id: generateId() }
+        const newExpense = { ...expense, id: crypto.randomUUID() }
 
         set({
           monthlyData: {
@@ -740,6 +844,28 @@ export const useExpenseStore = create<ExpenseStore>()(
             },
           },
         })
+
+        const { workspaceGroup, workspaceId } = useSyncStore.getState()
+        if (workspaceGroup && workspaceId) {
+          const categoryCloudId = categoryKeyToCloudId[newExpense.category] ?? newExpense.category
+          enqueue({
+            model: 'Expense',
+            operation: 'create',
+            data: {
+              id: newExpense.id,
+              workspaceGroup,
+              description: newExpense.description,
+              amount: newExpense.amount,
+              categoryId: categoryCloudId,
+              type: newExpense.type,
+              date: newExpense.date,
+              installmentId: newExpense.installmentId ?? null,
+              recurringGroupId: newExpense.recurringGroupId ?? null,
+              monthlyDataId: month,
+            },
+          })
+          enqueue({ model: 'Workspace', operation: 'update', data: { id: workspaceId } })
+        }
       },
 
       removeExpense: (month, expenseId, type) => {
@@ -758,6 +884,12 @@ export const useExpenseStore = create<ExpenseStore>()(
             },
           },
         })
+
+        const { workspaceGroup, workspaceId } = useSyncStore.getState()
+        if (workspaceGroup && workspaceId) {
+          enqueue({ model: 'Expense', operation: 'delete', data: { id: expenseId } })
+          enqueue({ model: 'Workspace', operation: 'update', data: { id: workspaceId } })
+        }
       },
 
       updateExpense: (month, expense, type) => {
@@ -776,6 +908,23 @@ export const useExpenseStore = create<ExpenseStore>()(
             },
           },
         })
+
+        const { workspaceGroup, workspaceId } = useSyncStore.getState()
+        if (workspaceGroup && workspaceId) {
+          const categoryCloudId = categoryKeyToCloudId[expense.category] ?? expense.category
+          enqueue({
+            model: 'Expense',
+            operation: 'update',
+            data: {
+              id: expense.id,
+              description: expense.description,
+              amount: expense.amount,
+              categoryId: categoryCloudId,
+              date: expense.date,
+            },
+          })
+          enqueue({ model: 'Workspace', operation: 'update', data: { id: workspaceId } })
+        }
       },
 
       addFixedExpenseWithPropagation: (month, expense) => {
@@ -783,17 +932,14 @@ export const useExpenseStore = create<ExpenseStore>()(
         const futureMonths = getFutureMonths(month, 24)
         const { initializeYear } = get()
 
-        // Initialize current year
         const [year] = month.split('-')
         initializeYear(year)
 
-        // Get updated state after initialization
         const { monthlyData } = get()
 
-        // Add to current month with recurringGroupId
         const newExpense: Expense = {
           ...expense,
-          id: generateId(),
+          id: crypto.randomUUID(),
           recurringGroupId,
           type: 'fixed',
         }
@@ -806,40 +952,68 @@ export const useExpenseStore = create<ExpenseStore>()(
           },
         }
 
-        // Propagate to future months
+        const allCreatedExpenses: Array<{ expense: Expense; targetMonth: string }> = [
+          { expense: newExpense, targetMonth: month },
+        ]
+
         futureMonths.forEach((targetMonth) => {
-          // Initialize month if it doesn't exist
           if (!updatedData[targetMonth]) {
             updatedData[targetMonth] = createEmptyMonth(targetMonth)
           }
 
+          const futureExpense: Expense = {
+            ...expense,
+            id: crypto.randomUUID(),
+            recurringGroupId,
+            type: 'fixed',
+            date: targetMonth + '-01',
+          }
+          allCreatedExpenses.push({ expense: futureExpense, targetMonth })
+
           updatedData[targetMonth] = {
             ...updatedData[targetMonth],
-            fixedExpenses: [
-              ...updatedData[targetMonth].fixedExpenses,
-              {
-                ...expense,
-                id: generateId(), // New ID for each month
-                recurringGroupId, // Same group ID
-                type: 'fixed',
-                date: targetMonth + '-01',
-              },
-            ],
+            fixedExpenses: [...updatedData[targetMonth].fixedExpenses, futureExpense],
           }
         })
 
         set({ monthlyData: updatedData })
+
+        const { workspaceGroup, workspaceId } = useSyncStore.getState()
+        if (workspaceGroup && workspaceId) {
+          const categoryCloudId = categoryKeyToCloudId[expense.category] ?? expense.category
+          allCreatedExpenses.forEach(({ expense: e, targetMonth }) => {
+            enqueue({
+              model: 'Expense',
+              operation: 'create',
+              data: {
+                id: e.id,
+                workspaceGroup,
+                description: e.description,
+                amount: e.amount,
+                categoryId: categoryCloudId,
+                type: 'fixed',
+                date: e.date,
+                installmentId: e.installmentId ?? null,
+                recurringGroupId,
+                monthlyDataId: targetMonth,
+              },
+            })
+          })
+          enqueue({ model: 'Workspace', operation: 'update', data: { id: workspaceId } })
+        }
       },
 
       removeFixedExpenseFromMonth: (startMonth, recurringGroupId) => {
         const { monthlyData } = get()
         const updatedData = { ...monthlyData }
+        const deletedIds: string[] = []
 
-        // Remove from startMonth and all future months
         Object.keys(updatedData).forEach((monthKey) => {
           if (monthKey >= startMonth) {
-            // String comparison works for YYYY-MM format
             const monthData = updatedData[monthKey]
+            monthData.fixedExpenses
+              .filter((e) => e.recurringGroupId === recurringGroupId)
+              .forEach((e) => deletedIds.push(e.id))
             updatedData[monthKey] = {
               ...monthData,
               fixedExpenses: monthData.fixedExpenses.filter(
@@ -850,44 +1024,97 @@ export const useExpenseStore = create<ExpenseStore>()(
         })
 
         set({ monthlyData: updatedData })
+
+        const { workspaceGroup, workspaceId } = useSyncStore.getState()
+        if (workspaceGroup && workspaceId) {
+          deletedIds.forEach((id) => {
+            enqueue({ model: 'Expense', operation: 'delete', data: { id } })
+          })
+          enqueue({ model: 'Workspace', operation: 'update', data: { id: workspaceId } })
+        }
       },
 
       updateFixedExpenseFromMonth: (startMonth, recurringGroupId, updates) => {
         const { monthlyData } = get()
         const updatedData = { ...monthlyData }
+        const updatedExpenses: Expense[] = []
 
-        // Update from startMonth onwards
         Object.keys(updatedData).forEach((monthKey) => {
           if (monthKey >= startMonth) {
             const monthData = updatedData[monthKey]
             updatedData[monthKey] = {
               ...monthData,
-              fixedExpenses: monthData.fixedExpenses.map((expense) =>
-                expense.recurringGroupId === recurringGroupId
-                  ? { ...expense, ...updates, date: monthKey + '-01' }
-                  : expense
-              ),
+              fixedExpenses: monthData.fixedExpenses.map((expense) => {
+                if (expense.recurringGroupId === recurringGroupId) {
+                  const updated = { ...expense, ...updates, date: monthKey + '-01' }
+                  updatedExpenses.push(updated)
+                  return updated
+                }
+                return expense
+              }),
             }
           }
         })
 
         set({ monthlyData: updatedData })
+
+        const { workspaceGroup, workspaceId } = useSyncStore.getState()
+        if (workspaceGroup && workspaceId) {
+          updatedExpenses.forEach((e) => {
+            const categoryCloudId = categoryKeyToCloudId[e.category] ?? e.category
+            enqueue({
+              model: 'Expense',
+              operation: 'update',
+              data: {
+                id: e.id,
+                description: e.description,
+                amount: e.amount,
+                categoryId: categoryCloudId,
+                date: e.date,
+              },
+            })
+          })
+          enqueue({ model: 'Workspace', operation: 'update', data: { id: workspaceId } })
+        }
       },
 
       addInstallment: (installment) => {
         const newInstallment: Installment = {
           ...installment,
-          id: generateId(),
+          id: crypto.randomUUID(),
         }
         set({
           installments: [...get().installments, newInstallment],
         })
+        const { workspaceGroup, workspaceId } = useSyncStore.getState()
+        if (workspaceGroup && workspaceId) {
+          const cardCloudId = cardKeyToCloudId[newInstallment.card] ?? newInstallment.card
+          enqueue({
+            model: 'Installment',
+            operation: 'create',
+            data: {
+              id: newInstallment.id,
+              workspaceGroup,
+              name: newInstallment.name,
+              cardId: cardCloudId,
+              totalInstallments: newInstallment.totalInstallments,
+              amountPerInstallment: newInstallment.amountPerInstallment,
+              startMonth: newInstallment.startMonth,
+            },
+          })
+          enqueue({ model: 'Workspace', operation: 'update', data: { id: workspaceId } })
+        }
       },
 
       removeInstallment: (installmentId) => {
         set({
           installments: get().installments.filter((i) => i.id !== installmentId),
         })
+        const { workspaceGroup, workspaceId } = useSyncStore.getState()
+        if (workspaceGroup && workspaceId) {
+          enqueue({ model: 'Installment', operation: 'delete', data: { id: installmentId } })
+          enqueue({ model: 'Workspace', operation: 'update', data: { id: workspaceId } })
+        }
       },
 
       getInstallmentsForMonth: (month) => {
@@ -920,14 +1147,13 @@ export const useExpenseStore = create<ExpenseStore>()(
         const { categories } = get()
         const id = normalizeToKebabCase(customLabel)
 
-        // Check for duplicate IDs
         if (categories.find((c) => c.id === id)) {
           throw new Error('Category with this name already exists')
         }
 
         const newCategory: Category = {
           id,
-          customLabel, // User-created categories have custom labels (not i18n)
+          customLabel,
           color,
           icon,
           isSystem: false,
@@ -935,6 +1161,24 @@ export const useExpenseStore = create<ExpenseStore>()(
         }
 
         set({ categories: [...categories, newCategory] })
+
+        const { workspaceGroup } = useSyncStore.getState()
+        if (workspaceGroup) {
+          enqueue({
+            model: 'Category',
+            operation: 'create',
+            data: {
+              id,
+              workspaceGroup,
+              categoryId: id,
+              label: customLabel,
+              color,
+              icon: icon ?? null,
+              isSystem: false,
+              order: newCategory.order,
+            },
+          })
+        }
       },
 
       updateCategory: (id, updates) => {
@@ -945,7 +1189,6 @@ export const useExpenseStore = create<ExpenseStore>()(
           throw new Error('Category not found')
         }
 
-        // System categories cannot have customLabel changed (they use i18n)
         if (category.isSystem && updates.customLabel) {
           throw new Error('Cannot rename system category')
         }
@@ -953,6 +1196,22 @@ export const useExpenseStore = create<ExpenseStore>()(
         set({
           categories: categories.map((c) => (c.id === id ? { ...c, ...updates } : c)),
         })
+
+        const { workspaceGroup } = useSyncStore.getState()
+        if (workspaceGroup) {
+          const cloudId = categoryKeyToCloudId[id] ?? id
+          enqueue({
+            model: 'Category',
+            operation: 'update',
+            data: {
+              id: cloudId,
+              ...(updates.customLabel !== undefined && { label: updates.customLabel }),
+              ...(updates.color !== undefined && { color: updates.color }),
+              ...(updates.icon !== undefined && { icon: updates.icon }),
+              ...(updates.order !== undefined && { order: updates.order }),
+            },
+          })
+        }
       },
 
       deleteCategory: (id) => {
@@ -987,6 +1246,12 @@ export const useExpenseStore = create<ExpenseStore>()(
           categories: categories.filter((c) => c.id !== id),
           monthlyData: updatedMonthlyData,
         })
+
+        const { workspaceGroup } = useSyncStore.getState()
+        if (workspaceGroup) {
+          const cloudId = categoryKeyToCloudId[id] ?? id
+          enqueue({ model: 'Category', operation: 'delete', data: { id: cloudId } })
+        }
       },
 
       reorderCategories: (orderedIds) => {
@@ -1000,6 +1265,18 @@ export const useExpenseStore = create<ExpenseStore>()(
           .filter(Boolean) as Category[]
 
         set({ categories: reordered })
+
+        const { workspaceGroup } = useSyncStore.getState()
+        if (workspaceGroup) {
+          reordered.forEach((cat) => {
+            const cloudId = categoryKeyToCloudId[cat.id] ?? cat.id
+            enqueue({
+              model: 'Category',
+              operation: 'update',
+              data: { id: cloudId, order: cat.order },
+            })
+          })
+        }
       },
 
       getCategoryById: (id) => {
@@ -1031,6 +1308,23 @@ export const useExpenseStore = create<ExpenseStore>()(
         }
 
         set({ creditCards: [...creditCards, newCard] })
+
+        const { workspaceGroup } = useSyncStore.getState()
+        if (workspaceGroup) {
+          enqueue({
+            model: 'CreditCard',
+            operation: 'create',
+            data: {
+              id,
+              workspaceGroup,
+              cardId: id,
+              name,
+              color,
+              limit: limit ?? null,
+              order: newCard.order,
+            },
+          })
+        }
       },
 
       updateCreditCard: (id, updates) => {
@@ -1044,6 +1338,16 @@ export const useExpenseStore = create<ExpenseStore>()(
         const updated = [...creditCards]
         updated[index] = { ...updated[index], ...updates }
         set({ creditCards: updated })
+
+        const { workspaceGroup } = useSyncStore.getState()
+        if (workspaceGroup) {
+          const cloudId = cardKeyToCloudId[id] ?? id
+          enqueue({
+            model: 'CreditCard',
+            operation: 'update',
+            data: { id: cloudId, ...updates },
+          })
+        }
       },
 
       deleteCreditCard: (id, reassignToCardId) => {
@@ -1072,6 +1376,12 @@ export const useExpenseStore = create<ExpenseStore>()(
           creditCards: updatedCards,
           installments: updatedInstallments,
         })
+
+        const { workspaceGroup } = useSyncStore.getState()
+        if (workspaceGroup) {
+          const cloudId = cardKeyToCloudId[id] ?? id
+          enqueue({ model: 'CreditCard', operation: 'delete', data: { id: cloudId } })
+        }
       },
 
       reorderCreditCards: (orderedIds) => {
@@ -1082,6 +1392,18 @@ export const useExpenseStore = create<ExpenseStore>()(
           .map((card, index) => ({ ...card!, order: index }))
 
         set({ creditCards: reordered })
+
+        const { workspaceGroup } = useSyncStore.getState()
+        if (workspaceGroup) {
+          reordered.forEach((card) => {
+            const cloudId = cardKeyToCloudId[card.id] ?? card.id
+            enqueue({
+              model: 'CreditCard',
+              operation: 'update',
+              data: { id: cloudId, order: card.order },
+            })
+          })
+        }
       },
 
       getCreditCardById: (id) => {
@@ -1157,6 +1479,106 @@ export const useExpenseStore = create<ExpenseStore>()(
           currentMonth: getCurrentMonth(),
           currentYear: new Date().getFullYear().toString(),
         })
+      },
+
+      // Cloud sync actions
+      loadWorkspace: async (workspaceId, workspaceGroup) => {
+        set({ isLoading: true, workspaceId })
+        useSyncStore.getState().setWorkspace(workspaceId, workspaceGroup)
+
+        try {
+          const raw = await fetchWorkspaceData(workspaceGroup)
+
+          const categories: Category[] = raw.categories.map((c) => ({
+            id: c.categoryId,
+            color: c.color,
+            icon: c.icon ?? null,
+            isSystem: c.isSystem,
+            order: c.order,
+            customLabel: c.isSystem ? undefined : c.label,
+          }))
+
+          const creditCards: CreditCard[] = raw.creditCards.map((cc) => ({
+            id: cc.cardId,
+            name: cc.name,
+            color: cc.color,
+            limit: cc.limit,
+            order: cc.order,
+          }))
+
+          // Reconstruct denormalized MonthlyData
+          const monthlyDataMap: Record<string, MonthlyData> = {}
+          raw.monthlyDataList.forEach((md) => {
+            monthlyDataMap[md.month] = {
+              month: md.month,
+              investments: md.investments,
+              savings: md.savings,
+              incomes: raw.incomes
+                .filter((i) => i.monthlyDataId === md.id)
+                .map((i) => ({
+                  id: i.id,
+                  description: i.description,
+                  amount: i.amount,
+                  recurringGroupId: i.recurringGroupId ?? undefined,
+                })),
+              fixedExpenses: raw.expenses
+                .filter((e) => e.monthlyDataId === md.id && e.type === 'fixed')
+                .map((e) => ({
+                  id: e.id,
+                  description: e.description,
+                  amount: e.amount,
+                  category: categoryCloudIdToKey[e.categoryId] ?? e.categoryId,
+                  type: 'fixed' as const,
+                  date: e.date,
+                  installmentId: e.installmentId ?? undefined,
+                  recurringGroupId: e.recurringGroupId ?? undefined,
+                })),
+              variableExpenses: raw.expenses
+                .filter((e) => e.monthlyDataId === md.id && e.type === 'variable')
+                .map((e) => ({
+                  id: e.id,
+                  description: e.description,
+                  amount: e.amount,
+                  category: categoryCloudIdToKey[e.categoryId] ?? e.categoryId,
+                  type: 'variable' as const,
+                  date: e.date,
+                  installmentId: e.installmentId ?? undefined,
+                  recurringGroupId: e.recurringGroupId ?? undefined,
+                })),
+            }
+          })
+
+          const installments: Installment[] = raw.installments.map((inst) => ({
+            id: inst.id,
+            name: inst.name,
+            card: cardCloudIdToKey[inst.cardId] ?? inst.cardId,
+            totalInstallments: inst.totalInstallments,
+            amountPerInstallment: inst.amountPerInstallment,
+            startMonth: inst.startMonth,
+          }))
+
+          set({
+            categories,
+            creditCards,
+            monthlyData: monthlyDataMap,
+            installments,
+            isLoading: false,
+          })
+          useSyncStore.getState().setLastSyncedAt(Date.now())
+        } catch (error) {
+          set({ isLoading: false })
+          throw error
+        }
+      },
+
+      checkAndSync: async () => {
+        const { workspaceId, workspaceGroup, lastSyncedAt } = useSyncStore.getState()
+        if (!workspaceId || !workspaceGroup) return
+
+        const lastActivity = await getWorkspaceLastActivity(workspaceId)
+        if (!lastSyncedAt || (lastActivity && lastActivity.getTime() > lastSyncedAt)) {
+          await get().loadWorkspace(workspaceId, workspaceGroup)
+        }
       },
     }),
     {

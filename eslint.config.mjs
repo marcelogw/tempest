@@ -68,6 +68,7 @@ export default tseslint.config(
       'coverage/**',
       '.vercel/**',
       '.amplify/**', // Amplify build artifacts
+      'amplify/functions/**', // Lambda functions — excluded from tsconfig, own build context
       'playwright-report/**',
       'test-results/**',
       '*.config.{js,mjs,ts}',

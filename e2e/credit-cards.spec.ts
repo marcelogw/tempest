@@ -4,9 +4,10 @@ test.describe('Credit Cards Management', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/')
 
-    // Clear localStorage to start fresh
+    // Clear localStorage to start fresh, preserving workspace state
     await page.evaluate(() => {
-      localStorage.clear()
+      const toRemove = Object.keys(localStorage).filter((k) => k !== 'tempest-sync-storage')
+      toRemove.forEach((k) => localStorage.removeItem(k))
     })
 
     await page.reload()

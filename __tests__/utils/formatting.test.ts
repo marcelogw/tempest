@@ -1,5 +1,11 @@
 import { describe, it, expect } from 'vitest'
 import { formatCurrencyBRL, formatShortCurrencyBRL, DEFAULT_CATEGORIES } from '@/lib/expense-store'
+import {
+  formatCurrency,
+  formatShortCurrency,
+  formatNumber,
+  formatPercentage,
+} from '@/lib/formatters'
 
 describe('Currency Formatting', () => {
   describe('formatCurrencyBRL', () => {
@@ -93,5 +99,78 @@ describe('Default Categories', () => {
     const systemCategories = DEFAULT_CATEGORIES.filter((c) => c.isSystem)
     expect(systemCategories).toHaveLength(1)
     expect(systemCategories[0].id).toBe('other')
+  })
+})
+
+describe('formatCurrency', () => {
+  it('should format BRL by default', () => {
+    expect(formatCurrency(1500)).toBe('R$\u00A01.500')
+  })
+
+  it('should format USD', () => {
+    const result = formatCurrency(1500, 'en-US', 'USD')
+    expect(result).toContain('1,500')
+  })
+
+  it('should format EUR', () => {
+    const result = formatCurrency(2000, 'en', 'EUR')
+    expect(result).toContain('2,000')
+  })
+})
+
+describe('formatShortCurrency — millions', () => {
+  it('should abbreviate values >= 1000000 with M suffix', () => {
+    expect(formatShortCurrency(1500000)).toBe('R$1.5M')
+    expect(formatShortCurrency(2000000)).toBe('R$2.0M')
+  })
+
+  it('should use correct symbol for USD millions', () => {
+    expect(formatShortCurrency(1000000, 'en-US', 'USD')).toBe('$1.0M')
+  })
+
+  it('should use correct symbol for EUR millions', () => {
+    expect(formatShortCurrency(1000000, 'en', 'EUR')).toBe('€1.0M')
+  })
+})
+
+describe('formatNumber', () => {
+  it('should format a number with pt-BR locale by default', () => {
+    const result = formatNumber(1234567)
+    expect(result).toBe('1.234.567')
+  })
+
+  it('should format with en-US locale', () => {
+    const result = formatNumber(1234567, 'en-US')
+    expect(result).toBe('1,234,567')
+  })
+
+  it('should respect custom Intl options', () => {
+    const result = formatNumber(1234.5, 'en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })
+    expect(result).toBe('1,234.50')
+  })
+})
+
+describe('formatPercentage', () => {
+  it('should format a percentage with 1 decimal by default', () => {
+    const result = formatPercentage(15.5)
+    expect(result).toContain('15')
+  })
+
+  it('should format 0% correctly', () => {
+    const result = formatPercentage(0)
+    expect(result).toContain('0')
+  })
+
+  it('should format 100% correctly', () => {
+    const result = formatPercentage(100)
+    expect(result).toContain('100')
+  })
+
+  it('should respect decimals parameter', () => {
+    const result = formatPercentage(50, 'en-US', 2)
+    expect(result).toContain('50.00')
   })
 })

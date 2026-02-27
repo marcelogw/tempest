@@ -33,6 +33,9 @@ jobs:
       - name: Run Prettier check
         run: npm run format:check
       
+      - name: Create Amplify outputs stub for CI
+        run: echo '{"version":"1"}' > amplify_outputs.json
+
       - name: Build
         run: npm run build
 

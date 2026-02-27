@@ -12,7 +12,7 @@ type WorkspaceGateProps = {
 
 export function WorkspaceGate({ children }: WorkspaceGateProps) {
   const { workspaceId, workspaceGroup } = useSyncStore()
-  const { loadWorkspace } = useExpenseStore()
+  const loadWorkspace = useExpenseStore((s) => s.loadWorkspace)
   const router = useRouter()
 
   useEffect(() => {

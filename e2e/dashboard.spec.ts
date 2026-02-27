@@ -40,9 +40,6 @@ test.describe('Dashboard Charts', () => {
   test('should display monthly comparison chart', async ({ page }) => {
     await page.goto('/')
 
-    // Wait for charts to load
-    await page.waitForLoadState('networkidle')
-
     // Verify there are Recharts elements (charts)
     const hasChart = await page
       .locator('.recharts-wrapper, [class*="recharts"]')

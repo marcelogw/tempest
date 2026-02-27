@@ -51,7 +51,7 @@ The app supports **English (`en`) and Portuguese (`pt`)** via `next-intl`:
 
 - Message files: `messages/en.json`, `messages/pt.json`
 - Routing config: `i18n/routing.ts` — locales use cookie-based detection, **no URL prefixes**
-- Middleware: `middleware.ts` reads `NEXT_LOCALE` cookie or Accept-Language header, sets `x-next-intl-locale`
+- Proxy: `proxy.ts` reads `NEXT_LOCALE` cookie or Accept-Language header, sets `x-next-intl-locale`
 - Default locale: `pt`
 
 All new user-facing strings must be added to **both** message files. Use `useTranslations()` from `next-intl` in components.

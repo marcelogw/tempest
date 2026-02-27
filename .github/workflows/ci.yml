@@ -87,6 +87,9 @@ jobs:
       - name: Create Amplify outputs stub for CI
         run: echo '{"version":"1"}' > amplify_outputs.json
 
+      - name: Build application for E2E
+        run: npm run build
+
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 

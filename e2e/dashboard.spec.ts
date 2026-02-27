@@ -68,7 +68,7 @@ test.describe('Dashboard Charts', () => {
 test.describe('Monthly View', () => {
   test('should show correct totals for month', async ({ page }) => {
     await page.goto('/')
-    await page.click('text=Visao Mensal')
+    await page.click('text=Visão Mensal')
 
     await page.waitForSelector('[data-testid="month-selector"]')
 
@@ -82,7 +82,7 @@ test.describe('Monthly View', () => {
 
   test('should separate fixed and variable expenses', async ({ page }) => {
     await page.goto('/')
-    await page.click('text=Visao Mensal')
+    await page.click('text=Visão Mensal')
 
     await page.waitForSelector('[data-testid="month-selector"]')
 
@@ -133,7 +133,7 @@ test.describe('Data Persistence', () => {
 
   test('should persist month selection on reload', async ({ page }) => {
     await page.goto('/')
-    await page.click('text=Visao Mensal')
+    await page.click('text=Visão Mensal')
 
     await page.waitForSelector('[data-testid="month-selector"]')
 
@@ -152,7 +152,7 @@ test.describe('Data Persistence', () => {
     await page.reload()
 
     // Return to Monthly View after reload
-    await page.click('text=Visao Mensal')
+    await page.click('text=Visão Mensal')
     await page.waitForSelector('[data-testid="month-selector"]')
 
     // Verify selected month was kept
@@ -161,7 +161,7 @@ test.describe('Data Persistence', () => {
 
   test('should persist added expenses in localStorage', async ({ page }) => {
     await page.goto('/')
-    await page.click('text=Visao Mensal')
+    await page.click('text=Visão Mensal')
 
     await page.waitForSelector('[data-testid="month-selector"]')
 
@@ -181,7 +181,7 @@ test.describe('Data Persistence', () => {
     await page.reload()
 
     // Return to Monthly View
-    await page.click('text=Visao Mensal')
+    await page.click('text=Visão Mensal')
 
     // Verify it remains
     await expect(page.locator('text=Teste Persistencia')).toBeVisible({ timeout: 5000 })

@@ -3,8 +3,8 @@ import { test, expect } from '@playwright/test'
 test.describe('Income Replication', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/')
-    await page.click('text=Visao Mensal')
-    await expect(page.locator('h1')).toHaveText('Visao Mensal')
+    await page.click('text=Visão Mensal')
+    await expect(page.locator('h1')).toHaveText('Visão Mensal')
   })
 
   test.skip('should add income and replicate to future months', async ({ page }) => {

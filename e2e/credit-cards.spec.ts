@@ -157,7 +157,7 @@ test.describe('Credit Cards Management', () => {
     await page.waitForTimeout(300)
 
     // Go to monthly view to create installment
-    await page.click('text=Visao Mensal')
+    await page.click('text=Visão Mensal')
     await page.waitForTimeout(500)
 
     // Create installment on Card A
@@ -214,7 +214,7 @@ test.describe('Credit Cards Management', () => {
     await page.waitForTimeout(300)
 
     // Go to monthly view to create installment
-    await page.click('text=Visao Mensal')
+    await page.click('text=Visão Mensal')
     await page.waitForTimeout(500)
 
     // Create installment that uses 30% of limit (300 total)
@@ -249,7 +249,7 @@ test.describe('Credit Cards Management', () => {
     await expect(page.locator('text=Test Card').locator('..').locator('text=0')).toBeVisible()
 
     // Create installment
-    await page.click('text=Visao Mensal')
+    await page.click('text=Visão Mensal')
     await page.waitForTimeout(500)
 
     await page.click('button:has-text("Novo")')
@@ -299,7 +299,7 @@ test.describe('Credit Cards Management', () => {
     await page.waitForTimeout(300)
 
     // Go to monthly view
-    await page.click('text=Visao Mensal')
+    await page.click('text=Visão Mensal')
     await page.waitForTimeout(500)
 
     // Open installment form
@@ -312,7 +312,7 @@ test.describe('Credit Cards Management', () => {
 
   test.skip('should show password manager protection attributes', async ({ page }) => {
     // Go to monthly view
-    await page.click('text=Visao Mensal')
+    await page.click('text=Visão Mensal')
     await page.waitForTimeout(500)
 
     // Open installment form

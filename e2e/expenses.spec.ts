@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test'
 test.describe('Expense Management', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/')
-    await page.click('text=Visao Mensal')
+    await page.click('text=Visão Mensal')
     await page.waitForSelector('[data-testid="month-selector"]')
   })
 
@@ -105,7 +105,7 @@ test.describe('Expense Management', () => {
 test.describe('Installment Management', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/')
-    await page.click('text=Visao Mensal')
+    await page.click('text=Visão Mensal')
     await page.waitForSelector('[data-testid="month-selector"]')
   })
 

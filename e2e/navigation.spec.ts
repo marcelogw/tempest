@@ -42,7 +42,7 @@ test.describe('Year Navigation', () => {
     const yearSelector = page.locator('[data-testid="year-selector"]')
 
     // Navigate to Monthly View
-    await page.click('text=Visao Mensal')
+    await page.click('text=Visão Mensal')
 
     // Wait for month selector to appear
     await page.waitForSelector('[data-testid="month-selector"]')
@@ -67,7 +67,7 @@ test.describe('Year Navigation', () => {
 test.describe('Month Navigation', () => {
   test('should change month using dropdown', async ({ page }) => {
     await page.goto('/')
-    await page.click('text=Visao Mensal')
+    await page.click('text=Visão Mensal')
 
     // Wait for month selector to appear
     await page.waitForSelector('[data-testid="month-selector"]')
@@ -92,7 +92,7 @@ test.describe('Month Navigation', () => {
 
   test('should change month using arrows', async ({ page }) => {
     await page.goto('/')
-    await page.click('text=Visao Mensal')
+    await page.click('text=Visão Mensal')
 
     await page.waitForSelector('[data-testid="month-selector"]')
 

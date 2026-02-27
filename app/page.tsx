@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useShallow } from 'zustand/react/shallow'
 import { Sidebar } from '@/components/expense/sidebar'
 import { DashboardView } from '@/components/expense/dashboard-view'
 import { MonthlyView } from '@/components/expense/monthly-view'
@@ -14,7 +15,10 @@ export default function ExpenseManagementApp() {
   const [activeView, setActiveView] = useState<
     'dashboard' | 'monthly' | 'categories' | 'cards' | 'settings'
   >('dashboard')
-  const { currentYear, setCurrentYear, getAvailableYears } = useExpenseStore()
+  const { currentYear, setCurrentYear } = useExpenseStore(
+    useShallow((s) => ({ currentYear: s.currentYear, setCurrentYear: s.setCurrentYear }))
+  )
+  const getAvailableYears = useExpenseStore((s) => s.getAvailableYears)
   const availableYears = getAvailableYears()
 
   return (

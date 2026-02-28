@@ -1,0 +1,19 @@
+# tempest.config.yml
+# Configure storage and auth adapters for Tempest.
+#
+# storage: local | amplify
+#   local  — zero-config, single-user, no cloud
+#   amplify — AWS Amplify cloud sync + Cognito auth
+#
+# auth: none | amplify
+#   none    — no authentication (used with local storage)
+#   amplify — Google OAuth via Cognito (used with amplify storage)
+#
+# Valid combinations:
+#   storage: local  + auth: none    (default, open-source mode)
+#   storage: amplify + auth: amplify (full cloud mode)
+#
+# Override with env vars: TEMPEST_STORAGE, TEMPEST_AUTH
+
+storage: local
+auth: none

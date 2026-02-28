@@ -11,13 +11,12 @@ import {
 import { useSyncStore } from './sync-store'
 import { enqueue } from './write-queue'
 import {
-  fetchWorkspaceData,
   categoryKeyToCloudId,
   categoryCloudIdToKey,
   cardKeyToCloudId,
   cardCloudIdToKey,
-  getWorkspaceLastActivity,
 } from './workspace-client'
+import { getStorage } from '@/lib/adapters/registry'
 
 // Category types for dynamic user-configurable categories
 export type CategoryIcon = string | null
@@ -1487,7 +1486,7 @@ export const useExpenseStore = create<ExpenseStore>()(
         useSyncStore.getState().setWorkspace(workspaceId, workspaceGroup)
 
         try {
-          const raw = await fetchWorkspaceData(workspaceGroup)
+          const raw = await getStorage().fetchWorkspaceData(workspaceGroup)
 
           const categories: Category[] = raw.categories.map((c) => ({
             id: c.categoryId,
@@ -1575,7 +1574,7 @@ export const useExpenseStore = create<ExpenseStore>()(
         const { workspaceId, workspaceGroup, lastSyncedAt } = useSyncStore.getState()
         if (!workspaceId || !workspaceGroup) return
 
-        const lastActivity = await getWorkspaceLastActivity(workspaceId)
+        const lastActivity = await getStorage().getWorkspaceLastActivity(workspaceId)
         if (!lastSyncedAt || (lastActivity && lastActivity.getTime() > lastSyncedAt)) {
           await get().loadWorkspace(workspaceId, workspaceGroup)
         }

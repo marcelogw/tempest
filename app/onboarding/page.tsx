@@ -12,7 +12,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { TempestLogo } from '@/components/brand/tempest-logo'
 import { useSyncStore } from '@/lib/sync-store'
 import { useExpenseStore } from '@/lib/expense-store'
-import { createWorkspace, acceptInvite } from '@/lib/lambda-client'
+import { getStorage } from '@/lib/adapters/registry'
 
 type View = 'choice' | 'create' | 'join'
 
@@ -137,11 +137,11 @@ export default function OnboardingPage() {
   }
 
   async function handleCreate(e: React.FormEvent) {
-    await handleWorkspaceAction(e, () => createWorkspace(workspaceName))
+    await handleWorkspaceAction(e, () => getStorage().createWorkspace(workspaceName))
   }
 
   async function handleJoin(e: React.FormEvent) {
-    await handleWorkspaceAction(e, () => acceptInvite(inviteCode))
+    await handleWorkspaceAction(e, () => getStorage().acceptInvite(inviteCode))
   }
 
   return (

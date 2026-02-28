@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { useExpenseStore } from '@/lib/expense-store'
 import { useSyncStore } from '@/lib/sync-store'
-import * as workspaceClient from '@/lib/workspace-client'
 import type { WorkspaceData } from '@/lib/workspace-client'
 
 vi.mock('@/lib/write-queue', () => ({ enqueue: vi.fn() }))
@@ -12,6 +11,18 @@ vi.mock('@/lib/workspace-client', () => ({
   cardKeyToCloudId: {},
   cardCloudIdToKey: {},
   getWorkspaceLastActivity: vi.fn(),
+}))
+
+const mockFetchWorkspaceData = vi.fn()
+const mockGetWorkspaceLastActivity = vi.fn()
+
+vi.mock('@/lib/adapters/registry', () => ({
+  getStorage: vi.fn(() => ({
+    fetchWorkspaceData: mockFetchWorkspaceData,
+    getWorkspaceLastActivity: mockGetWorkspaceLastActivity,
+  })),
+  getAuth: vi.fn(),
+  setAdapters: vi.fn(),
 }))
 
 describe('Store Utility Functions', () => {
@@ -375,7 +386,7 @@ describe('Store Utility Functions', () => {
     }
 
     it('should load workspace data into the store', async () => {
-      vi.mocked(workspaceClient.fetchWorkspaceData).mockResolvedValueOnce({
+      mockFetchWorkspaceData.mockResolvedValueOnce({
         ...emptyWorkspaceData,
         categories: [
           {
@@ -429,9 +440,7 @@ describe('Store Utility Functions', () => {
     })
 
     it('should set isLoading to false and rethrow on error', async () => {
-      vi.mocked(workspaceClient.fetchWorkspaceData).mockRejectedValueOnce(
-        new Error('Network error')
-      )
+      mockFetchWorkspaceData.mockRejectedValueOnce(new Error('Network error'))
 
       await expect(
         useExpenseStore.getState().loadWorkspace('ws-id', 'workspace-ws-id')
@@ -456,12 +465,12 @@ describe('Store Utility Functions', () => {
         lastSyncedAt: now,
       })
       const oldDate = new Date(now - 10000)
-      vi.mocked(workspaceClient.getWorkspaceLastActivity).mockResolvedValueOnce(oldDate)
+      mockGetWorkspaceLastActivity.mockResolvedValueOnce(oldDate)
 
       await useExpenseStore.getState().checkAndSync()
 
       // No load should have been triggered (fetchWorkspaceData should not have been called)
-      expect(workspaceClient.fetchWorkspaceData).not.toHaveBeenCalled()
+      expect(mockFetchWorkspaceData).not.toHaveBeenCalled()
     })
 
     it('should sync when lastSyncedAt is null', async () => {
@@ -470,8 +479,8 @@ describe('Store Utility Functions', () => {
         workspaceGroup: 'workspace-ws-1',
         lastSyncedAt: null,
       })
-      vi.mocked(workspaceClient.getWorkspaceLastActivity).mockResolvedValueOnce(new Date())
-      vi.mocked(workspaceClient.fetchWorkspaceData).mockResolvedValueOnce({
+      mockGetWorkspaceLastActivity.mockResolvedValueOnce(new Date())
+      mockFetchWorkspaceData.mockResolvedValueOnce({
         categories: [],
         creditCards: [],
         monthlyDataList: [],
@@ -482,7 +491,7 @@ describe('Store Utility Functions', () => {
 
       await useExpenseStore.getState().checkAndSync()
 
-      expect(workspaceClient.fetchWorkspaceData).toHaveBeenCalledWith('workspace-ws-1')
+      expect(mockFetchWorkspaceData).toHaveBeenCalledWith('workspace-ws-1')
     })
   })
 })

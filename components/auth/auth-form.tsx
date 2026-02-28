@@ -1,14 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import {
-  signIn,
-  signUp,
-  confirmSignUp,
-  autoSignIn,
-  signInWithRedirect,
-  signOut,
-} from 'aws-amplify/auth'
+import { signIn, signUp, confirmSignUp, autoSignIn } from 'aws-amplify/auth'
+import { getAuth } from '@/lib/adapters/registry'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -169,22 +163,7 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
             variant="outline"
             className="mb-4 w-full"
             onClick={() => {
-              void (async () => {
-                try {
-                  await signInWithRedirect({ provider: 'Google' })
-                } catch (error: unknown) {
-                  // If user is already authenticated, sign out first then retry
-                  if (
-                    error instanceof Error &&
-                    error.name === 'UserAlreadyAuthenticatedException'
-                  ) {
-                    await signOut()
-                    await signInWithRedirect({ provider: 'Google' })
-                  } else {
-                    throw error
-                  }
-                }
-              })()
+              void getAuth().signIn()
             }}
           >
             <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">

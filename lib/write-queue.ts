@@ -1,4 +1,4 @@
-import * as workspaceClient from './workspace-client'
+import { getStorage } from '@/lib/adapters/registry'
 
 export type WriteModel =
   | 'Category'
@@ -81,90 +81,69 @@ export async function processQueue(): Promise<void> {
 }
 
 async function dispatch(item: PendingWrite): Promise<void> {
+  const s = getStorage()
   const { model, operation, data } = item
 
   switch (`${model}:${operation}`) {
     case 'Category:create':
-      await workspaceClient.createCategory(
-        data.id as string,
-        data as Parameters<typeof workspaceClient.createCategory>[1]
-      )
+      await s.createCategory(data.id as string, data as Parameters<typeof s.createCategory>[1])
       break
     case 'Category:update':
-      await workspaceClient.updateCategory(
-        data.id as string,
-        data as Parameters<typeof workspaceClient.updateCategory>[1]
-      )
+      await s.updateCategory(data.id as string, data as Parameters<typeof s.updateCategory>[1])
       break
     case 'Category:delete':
-      await workspaceClient.deleteCategory(data.id as string)
+      await s.deleteCategory(data.id as string)
       break
 
     case 'CreditCard:create':
-      await workspaceClient.createCreditCard(
-        data.id as string,
-        data as Parameters<typeof workspaceClient.createCreditCard>[1]
-      )
+      await s.createCreditCard(data.id as string, data as Parameters<typeof s.createCreditCard>[1])
       break
     case 'CreditCard:update':
-      await workspaceClient.updateCreditCard(
-        data.id as string,
-        data as Parameters<typeof workspaceClient.updateCreditCard>[1]
-      )
+      await s.updateCreditCard(data.id as string, data as Parameters<typeof s.updateCreditCard>[1])
       break
     case 'CreditCard:delete':
-      await workspaceClient.deleteCreditCard(data.id as string)
+      await s.deleteCreditCard(data.id as string)
       break
 
     case 'MonthlyData:create':
-      await workspaceClient.createMonthlyData(data.id as string, data.workspaceGroup as string)
+      await s.createMonthlyData(data.id as string, data.workspaceGroup as string)
       break
     case 'MonthlyData:update':
-      await workspaceClient.updateMonthlyData(
+      await s.updateMonthlyData(
         data.id as string,
-        data as Parameters<typeof workspaceClient.updateMonthlyData>[1]
+        data as Parameters<typeof s.updateMonthlyData>[1]
       )
       break
 
     case 'Income:create':
-      await workspaceClient.createIncome(data as Parameters<typeof workspaceClient.createIncome>[0])
+      await s.createIncome(data as Parameters<typeof s.createIncome>[0])
       break
     case 'Income:update':
-      await workspaceClient.updateIncome(
-        data.id as string,
-        data as Parameters<typeof workspaceClient.updateIncome>[1]
-      )
+      await s.updateIncome(data.id as string, data as Parameters<typeof s.updateIncome>[1])
       break
     case 'Income:delete':
-      await workspaceClient.deleteIncome(data.id as string)
+      await s.deleteIncome(data.id as string)
       break
 
     case 'Expense:create':
-      await workspaceClient.createExpense(
-        data as Parameters<typeof workspaceClient.createExpense>[0]
-      )
+      await s.createExpense(data as Parameters<typeof s.createExpense>[0])
       break
     case 'Expense:update':
-      await workspaceClient.updateExpense(
-        data.id as string,
-        data as Parameters<typeof workspaceClient.updateExpense>[1]
-      )
+      await s.updateExpense(data.id as string, data as Parameters<typeof s.updateExpense>[1])
       break
     case 'Expense:delete':
-      await workspaceClient.deleteExpense(data.id as string)
+      await s.deleteExpense(data.id as string)
       break
 
     case 'Installment:create':
-      await workspaceClient.createInstallment(
-        data as Parameters<typeof workspaceClient.createInstallment>[0]
-      )
+      await s.createInstallment(data as Parameters<typeof s.createInstallment>[0])
       break
     case 'Installment:delete':
-      await workspaceClient.deleteInstallment(data.id as string)
+      await s.deleteInstallment(data.id as string)
       break
 
     case 'Workspace:update':
-      await workspaceClient.touchWorkspaceActivity(data.id as string)
+      await s.touchWorkspaceActivity(data.id as string)
       break
 
     default:

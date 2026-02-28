@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
-import { fetchAuthSession } from 'aws-amplify/auth'
 import { Loader2 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -18,8 +17,8 @@ import {
 } from '@/components/ui/alert-dialog'
 import { useToast } from '@/hooks/use-toast'
 import { useSyncStore } from '@/lib/sync-store'
-import { getAmplifyClient } from '@/lib/workspace-client'
-import { removeMember } from '@/lib/lambda-client'
+import { getStorage, getAuth } from '@/lib/adapters/registry'
+import type { UserProfile } from '@/lib/adapters/types'
 
 type Member = {
   sub: string
@@ -69,22 +68,16 @@ export function MembersList() {
     setIsLoading(true)
 
     try {
-      const client = getAmplifyClient()
-
-      const [session, workspaceResult, profilesResult] = await Promise.all([
-        fetchAuthSession(),
-        client.models.Workspace.get({ id: workspaceId! }),
-        client.models.UserProfile.list({
-          filter: { workspaceGroup: { eq: workspaceGroup! } },
-        }),
+      const [userSub, workspace, profiles] = await Promise.all([
+        getAuth().getCurrentUserSub(),
+        getStorage().getWorkspace(workspaceId!),
+        getStorage().listUserProfiles(workspaceGroup!),
       ])
 
-      const sub = session.tokens?.idToken?.payload.sub
-      setCurrentUserSub(sub ?? null)
-
-      setOwnerSub(workspaceResult.data?.ownerSub ?? null)
+      setCurrentUserSub(userSub)
+      setOwnerSub(workspace?.ownerSub ?? null)
       setMembers(
-        (profilesResult.data ?? []).map((p) => ({
+        profiles.map((p: UserProfile) => ({
           sub: p.cognitoSub,
           displayName: p.displayName,
           email: p.email,
@@ -101,7 +94,7 @@ export function MembersList() {
     setIsRemoving(true)
 
     try {
-      await removeMember(workspaceId, memberToRemove.sub)
+      await getStorage().removeMember(workspaceId, memberToRemove.sub)
       setMembers((prev) => prev.filter((m) => m.sub !== memberToRemove.sub))
       toast({ description: t('removeSuccess') })
     } catch {

@@ -36,7 +36,7 @@ export default defineConfig({
         '**/lib/migrations.ts',
         '**/lib/sync-store.ts',
         '**/lib/hooks/**',
-        '**/lib/adapters/**',
+        '**/lib/adapters/amplify/**',
         '**/components/workspace/**',
         '**/components/amplify-provider.tsx',
         '**/components/debug/**',

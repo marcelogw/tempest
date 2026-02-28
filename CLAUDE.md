@@ -30,7 +30,7 @@ Husky pre-commit hook runs lint-staged (ESLint + Prettier) on `*.{ts,tsx}` files
 
 ### State Management — Zustand Store
 
-`lib/expense-store.ts` is the **runtime source of truth** for all financial data. Data is persisted to localStorage as a read cache; Amplify is the cloud source of truth. Key shapes:
+`lib/expense-store.ts` is the **runtime source of truth** for all financial data. In local mode, localStorage is the persistence layer. In cloud mode, Amplify is the source of truth and localStorage acts as a read cache. Key shapes:
 
 - `monthlyData`: Record keyed by `YYYY-MM` → `{ fixedExpenses, variableExpenses, incomes, investments, savings }`
 - `categories`: User-configurable list (system + custom); includes `isSystem`, `color`, `icon`, `order`
@@ -65,14 +65,38 @@ All new user-facing strings must be added to **both** message files. Use `useTra
 - `formatPercentage(value, locale, decimals)`
 - `formatCurrencyBRL()` / `formatShortCurrencyBRL()` — **deprecated** wrappers, avoid in new code
 
-### Cloud Architecture — Amplify Gen 2
+### Adapter System
 
-Tempest is **cloud-only**: Amplify is the source of truth; `localStorage` is a read cache.
+Tempest abstracts Storage and Auth behind swappable interfaces so it can run without AWS. The active pair is set in `tempest.config.yml` (or env vars `TEMPEST_STORAGE` / `TEMPEST_AUTH`, which take precedence):
+
+| `TEMPEST_STORAGE` | `TEMPEST_AUTH` | Mode                              |
+| ----------------- | -------------- | --------------------------------- |
+| `local` (default) | `none`         | Single-user, zero config          |
+| `amplify`         | `amplify`      | Multi-user, AWS Amplify + Cognito |
 
 **Key files:**
 
-- `lib/workspace-client.ts` — `getAmplifyClient()` singleton; all Amplify CRUD calls
-- `lib/write-queue.ts` — `getWriteQueue()` singleton; queues mutations with retry
+- `lib/adapters/storage-adapter.ts` — `StorageAdapter` interface (17 methods); `CollaborativeStorageAdapter` extends it with `acceptInvite`, `generateInviteCode`, `removeMember`
+- `lib/adapters/auth-adapter.ts` — `AuthAdapter` interface
+- `lib/adapters/registry.ts` — `getStorage()` / `getAuth()` / `getCollaborativeStorage()` singletons
+- `lib/adapters/context.tsx` — `AdapterProvider`; initializes adapters on mount, starts write queue
+- `lib/adapters/local/` — `LocalStorageAdapter` + `NoAuthAdapter` (default, reads from Zustand store)
+- `lib/adapters/amplify/` — `AmplifyStorageAdapter` + `AmplifyAuthAdapter` (delegates to `workspace-client` and `lambda-client`)
+
+**Rules:**
+
+- Application code must only use `getStorage()` / `getAuth()` from the registry — never import Amplify directly
+- Collaborative features (`acceptInvite`, `generateInviteCode`, `removeMember`) require `getCollaborativeStorage()` — TypeScript prevents calling them via the base `getStorage()`
+- `write-queue.ts` dispatch uses `getStorage()` from the registry
+
+### Cloud Mode — Amplify Gen 2
+
+Only relevant when `TEMPEST_STORAGE=amplify`.
+
+**Key files:**
+
+- `lib/workspace-client.ts` — `getAmplifyClient()` singleton; all Amplify CRUD calls (used by `AmplifyStorageAdapter`)
+- `lib/write-queue.ts` — queues mutations with retry; dispatch delegates to `getStorage()`
 - `lib/sync-store.ts` — runtime sync state: `workspaceId`, `workspaceGroup`, `status`, `userEmail`, `lastSyncedAt`
 - `lib/lambda-client.ts` — wrappers for Lambda-backed mutations (`createWorkspace`, `acceptInvite`, `generateInviteCode`, `removeMember`)
 - `lib/use-amplify-data.ts` — hook that loads workspace data into the store on mount
@@ -129,7 +153,7 @@ E2E tests use Playwright (`test:e2e`); they are excluded from Vitest runs.
 
 ### Type Conventions
 
-- Use `type` keyword, not `interface`
+- Use `type` keyword, not `interface` — exception: adapter contracts (`StorageAdapter`, `AuthAdapter`, `CollaborativeStorageAdapter`) use `interface` intentionally
 - All store types exported from `lib/expense-store.ts`
 - Component props must be explicitly typed
 

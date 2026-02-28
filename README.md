@@ -1,6 +1,12 @@
 # Tempest
 
-Personal expense management application for tracking income, expenses, investments, and savings. Built with a cloud-first architecture — data lives in AWS Amplify, localStorage serves as a read cache.
+[![CI](https://github.com/marcelogw/tempest/actions/workflows/ci.yml/badge.svg)](https://github.com/marcelogw/tempest/actions/workflows/ci.yml)
+[![Coverage](https://codecov.io/gh/marcelogw/tempest/branch/main/graph/badge.svg)](https://codecov.io/gh/marcelogw/tempest)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+[![Node](https://img.shields.io/badge/node-%3E%3D20-brightgreen.svg)](https://nodejs.org)
+[![Deployed on Vercel](https://img.shields.io/badge/deployed%20on-vercel-black.svg?logo=vercel)](https://vercel.com)
+
+Personal expense management application for tracking income, expenses, investments, and savings. Runs locally without any cloud account (default) or against AWS Amplify for multi-user collaboration.
 
 ## Features
 
@@ -13,33 +19,28 @@ Personal expense management application for tracking income, expenses, investmen
 
 ## Tech Stack
 
-| Layer     | Technology                                         |
-| --------- | -------------------------------------------------- |
-| Framework | Next.js 16 (App Router)                            |
-| UI        | React 19, TypeScript 5, Tailwind CSS v4, shadcn/ui |
-| State     | Zustand 5 + Immer                                  |
-| Cloud     | AWS Amplify Gen 2, Cognito (Google OAuth)          |
-| i18n      | next-intl 4 (cookie-based, no URL prefixes)        |
-| Charts    | Recharts 2                                         |
-| Testing   | Vitest 4 (unit), Playwright 1.58 (E2E)             |
+| Layer     | Technology                                           |
+| --------- | ---------------------------------------------------- |
+| Framework | Next.js 16 (App Router)                              |
+| UI        | React 19, TypeScript 5, Tailwind CSS v4, shadcn/ui   |
+| State     | Zustand 5 + Immer                                    |
+| Cloud     | AWS Amplify Gen 2, Cognito (Google OAuth) (optional) |
+| i18n      | next-intl 4 (cookie-based, no URL prefixes)          |
+| Charts    | Recharts 2                                           |
+| Testing   | Vitest 4 (unit), Playwright 1.58 (E2E)               |
 
 ## Architecture
 
-**Cloud-only:** Amplify is the source of truth. localStorage is a read cache for instant UI load.
+Tempest runs in two modes:
 
-**Workspace model:** each workspace maps to a Cognito Group (`workspace-{uuid}`). All financial data belongs to the workspace, not the individual user. Both members have equal read/write access. Maximum 2 members per workspace.
-
-**Write queue:** mutations update Zustand immediately (optimistic UI), then are queued and sent to Amplify with retry in the background.
-
-**Smart sync:** on mount and on `window.focus`, the app compares `Workspace.lastActivityAt` against the local `lastSyncedAt`. Re-fetches only when the cloud is newer — no polling.
+- **Local** (default) — data stays in your browser. No account required, zero config.
+- **Cloud** (optional) — data syncs to AWS Amplify, enabling workspace sharing with one other person. Mutations are applied optimistically and synced in the background. Smart sync on focus prevents unnecessary re-fetches.
 
 ## Getting Started
 
 ### Prerequisites
 
 - Node.js ≥ 20
-- An AWS account with Amplify configured
-- Google OAuth credentials (Client ID + Secret)
 
 ### Installation
 
@@ -49,9 +50,24 @@ cd tempest
 npm install
 ```
 
-### Local development
+### Local mode (default — no cloud account needed)
 
-Create `.env.local`:
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000). Data is stored in localStorage. No sign-in required.
+
+### Cloud mode (AWS Amplify + Google OAuth)
+
+Set `tempest.config.yml` to use Amplify:
+
+```yaml
+storage: amplify
+auth: amplify
+```
+
+Create `.env.local` with your OAuth credentials:
 
 ```env
 GOOGLE_CLIENT_ID=<your-client-id>.apps.googleusercontent.com
@@ -70,8 +86,6 @@ Start the dev server:
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
-
 ## Scripts
 
 ```bash
@@ -89,61 +103,32 @@ Husky runs ESLint + Prettier automatically on pre-commit via lint-staged.
 
 ## User Flows
 
-### First access
+### Local mode
+
+Open the app and start tracking immediately — no sign-in or setup required. All data lives in your browser.
+
+### Cloud mode
+
+#### First access
 
 1. Unauthenticated users are redirected to `/auth` (Google sign-in)
 2. After sign-in, `WorkspaceGate` checks for an existing workspace
 3. Users without a workspace are redirected to `/onboarding`
 
-### Onboarding
+#### Onboarding
 
-- **Create workspace** — enter a name → `createWorkspace` Lambda creates the Cognito Group and default categories
-- **Join workspace** — enter an invite code → `acceptInvite` Lambda validates the code and adds the user to the group
+- **Create workspace** — enter a name → workspace is provisioned and default categories are created
+- **Join workspace** — enter an invite code → user is added to the shared workspace
 
-### Inviting a second member
+#### Inviting a second member
 
 1. Workspace owner opens Settings → clicks "Generate invite"
-2. `generateInviteCode` Lambda creates a time-limited invite record and returns a shareable URL
+2. A time-limited invite URL is created and shared
 3. Guest opens the URL, signs in, and accepts — they immediately see all workspace data on next sync
 
-### Removing a member
+#### Removing a member
 
-Owner opens Settings → Members → removes the guest. `removeMember` Lambda removes the user from the Cognito Group.
-
-## Project Structure
-
-```
-tempest/
-├── app/                        # Next.js App Router pages
-│   ├── page.tsx                # Main dashboard (requires workspace)
-│   ├── onboarding/page.tsx     # Create or join a workspace
-│   ├── settings/page.tsx       # Workspace, preferences, data management
-│   ├── invite/[inviteId]/      # Accept an invite
-│   └── auth/                   # Google OAuth callback
-│
-├── components/
-│   ├── expense/                # Domain components (views, forms, charts)
-│   └── workspace/              # WorkspaceGate, InviteDialog, MembersList
-│
-├── lib/
-│   ├── expense-store.ts        # Zustand store — runtime source of truth
-│   ├── workspace-client.ts     # Amplify CRUD singleton
-│   ├── write-queue.ts          # Mutation queue with retry
-│   ├── lambda-client.ts        # Lambda mutation wrappers
-│   ├── sync-store.ts           # Sync state (workspaceId, lastSyncedAt)
-│   └── use-amplify-data.ts     # Hook: loads workspace data on mount
-│
-├── amplify/
-│   ├── data/resource.ts        # Schema (Workspace, UserProfile, Invite + 6 financial models)
-│   ├── auth/resource.ts        # Cognito + Google OAuth config
-│   └── functions/              # create-workspace, generate-invite-code, accept-invite, remove-member
-│
-├── messages/
-│   ├── en.json                 # English translations
-│   └── pt.json                 # Portuguese (Brazil) translations
-│
-└── __tests__/                  # Unit tests (Vitest + jsdom)
-```
+Owner opens Settings → Members → removes the guest.
 
 ## License
 

@@ -23,9 +23,6 @@ export interface StorageAdapter {
   listUserProfiles(workspaceGroup: string): Promise<UserProfile[]>
 
   createWorkspace(name: string): Promise<CreatedWorkspace>
-  acceptInvite(inviteId: string): Promise<AcceptedInvite>
-  generateInviteCode(workspaceId: string): Promise<GeneratedInvite>
-  removeMember(workspaceId: string, memberSub: string): Promise<void>
 
   createCategory(localKey: string, data: CategoryInput): Promise<void>
   updateCategory(id: string, data: Partial<CategoryInput>): Promise<void>
@@ -48,4 +45,10 @@ export interface StorageAdapter {
 
   createInstallment(data: InstallmentInput): Promise<void>
   deleteInstallment(id: string): Promise<void>
+}
+
+export interface CollaborativeStorageAdapter extends StorageAdapter {
+  acceptInvite(inviteId: string): Promise<AcceptedInvite>
+  generateInviteCode(workspaceId: string): Promise<GeneratedInvite>
+  removeMember(workspaceId: string, memberSub: string): Promise<void>
 }

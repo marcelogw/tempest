@@ -12,7 +12,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { TempestLogo } from '@/components/brand/tempest-logo'
 import { useSyncStore } from '@/lib/sync-store'
 import { useExpenseStore } from '@/lib/expense-store'
-import { getStorage } from '@/lib/adapters/registry'
+import { getStorage, getCollaborativeStorage } from '@/lib/adapters/registry'
 
 type View = 'choice' | 'create' | 'join'
 
@@ -141,7 +141,7 @@ export default function OnboardingPage() {
   }
 
   async function handleJoin(e: React.FormEvent) {
-    await handleWorkspaceAction(e, () => getStorage().acceptInvite(inviteCode))
+    await handleWorkspaceAction(e, () => getCollaborativeStorage().acceptInvite(inviteCode))
   }
 
   return (

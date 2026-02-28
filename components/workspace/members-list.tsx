@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import { useToast } from '@/hooks/use-toast'
 import { useSyncStore } from '@/lib/sync-store'
-import { getStorage, getAuth } from '@/lib/adapters/registry'
+import { getStorage, getCollaborativeStorage, getAuth } from '@/lib/adapters/registry'
 import type { UserProfile } from '@/lib/adapters/types'
 
 type Member = {
@@ -94,7 +94,7 @@ export function MembersList() {
     setIsRemoving(true)
 
     try {
-      await getStorage().removeMember(workspaceId, memberToRemove.sub)
+      await getCollaborativeStorage().removeMember(workspaceId, memberToRemove.sub)
       setMembers((prev) => prev.filter((m) => m.sub !== memberToRemove.sub))
       toast({ description: t('removeSuccess') })
     } catch {

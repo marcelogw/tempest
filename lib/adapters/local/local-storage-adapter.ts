@@ -4,8 +4,6 @@ import type {
   UserProfile,
   Workspace,
   CreatedWorkspace,
-  AcceptedInvite,
-  GeneratedInvite,
   CategoryInput,
   CreditCardInput,
   IncomeInput,
@@ -17,10 +15,6 @@ import { useExpenseStore } from '@/lib/expense-store'
 
 const LOCAL_WORKSPACE_ID = 'local'
 const LOCAL_WORKSPACE_GROUP = 'local'
-
-function notSupported(op: string): never {
-  throw new Error(`[tempest] ${op} is not supported in local mode`)
-}
 
 export class LocalStorageAdapter implements StorageAdapter {
   async configure(): Promise<void> {
@@ -159,18 +153,6 @@ export class LocalStorageAdapter implements StorageAdapter {
     const { useSyncStore } = await import('@/lib/sync-store')
     useSyncStore.getState().setWorkspace(LOCAL_WORKSPACE_ID, LOCAL_WORKSPACE_GROUP)
     return { workspaceId: LOCAL_WORKSPACE_ID, workspaceGroup: LOCAL_WORKSPACE_GROUP }
-  }
-
-  acceptInvite(_inviteId: string): Promise<AcceptedInvite> {
-    notSupported('acceptInvite')
-  }
-
-  generateInviteCode(_workspaceId: string): Promise<GeneratedInvite> {
-    notSupported('generateInviteCode')
-  }
-
-  removeMember(_workspaceId: string, _memberSub: string): Promise<void> {
-    notSupported('removeMember')
   }
 
   createCategory(_localKey: string, _data: CategoryInput): Promise<void> {

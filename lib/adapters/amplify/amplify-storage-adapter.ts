@@ -1,4 +1,4 @@
-import type { StorageAdapter } from '../storage-adapter'
+import type { CollaborativeStorageAdapter } from '../storage-adapter'
 import type {
   WorkspaceData,
   UserProfile,
@@ -17,7 +17,7 @@ import { configureAmplify } from '@/lib/amplify-config'
 import * as workspaceClient from '@/lib/workspace-client'
 import * as lambdaClient from '@/lib/lambda-client'
 
-export class AmplifyStorageAdapter implements StorageAdapter {
+export class AmplifyStorageAdapter implements CollaborativeStorageAdapter {
   configure(): Promise<void> {
     configureAmplify()
     return Promise.resolve()

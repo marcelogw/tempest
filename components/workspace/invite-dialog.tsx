@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { useSyncStore } from '@/lib/sync-store'
-import { getStorage } from '@/lib/adapters/registry'
+import { getCollaborativeStorage } from '@/lib/adapters/registry'
 
 type InviteDialogProps = {
   open: boolean
@@ -38,7 +38,7 @@ export function InviteDialog({ open, onOpenChange }: InviteDialogProps) {
     setCopied(false)
 
     try {
-      const result = await getStorage().generateInviteCode(workspaceId!)
+      const result = await getCollaborativeStorage().generateInviteCode(workspaceId!)
       const fullUrl = window.location.origin + result.inviteUrl
       setInviteUrl(fullUrl)
       setExpiresAt(

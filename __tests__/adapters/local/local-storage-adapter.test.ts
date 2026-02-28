@@ -280,7 +280,14 @@ describe('LocalStorageAdapter', () => {
   describe('CRUD no-ops', () => {
     it('createCategory resolves', async () => {
       await expect(
-        adapter.createCategory('key', { label: 'X', color: '#fff', order: 0 })
+        adapter.createCategory('key', {
+          workspaceGroup: 'local',
+          categoryId: 'key',
+          label: 'X',
+          color: '#fff',
+          isSystem: false,
+          order: 0,
+        })
       ).resolves.toBeUndefined()
     })
 
@@ -294,7 +301,14 @@ describe('LocalStorageAdapter', () => {
 
     it('createCreditCard resolves', async () => {
       await expect(
-        adapter.createCreditCard('key', { name: 'Card', color: '#000', limit: null, order: 0 })
+        adapter.createCreditCard('key', {
+          workspaceGroup: 'local',
+          cardId: 'key',
+          name: 'Card',
+          color: '#000',
+          limit: null,
+          order: 0,
+        })
       ).resolves.toBeUndefined()
     })
 
@@ -318,7 +332,13 @@ describe('LocalStorageAdapter', () => {
 
     it('createIncome resolves', async () => {
       await expect(
-        adapter.createIncome({ id: 'i1', description: 'X', amount: 100, monthlyDataId: '2025-01' })
+        adapter.createIncome({
+          id: 'i1',
+          workspaceGroup: 'local',
+          description: 'X',
+          amount: 100,
+          monthlyDataId: '2025-01',
+        })
       ).resolves.toBeUndefined()
     })
 
@@ -334,6 +354,7 @@ describe('LocalStorageAdapter', () => {
       await expect(
         adapter.createExpense({
           id: 'e1',
+          workspaceGroup: 'local',
           description: 'X',
           amount: 50,
           categoryId: 'food',
@@ -356,6 +377,7 @@ describe('LocalStorageAdapter', () => {
       await expect(
         adapter.createInstallment({
           id: 'i1',
+          workspaceGroup: 'local',
           name: 'TV',
           cardId: 'visa',
           totalInstallments: 6,

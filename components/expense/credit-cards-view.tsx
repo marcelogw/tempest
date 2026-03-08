@@ -46,7 +46,8 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
-import { useExpenseStore, type CreditCard, formatCurrencyBRL } from '@/lib/expense-store'
+import { useExpenseStore, type CreditCard } from '@/lib/expense-store'
+import { formatCurrency } from '@/lib/formatters'
 import { CreditCardFormDialog } from './credit-card-form-dialog'
 import { useToast } from '@/hooks/use-toast'
 import { cn } from '@/lib/utils'
@@ -128,7 +129,7 @@ function SortableCreditCardCard({
 
       <div className="flex flex-shrink-0 items-center gap-2">
         <Badge variant="outline" className="text-xs">
-          {card.limit !== null ? formatCurrencyBRL(card.limit) : i('ui.creditCards.noLimit')}
+          {card.limit !== null ? formatCurrency(card.limit) : i('ui.creditCards.noLimit')}
         </Badge>
         {usagePercentage !== null && (
           <Badge variant={getUsageBadgeVariant(usagePercentage)} className="text-xs">
@@ -423,7 +424,7 @@ export function CreditCardsView() {
                   <p className="text-muted-foreground text-xs">{i('ui.creditCards.limit')}</p>
                   <p className="text-lg font-semibold">
                     {detailsCard.limit !== null
-                      ? formatCurrencyBRL(detailsCard.limit)
+                      ? formatCurrency(detailsCard.limit)
                       : i('ui.creditCards.noLimit')}
                   </p>
                 </div>
@@ -473,8 +474,8 @@ export function CreditCardsView() {
                             <div className="flex-1 space-y-1">
                               <p className="font-medium">{inst.name}</p>
                               <p className="text-muted-foreground text-xs">
-                                {formatCurrencyBRL(inst.amountPerInstallment)} ×{' '}
-                                {inst.totalInstallments} = {formatCurrencyBRL(totalValue)}
+                                {formatCurrency(inst.amountPerInstallment)} ×{' '}
+                                {inst.totalInstallments} = {formatCurrency(totalValue)}
                               </p>
                             </div>
                             <div className="text-right">

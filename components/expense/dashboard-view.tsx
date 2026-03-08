@@ -16,12 +16,11 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import {
   useExpenseStore,
-  formatCurrencyBRL,
-  formatShortCurrencyBRL,
   type ExpenseCategory,
   SYSTEM_CATEGORY_ID,
   mapInstallmentsToExpenses,
 } from '@/lib/expense-store'
+import { formatCurrency, formatShortCurrency } from '@/lib/formatters'
 import {
   LineChart,
   Line,
@@ -246,7 +245,7 @@ export function DashboardView() {
                             Media de Despesas Mensais
                           </p>
                           <p className="text-foreground mt-1 text-2xl font-bold">
-                            {formatCurrencyBRL(insights.avgMonthlyExpense)}
+                            {formatCurrency(insights.avgMonthlyExpense)}
                           </p>
                         </div>
                         <div className="bg-destructive/10 rounded-lg p-2.5">
@@ -303,7 +302,7 @@ export function DashboardView() {
                             Total Guardado ({currentYear})
                           </p>
                           <p className="text-foreground mt-1 text-2xl font-bold">
-                            {formatCurrencyBRL(insights.totalSaved)}
+                            {formatCurrency(insights.totalSaved)}
                           </p>
                         </div>
                         <div className="bg-chart-2/10 rounded-lg p-2.5">
@@ -372,7 +371,7 @@ export function DashboardView() {
                           <YAxis
                             tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
                             axisLine={{ stroke: 'hsl(var(--border))' }}
-                            tickFormatter={formatShortCurrencyBRL}
+                            tickFormatter={(v: number) => formatShortCurrency(v)}
                           />
                           <Tooltip
                             contentStyle={{
@@ -381,7 +380,7 @@ export function DashboardView() {
                               borderRadius: '8px',
                               color: 'hsl(var(--foreground))',
                             }}
-                            formatter={(value: number) => formatCurrencyBRL(value)}
+                            formatter={(value: number) => formatCurrency(value)}
                           />
                           <Legend />
                           <Area
@@ -430,7 +429,7 @@ export function DashboardView() {
                           <YAxis
                             tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
                             axisLine={{ stroke: 'hsl(var(--border))' }}
-                            tickFormatter={formatShortCurrencyBRL}
+                            tickFormatter={(v: number) => formatShortCurrency(v)}
                           />
                           <Tooltip
                             contentStyle={{
@@ -439,7 +438,7 @@ export function DashboardView() {
                               borderRadius: '8px',
                               color: 'hsl(var(--foreground))',
                             }}
-                            formatter={(value: number) => formatCurrencyBRL(value)}
+                            formatter={(value: number) => formatCurrency(value)}
                           />
                           <Legend />
                           <Bar
@@ -495,7 +494,7 @@ export function DashboardView() {
                               borderRadius: '8px',
                               color: 'hsl(var(--foreground))',
                             }}
-                            formatter={(value: number) => formatCurrencyBRL(value)}
+                            formatter={(value: number) => formatCurrency(value)}
                           />
                           <Legend
                             formatter={(value) => (
@@ -532,7 +531,7 @@ export function DashboardView() {
                           <YAxis
                             tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
                             axisLine={{ stroke: 'hsl(var(--border))' }}
-                            tickFormatter={formatShortCurrencyBRL}
+                            tickFormatter={(v: number) => formatShortCurrency(v)}
                           />
                           <Tooltip
                             contentStyle={{
@@ -541,7 +540,7 @@ export function DashboardView() {
                               borderRadius: '8px',
                               color: 'hsl(var(--foreground))',
                             }}
-                            formatter={(value: number) => formatCurrencyBRL(value)}
+                            formatter={(value: number) => formatCurrency(value)}
                           />
                           <Legend />
                           <Line
@@ -604,7 +603,7 @@ export function DashboardView() {
                             <span className="text-foreground text-sm font-medium">{label}</span>
                           </div>
                           <p className="text-foreground text-lg font-bold">
-                            {formatCurrencyBRL(item.average)}
+                            {formatCurrency(item.average)}
                           </p>
                           <p className="text-muted-foreground text-xs">media mensal</p>
                         </div>

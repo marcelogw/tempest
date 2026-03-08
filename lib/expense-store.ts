@@ -1631,12 +1631,9 @@ export const useExpenseStore = create<ExpenseStore>()(
   )
 )
 
-// Re-export formatting functions for backward compatibility
 export {
   formatCurrency,
   formatShortCurrency,
-  formatCurrencyBRL,
-  formatShortCurrencyBRL,
   formatNumber,
   formatPercentage,
   type SupportedCurrency,

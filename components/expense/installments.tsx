@@ -21,7 +21,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { useExpenseStore, formatCurrencyBRL } from '@/lib/expense-store'
+import { useExpenseStore } from '@/lib/expense-store'
+import { formatCurrency } from '@/lib/formatters'
 
 interface InstallmentsProps {
   currentMonth: string
@@ -211,7 +212,7 @@ export function Installments({ currentMonth, showAllInstallments = false }: Inst
                     </div>
                     <div className="flex items-center gap-2">
                       <span className="text-foreground text-sm font-semibold">
-                        {formatCurrencyBRL(installment.amountPerInstallment)}
+                        {formatCurrency(installment.amountPerInstallment)}
                       </span>
                       <Button
                         variant="ghost"
@@ -231,7 +232,7 @@ export function Installments({ currentMonth, showAllInstallments = false }: Inst
               <div className="flex items-center justify-between text-sm">
                 <span className="text-muted-foreground">{i('ui.installments.title')}</span>
                 <span className="font-semibold text-purple-600">
-                  {formatCurrencyBRL(totalInstallmentsAmount)}
+                  {formatCurrency(totalInstallmentsAmount)}
                 </span>
               </div>
             </div>

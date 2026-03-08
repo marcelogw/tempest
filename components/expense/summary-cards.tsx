@@ -12,7 +12,7 @@ import {
   ArrowDownRight,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { formatCurrencyBRL } from '@/lib/expense-store'
+import { formatCurrency } from '@/lib/formatters'
 
 interface SummaryCardsProps {
   income: number
@@ -82,9 +82,7 @@ export function SummaryCards({
             <div className="flex items-start justify-between">
               <div className="space-y-1">
                 <p className="text-muted-foreground text-sm font-medium">{card.title}</p>
-                <p className="text-foreground text-2xl font-bold">
-                  {formatCurrencyBRL(card.value)}
-                </p>
+                <p className="text-foreground text-2xl font-bold">{formatCurrency(card.value)}</p>
                 {card.trend !== null && (
                   <div className="flex items-center gap-1 text-xs">
                     {card.trend >= 0 ? (
@@ -144,7 +142,7 @@ export function SummaryCards({
                 netBalance >= 0 ? 'text-accent' : 'text-destructive'
               )}
             >
-              {formatCurrencyBRL(netBalance)}
+              {formatCurrency(netBalance)}
             </p>
           </div>
         </CardContent>

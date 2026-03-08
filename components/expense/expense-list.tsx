@@ -7,12 +7,8 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import * as LucideIcons from 'lucide-react'
 import { Trash2, Lock, Shuffle, Pencil, Repeat, type LucideIcon } from 'lucide-react'
-import {
-  type Expense,
-  formatCurrencyBRL,
-  useExpenseStore,
-  SYSTEM_CATEGORY_ID,
-} from '@/lib/expense-store'
+import { type Expense, useExpenseStore, SYSTEM_CATEGORY_ID } from '@/lib/expense-store'
+import { formatCurrency } from '@/lib/formatters'
 import { ExpenseForm } from './expense-form'
 import { ExpenseEditDialog } from './expense-edit-dialog'
 import { cn } from '@/lib/utils'
@@ -62,7 +58,7 @@ export function ExpenseList({
         </div>
         <div className="flex items-center justify-between pt-2 text-sm">
           <span className="text-muted-foreground">{expenses.length} itens</span>
-          <span className="text-foreground font-semibold">{formatCurrencyBRL(total)}</span>
+          <span className="text-foreground font-semibold">{formatCurrency(total)}</span>
         </div>
       </CardHeader>
       <CardContent className="pt-0">
@@ -111,7 +107,7 @@ export function ExpenseList({
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-foreground text-sm font-semibold">
-                    {formatCurrencyBRL(expense.amount)}
+                    {formatCurrency(expense.amount)}
                   </span>
                   <Button
                     variant="ghost"

@@ -18,7 +18,8 @@ import {
 } from '@/components/ui/dialog'
 import { TrendingUp, PiggyBank, DollarSign, Plus } from 'lucide-react'
 import { IncomeList } from './income-list'
-import { formatCurrencyBRL, type Income } from '@/lib/expense-store'
+import { formatCurrency } from '@/lib/formatters'
+import { type Income } from '@/lib/expense-store'
 
 interface IncomeSectionProps {
   incomes: Income[]
@@ -183,7 +184,7 @@ export function IncomeSection({
         <div className="flex items-center justify-between pt-2 text-sm">
           <span className="text-muted-foreground">{incomes.length} itens</span>
           <span className="font-semibold text-emerald-600 dark:text-emerald-400">
-            {formatCurrencyBRL(totalIncome)}
+            {formatCurrency(totalIncome)}
           </span>
         </div>
       </CardHeader>

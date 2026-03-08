@@ -7,10 +7,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   type Expense,
   type ExpenseCategory,
-  formatCurrencyBRL,
   useExpenseStore,
   SYSTEM_CATEGORY_ID,
 } from '@/lib/expense-store'
+import { formatCurrency } from '@/lib/formatters'
 
 interface CategoryBreakdownProps {
   expenses: Expense[]
@@ -71,9 +71,7 @@ export function CategoryBreakdown({ expenses }: CategoryBreakdownProps) {
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-muted-foreground">{percentage.toFixed(0)}%</span>
-                    <span className="text-foreground font-semibold">
-                      {formatCurrencyBRL(amount)}
-                    </span>
+                    <span className="text-foreground font-semibold">{formatCurrency(amount)}</span>
                   </div>
                 </div>
                 <div className="bg-secondary h-2 overflow-hidden rounded-full">

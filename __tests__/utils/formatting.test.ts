@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { formatCurrencyBRL, formatShortCurrencyBRL, DEFAULT_CATEGORIES } from '@/lib/expense-store'
+import { DEFAULT_CATEGORIES } from '@/lib/expense-store'
 import {
   formatCurrency,
   formatShortCurrency,
@@ -8,59 +8,59 @@ import {
 } from '@/lib/formatters'
 
 describe('Currency Formatting', () => {
-  describe('formatCurrencyBRL', () => {
+  describe('formatCurrency', () => {
     it('should format positive values correctly', () => {
-      expect(formatCurrencyBRL(1500)).toBe('R$\u00A01.500')
-      expect(formatCurrencyBRL(2500.5)).toBe('R$\u00A02.501')
-      expect(formatCurrencyBRL(10000)).toBe('R$\u00A010.000')
+      expect(formatCurrency(1500)).toBe('R$\u00A01.500')
+      expect(formatCurrency(2500.5)).toBe('R$\u00A02.501')
+      expect(formatCurrency(10000)).toBe('R$\u00A010.000')
     })
 
     it('should format zero correctly', () => {
-      expect(formatCurrencyBRL(0)).toBe('R$\u00A00')
+      expect(formatCurrency(0)).toBe('R$\u00A00')
     })
 
     it('should round to nearest integer (no decimals)', () => {
-      expect(formatCurrencyBRL(1500.49)).toBe('R$\u00A01.500')
-      expect(formatCurrencyBRL(1500.51)).toBe('R$\u00A01.501')
-      expect(formatCurrencyBRL(999.99)).toBe('R$\u00A01.000')
+      expect(formatCurrency(1500.49)).toBe('R$\u00A01.500')
+      expect(formatCurrency(1500.51)).toBe('R$\u00A01.501')
+      expect(formatCurrency(999.99)).toBe('R$\u00A01.000')
     })
 
     it('should format large values correctly', () => {
-      expect(formatCurrencyBRL(100000)).toBe('R$\u00A0100.000')
-      expect(formatCurrencyBRL(1000000)).toBe('R$\u00A01.000.000')
+      expect(formatCurrency(100000)).toBe('R$\u00A0100.000')
+      expect(formatCurrency(1000000)).toBe('R$\u00A01.000.000')
     })
 
     it('should handle small values', () => {
-      expect(formatCurrencyBRL(1)).toBe('R$\u00A01')
-      expect(formatCurrencyBRL(99)).toBe('R$\u00A099')
-      expect(formatCurrencyBRL(100)).toBe('R$\u00A0100')
+      expect(formatCurrency(1)).toBe('R$\u00A01')
+      expect(formatCurrency(99)).toBe('R$\u00A099')
+      expect(formatCurrency(100)).toBe('R$\u00A0100')
     })
   })
 
-  describe('formatShortCurrencyBRL', () => {
+  describe('formatShortCurrency', () => {
     it('should abbreviate values >= 1000', () => {
-      expect(formatShortCurrencyBRL(1500)).toBe('R$1.5k')
-      expect(formatShortCurrencyBRL(2000)).toBe('R$2.0k')
-      expect(formatShortCurrencyBRL(5000)).toBe('R$5.0k')
+      expect(formatShortCurrency(1500)).toBe('R$1.5k')
+      expect(formatShortCurrency(2000)).toBe('R$2.0k')
+      expect(formatShortCurrency(5000)).toBe('R$5.0k')
     })
 
     it('should not abbreviate values < 1000', () => {
-      expect(formatShortCurrencyBRL(999)).toBe('R$999')
-      expect(formatShortCurrencyBRL(500)).toBe('R$500')
-      expect(formatShortCurrencyBRL(100)).toBe('R$100')
-      expect(formatShortCurrencyBRL(0)).toBe('R$0')
+      expect(formatShortCurrency(999)).toBe('R$999')
+      expect(formatShortCurrency(500)).toBe('R$500')
+      expect(formatShortCurrency(100)).toBe('R$100')
+      expect(formatShortCurrency(0)).toBe('R$0')
     })
 
     it('should show one decimal place for thousands', () => {
-      expect(formatShortCurrencyBRL(1234)).toBe('R$1.2k')
-      expect(formatShortCurrencyBRL(5678)).toBe('R$5.7k')
-      expect(formatShortCurrencyBRL(9999)).toBe('R$10.0k')
+      expect(formatShortCurrency(1234)).toBe('R$1.2k')
+      expect(formatShortCurrency(5678)).toBe('R$5.7k')
+      expect(formatShortCurrency(9999)).toBe('R$10.0k')
     })
 
     it('should handle exact thousands', () => {
-      expect(formatShortCurrencyBRL(1000)).toBe('R$1.0k')
-      expect(formatShortCurrencyBRL(3000)).toBe('R$3.0k')
-      expect(formatShortCurrencyBRL(10000)).toBe('R$10.0k')
+      expect(formatShortCurrency(1000)).toBe('R$1.0k')
+      expect(formatShortCurrency(3000)).toBe('R$3.0k')
+      expect(formatShortCurrency(10000)).toBe('R$10.0k')
     })
   })
 })

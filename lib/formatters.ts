@@ -63,22 +63,6 @@ export function formatShortCurrency(
 }
 
 /**
- * Legacy function for backward compatibility
- * @deprecated Use formatCurrency(value, 'pt-BR', 'BRL') instead
- */
-export function formatCurrencyBRL(value: number): string {
-  return formatCurrency(value, 'pt-BR', 'BRL')
-}
-
-/**
- * Legacy function for backward compatibility
- * @deprecated Use formatShortCurrency(value, 'pt-BR', 'BRL') instead
- */
-export function formatShortCurrencyBRL(value: number): string {
-  return formatShortCurrency(value, 'pt-BR', 'BRL')
-}
-
-/**
  * Format a number with locale-specific formatting
  *
  * @param value - The number to format

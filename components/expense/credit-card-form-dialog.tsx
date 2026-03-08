@@ -14,7 +14,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ColorSelector } from './color-selector'
-import { useExpenseStore, type CreditCard, formatCurrencyBRL } from '@/lib/expense-store'
+import { useExpenseStore, type CreditCard } from '@/lib/expense-store'
+import { formatCurrency } from '@/lib/formatters'
 import { useToast } from '@/hooks/use-toast'
 
 type CreditCardFormDialogProps = {
@@ -159,7 +160,7 @@ export function CreditCardFormDialog({
                 <span className="font-medium">{name || i('forms.creditCard.previewCardName')}</span>
                 <span className="text-muted-foreground text-sm">
                   {limitValid && limit !== null
-                    ? `${i('forms.creditCard.previewLimit')} ${formatCurrencyBRL(limit)}`
+                    ? `${i('forms.creditCard.previewLimit')} ${formatCurrency(limit)}`
                     : i('forms.creditCard.noLimit')}
                 </span>
               </div>

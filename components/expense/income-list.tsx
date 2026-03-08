@@ -16,7 +16,8 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
-import { formatCurrencyBRL, type Income } from '@/lib/expense-store'
+import { formatCurrency } from '@/lib/formatters'
+import { type Income } from '@/lib/expense-store'
 
 interface IncomeListProps {
   incomes: Income[]
@@ -81,7 +82,7 @@ export function IncomeList({ incomes, onRemove, onUpdate }: IncomeListProps) {
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
-                  {formatCurrencyBRL(income.amount)}
+                  {formatCurrency(income.amount)}
                 </span>
                 <Button
                   variant="ghost"

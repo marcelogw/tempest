@@ -40,3 +40,7 @@ next-env.d.ts
 .amplify
 amplify_outputs*
 amplifyconfiguration*
+
+# scratch / session artifacts
+*.log
+*.diff

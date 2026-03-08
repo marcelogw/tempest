@@ -1593,7 +1593,7 @@ export const useExpenseStore = create<ExpenseStore>()(
 
             // Check if migration is needed
             if (needsMigration(parsed)) {
-              console.log('[Store] Migration needed, running migrations...')
+              console.warn('[Store] Migration needed, running migrations...')
 
               // Create backup before migrating
               try {
@@ -1610,7 +1610,7 @@ export const useExpenseStore = create<ExpenseStore>()(
               // Save migrated data immediately
               localStorage.setItem(name, JSON.stringify(migrated))
 
-              console.log('[Store] Migration completed successfully')
+              console.warn('[Store] Migration completed successfully')
               return JSON.stringify(migrated)
             }
 

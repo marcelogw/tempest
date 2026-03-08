@@ -128,7 +128,7 @@ export function runMigrations(data: unknown, currentVersion: number = 1): unknow
   for (let version = currentVersion + 1; version <= CURRENT_SCHEMA_VERSION; version++) {
     const migration = migrations[version]
     if (migration) {
-      console.log(`[Migrations] Running migration to version ${version}`)
+      console.warn(`[Migrations] Running migration to version ${version}`)
       try {
         migratedData = migration(migratedData)
       } catch (error) {
@@ -174,7 +174,7 @@ export function createBackup(data: unknown): string {
 
   try {
     localStorage.setItem(backupKey, JSON.stringify(data))
-    console.log(`[Migrations] Backup created: ${backupKey}`)
+    console.warn(`[Migrations] Backup created: ${backupKey}`)
     return backupKey
   } catch (error) {
     console.error('[Migrations] Failed to create backup:', error)
@@ -195,7 +195,7 @@ export function cleanupOldBackups(): void {
     // Keep only last 3 backups
     backupKeys.slice(3).forEach((key) => {
       localStorage.removeItem(key)
-      console.log(`[Migrations] Removed old backup: ${key}`)
+      console.warn(`[Migrations] Removed old backup: ${key}`)
     })
   } catch (error) {
     console.error('[Migrations] Failed to cleanup old backups:', error)

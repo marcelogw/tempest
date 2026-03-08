@@ -140,7 +140,7 @@ export function DashboardView() {
         months: values.length,
       }))
       .sort((a, b) => b.average - a.average)
-  }, [monthlyData, currentYear, categories])
+  }, [monthlyData, currentYear, categories, getInstallmentsForMonth])
 
   // Calculate insights
   const insights = useMemo(() => {

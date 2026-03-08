@@ -20,46 +20,38 @@ export function DataSourceIndicator() {
   const [userEmail, setUserEmail] = useState<string | null>(null)
 
   useEffect(() => {
+    async function checkDataSource() {
+      if (!isConfigured) {
+        const localData = localStorage.getItem('expense-store')
+        const hasLocalData =
+          localData &&
+          (JSON.parse(localData) as { state?: { monthlyData?: unknown } }).state?.monthlyData
+        setDataSource(hasLocalData ? 'local' : 'checking')
+        return
+      }
+
+      try {
+        const user = await getCurrentUser()
+        setUserEmail(user.signInDetails?.loginId || 'Unknown')
+
+        const localData = localStorage.getItem('expense-store')
+        const hasLocalData =
+          localData &&
+          (JSON.parse(localData) as { state?: { monthlyData?: unknown } }).state?.monthlyData
+
+        setDataSource(hasLocalData ? 'both' : 'aws')
+      } catch {
+        const localData = localStorage.getItem('expense-store')
+        const hasLocalData =
+          localData &&
+          (JSON.parse(localData) as { state?: { monthlyData?: unknown } }).state?.monthlyData
+
+        setDataSource(hasLocalData ? 'local' : 'checking')
+      }
+    }
+
     void checkDataSource()
   }, [isConfigured])
-
-  async function checkDataSource() {
-    // If Amplify is not configured, only check localStorage
-    if (!isConfigured) {
-      const localData = localStorage.getItem('expense-store')
-      const hasLocalData =
-        localData &&
-        (JSON.parse(localData) as { state?: { monthlyData?: unknown } }).state?.monthlyData
-      setDataSource(hasLocalData ? 'local' : 'checking')
-      return
-    }
-
-    try {
-      // Check if Amplify auth is configured and user is logged in
-      const user = await getCurrentUser()
-      setUserEmail(user.signInDetails?.loginId || 'Unknown')
-
-      // Check if localStorage has data
-      const localData = localStorage.getItem('expense-store')
-      const hasLocalData =
-        localData &&
-        (JSON.parse(localData) as { state?: { monthlyData?: unknown } }).state?.monthlyData
-
-      if (hasLocalData) {
-        setDataSource('both')
-      } else {
-        setDataSource('aws')
-      }
-    } catch {
-      // User not authenticated or Amplify not configured
-      const localData = localStorage.getItem('expense-store')
-      const hasLocalData =
-        localData &&
-        (JSON.parse(localData) as { state?: { monthlyData?: unknown } }).state?.monthlyData
-
-      setDataSource(hasLocalData ? 'local' : 'checking')
-    }
-  }
 
   if (dataSource === 'checking') {
     return null

@@ -1,10 +1,12 @@
 # Tempest
 
-[![CI](https://github.com/marcelogw/tempest/actions/workflows/ci.yml/badge.svg)](https://github.com/marcelogw/tempest/actions/workflows/ci.yml)
+[![Quality](https://github.com/marcelogw/tempest/actions/workflows/quality.yml/badge.svg)](https://github.com/marcelogw/tempest/actions/workflows/quality.yml)
+[![Tests](https://github.com/marcelogw/tempest/actions/workflows/test.yml/badge.svg)](https://github.com/marcelogw/tempest/actions/workflows/test.yml)
+[![E2E](https://github.com/marcelogw/tempest/actions/workflows/e2e.yml/badge.svg)](https://github.com/marcelogw/tempest/actions/workflows/e2e.yml)
 [![Coverage](https://codecov.io/gh/marcelogw/tempest/branch/main/graph/badge.svg)](https://codecov.io/gh/marcelogw/tempest)
+[![Vercel Deploy](https://deploy-badge.vercel.app/vercel/v0-tempest)](https://v0-tempest.vercel.app)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D20-brightgreen.svg)](https://nodejs.org)
-[![Deployed on Vercel](https://img.shields.io/badge/deployed%20on-vercel-black.svg?logo=vercel)](https://vercel.com)
 
 Personal expense management application for tracking income, expenses, investments, and savings. Runs locally without any cloud account (default) or against AWS Amplify for multi-user collaboration.
 

@@ -69,6 +69,18 @@ export interface Income {
   recurringGroupId?: string
 }
 
+export interface Note {
+  id: string
+  text: string
+  value?: number
+  valueDirection?: 'payable' | 'receivable'
+  date: string // YYYY-MM-DD (data do evento)
+  persistent: boolean // aparece nos meses futuros
+  done: boolean // quando true, para de aparecer nos meses futuros
+  createdAt: string // ISO string
+  createdMonth: string // YYYY-MM — mês de origem
+}
+
 export interface MonthlyData {
   month: string // Format: YYYY-MM
   incomes: Income[]
@@ -173,6 +185,7 @@ export const DEFAULT_CATEGORIES: Category[] = [
 interface ExpenseStore {
   monthlyData: Record<string, MonthlyData>
   installments: Installment[]
+  notes: Note[]
   categories: Category[]
   creditCards: CreditCard[]
   currentMonth: string
@@ -227,6 +240,11 @@ interface ExpenseStore {
   getCardUsageForMonth: (cardId: string, month: string) => number
   getCardTotalCommitment: (cardId: string) => number
   getCardUsagePercentage: (cardId: string) => number | null
+  // Notes actions
+  addNote: (note: Omit<Note, 'id' | 'createdAt'>) => void
+  updateNote: (id: string, updates: Partial<Omit<Note, 'id' | 'createdAt'>>) => void
+  removeNote: (id: string) => void
+  getNotesForMonth: (month: string) => Note[]
   // Data management actions
   deleteYearData: (year: string) => void
   deleteAllData: () => void
@@ -486,6 +504,7 @@ export const useExpenseStore = create<ExpenseStore>()(
     (set, get) => ({
       monthlyData: shouldUseSampleData() ? generateSampleData() : {},
       installments: [],
+      notes: [],
       categories: DEFAULT_CATEGORIES,
       creditCards: [],
       currentMonth: getCurrentMonth(),
@@ -1440,6 +1459,64 @@ export const useExpenseStore = create<ExpenseStore>()(
         return (totalCommitment / card.limit) * 100
       },
 
+      // Notes actions
+      addNote: (note) => {
+        const newNote: Note = {
+          ...note,
+          id: crypto.randomUUID(),
+          createdAt: new Date().toISOString(),
+        }
+        set({ notes: [...get().notes, newNote] })
+
+        const { workspaceGroup, workspaceId } = useSyncStore.getState()
+        if (workspaceGroup && workspaceId) {
+          enqueue({
+            model: 'Note',
+            operation: 'create',
+            data: {
+              id: newNote.id,
+              workspaceGroup,
+              text: newNote.text,
+              value: newNote.value ?? null,
+              valueDirection: newNote.valueDirection ?? null,
+              date: newNote.date,
+              persistent: newNote.persistent,
+              done: newNote.done,
+              noteCreatedAt: newNote.createdAt,
+              createdMonth: newNote.createdMonth,
+            },
+          })
+          enqueue({ model: 'Workspace', operation: 'update', data: { id: workspaceId } })
+        }
+      },
+
+      updateNote: (id, updates) => {
+        set({ notes: get().notes.map((n) => (n.id === id ? { ...n, ...updates } : n)) })
+
+        const { workspaceGroup, workspaceId } = useSyncStore.getState()
+        if (workspaceGroup && workspaceId) {
+          enqueue({ model: 'Note', operation: 'update', data: { id, ...updates } })
+          enqueue({ model: 'Workspace', operation: 'update', data: { id: workspaceId } })
+        }
+      },
+
+      removeNote: (id) => {
+        set({ notes: get().notes.filter((n) => n.id !== id) })
+
+        const { workspaceGroup, workspaceId } = useSyncStore.getState()
+        if (workspaceGroup && workspaceId) {
+          enqueue({ model: 'Note', operation: 'delete', data: { id } })
+          enqueue({ model: 'Workspace', operation: 'update', data: { id: workspaceId } })
+        }
+      },
+
+      getNotesForMonth: (month) => {
+        const { notes } = get()
+        return notes.filter(
+          (n) => n.createdMonth === month || (n.persistent && !n.done && n.createdMonth < month)
+        )
+      },
+
       // Data management actions
       deleteYearData: (year) => {
         const { monthlyData, installments } = get()
@@ -1475,6 +1552,7 @@ export const useExpenseStore = create<ExpenseStore>()(
         set({
           monthlyData: {},
           installments: [],
+          notes: [],
           currentMonth: getCurrentMonth(),
           currentYear: new Date().getFullYear().toString(),
         })
@@ -1556,11 +1634,24 @@ export const useExpenseStore = create<ExpenseStore>()(
             startMonth: inst.startMonth,
           }))
 
+          const notes: Note[] = raw.notes.map((n) => ({
+            id: n.id,
+            text: n.text,
+            value: n.value ?? undefined,
+            valueDirection: (n.valueDirection as Note['valueDirection']) ?? undefined,
+            date: n.date,
+            persistent: n.persistent,
+            done: n.done,
+            createdAt: n.noteCreatedAt,
+            createdMonth: n.createdMonth,
+          }))
+
           set({
             categories,
             creditCards,
             monthlyData: monthlyDataMap,
             installments,
+            notes,
             isLoading: false,
           })
           useSyncStore.getState().setLastSyncedAt(Date.now())

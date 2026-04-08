@@ -9,6 +9,7 @@ import { ExpenseList } from './expense-list'
 import { IncomeSection } from './income-input'
 import { CategoryBreakdown } from './category-breakdown'
 import { Installments } from './installments'
+import { NotesSection } from './notes-section'
 
 export function MonthlyView() {
   const i = useTranslations()
@@ -29,6 +30,10 @@ export function MonthlyView() {
     updateFixedExpenseFromMonth,
     monthlyData,
     getInstallmentsForMonth,
+    addNote,
+    updateNote,
+    removeNote,
+    getNotesForMonth,
   } = useExpenseStore()
 
   // Initialize month data in effect to avoid setState during render
@@ -192,6 +197,14 @@ export function MonthlyView() {
               </div>
             </div>
           </div>
+
+          <NotesSection
+            notes={getNotesForMonth(currentMonth)}
+            currentMonth={currentMonth}
+            onAdd={(note) => addNote(note)}
+            onUpdate={(id, updates) => updateNote(id, updates)}
+            onRemove={(id) => removeNote(id)}
+          />
         </div>
       </main>
     </div>

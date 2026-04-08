@@ -22,7 +22,7 @@ import { formatCurrency } from '@/lib/formatters'
 import { NoteFormDialog } from './note-form-dialog'
 import { cn } from '@/lib/utils'
 
-type NotesSectionProps = {
+interface NotesSectionProps {
   notes: Note[]
   currentMonth: string
   onAdd: (note: Omit<Note, 'id' | 'createdAt'>) => void

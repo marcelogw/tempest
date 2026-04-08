@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/dialog'
 import { type Note } from '@/lib/expense-store'
 
-type NoteFormDialogProps = {
+interface NoteFormDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   onSubmit: (note: Omit<Note, 'id' | 'createdAt'>) => void

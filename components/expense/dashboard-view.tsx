@@ -367,7 +367,7 @@ export function DashboardView() {
                       {financialNotes.payable.length > 0 && (
                         <div>
                           <div className="mb-3 flex items-center gap-2">
-                            <ArrowUpCircle className="text-destructive h-4 w-4" />
+                            <ArrowDownCircle className="text-destructive h-4 w-4" />
                             <span className="text-muted-foreground text-sm font-medium">
                               A Pagar
                             </span>
@@ -404,7 +404,7 @@ export function DashboardView() {
                       {financialNotes.receivable.length > 0 && (
                         <div>
                           <div className="mb-3 flex items-center gap-2">
-                            <ArrowDownCircle className="text-accent h-4 w-4" />
+                            <ArrowUpCircle className="text-accent h-4 w-4" />
                             <span className="text-muted-foreground text-sm font-medium">
                               A Receber
                             </span>

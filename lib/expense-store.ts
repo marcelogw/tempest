@@ -1519,7 +1519,7 @@ export const useExpenseStore = create<ExpenseStore>()(
 
       // Data management actions
       deleteYearData: (year) => {
-        const { monthlyData, installments } = get()
+        const { monthlyData, installments, notes } = get()
         const updatedMonthlyData = { ...monthlyData }
 
         // Remove all months from the specified year
@@ -1535,9 +1535,13 @@ export const useExpenseStore = create<ExpenseStore>()(
           return instYear !== year
         })
 
+        // Remove notes created in the deleted year
+        const updatedNotes = notes.filter((n) => !n.createdMonth.startsWith(year))
+
         set({
           monthlyData: updatedMonthlyData,
           installments: updatedInstallments,
+          notes: updatedNotes,
         })
 
         // Reset current month if it was in the deleted year

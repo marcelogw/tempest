@@ -241,6 +241,40 @@ describe('Store Utility Functions', () => {
       expect(state.monthlyData['2025-01']).toBeDefined()
     })
 
+    it('should also remove notes created in the deleted year', () => {
+      useExpenseStore.setState({
+        monthlyData: {},
+        installments: [],
+        notes: [
+          {
+            id: 'note-1',
+            text: 'Old note',
+            date: '2024-03-10',
+            persistent: false,
+            done: false,
+            createdAt: '2024-03-10T10:00:00.000Z',
+            createdMonth: '2024-03',
+          },
+          {
+            id: 'note-2',
+            text: 'Current note',
+            date: '2025-01-15',
+            persistent: false,
+            done: false,
+            createdAt: '2025-01-15T10:00:00.000Z',
+            createdMonth: '2025-01',
+          },
+        ],
+      })
+      const { deleteYearData } = useExpenseStore.getState()
+
+      deleteYearData('2024')
+
+      const state = useExpenseStore.getState()
+      expect(state.notes).toHaveLength(1)
+      expect(state.notes[0].id).toBe('note-2')
+    })
+
     it('should also remove installments starting in the deleted year', () => {
       useExpenseStore.setState({
         monthlyData: {

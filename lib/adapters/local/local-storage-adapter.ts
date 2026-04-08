@@ -10,6 +10,7 @@ import type {
   ExpenseInput,
   InstallmentInput,
   MonthlyDataUpdate,
+  NoteInput,
 } from '../types'
 import { useExpenseStore } from '@/lib/expense-store'
 
@@ -112,6 +113,18 @@ export class LocalStorageAdapter implements StorageAdapter {
       startMonth: inst.startMonth,
     }))
 
+    const notes = store.notes.map((n) => ({
+      id: n.id,
+      text: n.text,
+      value: n.value ?? null,
+      valueDirection: n.valueDirection ?? null,
+      date: n.date,
+      persistent: n.persistent,
+      done: n.done,
+      noteCreatedAt: n.createdAt,
+      createdMonth: n.createdMonth,
+    }))
+
     return Promise.resolve({
       categories,
       creditCards,
@@ -119,6 +132,7 @@ export class LocalStorageAdapter implements StorageAdapter {
       incomes,
       expenses,
       installments,
+      notes,
     })
   }
 
@@ -216,6 +230,18 @@ export class LocalStorageAdapter implements StorageAdapter {
   }
 
   deleteInstallment(_id: string): Promise<void> {
+    return Promise.resolve()
+  }
+
+  createNote(_data: NoteInput): Promise<void> {
+    return Promise.resolve()
+  }
+
+  updateNote(_id: string, _data: Partial<NoteInput>): Promise<void> {
+    return Promise.resolve()
+  }
+
+  deleteNote(_id: string): Promise<void> {
     return Promise.resolve()
   }
 }

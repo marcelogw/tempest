@@ -48,6 +48,17 @@ export type WorkspaceData = {
     amountPerInstallment: number
     startMonth: string
   }>
+  notes: Array<{
+    id: string
+    text: string
+    value: number | null
+    valueDirection: string | null
+    date: string
+    persistent: boolean
+    done: boolean
+    noteCreatedAt: string
+    createdMonth: string
+  }>
 }
 
 export type Session = {
@@ -139,4 +150,17 @@ export type InstallmentInput = {
 export type MonthlyDataUpdate = {
   investments?: number
   savings?: number
+}
+
+export type NoteInput = {
+  id: string
+  workspaceGroup: string
+  text: string
+  value?: number | null
+  valueDirection?: string | null
+  date: string
+  persistent: boolean
+  done: boolean
+  noteCreatedAt: string
+  createdMonth: string
 }

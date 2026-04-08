@@ -7,6 +7,7 @@ export type WriteModel =
   | 'Income'
   | 'Expense'
   | 'Installment'
+  | 'Note'
   | 'Workspace'
 
 export type WriteOp = 'create' | 'update' | 'delete'
@@ -140,6 +141,16 @@ async function dispatch(item: PendingWrite): Promise<void> {
       break
     case 'Installment:delete':
       await s.deleteInstallment(data.id as string)
+      break
+
+    case 'Note:create':
+      await s.createNote(data as Parameters<typeof s.createNote>[0])
+      break
+    case 'Note:update':
+      await s.updateNote(data.id as string, data as Parameters<typeof s.updateNote>[1])
+      break
+    case 'Note:delete':
+      await s.deleteNote(data.id as string)
       break
 
     case 'Workspace:update':

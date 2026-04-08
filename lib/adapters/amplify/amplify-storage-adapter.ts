@@ -12,6 +12,7 @@ import type {
   ExpenseInput,
   InstallmentInput,
   MonthlyDataUpdate,
+  NoteInput,
 } from '../types'
 import { configureAmplify } from '@/lib/amplify-config'
 import * as workspaceClient from '@/lib/workspace-client'
@@ -137,5 +138,17 @@ export class AmplifyStorageAdapter implements CollaborativeStorageAdapter {
 
   async deleteInstallment(id: string): Promise<void> {
     return workspaceClient.deleteInstallment(id)
+  }
+
+  async createNote(data: NoteInput): Promise<void> {
+    return workspaceClient.createNote(data)
+  }
+
+  async updateNote(id: string, data: Partial<NoteInput>): Promise<void> {
+    return workspaceClient.updateNote(id, data)
+  }
+
+  async deleteNote(id: string): Promise<void> {
+    return workspaceClient.deleteNote(id)
   }
 }

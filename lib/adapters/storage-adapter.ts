@@ -11,6 +11,7 @@ import type {
   ExpenseInput,
   InstallmentInput,
   MonthlyDataUpdate,
+  NoteInput,
 } from './types'
 
 export interface StorageAdapter {
@@ -45,6 +46,10 @@ export interface StorageAdapter {
 
   createInstallment(data: InstallmentInput): Promise<void>
   deleteInstallment(id: string): Promise<void>
+
+  createNote(data: NoteInput): Promise<void>
+  updateNote(id: string, data: Partial<NoteInput>): Promise<void>
+  deleteNote(id: string): Promise<void>
 }
 
 export interface CollaborativeStorageAdapter extends StorageAdapter {

@@ -17,6 +17,7 @@ Personal expense management application for tracking income, expenses, investmen
 - **Credit Card Installments** — Multi-month installment tracking across cards
 - **Category Management** — User-configurable categories with drag-to-reorder
 - **Workspace Collaboration** — Share your finances with one other person via invite codes
+- **Monthly Notes** — Annotate months with contextual notes: optional monetary value (payable/receivable), event date, and a persistent flag so pending notes carry forward to future months until marked done
 - **Bilingual** — English and Portuguese (Brazil), detected automatically from browser/cookie
 
 ## Tech Stack

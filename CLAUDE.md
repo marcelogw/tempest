@@ -160,3 +160,7 @@ E2E tests use Playwright (`test:e2e`); they are excluded from Vitest runs.
 ## Vercel Analytics
 
 `@vercel/analytics` is in the root layout. Do not remove it.
+
+## Code Navigation & Editing
+
+Use Serena MCP tools for code navigation and editing: `find_symbol`, `get_symbols_overview`, `replace_symbol_body`, `find_referencing_symbols`, `insert_after_symbol`. Use `Read`/`Grep`/`Edit` only for line-level changes within a symbol.

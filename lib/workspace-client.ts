@@ -69,6 +69,19 @@ export type InstallmentInput = {
   startMonth: string
 }
 
+export type NoteInput = {
+  id: string
+  workspaceGroup: string
+  text: string
+  value?: number | null
+  valueDirection?: string | null
+  date: string
+  persistent: boolean
+  done: boolean
+  noteCreatedAt: string
+  createdMonth: string
+}
+
 // ─── WorkspaceData type ───────────────────────────────────────────────────────
 
 export type WorkspaceData = {
@@ -121,6 +134,17 @@ export type WorkspaceData = {
     amountPerInstallment: number
     startMonth: string
   }>
+  notes: Array<{
+    id: string
+    text: string
+    value: number | null
+    valueDirection: string | null
+    date: string
+    persistent: boolean
+    done: boolean
+    noteCreatedAt: string
+    createdMonth: string
+  }>
 }
 
 // ─── Pagination helper ────────────────────────────────────────────────────────
@@ -150,15 +174,23 @@ export async function fetchWorkspaceData(workspaceGroup: string): Promise<Worksp
   const c = getAmplifyClient()
   const filter = { workspaceGroup: { eq: workspaceGroup } }
 
-  const [rawCategories, rawCards, rawMonthlyData, rawIncomes, rawExpenses, rawInstallments] =
-    await Promise.all([
-      fetchAll((args) => c.models.Category.list(args), filter),
-      fetchAll((args) => c.models.CreditCard.list(args), filter),
-      fetchAll((args) => c.models.MonthlyData.list(args), filter),
-      fetchAll((args) => c.models.Income.list(args), filter),
-      fetchAll((args) => c.models.Expense.list(args), filter),
-      fetchAll((args) => c.models.Installment.list(args), filter),
-    ])
+  const [
+    rawCategories,
+    rawCards,
+    rawMonthlyData,
+    rawIncomes,
+    rawExpenses,
+    rawInstallments,
+    rawNotes,
+  ] = await Promise.all([
+    fetchAll((args) => c.models.Category.list(args), filter),
+    fetchAll((args) => c.models.CreditCard.list(args), filter),
+    fetchAll((args) => c.models.MonthlyData.list(args), filter),
+    fetchAll((args) => c.models.Income.list(args), filter),
+    fetchAll((args) => c.models.Expense.list(args), filter),
+    fetchAll((args) => c.models.Installment.list(args), filter),
+    fetchAll((args) => c.models.Note.list(args), filter),
+  ])
 
   // Rebuild in-memory ID maps as side effects
   categoryKeyToCloudId = {}
@@ -290,7 +322,32 @@ export async function fetchWorkspaceData(workspaceGroup: string): Promise<Worksp
     }
   })
 
-  return { categories, creditCards, monthlyDataList, incomes, expenses, installments }
+  const notes = rawNotes.map((n) => {
+    const note = n as {
+      id: string
+      text: string
+      value?: number | null
+      valueDirection?: string | null
+      date: string
+      persistent: boolean
+      done: boolean
+      noteCreatedAt: string
+      createdMonth: string
+    }
+    return {
+      id: note.id,
+      text: note.text,
+      value: note.value ?? null,
+      valueDirection: note.valueDirection ?? null,
+      date: note.date,
+      persistent: note.persistent,
+      done: note.done,
+      noteCreatedAt: note.noteCreatedAt,
+      createdMonth: note.createdMonth,
+    }
+  })
+
+  return { categories, creditCards, monthlyDataList, incomes, expenses, installments, notes }
 }
 
 // ─── Category CRUD ────────────────────────────────────────────────────────────
@@ -448,6 +505,39 @@ export async function createInstallment(data: InstallmentInput): Promise<void> {
 
 export async function deleteInstallment(id: string): Promise<void> {
   await getAmplifyClient().models.Installment.delete({ id })
+}
+
+// ─── Note CRUD ────────────────────────────────────────────────────────────────
+
+export async function createNote(data: NoteInput): Promise<void> {
+  await getAmplifyClient().models.Note.create({
+    id: data.id,
+    workspaceGroup: data.workspaceGroup,
+    text: data.text,
+    value: data.value ?? undefined,
+    valueDirection: data.valueDirection ?? undefined,
+    date: data.date,
+    persistent: data.persistent,
+    done: data.done,
+    noteCreatedAt: data.noteCreatedAt,
+    createdMonth: data.createdMonth,
+  })
+}
+
+export async function updateNote(id: string, data: Partial<NoteInput>): Promise<void> {
+  await getAmplifyClient().models.Note.update({
+    id,
+    ...(data.text !== undefined && { text: data.text }),
+    ...(data.value !== undefined && { value: data.value ?? undefined }),
+    ...(data.valueDirection !== undefined && { valueDirection: data.valueDirection ?? undefined }),
+    ...(data.date !== undefined && { date: data.date }),
+    ...(data.persistent !== undefined && { persistent: data.persistent }),
+    ...(data.done !== undefined && { done: data.done }),
+  })
+}
+
+export async function deleteNote(id: string): Promise<void> {
+  await getAmplifyClient().models.Note.delete({ id })
 }
 
 // ─── Workspace smart sync ─────────────────────────────────────────────────────

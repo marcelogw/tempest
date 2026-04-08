@@ -178,6 +178,21 @@ const schema = a
         expenses: a.hasMany('Expense', 'installmentId'), // Generated expenses
       })
       .authorization((allow) => [allow.groupDefinedIn('workspaceGroup')]),
+
+    // Monthly notes (informational, not included in financial calculations)
+    Note: a
+      .model({
+        workspaceGroup: a.string().required(),
+        text: a.string().required(),
+        value: a.float(), // Optional monetary value
+        valueDirection: a.string(), // 'payable' | 'receivable'
+        date: a.string().required(), // Event date in YYYY-MM-DD format
+        persistent: a.boolean().required().default(false), // Show in future months
+        done: a.boolean().required().default(false), // When true, stop showing in future months
+        noteCreatedAt: a.string().required(), // ISO string (avoids conflict with Amplify's createdAt)
+        createdMonth: a.string().required(), // Origin month in YYYY-MM format
+      })
+      .authorization((allow) => [allow.groupDefinedIn('workspaceGroup')]),
   })
   .authorization((allow) => [
     // Grant Lambda function handlers access to all models via IAM.

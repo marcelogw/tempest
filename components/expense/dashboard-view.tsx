@@ -11,12 +11,15 @@ import {
   Wallet,
   ArrowUpRight,
   ArrowDownRight,
+  ArrowUpCircle,
+  ArrowDownCircle,
   type LucideIcon,
 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import {
   useExpenseStore,
   type ExpenseCategory,
+  type Note,
   SYSTEM_CATEGORY_ID,
   mapInstallmentsToExpenses,
 } from '@/lib/expense-store'
@@ -42,7 +45,7 @@ import { cn } from '@/lib/utils'
 
 export function DashboardView() {
   const i = useTranslations()
-  const { monthlyData, currentYear, categories, getCategoryById, getInstallmentsForMonth } =
+  const { monthlyData, currentYear, categories, getCategoryById, getInstallmentsForMonth, notes } =
     useExpenseStore()
 
   // Prevent hydration mismatch by only rendering store-dependent content after mount
@@ -175,6 +178,16 @@ export function DashboardView() {
       previousMonth,
     }
   }, [monthsData])
+
+  // Pending financial notes (notes with value, not done)
+  const financialNotes = useMemo(() => {
+    const pending = notes.filter((n: Note) => !n.done && n.value && n.value > 0)
+    const payable = pending.filter((n: Note) => n.valueDirection === 'payable')
+    const receivable = pending.filter((n: Note) => n.valueDirection === 'receivable')
+    const totalPayable = payable.reduce((sum: number, n: Note) => sum + (n.value ?? 0), 0)
+    const totalReceivable = receivable.reduce((sum: number, n: Note) => sum + (n.value ?? 0), 0)
+    return { payable, receivable, totalPayable, totalReceivable, hasPending: pending.length > 0 }
+  }, [notes])
 
   // Pie chart data
   const pieData = useMemo(() => {
@@ -331,6 +344,102 @@ export function DashboardView() {
                     </CardContent>
                   </Card>
                 </div>
+              )}
+
+              {/* Pending Financial Notes */}
+              {financialNotes.hasPending && (
+                <Card className="border-border/50 shadow-sm">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-base font-semibold">
+                      Pendencias Financeiras
+                    </CardTitle>
+                    <CardDescription>Notas com valor pendente de resolucao</CardDescription>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <div
+                      className={cn(
+                        'grid gap-6',
+                        financialNotes.payable.length > 0 && financialNotes.receivable.length > 0
+                          ? 'grid-cols-1 md:grid-cols-2'
+                          : 'grid-cols-1'
+                      )}
+                    >
+                      {financialNotes.payable.length > 0 && (
+                        <div>
+                          <div className="mb-3 flex items-center gap-2">
+                            <ArrowUpCircle className="text-destructive h-4 w-4" />
+                            <span className="text-muted-foreground text-sm font-medium">
+                              A Pagar
+                            </span>
+                            <span className="text-destructive ml-auto text-sm font-bold">
+                              {formatCurrency(financialNotes.totalPayable)}
+                            </span>
+                          </div>
+                          <div className="space-y-2">
+                            {financialNotes.payable.map((note: Note) => (
+                              <div
+                                key={note.id}
+                                className="bg-secondary/50 flex items-center justify-between rounded-lg px-3 py-2"
+                              >
+                                <span className="text-foreground truncate text-sm">
+                                  {note.text}
+                                </span>
+                                <div className="ml-3 flex shrink-0 flex-col items-end">
+                                  <span className="text-destructive text-sm font-medium">
+                                    {formatCurrency(note.value ?? 0)}
+                                  </span>
+                                  <span className="text-muted-foreground text-xs">
+                                    {new Date(note.createdMonth + '-01').toLocaleDateString(
+                                      'pt-BR',
+                                      { month: 'short', year: 'numeric' }
+                                    )}
+                                  </span>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {financialNotes.receivable.length > 0 && (
+                        <div>
+                          <div className="mb-3 flex items-center gap-2">
+                            <ArrowDownCircle className="text-accent h-4 w-4" />
+                            <span className="text-muted-foreground text-sm font-medium">
+                              A Receber
+                            </span>
+                            <span className="text-accent ml-auto text-sm font-bold">
+                              {formatCurrency(financialNotes.totalReceivable)}
+                            </span>
+                          </div>
+                          <div className="space-y-2">
+                            {financialNotes.receivable.map((note: Note) => (
+                              <div
+                                key={note.id}
+                                className="bg-secondary/50 flex items-center justify-between rounded-lg px-3 py-2"
+                              >
+                                <span className="text-foreground truncate text-sm">
+                                  {note.text}
+                                </span>
+                                <div className="ml-3 flex shrink-0 flex-col items-end">
+                                  <span className="text-accent text-sm font-medium">
+                                    {formatCurrency(note.value ?? 0)}
+                                  </span>
+                                  <span className="text-muted-foreground text-xs">
+                                    {new Date(note.createdMonth + '-01').toLocaleDateString(
+                                      'pt-BR',
+                                      { month: 'short', year: 'numeric' }
+                                    )}
+                                  </span>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
               )}
 
               {/* Charts Row 1 */}

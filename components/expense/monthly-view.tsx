@@ -110,8 +110,9 @@ export function MonthlyView() {
       prevMonthData.variableExpenses.reduce((sum, e) => sum + e.amount, 0)
     : undefined
 
-  // Get installments for current month
+  // Get installments and notes for current month
   const currentInstallments = getInstallmentsForMonth(currentMonth)
+  const currentNotes = getNotesForMonth(currentMonth)
   const installmentsTotal = currentInstallments.reduce(
     (sum, { installment }) => sum + installment.amountPerInstallment,
     0
@@ -199,11 +200,11 @@ export function MonthlyView() {
           </div>
 
           <NotesSection
-            notes={getNotesForMonth(currentMonth)}
+            notes={currentNotes}
             currentMonth={currentMonth}
-            onAdd={(note) => addNote(note)}
-            onUpdate={(id, updates) => updateNote(id, updates)}
-            onRemove={(id) => removeNote(id)}
+            onAdd={addNote}
+            onUpdate={updateNote}
+            onRemove={removeNote}
           />
         </div>
       </main>

@@ -75,7 +75,7 @@ export function NotesSection({
         </CardHeader>
 
         <CardContent className="pt-0">
-          <div className="space-y-2">
+          <div className="max-h-[320px] space-y-2 overflow-y-auto">
             {sorted.length === 0 ? (
               <p className="text-muted-foreground py-8 text-center text-sm">{i('notes.noNotes')}</p>
             ) : (

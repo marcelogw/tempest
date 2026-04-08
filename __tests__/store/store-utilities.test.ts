@@ -383,6 +383,7 @@ describe('Store Utility Functions', () => {
       incomes: [],
       expenses: [],
       installments: [],
+      notes: [],
     }
 
     it('should load workspace data into the store', async () => {
@@ -487,6 +488,7 @@ describe('Store Utility Functions', () => {
         incomes: [],
         expenses: [],
         installments: [],
+        notes: [],
       })
 
       await useExpenseStore.getState().checkAndSync()

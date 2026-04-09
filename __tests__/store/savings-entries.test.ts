@@ -45,7 +45,6 @@ describe('Savings Entries Management', () => {
         amount: 500,
         date: '2025-01-15',
         confirmed: true,
-        monthKey: '2025-01',
       })
 
       const monthData = getMonthData('2025-01')
@@ -61,7 +60,6 @@ describe('Savings Entries Management', () => {
         amount: 300,
         date: '2025-01-10',
         confirmed: false,
-        monthKey: '2025-01',
       })
 
       const monthData = getMonthData('2025-01')
@@ -76,7 +74,6 @@ describe('Savings Entries Management', () => {
         amount: 1000,
         date: '2025-09-05',
         confirmed: true,
-        monthKey: '2025-09',
       })
 
       const monthData = getMonthData('2025-09')
@@ -93,7 +90,6 @@ describe('Savings Entries Management', () => {
         source: 'Nubank',
         note: 'Reserva de emergência',
         goalId: 'goal-1',
-        monthKey: '2025-01',
       })
 
       const entry = getMonthData('2025-01').savingsEntries[0]

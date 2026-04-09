@@ -89,7 +89,6 @@ export type SavingsEntry = {
   note?: string
   goalId?: string // optional link to a Goal
   confirmed: boolean // "já transferi esse valor"
-  monthKey?: string // YYYY-MM — set when added via monthly view
 }
 
 export type Goal = {
@@ -226,6 +225,8 @@ interface ExpenseStore {
   addSavingsEntry: (month: string, entry: Omit<SavingsEntry, 'id'>) => void
   updateSavingsEntry: (month: string, entry: SavingsEntry) => void
   removeSavingsEntry: (month: string, entryId: string) => void
+  updateSavingsEntryById: (entryId: string, updates: Partial<Omit<SavingsEntry, 'id'>>) => void
+  removeSavingsEntryById: (entryId: string) => void
   addGoal: (goal: Omit<Goal, 'id' | 'createdAt' | 'status'>) => void
   updateGoal: (id: string, updates: Partial<Omit<Goal, 'id' | 'createdAt'>>) => void
   deleteGoal: (id: string) => void
@@ -458,7 +459,6 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           date: monthKey + '-05',
           source: 'Nubank',
           confirmed: true,
-          monthKey,
         },
         {
           id: generateSampleId(),
@@ -467,7 +467,6 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           source: 'XP Investimentos',
           note: 'Tesouro Direto',
           confirmed: true,
-          monthKey,
         },
       ],
     }
@@ -898,6 +897,44 @@ export const useExpenseStore = create<ExpenseStore>()(
             },
           },
         })
+      },
+
+      updateSavingsEntryById: (entryId, updates) => {
+        const monthlyData = get().monthlyData
+        for (const [month, data] of Object.entries(monthlyData)) {
+          const entries = data.savingsEntries ?? []
+          const idx = entries.findIndex((e) => e.id === entryId)
+          if (idx === -1) continue
+          const updated = { ...entries[idx], ...updates }
+          set({
+            monthlyData: {
+              ...monthlyData,
+              [month]: {
+                ...data,
+                savingsEntries: entries.map((e) => (e.id === entryId ? updated : e)),
+              },
+            },
+          })
+          return
+        }
+      },
+
+      removeSavingsEntryById: (entryId) => {
+        const monthlyData = get().monthlyData
+        for (const [month, data] of Object.entries(monthlyData)) {
+          const entries = data.savingsEntries ?? []
+          if (!entries.some((e) => e.id === entryId)) continue
+          set({
+            monthlyData: {
+              ...monthlyData,
+              [month]: {
+                ...data,
+                savingsEntries: entries.filter((e) => e.id !== entryId),
+              },
+            },
+          })
+          return
+        }
       },
 
       addGoal: (goal) => {

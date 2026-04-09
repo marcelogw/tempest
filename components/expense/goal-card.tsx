@@ -6,7 +6,6 @@ import type { LucideIcon } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Progress } from '@/components/ui/progress'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,11 +16,17 @@ import {
 import { cn } from '@/lib/utils'
 import { formatCurrency } from '@/lib/formatters'
 import { type Goal, type SavingsEntry } from '@/lib/expense-store'
-import { getProgressPercent, getMonthlyNeeded, getGoalStatus } from '@/lib/goal-utils'
+import {
+  getProgressPercent,
+  getPendingTotal,
+  getMonthlyNeeded,
+  getGoalStatus,
+} from '@/lib/goal-utils'
+import { GoalProgressBar } from './goal-progress-bar'
 
 interface GoalCardProps {
   goal: Goal
-  allEntries: SavingsEntry[]
+  goalEntries: SavingsEntry[]
   onView: () => void
   onEdit: () => void
   onComplete: () => void
@@ -31,7 +36,7 @@ interface GoalCardProps {
 
 export function GoalCard({
   goal,
-  allEntries,
+  goalEntries,
   onView,
   onEdit,
   onComplete,
@@ -41,14 +46,18 @@ export function GoalCard({
   const i = useTranslations()
 
   const IconComponent = (Icons[goal.icon as keyof typeof Icons] ?? Icons.Target) as LucideIcon
-  const progress = getProgressPercent(goal, allEntries)
-  const monthlyNeeded = getMonthlyNeeded(goal, allEntries)
-  const status = getGoalStatus(goal, allEntries)
+  const progress = getProgressPercent(goal, goalEntries)
+  const monthlyNeeded = getMonthlyNeeded(goal, goalEntries)
+  const status = getGoalStatus(goal, goalEntries)
   const isCompleted = goal.status === 'completed'
 
-  const confirmedTotal = allEntries
-    .filter((e) => e.goalId === goal.id && e.confirmed)
+  const confirmedTotal = goalEntries
+    .filter((e) => e.confirmed)
     .reduce((sum, e) => sum + e.amount, 0)
+
+  const pendingTotal = getPendingTotal(goal.id, goalEntries)
+  const confirmedPercent = goal.targetAmount > 0 ? (confirmedTotal / goal.targetAmount) * 100 : 0
+  const pendingPercent = goal.targetAmount > 0 ? (pendingTotal / goal.targetAmount) * 100 : 0
 
   return (
     <Card
@@ -124,14 +133,11 @@ export function GoalCard({
           </div>
 
           <div className="mt-3 space-y-2">
-            <Progress
-              value={progress}
+            <GoalProgressBar
+              confirmedPercent={confirmedPercent}
+              pendingPercent={pendingPercent}
+              color={goal.color}
               className="h-2"
-              style={
-                {
-                  '--progress-foreground': goal.color,
-                } as React.CSSProperties
-              }
             />
             <div className="flex items-center justify-between text-xs">
               <span className="text-muted-foreground">

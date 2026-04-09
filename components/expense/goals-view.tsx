@@ -14,7 +14,6 @@ export function GoalsView() {
   const i = useTranslations()
   const {
     goals,
-    monthlyData,
     addGoal,
     updateGoal,
     deleteGoal,
@@ -22,8 +21,8 @@ export function GoalsView() {
     reactivateGoal,
     getSavingsEntriesForGoal,
     addSavingsEntry,
-    updateSavingsEntry,
-    removeSavingsEntry,
+    updateSavingsEntryById,
+    removeSavingsEntryById,
   } = useExpenseStore()
 
   const [addDialogOpen, setAddDialogOpen] = useState(false)
@@ -34,33 +33,15 @@ export function GoalsView() {
   const activeGoals = goals.filter((g) => g.status === 'active')
   const completedGoals = goals.filter((g) => g.status === 'completed')
 
-  // Collect all savings entries across all months
-  const allEntries = Object.values(monthlyData).flatMap((md) => md.savingsEntries ?? [])
-
-  const handleAddGoal = (goal: Omit<Goal, 'id' | 'createdAt' | 'status'>) => {
-    addGoal(goal)
-  }
+  const currentMonth = new Date().toISOString().slice(0, 7)
 
   const handleUpdateGoal = (goal: Omit<Goal, 'id' | 'createdAt' | 'status'>) => {
     if (!editingGoal) return
     updateGoal(editingGoal.id, goal)
-    // If currently selected goal was updated, refresh the reference
     if (selectedGoal?.id === editingGoal.id) {
       setSelectedGoal({ ...editingGoal, ...goal })
     }
     setEditingGoal(null)
-  }
-
-  const handleAddEntry = (month: string, entry: Parameters<typeof addSavingsEntry>[1]) => {
-    addSavingsEntry(month, entry)
-  }
-
-  const handleUpdateEntry = (month: string, entry: Parameters<typeof updateSavingsEntry>[1]) => {
-    updateSavingsEntry(month, entry)
-  }
-
-  const handleRemoveEntry = (month: string, entryId: string) => {
-    removeSavingsEntry(month, entryId)
   }
 
   return (
@@ -101,7 +82,7 @@ export function GoalsView() {
                 <GoalCard
                   key={goal.id}
                   goal={goal}
-                  allEntries={getSavingsEntriesForGoal(goal.id)}
+                  goalEntries={getSavingsEntriesForGoal(goal.id)}
                   onView={() => setSelectedGoal(goal)}
                   onEdit={() => setEditingGoal(goal)}
                   onComplete={() => completeGoal(goal.id)}
@@ -131,7 +112,7 @@ export function GoalsView() {
                     <GoalCard
                       key={goal.id}
                       goal={goal}
-                      allEntries={getSavingsEntriesForGoal(goal.id)}
+                      goalEntries={getSavingsEntriesForGoal(goal.id)}
                       onView={() => setSelectedGoal(goal)}
                       onEdit={() => setEditingGoal(goal)}
                       onComplete={() => completeGoal(goal.id)}
@@ -146,14 +127,8 @@ export function GoalsView() {
         </div>
       </main>
 
-      {/* Add goal dialog */}
-      <GoalFormDialog
-        open={addDialogOpen}
-        onOpenChange={setAddDialogOpen}
-        onSubmit={handleAddGoal}
-      />
+      <GoalFormDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} onSubmit={addGoal} />
 
-      {/* Edit goal dialog */}
       {editingGoal && (
         <GoalFormDialog
           open={editingGoal !== null}
@@ -163,17 +138,16 @@ export function GoalsView() {
         />
       )}
 
-      {/* Goal detail sheet */}
       {selectedGoal && (
         <GoalDetailSheet
           open={selectedGoal !== null}
           onOpenChange={(open) => !open && setSelectedGoal(null)}
           goal={selectedGoal}
-          allEntries={allEntries}
+          goalEntries={getSavingsEntriesForGoal(selectedGoal.id)}
           activeGoals={activeGoals}
-          onAddEntry={handleAddEntry}
-          onUpdateEntry={handleUpdateEntry}
-          onRemoveEntry={handleRemoveEntry}
+          onAdd={(entry) => addSavingsEntry(currentMonth, entry)}
+          onUpdate={(entry) => updateSavingsEntryById(entry.id, entry)}
+          onRemove={removeSavingsEntryById}
           onComplete={() => {
             completeGoal(selectedGoal.id)
             setSelectedGoal(null)

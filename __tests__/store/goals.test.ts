@@ -132,7 +132,6 @@ describe('Goals Management', () => {
         date: '2025-01-10',
         confirmed: true,
         goalId,
-        monthKey: '2025-01',
       })
 
       deleteGoal(goalId)
@@ -167,20 +166,17 @@ describe('Goals Management', () => {
         date: '2025-01-10',
         confirmed: true,
         goalId,
-        monthKey: '2025-01',
       })
       addSavingsEntry('2025-02', {
         amount: 600,
         date: '2025-02-05',
         confirmed: true,
         goalId,
-        monthKey: '2025-02',
       })
       addSavingsEntry('2025-01', {
         amount: 200,
         date: '2025-01-20',
         confirmed: false,
-        monthKey: '2025-01',
         // no goalId — different entry
       })
 

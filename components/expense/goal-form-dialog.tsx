@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -30,12 +30,15 @@ interface GoalFormDialogProps {
   goal?: Goal
 }
 
-const CURRENT_YEAR = new Date().getFullYear()
-const YEARS = Array.from({ length: 10 }, (_, i) => (CURRENT_YEAR + i).toString())
 const MONTH_VALUES = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
 
 export function GoalFormDialog({ open, onOpenChange, onSubmit, goal }: GoalFormDialogProps) {
   const i = useTranslations()
+
+  const YEARS = useMemo(() => {
+    const year = new Date().getFullYear()
+    return Array.from({ length: 10 }, (_, idx) => (year + idx).toString())
+  }, [])
 
   const [name, setName] = useState(goal?.name ?? '')
   const [icon, setIcon] = useState<string | null>(goal?.icon ?? 'Target')

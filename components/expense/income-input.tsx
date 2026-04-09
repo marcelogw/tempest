@@ -19,6 +19,7 @@ import {
 import { DollarSign, Plus } from 'lucide-react'
 import { IncomeList } from './income-list'
 import { SavingsEntriesSection } from './savings-entries-section'
+import { SavingsEntryFormDialog } from './savings-entry-form-dialog'
 import { formatCurrency } from '@/lib/formatters'
 import { type Income, type SavingsEntry, type Goal } from '@/lib/expense-store'
 
@@ -26,7 +27,6 @@ interface IncomeSectionProps {
   incomes: Income[]
   savingsEntries: SavingsEntry[]
   activeGoals: Goal[]
-  currentMonth: string
   onAddIncome: (income: Omit<Income, 'id'>, replicate: boolean) => void
   onRemoveIncome: (id: string) => void
   onUpdateIncome: (income: Income, makeRecurring?: boolean) => void
@@ -142,7 +142,6 @@ export function IncomeSection({
   incomes,
   savingsEntries,
   activeGoals,
-  currentMonth,
   onAddIncome,
   onRemoveIncome,
   onUpdateIncome,
@@ -151,6 +150,9 @@ export function IncomeSection({
   onRemoveEntry,
 }: IncomeSectionProps) {
   const i = useTranslations()
+  const [addEntryOpen, setAddEntryOpen] = useState(false)
+  const [editingEntry, setEditingEntry] = useState<SavingsEntry | null>(null)
+
   const totalIncome = incomes.reduce((sum, income) => sum + income.amount, 0)
 
   return (
@@ -181,11 +183,27 @@ export function IncomeSection({
       <SavingsEntriesSection
         entries={savingsEntries}
         activeGoals={activeGoals}
-        currentMonth={currentMonth}
-        onAdd={onAddEntry}
-        onUpdate={onUpdateEntry}
+        onAddClick={() => setAddEntryOpen(true)}
+        onEditEntry={setEditingEntry}
         onRemove={onRemoveEntry}
       />
+
+      <SavingsEntryFormDialog
+        open={addEntryOpen}
+        onOpenChange={setAddEntryOpen}
+        onSubmit={onAddEntry}
+        activeGoals={activeGoals}
+      />
+
+      {editingEntry && (
+        <SavingsEntryFormDialog
+          open={editingEntry !== null}
+          onOpenChange={(open) => !open && setEditingEntry(null)}
+          onSubmit={(updates) => onUpdateEntry({ ...editingEntry, ...updates })}
+          entry={editingEntry}
+          activeGoals={activeGoals}
+        />
+      )}
     </div>
   )
 }

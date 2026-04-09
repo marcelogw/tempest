@@ -27,17 +27,18 @@ import {
   getProgressPercent,
   getMonthlyNeeded,
 } from '@/lib/goal-utils'
+import { GoalProgressBar } from './goal-progress-bar'
 import { SavingsEntryFormDialog } from './savings-entry-form-dialog'
 
 interface GoalDetailSheetProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   goal: Goal
-  allEntries: SavingsEntry[]
+  goalEntries: SavingsEntry[]
   activeGoals: Goal[]
-  onAddEntry: (month: string, entry: Omit<SavingsEntry, 'id'>) => void
-  onUpdateEntry: (month: string, entry: SavingsEntry) => void
-  onRemoveEntry: (month: string, entryId: string) => void
+  onAdd: (entry: Omit<SavingsEntry, 'id'>) => void
+  onUpdate: (entry: SavingsEntry) => void
+  onRemove: (entryId: string) => void
   onComplete: () => void
   onReactivate: () => void
 }
@@ -46,11 +47,11 @@ export function GoalDetailSheet({
   open,
   onOpenChange,
   goal,
-  allEntries,
+  goalEntries,
   activeGoals,
-  onAddEntry,
-  onUpdateEntry,
-  onRemoveEntry,
+  onAdd,
+  onUpdate,
+  onRemove,
   onComplete,
   onReactivate,
 }: GoalDetailSheetProps) {
@@ -60,21 +61,15 @@ export function GoalDetailSheet({
 
   const IconComponent = (Icons[goal.icon as keyof typeof Icons] ?? Icons.Target) as LucideIcon
 
-  const goalEntries = allEntries.filter((e) => e.goalId === goal.id)
-  const confirmedTotal = getConfirmedTotal(goal.id, allEntries)
-  const pendingTotal = getPendingTotal(goal.id, allEntries)
-  const progress = getProgressPercent(goal, allEntries)
-  const monthlyNeeded = getMonthlyNeeded(goal, allEntries)
+  const confirmedTotal = getConfirmedTotal(goal.id, goalEntries)
+  const pendingTotal = getPendingTotal(goal.id, goalEntries)
+  const progress = getProgressPercent(goal, goalEntries)
+  const monthlyNeeded = getMonthlyNeeded(goal, goalEntries)
 
   const confirmedPercent = goal.targetAmount > 0 ? (confirmedTotal / goal.targetAmount) * 100 : 0
-  const pendingPercent =
-    goal.targetAmount > 0
-      ? Math.min(100 - confirmedPercent, (pendingTotal / goal.targetAmount) * 100)
-      : 0
+  const pendingPercent = goal.targetAmount > 0 ? (pendingTotal / goal.targetAmount) * 100 : 0
 
   const sorted = [...goalEntries].sort((a, b) => b.date.localeCompare(a.date))
-
-  const currentMonth = new Date().toISOString().slice(0, 7)
 
   return (
     <>
@@ -99,23 +94,12 @@ export function GoalDetailSheet({
 
           {/* Progress */}
           <div className="space-y-3 py-4">
-            <div className="bg-secondary relative h-3 overflow-hidden rounded-full">
-              <div
-                className="absolute top-0 left-0 h-full rounded-full transition-all"
-                style={{
-                  width: `${Math.min(100, confirmedPercent)}%`,
-                  backgroundColor: goal.color,
-                }}
-              />
-              <div
-                className="absolute top-0 h-full rounded-full transition-all"
-                style={{
-                  left: `${Math.min(100, confirmedPercent)}%`,
-                  width: `${pendingPercent}%`,
-                  backgroundColor: `${goal.color}60`,
-                }}
-              />
-            </div>
+            <GoalProgressBar
+              confirmedPercent={confirmedPercent}
+              pendingPercent={pendingPercent}
+              color={goal.color}
+              className="h-3"
+            />
 
             <div className="flex items-center justify-between text-sm">
               <div>
@@ -237,7 +221,7 @@ export function GoalDetailSheet({
                       variant="ghost"
                       size="icon"
                       className="text-destructive hover:text-destructive hover:bg-destructive/10 h-7 w-7"
-                      onClick={() => onRemoveEntry(entry.monthKey ?? currentMonth, entry.id)}
+                      onClick={() => onRemove(entry.id)}
                     >
                       <Icons.Trash2 className="h-3.5 w-3.5" />
                     </Button>
@@ -252,10 +236,7 @@ export function GoalDetailSheet({
       <SavingsEntryFormDialog
         open={addEntryOpen}
         onOpenChange={setAddEntryOpen}
-        onSubmit={(entry) =>
-          onAddEntry(entry.monthKey ?? currentMonth, { ...entry, goalId: goal.id })
-        }
-        currentMonth={currentMonth}
+        onSubmit={(entry) => onAdd({ ...entry, goalId: goal.id })}
         activeGoals={activeGoals}
       />
 
@@ -263,14 +244,8 @@ export function GoalDetailSheet({
         <SavingsEntryFormDialog
           open={editingEntry !== null}
           onOpenChange={(open) => !open && setEditingEntry(null)}
-          onSubmit={(updates) => {
-            onUpdateEntry(editingEntry.monthKey ?? currentMonth, {
-              ...editingEntry,
-              ...updates,
-            })
-          }}
+          onSubmit={(updates) => onUpdate({ ...editingEntry, ...updates })}
           entry={editingEntry}
-          currentMonth={editingEntry.monthKey ?? currentMonth}
           activeGoals={activeGoals}
         />
       )}

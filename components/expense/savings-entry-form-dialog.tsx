@@ -29,7 +29,6 @@ interface SavingsEntryFormDialogProps {
   onOpenChange: (open: boolean) => void
   onSubmit: (entry: Omit<SavingsEntry, 'id'>) => void
   entry?: SavingsEntry
-  currentMonth: string
   activeGoals: Goal[]
 }
 
@@ -38,7 +37,6 @@ export function SavingsEntryFormDialog({
   onOpenChange,
   onSubmit,
   entry,
-  currentMonth,
   activeGoals,
 }: SavingsEntryFormDialogProps) {
   const i = useTranslations()
@@ -74,7 +72,6 @@ export function SavingsEntryFormDialog({
       note: note.trim() || undefined,
       goalId: goalId || undefined,
       confirmed,
-      monthKey: currentMonth,
     })
     onOpenChange(false)
   }

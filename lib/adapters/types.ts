@@ -27,7 +27,6 @@ export type WorkspaceData = {
       note?: string
       goalId?: string
       confirmed: boolean
-      monthKey?: string
     }>
   }>
   incomes: Array<{

@@ -157,7 +157,6 @@ export function MonthlyView() {
                 incomes={monthData.incomes}
                 savingsEntries={monthData.savingsEntries ?? []}
                 activeGoals={activeGoals}
-                currentMonth={currentMonth}
                 onAddIncome={(income, replicate) => addIncome(currentMonth, income, replicate)}
                 onRemoveIncome={(id) => removeIncome(currentMonth, id)}
                 onUpdateIncome={(income, makeRecurring) =>

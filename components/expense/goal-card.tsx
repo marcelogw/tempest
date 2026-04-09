@@ -150,7 +150,8 @@ export function GoalCard({
               )}
               {goal.deadline && status !== 'overdue' && monthlyNeeded !== null && (
                 <span>
-                  {i('goals.monthlyNeeded')}: {formatCurrency(monthlyNeeded)}/mês
+                  {i('goals.monthlyNeeded')}: {formatCurrency(monthlyNeeded)}
+                  {i('goals.perMonth')}
                 </span>
               )}
               {!goal.deadline && <span>{i('goals.noDeadline')}</span>}

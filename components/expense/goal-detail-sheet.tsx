@@ -12,6 +12,7 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
+  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
@@ -90,7 +91,7 @@ export function GoalDetailSheet({
                   variant={goal.status === 'completed' ? 'secondary' : 'outline'}
                   className="mt-1 text-[10px]"
                 >
-                  {goal.status === 'completed' ? i('goals.completedSection') : 'Ativa'}
+                  {goal.status === 'completed' ? i('goals.completedSection') : i('goals.active')}
                 </Badge>
               </div>
             </div>
@@ -119,7 +120,7 @@ export function GoalDetailSheet({
             <div className="flex items-center justify-between text-sm">
               <div>
                 <span className="font-semibold">{formatCurrency(confirmedTotal)}</span>
-                <span className="text-muted-foreground"> confirmado</span>
+                <span className="text-muted-foreground"> {i('goals.confirmedLabel')}</span>
               </div>
               <span className="font-semibold" style={{ color: goal.color }}>
                 {progress.toFixed(0)}%
@@ -128,15 +129,18 @@ export function GoalDetailSheet({
 
             {pendingTotal > 0 && (
               <p className="text-muted-foreground text-xs">
-                + {formatCurrency(pendingTotal)} em previsão
+                + {formatCurrency(pendingTotal)} {i('goals.forecastLabel')}
               </p>
             )}
 
             <div className="text-muted-foreground flex items-center justify-between text-xs">
-              <span>{formatCurrency(goal.targetAmount)} alvo</span>
+              <span>
+                {formatCurrency(goal.targetAmount)} {i('goals.targetLabel')}
+              </span>
               {monthlyNeeded !== null && (
                 <span>
-                  {i('goals.monthlyNeeded')}: {formatCurrency(monthlyNeeded)}/mês
+                  {i('goals.monthlyNeeded')}: {formatCurrency(monthlyNeeded)}
+                  {i('goals.perMonth')}
                 </span>
               )}
               {goal.deadline && !monthlyNeeded && (
@@ -162,6 +166,9 @@ export function GoalDetailSheet({
                 <AlertDialogContent>
                   <AlertDialogHeader>
                     <AlertDialogTitle>{i('goals.completeConfirm')}</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      {i('goals.completeDescription')}
+                    </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>{i('common.cancel')}</AlertDialogCancel>
@@ -182,7 +189,7 @@ export function GoalDetailSheet({
           {/* Entries list */}
           <div className="mt-4 space-y-2">
             <p className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
-              Contribuições ({goalEntries.length})
+              {i('goals.contributions')} ({goalEntries.length})
             </p>
             {sorted.length === 0 ? (
               <p className="text-muted-foreground py-4 text-center text-sm">

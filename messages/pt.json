@@ -557,7 +557,30 @@
     "deleteConfirm": "Tem certeza? As contribuições serão desvinculadas da meta.",
     "completeConfirm": "Marcar esta meta como concluída?",
     "viewDetails": "Ver detalhes",
-    "deleteGoal": "Excluir"
+    "deleteGoal": "Excluir",
+    "subtitle": "Acompanhe seu progresso e mantenha o foco nos seus objetivos financeiros",
+    "noGoalsCreate": "Clique em \"{add}\" para criar sua primeira meta",
+    "active": "Ativa",
+    "contributions": "Contribuições",
+    "perMonth": "/mês",
+    "confirmedLabel": "confirmado",
+    "forecastLabel": "em previsão",
+    "targetLabel": "alvo",
+    "completeDescription": "Esta ação marca a meta como concluída. Você pode reativá-la a qualquer momento.",
+    "months": {
+      "01": "Janeiro",
+      "02": "Fevereiro",
+      "03": "Março",
+      "04": "Abril",
+      "05": "Maio",
+      "06": "Junho",
+      "07": "Julho",
+      "08": "Agosto",
+      "09": "Setembro",
+      "10": "Outubro",
+      "11": "Novembro",
+      "12": "Dezembro"
+    }
   },
   "savings": {
     "title": "Reservas & Investimentos",

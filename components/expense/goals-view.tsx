@@ -69,9 +69,7 @@ export function GoalsView() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-foreground text-2xl font-bold">{i('goals.title')}</h1>
-            <p className="text-muted-foreground text-sm">
-              Acompanhe seu progresso e mantenha o foco nos seus objetivos financeiros
-            </p>
+            <p className="text-muted-foreground text-sm">{i('goals.subtitle')}</p>
           </div>
           <Button onClick={() => setAddDialogOpen(true)} className="gap-2">
             <Plus className="h-4 w-4" />
@@ -90,7 +88,7 @@ export function GoalsView() {
               </div>
               <p className="text-foreground font-medium">{i('goals.noGoals')}</p>
               <p className="text-muted-foreground mt-1 text-sm">
-                Clique em &ldquo;{i('goals.add')}&rdquo; para criar sua primeira meta
+                {i('goals.noGoalsCreate', { add: i('goals.add') })}
               </p>
               <Button onClick={() => setAddDialogOpen(true)} className="mt-4 gap-2">
                 <Plus className="h-4 w-4" />

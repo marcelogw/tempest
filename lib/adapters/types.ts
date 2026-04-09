@@ -155,6 +155,8 @@ export type InstallmentInput = {
   startMonth: string
 }
 
+// No cloud-synced fields remain on MonthlyData (savingsEntries are local-only for now).
+// TODO: Remove or expand this type when cloud sync for SavingsEntry/Goal is implemented.
 export type MonthlyDataUpdate = Record<string, never>
 
 export type NoteInput = {

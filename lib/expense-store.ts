@@ -451,7 +451,25 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           date: monthKey + '-22',
         },
       ],
-      savingsEntries: [],
+      savingsEntries: [
+        {
+          id: generateSampleId(),
+          amount: Math.round(600 + random() * 600),
+          date: monthKey + '-05',
+          source: 'Nubank',
+          confirmed: true,
+          monthKey,
+        },
+        {
+          id: generateSampleId(),
+          amount: Math.round(300 + random() * 400),
+          date: monthKey + '-05',
+          source: 'XP Investimentos',
+          note: 'Tesouro Direto',
+          confirmed: true,
+          monthKey,
+        },
+      ],
     }
   }
 
@@ -832,6 +850,9 @@ export const useExpenseStore = create<ExpenseStore>()(
         }
       },
 
+      // TODO: SavingsEntry and Goal are stored locally only.
+      // Cloud sync (Amplify) for these types is not yet implemented.
+      // Tracked in: https://github.com/marcelogw/tempest/issues (open a follow-up issue)
       addSavingsEntry: (month, entry) => {
         const { initializeYear } = get()
         const [year] = month.split('-')

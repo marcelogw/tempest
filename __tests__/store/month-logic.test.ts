@@ -47,8 +47,7 @@ describe('Month Logic', () => {
             incomes: [{ id: '1', description: 'Salário', amount: 5000 }],
             fixedExpenses: [],
             variableExpenses: [],
-            investments: 1000,
-            savings: 500,
+            savingsEntries: [],
           },
         },
       })
@@ -57,7 +56,6 @@ describe('Month Logic', () => {
 
       const state = useExpenseStore.getState()
       expect(state.monthlyData['2025-05'].incomes[0].amount).toBe(5000)
-      expect(state.monthlyData['2025-05'].investments).toBe(1000)
     })
   })
 
@@ -117,16 +115,14 @@ describe('Month Logic', () => {
             incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
-            investments: 0,
-            savings: 0,
+            savingsEntries: [],
           },
           '2024-06': {
             month: '2024-06',
             incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
-            investments: 0,
-            savings: 0,
+            savingsEntries: [],
           },
         },
       })
@@ -148,24 +144,21 @@ describe('Month Logic', () => {
             incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
-            investments: 0,
-            savings: 0,
+            savingsEntries: [],
           },
           '2024-06': {
             month: '2024-06',
             incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
-            investments: 0,
-            savings: 0,
+            savingsEntries: [],
           },
           [`${currentYear}-01`]: {
             month: `${currentYear}-01`,
             incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
-            investments: 0,
-            savings: 0,
+            savingsEntries: [],
           },
         },
       })
@@ -185,24 +178,21 @@ describe('Month Logic', () => {
             incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
-            investments: 0,
-            savings: 0,
+            savingsEntries: [],
           },
           '2024-06': {
             month: '2024-06',
             incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
-            investments: 0,
-            savings: 0,
+            savingsEntries: [],
           },
           '2024-12': {
             month: '2024-12',
             incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
-            investments: 0,
-            savings: 0,
+            savingsEntries: [],
           },
         },
       })
@@ -224,32 +214,28 @@ describe('Month Logic', () => {
             incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
-            investments: 0,
-            savings: 0,
+            savingsEntries: [],
           },
           '2024-12': {
             month: '2024-12',
             incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
-            investments: 0,
-            savings: 0,
+            savingsEntries: [],
           },
           '2025-01': {
             month: '2025-01',
             incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
-            investments: 0,
-            savings: 0,
+            savingsEntries: [],
           },
           '2025-02': {
             month: '2025-02',
             incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
-            investments: 0,
-            savings: 0,
+            savingsEntries: [],
           },
         },
       })
@@ -275,24 +261,21 @@ describe('Month Logic', () => {
             incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
-            investments: 0,
-            savings: 0,
+            savingsEntries: [],
           },
           '2024-03': {
             month: '2024-03',
             incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
-            investments: 0,
-            savings: 0,
+            savingsEntries: [],
           },
           '2024-07': {
             month: '2024-07',
             incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
-            investments: 0,
-            savings: 0,
+            savingsEntries: [],
           },
         },
       })
@@ -332,8 +315,7 @@ describe('Month Logic', () => {
             incomes: [{ id: '1', description: 'Salário', amount: 3000 }],
             fixedExpenses: [],
             variableExpenses: [],
-            investments: 500,
-            savings: 200,
+            savingsEntries: [],
           },
         },
       })
@@ -343,7 +325,7 @@ describe('Month Logic', () => {
 
       const state = useExpenseStore.getState()
       expect(state.monthlyData['2025-05'].incomes[0].amount).toBe(3000)
-      expect(state.monthlyData['2025-05'].investments).toBe(500)
+      expect(state.monthlyData['2025-05'].savingsEntries).toEqual([])
     })
   })
 
@@ -356,8 +338,7 @@ describe('Month Logic', () => {
             incomes: [{ id: '1', description: 'Salário', amount: 4000 }],
             fixedExpenses: [],
             variableExpenses: [],
-            investments: 800,
-            savings: 300,
+            savingsEntries: [],
           },
         },
       })
@@ -366,7 +347,7 @@ describe('Month Logic', () => {
       const data = getMonthData('2025-03')
 
       expect(data.incomes[0].amount).toBe(4000)
-      expect(data.investments).toBe(800)
+      expect(data.savingsEntries).toEqual([])
     })
 
     it('should return empty month data if not exists without persisting', () => {

@@ -6,12 +6,11 @@ import {
   LayoutDashboard,
   Calendar,
   Shapes,
-  TrendingUp,
-  PiggyBank,
   CreditCard,
   ChevronLeft,
   ChevronRight,
   Settings,
+  Target,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
@@ -20,8 +19,10 @@ import { ThemeToggle } from '@/components/theme-toggle'
 import { TempestIconMark } from '@/components/brand/tempest-logo'
 
 interface SidebarProps {
-  activeView: 'dashboard' | 'monthly' | 'categories' | 'cards' | 'settings'
-  onViewChange: (view: 'dashboard' | 'monthly' | 'categories' | 'cards' | 'settings') => void
+  activeView: 'dashboard' | 'monthly' | 'categories' | 'cards' | 'goals' | 'settings'
+  onViewChange: (
+    view: 'dashboard' | 'monthly' | 'categories' | 'cards' | 'goals' | 'settings'
+  ) => void
   currentYear: string
   availableYears: string[]
   onYearChange: (year: string) => void
@@ -58,11 +59,11 @@ export function Sidebar({
       label: i('ui.sidebar.cards'),
       icon: CreditCard,
     },
-  ]
-
-  const infoItems = [
-    { label: i('ui.sidebar.investments'), icon: TrendingUp },
-    { label: i('ui.sidebar.savings'), icon: PiggyBank },
+    {
+      id: 'goals' as const,
+      label: i('ui.sidebar.goals'),
+      icon: Target,
+    },
   ]
 
   return (
@@ -121,26 +122,6 @@ export function Sidebar({
                 activeView === item.id
                   ? 'bg-sidebar-primary text-sidebar-primary-foreground'
                   : 'text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
-              )}
-            >
-              <item.icon className="h-5 w-5 flex-shrink-0" />
-              {!collapsed && <span>{item.label}</span>}
-            </button>
-          ))}
-        </div>
-
-        <div className="mt-6 space-y-1">
-          {!collapsed && (
-            <p className="text-sidebar-foreground/60 px-3 py-2 text-xs font-medium tracking-wider uppercase">
-              {i('ui.sidebar.quickAccess')}
-            </p>
-          )}
-          {infoItems.map((item) => (
-            <button
-              key={item.label}
-              className={cn(
-                'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
-                'text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
               )}
             >
               <item.icon className="h-5 w-5 flex-shrink-0" />

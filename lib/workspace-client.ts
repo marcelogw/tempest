@@ -252,12 +252,11 @@ export async function fetchWorkspaceData(workspaceGroup: string): Promise<Worksp
   })
 
   const monthlyDataList = rawMonthlyData.map((m) => {
-    const md = m as { id: string; month: string; investments: number; savings: number }
+    const md = m as { id: string; month: string }
     return {
       id: md.id,
       month: md.month,
-      investments: md.investments ?? 0,
-      savings: md.savings ?? 0,
+      savingsEntries: [],
     }
   })
 
@@ -417,20 +416,11 @@ export async function createMonthlyData(month: string, workspaceGroup: string): 
     id: month,
     workspaceGroup,
     month,
-    investments: 0,
-    savings: 0,
   })
 }
 
-export async function updateMonthlyData(
-  month: string,
-  data: { investments?: number; savings?: number }
-): Promise<void> {
-  await getAmplifyClient().models.MonthlyData.update({
-    id: month,
-    ...(data.investments !== undefined && { investments: data.investments }),
-    ...(data.savings !== undefined && { savings: data.savings }),
-  })
+export async function updateMonthlyData(month: string, _data: Record<string, never>): Promise<void> {
+  await getAmplifyClient().models.MonthlyData.update({ id: month })
 }
 
 // ─── Income CRUD ──────────────────────────────────────────────────────────────

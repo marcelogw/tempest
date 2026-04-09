@@ -19,8 +19,16 @@ export type WorkspaceData = {
   monthlyDataList: Array<{
     id: string
     month: string
-    investments: number
-    savings: number
+    savingsEntries?: Array<{
+      id: string
+      amount: number
+      date: string
+      source?: string
+      note?: string
+      goalId?: string
+      confirmed: boolean
+      monthKey?: string
+    }>
   }>
   incomes: Array<{
     id: string
@@ -147,10 +155,7 @@ export type InstallmentInput = {
   startMonth: string
 }
 
-export type MonthlyDataUpdate = {
-  investments?: number
-  savings?: number
-}
+export type MonthlyDataUpdate = Record<string, never>
 
 export type NoteInput = {
   id: string

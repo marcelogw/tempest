@@ -81,13 +81,35 @@ export interface Note {
   createdMonth: string // YYYY-MM — mês de origem
 }
 
+export type SavingsEntry = {
+  id: string
+  amount: number
+  date: string // YYYY-MM-DD
+  source?: string // free text: "Nubank", "Tesouro Direto"
+  note?: string
+  goalId?: string // optional link to a Goal
+  confirmed: boolean // "já transferi esse valor"
+  monthKey?: string // YYYY-MM — set when added via monthly view
+}
+
+export type Goal = {
+  id: string
+  name: string
+  icon: string // lucide icon name
+  color: string // hex from CATEGORY_COLOR_PALETTE
+  targetAmount: number
+  deadline?: string // YYYY-MM, optional
+  status: 'active' | 'completed'
+  completedAt?: string // ISO string
+  createdAt: string // ISO string
+}
+
 export interface MonthlyData {
   month: string // Format: YYYY-MM
   incomes: Income[]
   fixedExpenses: Expense[]
   variableExpenses: Expense[]
-  investments: number
-  savings: number
+  savingsEntries: SavingsEntry[]
 }
 
 // System category ID constant
@@ -186,6 +208,7 @@ interface ExpenseStore {
   monthlyData: Record<string, MonthlyData>
   installments: Installment[]
   notes: Note[]
+  goals: Goal[]
   categories: Category[]
   creditCards: CreditCard[]
   currentMonth: string
@@ -200,8 +223,15 @@ interface ExpenseStore {
   addIncome: (month: string, income: Omit<Income, 'id'>, replicate: boolean) => void
   removeIncome: (month: string, incomeId: string) => void
   updateIncome: (month: string, income: Income, makeRecurring?: boolean) => void
-  updateInvestments: (month: string, investments: number) => void
-  updateSavings: (month: string, savings: number) => void
+  addSavingsEntry: (month: string, entry: Omit<SavingsEntry, 'id'>) => void
+  updateSavingsEntry: (month: string, entry: SavingsEntry) => void
+  removeSavingsEntry: (month: string, entryId: string) => void
+  addGoal: (goal: Omit<Goal, 'id' | 'createdAt' | 'status'>) => void
+  updateGoal: (id: string, updates: Partial<Omit<Goal, 'id' | 'createdAt'>>) => void
+  deleteGoal: (id: string) => void
+  completeGoal: (id: string) => void
+  reactivateGoal: (id: string) => void
+  getSavingsEntriesForGoal: (goalId: string) => SavingsEntry[]
   addExpense: (month: string, expense: Omit<Expense, 'id'>, type: 'fixed' | 'variable') => void
   removeExpense: (month: string, expenseId: string, type: 'fixed' | 'variable') => void
   updateExpense: (month: string, expense: Expense, type: 'fixed' | 'variable') => void
@@ -279,8 +309,7 @@ const createEmptyMonth = (month: string): MonthlyData => ({
   incomes: [],
   fixedExpenses: [],
   variableExpenses: [],
-  investments: 0,
-  savings: 0,
+  savingsEntries: [],
 })
 
 // Generate sample data for the last 6 months
@@ -422,8 +451,7 @@ const generateSampleData = (): Record<string, MonthlyData> => {
           date: monthKey + '-22',
         },
       ],
-      investments: Math.round(800 + random() * 400),
-      savings: Math.round(600 + random() * 600),
+      savingsEntries: [],
     }
   }
 
@@ -505,6 +533,7 @@ export const useExpenseStore = create<ExpenseStore>()(
       monthlyData: shouldUseSampleData() ? generateSampleData() : {},
       installments: [],
       notes: [],
+      goals: [],
       categories: DEFAULT_CATEGORIES,
       creditCards: [],
       currentMonth: getCurrentMonth(),
@@ -803,44 +832,108 @@ export const useExpenseStore = create<ExpenseStore>()(
         }
       },
 
-      updateInvestments: (month, investments) => {
+      addSavingsEntry: (month, entry) => {
         const { monthlyData, initializeYear } = get()
         const [year] = month.split('-')
         initializeYear(year)
+        const newEntry: SavingsEntry = { ...entry, id: crypto.randomUUID() }
+        const currentData = get().monthlyData[month]
         set({
           monthlyData: {
-            ...monthlyData,
+            ...get().monthlyData,
             [month]: {
-              ...get().monthlyData[month],
-              investments,
+              ...currentData,
+              savingsEntries: [...(currentData.savingsEntries ?? []), newEntry],
             },
           },
         })
-        const { workspaceGroup, workspaceId } = useSyncStore.getState()
-        if (workspaceGroup && workspaceId) {
-          enqueue({ model: 'MonthlyData', operation: 'update', data: { id: month, investments } })
-          enqueue({ model: 'Workspace', operation: 'update', data: { id: workspaceId } })
-        }
       },
 
-      updateSavings: (month, savings) => {
-        const { monthlyData, initializeYear } = get()
-        const [year] = month.split('-')
-        initializeYear(year)
+      updateSavingsEntry: (month, entry) => {
+        const currentData = get().monthlyData[month]
+        if (!currentData) return
         set({
           monthlyData: {
-            ...monthlyData,
+            ...get().monthlyData,
             [month]: {
-              ...get().monthlyData[month],
-              savings,
+              ...currentData,
+              savingsEntries: (currentData.savingsEntries ?? []).map((e) =>
+                e.id === entry.id ? entry : e
+              ),
             },
           },
         })
-        const { workspaceGroup, workspaceId } = useSyncStore.getState()
-        if (workspaceGroup && workspaceId) {
-          enqueue({ model: 'MonthlyData', operation: 'update', data: { id: month, savings } })
-          enqueue({ model: 'Workspace', operation: 'update', data: { id: workspaceId } })
+      },
+
+      removeSavingsEntry: (month, entryId) => {
+        const currentData = get().monthlyData[month]
+        if (!currentData) return
+        set({
+          monthlyData: {
+            ...get().monthlyData,
+            [month]: {
+              ...currentData,
+              savingsEntries: (currentData.savingsEntries ?? []).filter((e) => e.id !== entryId),
+            },
+          },
+        })
+      },
+
+      addGoal: (goal) => {
+        const newGoal: Goal = {
+          ...goal,
+          id: crypto.randomUUID(),
+          createdAt: new Date().toISOString(),
+          status: 'active',
         }
+        set({ goals: [...get().goals, newGoal] })
+      },
+
+      updateGoal: (id, updates) => {
+        set({ goals: get().goals.map((g) => (g.id === id ? { ...g, ...updates } : g)) })
+      },
+
+      deleteGoal: (id) => {
+        const { monthlyData } = get()
+        // Remove goalId references from all savings entries
+        const updatedMonthlyData = { ...monthlyData }
+        Object.keys(updatedMonthlyData).forEach((month) => {
+          const md = updatedMonthlyData[month]
+          updatedMonthlyData[month] = {
+            ...md,
+            savingsEntries: (md.savingsEntries ?? []).map((e) =>
+              e.goalId === id ? { ...e, goalId: undefined } : e
+            ),
+          }
+        })
+        set({ goals: get().goals.filter((g) => g.id !== id), monthlyData: updatedMonthlyData })
+      },
+
+      completeGoal: (id) => {
+        set({
+          goals: get().goals.map((g) =>
+            g.id === id
+              ? { ...g, status: 'completed' as const, completedAt: new Date().toISOString() }
+              : g
+          ),
+        })
+      },
+
+      reactivateGoal: (id) => {
+        set({
+          goals: get().goals.map((g) => {
+            if (g.id !== id) return g
+            const { completedAt: _completedAt, ...rest } = g
+            return { ...rest, status: 'active' as const }
+          }),
+        })
+      },
+
+      getSavingsEntriesForGoal: (goalId) => {
+        const { monthlyData } = get()
+        return Object.values(monthlyData)
+          .flatMap((md) => md.savingsEntries ?? [])
+          .filter((e) => e.goalId === goalId)
       },
 
       addExpense: (month, expense, type) => {
@@ -1557,6 +1650,7 @@ export const useExpenseStore = create<ExpenseStore>()(
           monthlyData: {},
           installments: [],
           notes: [],
+          goals: [],
           currentMonth: getCurrentMonth(),
           currentYear: new Date().getFullYear().toString(),
         })
@@ -1592,8 +1686,7 @@ export const useExpenseStore = create<ExpenseStore>()(
           raw.monthlyDataList.forEach((md) => {
             monthlyDataMap[md.month] = {
               month: md.month,
-              investments: md.investments,
-              savings: md.savings,
+              savingsEntries: md.savingsEntries ?? [],
               incomes: raw.incomes
                 .filter((i) => i.monthlyDataId === md.id)
                 .map((i) => ({

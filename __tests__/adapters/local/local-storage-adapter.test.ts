@@ -121,8 +121,7 @@ describe('LocalStorageAdapter', () => {
         monthlyData: {
           '2025-01': {
             month: '2025-01',
-            investments: 500,
-            savings: 200,
+            savingsEntries: [],
             incomes: [],
             fixedExpenses: [],
             variableExpenses: [],
@@ -134,8 +133,6 @@ describe('LocalStorageAdapter', () => {
       expect(data.monthlyDataList[0]).toMatchObject({
         id: '2025-01',
         month: '2025-01',
-        investments: 500,
-        savings: 200,
       })
     })
 
@@ -145,8 +142,7 @@ describe('LocalStorageAdapter', () => {
         monthlyData: {
           '2025-01': {
             month: '2025-01',
-            investments: 0,
-            savings: 0,
+            savingsEntries: [],
             incomes: [{ id: 'inc-1', description: 'Salary', amount: 5000 }],
             fixedExpenses: [],
             variableExpenses: [],
@@ -170,8 +166,7 @@ describe('LocalStorageAdapter', () => {
         monthlyData: {
           '2025-01': {
             month: '2025-01',
-            investments: 0,
-            savings: 0,
+            savingsEntries: [],
             incomes: [],
             fixedExpenses: [
               {
@@ -326,7 +321,7 @@ describe('LocalStorageAdapter', () => {
 
     it('updateMonthlyData resolves', async () => {
       await expect(
-        adapter.updateMonthlyData('2025-01', { investments: 100 })
+        adapter.updateMonthlyData('2025-01', {})
       ).resolves.toBeUndefined()
     })
 

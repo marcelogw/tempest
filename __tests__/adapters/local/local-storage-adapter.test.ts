@@ -320,9 +320,7 @@ describe('LocalStorageAdapter', () => {
     })
 
     it('updateMonthlyData resolves', async () => {
-      await expect(
-        adapter.updateMonthlyData('2025-01', {})
-      ).resolves.toBeUndefined()
+      await expect(adapter.updateMonthlyData('2025-01', {})).resolves.toBeUndefined()
     })
 
     it('createIncome resolves', async () => {

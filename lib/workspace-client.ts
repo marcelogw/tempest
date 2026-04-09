@@ -105,8 +105,7 @@ export type WorkspaceData = {
   monthlyDataList: Array<{
     id: string
     month: string
-    investments: number
-    savings: number
+    savingsEntries?: never[]
   }>
   incomes: Array<{
     id: string
@@ -419,7 +418,10 @@ export async function createMonthlyData(month: string, workspaceGroup: string): 
   })
 }
 
-export async function updateMonthlyData(month: string, _data: Record<string, never>): Promise<void> {
+export async function updateMonthlyData(
+  month: string,
+  _data: Record<string, never>
+): Promise<void> {
   await getAmplifyClient().models.MonthlyData.update({ id: month })
 }
 

@@ -128,8 +128,6 @@ const schema = a
       .model({
         workspaceGroup: a.string().required(),
         month: a.string().required(), // Format: YYYY-MM (e.g., '2026-01')
-        investments: a.float().required().default(0), // Monthly investments
-        savings: a.float().required().default(0), // Monthly savings
         incomes: a.hasMany('Income', 'monthlyDataId'), // Income entries
         expenses: a.hasMany('Expense', 'monthlyDataId'), // All expenses (filter by type)
       })

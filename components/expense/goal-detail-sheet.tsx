@@ -4,17 +4,14 @@ import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import * as Icons from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import { Plus, Pencil, Trash2, CheckCircle2, RotateCcw } from 'lucide-react'
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Progress } from '@/components/ui/progress'
 import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
@@ -70,7 +67,9 @@ export function GoalDetailSheet({
 
   const confirmedPercent = goal.targetAmount > 0 ? (confirmedTotal / goal.targetAmount) * 100 : 0
   const pendingPercent =
-    goal.targetAmount > 0 ? Math.min(100 - confirmedPercent, (pendingTotal / goal.targetAmount) * 100) : 0
+    goal.targetAmount > 0
+      ? Math.min(100 - confirmedPercent, (pendingTotal / goal.targetAmount) * 100)
+      : 0
 
   const sorted = [...goalEntries].sort((a, b) => b.date.localeCompare(a.date))
 
@@ -82,10 +81,7 @@ export function GoalDetailSheet({
         <SheetContent className="w-full overflow-y-auto sm:max-w-md">
           <SheetHeader className="pb-4">
             <div className="flex items-center gap-3">
-              <div
-                className="rounded-lg p-2"
-                style={{ backgroundColor: `${goal.color}20` }}
-              >
+              <div className="rounded-lg p-2" style={{ backgroundColor: `${goal.color}20` }}>
                 <IconComponent className="h-5 w-5" style={{ color: goal.color }} />
               </div>
               <div>
@@ -102,10 +98,13 @@ export function GoalDetailSheet({
 
           {/* Progress */}
           <div className="space-y-3 py-4">
-            <div className="relative h-3 overflow-hidden rounded-full bg-secondary">
+            <div className="bg-secondary relative h-3 overflow-hidden rounded-full">
               <div
                 className="absolute top-0 left-0 h-full rounded-full transition-all"
-                style={{ width: `${Math.min(100, confirmedPercent)}%`, backgroundColor: goal.color }}
+                style={{
+                  width: `${Math.min(100, confirmedPercent)}%`,
+                  backgroundColor: goal.color,
+                }}
               />
               <div
                 className="absolute top-0 h-full rounded-full transition-all"
@@ -148,19 +147,15 @@ export function GoalDetailSheet({
 
           {/* Actions */}
           <div className="flex gap-2 py-2">
-            <Button
-              size="sm"
-              className="flex-1"
-              onClick={() => setAddEntryOpen(true)}
-            >
-              <Plus className="mr-1 h-4 w-4" />
+            <Button size="sm" className="flex-1" onClick={() => setAddEntryOpen(true)}>
+              <Icons.Plus className="mr-1 h-4 w-4" />
               {i('savings.add')}
             </Button>
             {goal.status === 'active' ? (
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button size="sm" variant="outline" className="bg-transparent">
-                    <CheckCircle2 className="mr-1 h-4 w-4" />
+                    <Icons.CheckCircle2 className="mr-1 h-4 w-4" />
                     {i('goals.complete')}
                   </Button>
                 </AlertDialogTrigger>
@@ -170,13 +165,15 @@ export function GoalDetailSheet({
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>{i('common.cancel')}</AlertDialogCancel>
-                    <AlertDialogAction onClick={onComplete}>{i('common.confirm')}</AlertDialogAction>
+                    <AlertDialogAction onClick={onComplete}>
+                      {i('common.confirm')}
+                    </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
             ) : (
               <Button size="sm" variant="outline" className="bg-transparent" onClick={onReactivate}>
-                <RotateCcw className="mr-1 h-4 w-4" />
+                <Icons.RotateCcw className="mr-1 h-4 w-4" />
                 {i('goals.reactivate')}
               </Button>
             )}
@@ -184,7 +181,7 @@ export function GoalDetailSheet({
 
           {/* Entries list */}
           <div className="mt-4 space-y-2">
-            <p className="text-muted-foreground text-xs font-medium uppercase tracking-wider">
+            <p className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
               Contribuições ({goalEntries.length})
             </p>
             {sorted.length === 0 ? (
@@ -227,7 +224,7 @@ export function GoalDetailSheet({
                       className="text-muted-foreground hover:text-foreground h-7 w-7"
                       onClick={() => setEditingEntry(entry)}
                     >
-                      <Pencil className="h-3.5 w-3.5" />
+                      <Icons.Pencil className="h-3.5 w-3.5" />
                     </Button>
                     <Button
                       variant="ghost"
@@ -235,7 +232,7 @@ export function GoalDetailSheet({
                       className="text-destructive hover:text-destructive hover:bg-destructive/10 h-7 w-7"
                       onClick={() => onRemoveEntry(entry.monthKey ?? currentMonth, entry.id)}
                     >
-                      <Trash2 className="h-3.5 w-3.5" />
+                      <Icons.Trash2 className="h-3.5 w-3.5" />
                     </Button>
                   </div>
                 </div>
@@ -248,7 +245,9 @@ export function GoalDetailSheet({
       <SavingsEntryFormDialog
         open={addEntryOpen}
         onOpenChange={setAddEntryOpen}
-        onSubmit={(entry) => onAddEntry(entry.monthKey ?? currentMonth, { ...entry, goalId: goal.id })}
+        onSubmit={(entry) =>
+          onAddEntry(entry.monthKey ?? currentMonth, { ...entry, goalId: goal.id })
+        }
         currentMonth={currentMonth}
         activeGoals={activeGoals}
       />

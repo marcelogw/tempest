@@ -3,7 +3,6 @@
 import { useTranslations } from 'next-intl'
 import * as Icons from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import { MoreHorizontal, CheckCircle2, RotateCcw, Pencil, Trash2, Eye } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -88,27 +87,27 @@ export function GoalCard({
                   className="h-7 w-7 flex-shrink-0"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <MoreHorizontal className="h-4 w-4" />
+                  <Icons.MoreHorizontal className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
                 <DropdownMenuItem onClick={onView}>
-                  <Eye className="mr-2 h-4 w-4" />
+                  <Icons.Eye className="mr-2 h-4 w-4" />
                   {i('goals.viewDetails')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={onEdit}>
-                  <Pencil className="mr-2 h-4 w-4" />
+                  <Icons.Pencil className="mr-2 h-4 w-4" />
                   {i('common.edit')}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 {isCompleted ? (
                   <DropdownMenuItem onClick={onReactivate}>
-                    <RotateCcw className="mr-2 h-4 w-4" />
+                    <Icons.RotateCcw className="mr-2 h-4 w-4" />
                     {i('goals.reactivate')}
                   </DropdownMenuItem>
                 ) : (
                   <DropdownMenuItem onClick={onComplete}>
-                    <CheckCircle2 className="mr-2 h-4 w-4" />
+                    <Icons.CheckCircle2 className="mr-2 h-4 w-4" />
                     {i('goals.complete')}
                   </DropdownMenuItem>
                 )}
@@ -117,7 +116,7 @@ export function GoalCard({
                   onClick={onDelete}
                   className="text-destructive focus:text-destructive"
                 >
-                  <Trash2 className="mr-2 h-4 w-4" />
+                  <Icons.Trash2 className="mr-2 h-4 w-4" />
                   {i('goals.deleteGoal')}
                 </DropdownMenuItem>
               </DropdownMenuContent>

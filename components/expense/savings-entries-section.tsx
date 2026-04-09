@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
-import { PiggyBank, Pencil, Trash2, Plus } from 'lucide-react'
 import * as Icons from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -44,7 +43,7 @@ export function SavingsEntriesSection({
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="rounded-md bg-teal-500/10 p-1.5">
-                <PiggyBank className="h-4 w-4 text-teal-600" />
+                <Icons.PiggyBank className="h-4 w-4 text-teal-600" />
               </div>
               <CardTitle className="text-base font-semibold">{i('savings.title')}</CardTitle>
               {entries.length > 0 && (
@@ -59,7 +58,7 @@ export function SavingsEntriesSection({
               className="h-7 bg-transparent text-xs"
               onClick={() => setAddDialogOpen(true)}
             >
-              <Plus className="mr-1 h-3 w-3" />
+              <Icons.Plus className="mr-1 h-3 w-3" />
               {i('savings.add')}
             </Button>
           </div>
@@ -83,8 +82,7 @@ export function SavingsEntriesSection({
               sorted.map((entry) => {
                 const linkedGoal = activeGoals.find((g) => g.id === entry.goalId)
                 const GoalIcon = linkedGoal
-                  ? ((Icons[linkedGoal.icon as keyof typeof Icons] ??
-                      Icons.Target) as LucideIcon)
+                  ? ((Icons[linkedGoal.icon as keyof typeof Icons] ?? Icons.Target) as LucideIcon)
                   : null
 
                 return (
@@ -138,7 +136,7 @@ export function SavingsEntriesSection({
                         onClick={() => setEditingEntry(entry)}
                         aria-label={i('common.edit')}
                       >
-                        <Pencil className="h-3.5 w-3.5" />
+                        <Icons.Pencil className="h-3.5 w-3.5" />
                       </Button>
                       <Button
                         variant="ghost"
@@ -147,7 +145,7 @@ export function SavingsEntriesSection({
                         onClick={() => onRemove(entry.id)}
                         aria-label={i('common.delete')}
                       >
-                        <Trash2 className="h-3.5 w-3.5" />
+                        <Icons.Trash2 className="h-3.5 w-3.5" />
                       </Button>
                     </div>
                   </div>

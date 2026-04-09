@@ -833,7 +833,7 @@ export const useExpenseStore = create<ExpenseStore>()(
       },
 
       addSavingsEntry: (month, entry) => {
-        const { monthlyData, initializeYear } = get()
+        const { initializeYear } = get()
         const [year] = month.split('-')
         initializeYear(year)
         const newEntry: SavingsEntry = { ...entry, id: crypto.randomUUID() }

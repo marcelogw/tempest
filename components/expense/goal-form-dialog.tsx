@@ -51,7 +51,7 @@ export function GoalFormDialog({ open, onOpenChange, onSubmit, goal }: GoalFormD
   const i = useTranslations()
 
   const [name, setName] = useState(goal?.name ?? '')
-  const [icon, setIcon] = useState(goal?.icon ?? 'Target')
+  const [icon, setIcon] = useState<string | null>(goal?.icon ?? 'Target')
   const [color, setColor] = useState(goal?.color ?? CATEGORY_COLOR_PALETTE[0])
   const [targetAmount, setTargetAmount] = useState(goal?.targetAmount?.toString() ?? '')
   const [deadlineYear, setDeadlineYear] = useState(
@@ -77,10 +77,9 @@ export function GoalFormDialog({ open, onOpenChange, onSubmit, goal }: GoalFormD
     const amount = parseFloat(targetAmount.replace(',', '.')) || 0
     if (!name.trim() || amount <= 0) return
 
-    const deadline =
-      deadlineYear && deadlineMonth ? `${deadlineYear}-${deadlineMonth}` : undefined
+    const deadline = deadlineYear && deadlineMonth ? `${deadlineYear}-${deadlineMonth}` : undefined
 
-    onSubmit({ name: name.trim(), icon, color, targetAmount: amount, deadline })
+    onSubmit({ name: name.trim(), icon: icon ?? 'Target', color, targetAmount: amount, deadline })
     onOpenChange(false)
   }
 

@@ -148,6 +148,36 @@ These are non-negotiable. A feature is not done until all of these pass:
 
 5. **Do not rely on the 75% coverage threshold as a proxy for test completeness.** The threshold only counts files that are imported by at least one test — new files with zero tests are invisible to it. Write tests because the logic requires it, not to satisfy a number.
 
+### UI & Design Rules
+
+#### Before building any new form or modal
+
+1. **Read at least 2 existing similar components first.** For forms: read `expense-form.tsx` and `income-input.tsx`. For dialogs: read `expense-edit-dialog.tsx`. Copy their structure, spacing, and field patterns — do not invent a new layout from scratch.
+
+2. **Use only shadcn/ui primitives.** Never create custom UI components for things shadcn already solves — color pickers, icon selectors, dropdowns, date inputs. Use `Select`, `Popover`, `Command`, `Input`, `Checkbox` from `components/ui/`. Custom primitives produce inconsistent UX and sizing.
+
+3. **Follow these field conventions:**
+   - Currency inputs: `type="number" step="1" min="0"` with `R$` prefix span — never `step="0.01"` (useless micro-increments)
+   - Date/deadline selectors: use a single `<Input type="month">` or constrain `<Select>` options to future dates only — never allow past dates for deadlines
+   - Text inputs that are not login fields: always add `autoComplete="off"` to prevent password managers from hijacking them
+
+#### Visual validation — mandatory before marking UI work as done
+
+4. **Take a Playwright screenshot and review it before pushing.** The AI has no eyes by default — a screenshot closes the feedback loop. Process:
+
+   ```bash
+   # 1. start dev server in background
+   npm run dev &
+   # 2. open the component/screen in the browser via Playwright
+   # 3. take screenshot, review visually
+   # 4. fix issues, repeat until acceptable
+   # 5. kill dev server
+   ```
+
+   Use `npx playwright screenshot` or a quick Playwright script. A form or modal is not done until a screenshot confirms it looks consistent with the rest of the app.
+
+5. **Compare against existing screens.** Before calling UI done, open an existing similar screen (e.g. the expense form) alongside the new one and verify spacing, font sizes, and component sizes are consistent.
+
 ### Styling
 
 - Tailwind CSS v4 via PostCSS plugin (no `tailwind.config.*` file)

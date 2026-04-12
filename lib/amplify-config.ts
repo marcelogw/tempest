@@ -17,7 +17,7 @@ export function configureAmplify(): boolean {
   try {
     // Dynamic import to avoid build errors when amplify_outputs.json doesn't exist
     // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-assignment
-    const outputs = require('@/amplify_outputs.json')
+    const outputs = require(/* turbopackIgnore: true */ '@/amplify_outputs.json')
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     Amplify.configure(outputs, {
       ssr: true, // Enable SSR support for Next.js

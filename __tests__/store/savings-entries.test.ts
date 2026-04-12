@@ -164,4 +164,57 @@ describe('Savings Entries Management', () => {
       expect(result[0].id).toBe(entries[1].id)
     })
   })
+
+  describe('updateSavingsEntryById', () => {
+    it('should find and update an entry across all months', () => {
+      const { addSavingsEntry, updateSavingsEntryById, getMonthData } = useExpenseStore.getState()
+
+      addSavingsEntry('2025-01', { amount: 300, date: '2025-01-10', confirmed: false })
+      addSavingsEntry('2025-02', { amount: 500, date: '2025-02-05', confirmed: false })
+      const entryId = getMonthData('2025-02').savingsEntries[0].id
+
+      updateSavingsEntryById(entryId, { amount: 750, confirmed: true })
+
+      const updated = getMonthData('2025-02').savingsEntries[0]
+      expect(updated.amount).toBe(750)
+      expect(updated.confirmed).toBe(true)
+      // Entry in another month should be untouched
+      expect(getMonthData('2025-01').savingsEntries[0].amount).toBe(300)
+    })
+
+    it('should do nothing when the id is not found', () => {
+      const { addSavingsEntry, updateSavingsEntryById, getMonthData } = useExpenseStore.getState()
+
+      addSavingsEntry('2025-01', { amount: 100, date: '2025-01-01', confirmed: true })
+
+      updateSavingsEntryById('non-existent-id', { amount: 999 })
+
+      expect(getMonthData('2025-01').savingsEntries[0].amount).toBe(100)
+    })
+  })
+
+  describe('removeSavingsEntryById', () => {
+    it('should find and remove an entry across all months', () => {
+      const { addSavingsEntry, removeSavingsEntryById, getMonthData } = useExpenseStore.getState()
+
+      addSavingsEntry('2025-01', { amount: 100, date: '2025-01-01', confirmed: true })
+      addSavingsEntry('2025-03', { amount: 200, date: '2025-03-10', confirmed: true })
+      const entryId = getMonthData('2025-03').savingsEntries[0].id
+
+      removeSavingsEntryById(entryId)
+
+      expect(getMonthData('2025-03').savingsEntries).toHaveLength(0)
+      expect(getMonthData('2025-01').savingsEntries).toHaveLength(1)
+    })
+
+    it('should do nothing when the id is not found', () => {
+      const { addSavingsEntry, removeSavingsEntryById, getMonthData } = useExpenseStore.getState()
+
+      addSavingsEntry('2025-01', { amount: 100, date: '2025-01-01', confirmed: true })
+
+      removeSavingsEntryById('non-existent-id')
+
+      expect(getMonthData('2025-01').savingsEntries).toHaveLength(1)
+    })
+  })
 })

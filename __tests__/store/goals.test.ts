@@ -82,17 +82,46 @@ describe('Goals Management', () => {
     })
   })
 
+  describe('updateGoal', () => {
+    it('should update the specified goal fields', () => {
+      const { addGoal, updateGoal } = useExpenseStore.getState()
+      addGoal({ name: 'Meta original', icon: 'Target', color: '#000', targetAmount: 1000 })
+      const goalId = useExpenseStore.getState().goals[0].id
+
+      updateGoal(goalId, { name: 'Meta atualizada', targetAmount: 2000 })
+
+      const updated = useExpenseStore.getState().goals[0]
+      expect(updated.name).toBe('Meta atualizada')
+      expect(updated.targetAmount).toBe(2000)
+    })
+
+    it('should not affect other goals when updating one', () => {
+      const { addGoal, updateGoal } = useExpenseStore.getState()
+      addGoal({ name: 'Meta 1', icon: 'Target', color: '#000', targetAmount: 1000 })
+      addGoal({ name: 'Meta 2', icon: 'Target', color: '#111', targetAmount: 2000 })
+      const firstId = useExpenseStore.getState().goals[0].id
+
+      updateGoal(firstId, { targetAmount: 9999 })
+
+      const goals = useExpenseStore.getState().goals
+      expect(goals[1].targetAmount).toBe(2000)
+    })
+  })
+
   describe('completeGoal', () => {
     it('should set status to completed and set completedAt', () => {
       const { addGoal, completeGoal } = useExpenseStore.getState()
       addGoal({ name: 'Meta', icon: 'Target', color: '#000', targetAmount: 1000 })
+      addGoal({ name: 'Outra', icon: 'Target', color: '#111', targetAmount: 500 })
       const goalId = useExpenseStore.getState().goals[0].id
 
       completeGoal(goalId)
 
-      const goal = useExpenseStore.getState().goals[0]
-      expect(goal.status).toBe('completed')
-      expect(goal.completedAt).toBeDefined()
+      const goals = useExpenseStore.getState().goals
+      expect(goals[0].status).toBe('completed')
+      expect(goals[0].completedAt).toBeDefined()
+      // Other goal should be unchanged
+      expect(goals[1].status).toBe('active')
     })
   })
 
@@ -100,14 +129,17 @@ describe('Goals Management', () => {
     it('should set status back to active and clear completedAt', () => {
       const { addGoal, completeGoal, reactivateGoal } = useExpenseStore.getState()
       addGoal({ name: 'Meta', icon: 'Target', color: '#000', targetAmount: 1000 })
+      addGoal({ name: 'Outra', icon: 'Target', color: '#111', targetAmount: 500 })
       const goalId = useExpenseStore.getState().goals[0].id
 
       completeGoal(goalId)
       reactivateGoal(goalId)
 
-      const goal = useExpenseStore.getState().goals[0]
-      expect(goal.status).toBe('active')
-      expect(goal.completedAt).toBeUndefined()
+      const goals = useExpenseStore.getState().goals
+      expect(goals[0].status).toBe('active')
+      expect(goals[0].completedAt).toBeUndefined()
+      // Other goal should be unchanged
+      expect(goals[1].status).toBe('active')
     })
   })
 
@@ -153,6 +185,26 @@ describe('Goals Management', () => {
       expect(remaining).toHaveLength(1)
       expect(remaining[0].name).toBe('Meta 2')
     })
+
+    it('should preserve savings entries not linked to the deleted goal', () => {
+      const { addGoal, addSavingsEntry, deleteGoal, getMonthData } = useExpenseStore.getState()
+      addGoal({ name: 'Meta A', icon: 'Target', color: '#000', targetAmount: 1000 })
+      addGoal({ name: 'Meta B', icon: 'Target', color: '#111', targetAmount: 2000 })
+      const goals = useExpenseStore.getState().goals
+      const idA = goals[0].id
+      const idB = goals[1].id
+
+      addSavingsEntry('2025-01', { amount: 100, date: '2025-01-01', confirmed: true, goalId: idA })
+      addSavingsEntry('2025-01', { amount: 200, date: '2025-01-05', confirmed: true, goalId: idB })
+      addSavingsEntry('2025-01', { amount: 300, date: '2025-01-10', confirmed: true })
+
+      deleteGoal(idA)
+
+      const entries = getMonthData('2025-01').savingsEntries
+      expect(entries.find((e) => e.goalId === idA)).toBeUndefined()
+      expect(entries.find((e) => e.goalId === idB)?.amount).toBe(200)
+      expect(entries.find((e) => !e.goalId && e.amount === 300)).toBeDefined()
+    })
   })
 
   describe('getSavingsEntriesForGoal', () => {
@@ -189,6 +241,28 @@ describe('Goals Management', () => {
       const { addGoal, getSavingsEntriesForGoal } = useExpenseStore.getState()
       addGoal({ name: 'Meta', icon: 'Target', color: '#000', targetAmount: 1000 })
       const goalId = useExpenseStore.getState().goals[0].id
+
+      const entries = getSavingsEntriesForGoal(goalId)
+      expect(entries).toHaveLength(0)
+    })
+
+    it('should handle months with no savingsEntries field', () => {
+      const { addGoal, getSavingsEntriesForGoal } = useExpenseStore.getState()
+      addGoal({ name: 'Meta', icon: 'Target', color: '#000', targetAmount: 1000 })
+      const goalId = useExpenseStore.getState().goals[0].id
+
+      // Month initialized without savingsEntries (legacy data)
+      useExpenseStore.setState({
+        monthlyData: {
+          '2025-01': {
+            month: '2025-01',
+            fixedExpenses: [],
+            variableExpenses: [],
+            incomes: [],
+            savingsEntries: undefined as unknown as [],
+          },
+        },
+      })
 
       const entries = getSavingsEntriesForGoal(goalId)
       expect(entries).toHaveLength(0)

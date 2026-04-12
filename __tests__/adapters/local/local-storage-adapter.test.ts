@@ -226,6 +226,44 @@ describe('LocalStorageAdapter', () => {
         startMonth: '2025-01',
       })
     })
+
+    it('maps notes with value and valueDirection', async () => {
+      useExpenseStore.setState({
+        ...emptyStoreState,
+        notes: [
+          {
+            id: 'note-1',
+            text: 'Pagar boleto',
+            value: 250,
+            valueDirection: 'payable' as const,
+            date: '2025-01-10',
+            persistent: false,
+            done: false,
+            createdAt: '2025-01-01T00:00:00.000Z',
+            createdMonth: '2025-01',
+          },
+          {
+            id: 'note-2',
+            text: 'Receber aluguel',
+            date: '2025-01-15',
+            persistent: true,
+            done: false,
+            createdAt: '2025-01-01T00:00:00.000Z',
+            createdMonth: '2025-01',
+          },
+        ],
+      })
+      const data = await adapter.fetchWorkspaceData('local')
+      expect(data.notes).toHaveLength(2)
+      expect(data.notes[0]).toMatchObject({
+        id: 'note-1',
+        value: 250,
+        valueDirection: 'payable',
+      })
+      // Note without value/valueDirection → null
+      expect(data.notes[1].value).toBeNull()
+      expect(data.notes[1].valueDirection).toBeNull()
+    })
   })
 
   // ─── workspace info methods ───────────────────────────────────────────────────
@@ -382,6 +420,29 @@ describe('LocalStorageAdapter', () => {
 
     it('deleteInstallment resolves', async () => {
       await expect(adapter.deleteInstallment('id')).resolves.toBeUndefined()
+    })
+
+    it('createNote resolves', async () => {
+      await expect(
+        adapter.createNote({
+          id: 'n1',
+          workspaceGroup: 'local',
+          text: 'Test note',
+          date: '2025-01-01',
+          persistent: false,
+          done: false,
+          noteCreatedAt: '2025-01-01T00:00:00.000Z',
+          createdMonth: '2025-01',
+        })
+      ).resolves.toBeUndefined()
+    })
+
+    it('updateNote resolves', async () => {
+      await expect(adapter.updateNote('id', { text: 'Updated' })).resolves.toBeUndefined()
+    })
+
+    it('deleteNote resolves', async () => {
+      await expect(adapter.deleteNote('id')).resolves.toBeUndefined()
     })
   })
 })

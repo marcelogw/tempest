@@ -25,6 +25,24 @@ npm run test:e2e                # Playwright E2E tests
 ```
 
 Husky pre-commit hook runs lint-staged (ESLint + Prettier) on `*.{ts,tsx}` files automatically.
+The pre-push hook runs `npm run test:coverage` to enforce the 75% coverage threshold.
+
+### Updating dependencies
+
+When adding or bumping any package in `package.json`, **always** regenerate the lock file with:
+
+```bash
+npm install --package-lock-only --ignore-scripts
+```
+
+**Never** rely on a plain `npm install` (with existing `node_modules`) to update the lock file — it only updates what changed and leaves transitive dependencies incomplete, causing `npm ci` to fail in CI with EUSAGE errors.
+
+After regenerating, verify locally before pushing:
+
+```bash
+npm ci --ignore-scripts   # must exit 0
+npm install               # restore node_modules for local dev
+```
 
 ## Architecture
 

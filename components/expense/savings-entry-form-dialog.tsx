@@ -192,7 +192,7 @@ export function SavingsEntryFormDialog({
             >
               {i('common.cancel')}
             </Button>
-            <Button type="submit">{i('savings.add')}</Button>
+            <Button type="submit">{isEditing ? i('common.save') : i('savings.add')}</Button>
           </DialogFooter>
         </form>
       </DialogContent>

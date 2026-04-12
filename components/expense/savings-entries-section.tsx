@@ -57,7 +57,9 @@ export function SavingsEntriesSection({
         </div>
         {entries.length > 0 && (
           <div className="flex items-center justify-between pt-1 text-sm">
-            <span className="text-muted-foreground">{entries.length} itens</span>
+            <span className="text-muted-foreground">
+              {entries.length} {i('ui.income.items')}
+            </span>
             <span className="font-semibold text-teal-600 dark:text-teal-400">
               {formatCurrency(total)}
             </span>

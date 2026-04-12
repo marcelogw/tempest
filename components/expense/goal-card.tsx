@@ -18,6 +18,7 @@ import { formatCurrency } from '@/lib/formatters'
 import { type Goal, type SavingsEntry } from '@/lib/expense-store'
 import {
   getProgressPercent,
+  getConfirmedTotal,
   getPendingTotal,
   getMonthlyNeeded,
   getGoalStatus,
@@ -51,10 +52,7 @@ export function GoalCard({
   const status = getGoalStatus(goal, goalEntries)
   const isCompleted = goal.status === 'completed'
 
-  const confirmedTotal = goalEntries
-    .filter((e) => e.confirmed)
-    .reduce((sum, e) => sum + e.amount, 0)
-
+  const confirmedTotal = getConfirmedTotal(goal.id, goalEntries)
   const pendingTotal = getPendingTotal(goal.id, goalEntries)
   const confirmedPercent = goal.targetAmount > 0 ? (confirmedTotal / goal.targetAmount) * 100 : 0
   const pendingPercent = goal.targetAmount > 0 ? (pendingTotal / goal.targetAmount) * 100 : 0

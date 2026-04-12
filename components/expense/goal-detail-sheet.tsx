@@ -214,6 +214,7 @@ export function GoalDetailSheet({
                       size="icon"
                       className="text-muted-foreground hover:text-foreground h-7 w-7"
                       onClick={() => setEditingEntry(entry)}
+                      aria-label={i('common.edit')}
                     >
                       <Icons.Pencil className="h-3.5 w-3.5" />
                     </Button>
@@ -222,6 +223,7 @@ export function GoalDetailSheet({
                       size="icon"
                       className="text-destructive hover:text-destructive hover:bg-destructive/10 h-7 w-7"
                       onClick={() => onRemove(entry.id)}
+                      aria-label={i('common.delete')}
                     >
                       <Icons.Trash2 className="h-3.5 w-3.5" />
                     </Button>
@@ -237,7 +239,7 @@ export function GoalDetailSheet({
         open={addEntryOpen}
         onOpenChange={setAddEntryOpen}
         onSubmit={(entry) => onAdd({ ...entry, goalId: goal.id })}
-        activeGoals={activeGoals}
+        activeGoals={[]}
       />
 
       {editingEntry && (

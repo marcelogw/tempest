@@ -1,7 +1,9 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
+import * as Icons from 'lucide-react'
+import { Check, type LucideIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -12,44 +14,82 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { IconSelector } from './icon-selector'
-import { ColorSelector } from './color-selector'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { cn } from '@/lib/utils'
 import { CATEGORY_COLOR_PALETTE, type Goal } from '@/lib/expense-store'
 
-interface GoalFormDialogProps {
+const GOAL_ICONS = [
+  'Target',
+  'Star',
+  'TrendingUp',
+  'Home',
+  'Car',
+  'Plane',
+  'GraduationCap',
+  'Heart',
+  'Wallet',
+  'Banknote',
+  'DollarSign',
+  'PiggyBank',
+  'Trophy',
+  'Award',
+  'Gift',
+  'ShoppingCart',
+  'Laptop',
+  'Smartphone',
+  'Watch',
+  'Camera',
+  'Music',
+  'Gamepad2',
+  'Bike',
+  'Train',
+  'Coffee',
+  'Utensils',
+  'Dog',
+  'Cat',
+  'Baby',
+  'Leaf',
+  'Flower2',
+  'Sparkles',
+  'Zap',
+  'Flame',
+  'Lightbulb',
+  'BookOpen',
+  'Package',
+  'Headphones',
+  'Wrench',
+  'Users',
+  'Building2',
+  'Tent',
+  'Anchor',
+  'Mountain',
+  'Globe',
+  'Sailboat',
+  'Sunset',
+  'Dumbbell',
+  'Stethoscope',
+  'Brush',
+]
+
+type GoalFormDialogProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
   onSubmit: (goal: Omit<Goal, 'id' | 'createdAt' | 'status'>) => void
   goal?: Goal
 }
 
-const MONTH_VALUES = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
-
 export function GoalFormDialog({ open, onOpenChange, onSubmit, goal }: GoalFormDialogProps) {
   const i = useTranslations()
+  const [iconOpen, setIconOpen] = useState(false)
 
-  const YEARS = useMemo(() => {
-    const year = new Date().getFullYear()
-    return Array.from({ length: 10 }, (_, idx) => (year + idx).toString())
-  }, [])
+  const currentMonth = new Date().toISOString().slice(0, 7)
 
   const [name, setName] = useState(goal?.name ?? '')
-  const [icon, setIcon] = useState<string | null>(goal?.icon ?? 'Target')
+  const [icon, setIcon] = useState(goal?.icon ?? 'Target')
   const [color, setColor] = useState(goal?.color ?? CATEGORY_COLOR_PALETTE[0])
   const [targetAmount, setTargetAmount] = useState(goal?.targetAmount?.toString() ?? '')
-  const [deadlineYear, setDeadlineYear] = useState(
-    goal?.deadline ? goal.deadline.split('-')[0] : ''
-  )
-  const [deadlineMonth, setDeadlineMonth] = useState(
-    goal?.deadline ? goal.deadline.split('-')[1] : ''
-  )
+  const [deadline, setDeadline] = useState(goal?.deadline ?? '')
 
   useEffect(() => {
     if (open) {
@@ -57,8 +97,8 @@ export function GoalFormDialog({ open, onOpenChange, onSubmit, goal }: GoalFormD
       setIcon(goal?.icon ?? 'Target')
       setColor(goal?.color ?? CATEGORY_COLOR_PALETTE[0])
       setTargetAmount(goal?.targetAmount?.toString() ?? '')
-      setDeadlineYear(goal?.deadline ? goal.deadline.split('-')[0] : '')
-      setDeadlineMonth(goal?.deadline ? goal.deadline.split('-')[1] : '')
+      setDeadline(goal?.deadline ?? '')
+      setIconOpen(false)
     }
   }, [open, goal])
 
@@ -66,27 +106,33 @@ export function GoalFormDialog({ open, onOpenChange, onSubmit, goal }: GoalFormD
     e.preventDefault()
     const amount = parseFloat(targetAmount.replace(',', '.')) || 0
     if (!name.trim() || amount <= 0) return
-
-    const deadline = deadlineYear && deadlineMonth ? `${deadlineYear}-${deadlineMonth}` : undefined
-
-    onSubmit({ name: name.trim(), icon: icon ?? 'Target', color, targetAmount: amount, deadline })
+    onSubmit({
+      name: name.trim(),
+      icon,
+      color,
+      targetAmount: amount,
+      deadline: deadline || undefined,
+    })
     onOpenChange(false)
   }
 
+  const IconComponent = (Icons[icon as keyof typeof Icons] ?? Icons.Target) as LucideIcon
   const isEditing = !!goal
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[480px]">
+      <DialogContent className="sm:max-w-[440px]">
         <DialogHeader>
           <DialogTitle>{isEditing ? i('goals.editGoal') : i('goals.add')}</DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4 py-4">
-          <div className="space-y-2">
+        <form onSubmit={handleSubmit} className="space-y-4 pt-1">
+          {/* Name */}
+          <div className="space-y-1.5">
             <Label htmlFor="goal-name">{i('goals.name')}</Label>
             <Input
               id="goal-name"
+              autoComplete="off"
               placeholder={i('goals.namePlaceholder')}
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -94,12 +140,77 @@ export function GoalFormDialog({ open, onOpenChange, onSubmit, goal }: GoalFormD
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <IconSelector selectedIcon={icon} onIconSelect={setIcon} />
-            <ColorSelector selectedColor={color} onColorSelect={setColor} />
+          {/* Icon + Color */}
+          <div className="space-y-1.5">
+            <Label>{i('ui.selectors.icon')}</Label>
+            <div className="flex items-start gap-3">
+              {/* Compact icon picker */}
+              <Popover open={iconOpen} onOpenChange={setIconOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="icon"
+                    className="h-9 w-9 shrink-0"
+                    aria-label={i('ui.selectors.selectIcon')}
+                  >
+                    <IconComponent className="h-4 w-4" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-56 p-2" align="start">
+                  <ScrollArea className="h-44">
+                    <div className="grid grid-cols-7 gap-1">
+                      {GOAL_ICONS.map((iconName) => {
+                        const Ic = (Icons[iconName as keyof typeof Icons] ??
+                          null) as LucideIcon | null
+                        if (!Ic) return null
+                        return (
+                          <Button
+                            key={iconName}
+                            type="button"
+                            variant={icon === iconName ? 'default' : 'ghost'}
+                            size="icon"
+                            className="h-8 w-8"
+                            onClick={() => {
+                              setIcon(iconName)
+                              setIconOpen(false)
+                            }}
+                            title={iconName}
+                          >
+                            <Ic className="h-4 w-4" />
+                          </Button>
+                        )
+                      })}
+                    </div>
+                  </ScrollArea>
+                </PopoverContent>
+              </Popover>
+
+              {/* Color swatches */}
+              <div className="flex flex-wrap gap-1.5">
+                {CATEGORY_COLOR_PALETTE.map((c) => (
+                  <button
+                    key={c}
+                    type="button"
+                    onClick={() => setColor(c)}
+                    className={cn(
+                      'relative h-7 w-7 rounded-md border-2 transition-all hover:scale-110 focus:ring-2 focus:ring-offset-1 focus:outline-none',
+                      color === c ? 'border-foreground' : 'border-transparent'
+                    )}
+                    style={{ backgroundColor: c }}
+                    aria-label={c}
+                  >
+                    {color === c && (
+                      <Check className="absolute inset-0 m-auto h-3.5 w-3.5 text-white drop-shadow" />
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
 
-          <div className="space-y-2">
+          {/* Target Amount */}
+          <div className="space-y-1.5">
             <Label htmlFor="goal-amount">{i('goals.targetAmount')}</Label>
             <div className="relative">
               <span className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2 text-sm">
@@ -108,9 +219,9 @@ export function GoalFormDialog({ open, onOpenChange, onSubmit, goal }: GoalFormD
               <Input
                 id="goal-amount"
                 type="number"
-                step="0.01"
-                min="0.01"
-                placeholder="0,00"
+                step="1"
+                min="1"
+                placeholder="0"
                 className="pl-10"
                 value={targetAmount}
                 onChange={(e) => setTargetAmount(e.target.value)}
@@ -119,45 +230,24 @@ export function GoalFormDialog({ open, onOpenChange, onSubmit, goal }: GoalFormD
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label>{i('goals.deadline')}</Label>
-            <div className="grid grid-cols-2 gap-2">
-              <Select
-                value={deadlineMonth || 'none'}
-                onValueChange={(v) => setDeadlineMonth(v === 'none' ? '' : v)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder={i('goals.noDeadline')} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">{i('goals.noDeadline')}</SelectItem>
-                  {MONTH_VALUES.map((v) => (
-                    <SelectItem key={v} value={v}>
-                      {i(`goals.months.${v}`)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Select
-                value={deadlineYear || 'none'}
-                onValueChange={(v) => setDeadlineYear(v === 'none' ? '' : v)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder={i('goals.deadline')} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">—</SelectItem>
-                  {YEARS.map((y) => (
-                    <SelectItem key={y} value={y}>
-                      {y}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+          {/* Deadline */}
+          <div className="space-y-1.5">
+            <Label htmlFor="goal-deadline">
+              {i('goals.deadline')}{' '}
+              <span className="text-muted-foreground text-xs font-normal">
+                ({i('goals.deadlineOptional')})
+              </span>
+            </Label>
+            <Input
+              id="goal-deadline"
+              type="month"
+              min={currentMonth}
+              value={deadline}
+              onChange={(e) => setDeadline(e.target.value)}
+            />
           </div>
 
-          <DialogFooter>
+          <DialogFooter className="pt-2">
             <Button
               type="button"
               variant="outline"

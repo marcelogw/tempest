@@ -129,12 +129,15 @@ export function SavingsEntryFormDialog({
           {activeGoals.length > 0 && (
             <div className="space-y-2">
               <Label>{i('savings.goal')}</Label>
-              <Select value={goalId} onValueChange={setGoalId}>
+              <Select
+                value={goalId || 'none'}
+                onValueChange={(v) => setGoalId(v === 'none' ? '' : v)}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder={i('savings.noGoal')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">{i('savings.noGoal')}</SelectItem>
+                  <SelectItem value="none">{i('savings.noGoal')}</SelectItem>
                   {activeGoals.map((goal) => {
                     const IconComponent = (Icons[goal.icon as keyof typeof Icons] ??
                       Icons.Target) as LucideIcon

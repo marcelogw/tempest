@@ -122,12 +122,15 @@ export function GoalFormDialog({ open, onOpenChange, onSubmit, goal }: GoalFormD
           <div className="space-y-2">
             <Label>{i('goals.deadline')}</Label>
             <div className="grid grid-cols-2 gap-2">
-              <Select value={deadlineMonth} onValueChange={setDeadlineMonth}>
+              <Select
+                value={deadlineMonth || 'none'}
+                onValueChange={(v) => setDeadlineMonth(v === 'none' ? '' : v)}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder={i('goals.noDeadline')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">{i('goals.noDeadline')}</SelectItem>
+                  <SelectItem value="none">{i('goals.noDeadline')}</SelectItem>
                   {MONTH_VALUES.map((v) => (
                     <SelectItem key={v} value={v}>
                       {i(`goals.months.${v}`)}
@@ -135,12 +138,15 @@ export function GoalFormDialog({ open, onOpenChange, onSubmit, goal }: GoalFormD
                   ))}
                 </SelectContent>
               </Select>
-              <Select value={deadlineYear} onValueChange={setDeadlineYear}>
+              <Select
+                value={deadlineYear || 'none'}
+                onValueChange={(v) => setDeadlineYear(v === 'none' ? '' : v)}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder={i('goals.deadline')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">—</SelectItem>
+                  <SelectItem value="none">—</SelectItem>
                   {YEARS.map((y) => (
                     <SelectItem key={y} value={y}>
                       {y}

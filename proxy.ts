@@ -13,7 +13,10 @@ let runWithAmplifyServerContext:
 
 try {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const outputs = require('./amplify_outputs.json') as Record<string, unknown>
+  const outputs = require(/* turbopackIgnore: true */ './amplify_outputs.json') as Record<
+    string,
+    unknown
+  >
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { createServerRunner } = require('@aws-amplify/adapter-nextjs') as {
     createServerRunner: (args: { resourcesConfig: unknown }) => {

@@ -19,8 +19,15 @@ export type WorkspaceData = {
   monthlyDataList: Array<{
     id: string
     month: string
-    investments: number
-    savings: number
+    savingsEntries?: Array<{
+      id: string
+      amount: number
+      date: string
+      source?: string
+      note?: string
+      goalId?: string
+      confirmed: boolean
+    }>
   }>
   incomes: Array<{
     id: string
@@ -147,10 +154,9 @@ export type InstallmentInput = {
   startMonth: string
 }
 
-export type MonthlyDataUpdate = {
-  investments?: number
-  savings?: number
-}
+// No cloud-synced fields remain on MonthlyData (savingsEntries are local-only for now).
+// TODO: Remove or expand this type when cloud sync for SavingsEntry/Goal is implemented.
+export type MonthlyDataUpdate = Record<string, never>
 
 export type NoteInput = {
   id: string

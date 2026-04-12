@@ -77,6 +77,8 @@ export function DashboardView() {
       const date = new Date(month.month + '-01')
       const monthLabel = date.toLocaleDateString('pt-BR', { month: 'short' })
 
+      const savingsTotal = (month.savingsEntries ?? []).reduce((sum, e) => sum + e.amount, 0)
+
       return {
         month: monthLabel,
         fullMonth: month.month,
@@ -84,9 +86,8 @@ export function DashboardView() {
         expenses: totalExpenses,
         fixed: fixedTotal,
         variable: variableTotal,
-        investments: month.investments,
-        savings: month.savings,
-        net: totalIncome - totalExpenses - month.investments - month.savings,
+        savings: savingsTotal,
+        net: totalIncome - totalExpenses - savingsTotal,
       }
     })
   }, [monthlyData, currentYear, getInstallmentsForMonth])
@@ -158,20 +159,15 @@ export function DashboardView() {
 
     const avgMonthlyExpense = monthsData.reduce((sum, m) => sum + m.expenses, 0) / monthsData.length
     const avgMonthlySavings = monthsData.reduce((sum, m) => sum + m.savings, 0) / monthsData.length
-    const avgMonthlyInvestments =
-      monthsData.reduce((sum, m) => sum + m.investments, 0) / monthsData.length
-    const totalSaved = monthsData.reduce((sum, m) => sum + m.savings + m.investments, 0)
+    const totalSaved = monthsData.reduce((sum, m) => sum + m.savings, 0)
 
     const savingsRate =
-      currentMonth.income > 0
-        ? ((currentMonth.savings + currentMonth.investments) / currentMonth.income) * 100
-        : 0
+      currentMonth.income > 0 ? (currentMonth.savings / currentMonth.income) * 100 : 0
 
     return {
       expenseChange,
       avgMonthlyExpense,
       avgMonthlySavings,
-      avgMonthlyInvestments,
       totalSaved,
       savingsRate,
       currentMonth,
@@ -207,7 +203,6 @@ export function DashboardView() {
     fixed: '#3b82f6',
     variable: '#f59e0b',
     savings: '#14b8a6',
-    investments: '#8b5cf6',
     net: '#06b6d4',
   }
 
@@ -659,14 +654,6 @@ export function DashboardView() {
                             strokeWidth={2}
                             dot={{ fill: chartColors.savings, strokeWidth: 2 }}
                             name="Poupanca"
-                          />
-                          <Line
-                            type="monotone"
-                            dataKey="investments"
-                            stroke={chartColors.investments}
-                            strokeWidth={2}
-                            dot={{ fill: chartColors.investments, strokeWidth: 2 }}
-                            name="Investimentos"
                           />
                         </LineChart>
                       </ResponsiveContainer>

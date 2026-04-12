@@ -13,24 +13,24 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { formatCurrency } from '@/lib/formatters'
+import { type SavingsEntry } from '@/lib/expense-store'
 
 interface SummaryCardsProps {
   income: number
   totalExpenses: number
-  investments: number
-  savings: number
+  savingsEntries: SavingsEntry[]
   previousMonthExpenses?: number
 }
 
 export function SummaryCards({
   income,
   totalExpenses,
-  investments,
-  savings,
+  savingsEntries,
   previousMonthExpenses,
 }: SummaryCardsProps) {
   const i = useTranslations()
-  const netBalance = income - totalExpenses - investments - savings
+  const totalSavings = savingsEntries.reduce((sum, e) => sum + e.amount, 0)
+  const netBalance = income - totalExpenses - totalSavings
   const expenseChange = previousMonthExpenses
     ? ((totalExpenses - previousMonthExpenses) / previousMonthExpenses) * 100
     : 0
@@ -54,25 +54,17 @@ export function SummaryCards({
       trendLabel: i('ui.summary.vsPreviousMonth'),
     },
     {
-      title: i('ui.summary.investments'),
-      value: investments,
-      icon: TrendingUp,
-      color: 'text-primary',
-      bgColor: 'bg-primary/10',
-      trend: null,
-    },
-    {
-      title: i('ui.summary.savings'),
-      value: savings,
+      title: i('ui.summary.reserves'),
+      value: totalSavings,
       icon: PiggyBank,
-      color: 'text-chart-2',
-      bgColor: 'bg-chart-2/10',
+      color: 'text-teal-600',
+      bgColor: 'bg-teal-500/10',
       trend: null,
     },
   ]
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {cards.map((card) => (
         <Card
           key={card.title}
@@ -110,7 +102,7 @@ export function SummaryCards({
 
       <Card
         className={cn(
-          'border-border/50 col-span-1 shadow-sm sm:col-span-2 lg:col-span-4',
+          'border-border/50 col-span-1 shadow-sm sm:col-span-2 lg:col-span-3',
           netBalance >= 0 ? 'bg-accent/5' : 'bg-destructive/5'
         )}
       >

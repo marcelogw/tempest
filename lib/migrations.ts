@@ -5,7 +5,7 @@
  * to maintain compatibility when schema changes are made.
  */
 
-export const CURRENT_SCHEMA_VERSION = 2
+export const CURRENT_SCHEMA_VERSION = 3
 
 type MigrationFn = (data: unknown) => unknown
 
@@ -107,11 +107,48 @@ const migrateV1ToV2: MigrationFn = (data: unknown) => {
 }
 
 /**
+ * Migration from version 2 to version 3
+ *
+ * Changes:
+ * - MonthlyData: removes `investments` and `savings` scalars
+ * - MonthlyData: adds `savingsEntries: []`
+ * - Root state: adds `goals: []`
+ */
+const migrateV2ToV3: MigrationFn = (data: unknown) => {
+  if (!data || typeof data !== 'object') return data
+
+  const state = (
+    data as {
+      state?: {
+        monthlyData?: Record<string, unknown>
+        goals?: unknown[]
+      }
+    }
+  ).state
+
+  if (!state) return data
+
+  if (state.monthlyData && typeof state.monthlyData === 'object') {
+    Object.values(state.monthlyData).forEach((md: unknown) => {
+      const m = md as Record<string, unknown>
+      delete m.investments
+      delete m.savings
+      if (!m.savingsEntries) m.savingsEntries = []
+    })
+  }
+
+  if (!state.goals) state.goals = []
+
+  return data
+}
+
+/**
  * Migration registry
  * Maps version numbers to migration functions
  */
 const migrations: Record<number, MigrationFn> = {
   2: migrateV1ToV2,
+  3: migrateV2ToV3,
 }
 
 /**

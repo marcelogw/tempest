@@ -1,5 +1,6 @@
 import { generateClient } from 'aws-amplify/data'
 import type { Schema } from '@/amplify/data/resource'
+import type { SavingsEntry } from './expense-store'
 
 // Singleton Amplify client
 let _client: ReturnType<typeof generateClient<Schema>> | null = null
@@ -105,8 +106,8 @@ export type WorkspaceData = {
   monthlyDataList: Array<{
     id: string
     month: string
-    investments: number
-    savings: number
+    // TODO: SavingsEntry and Goal are not synced to cloud yet — local-only
+    savingsEntries?: SavingsEntry[]
   }>
   incomes: Array<{
     id: string
@@ -252,12 +253,11 @@ export async function fetchWorkspaceData(workspaceGroup: string): Promise<Worksp
   })
 
   const monthlyDataList = rawMonthlyData.map((m) => {
-    const md = m as { id: string; month: string; investments: number; savings: number }
+    const md = m as { id: string; month: string }
     return {
       id: md.id,
       month: md.month,
-      investments: md.investments ?? 0,
-      savings: md.savings ?? 0,
+      savingsEntries: [],
     }
   })
 
@@ -417,20 +417,16 @@ export async function createMonthlyData(month: string, workspaceGroup: string): 
     id: month,
     workspaceGroup,
     month,
-    investments: 0,
-    savings: 0,
   })
 }
 
+// TODO: updateMonthlyData is a no-op — SavingsEntry sync is not implemented yet.
+// Remove this function once cloud sync for SavingsEntry/Goal is added.
 export async function updateMonthlyData(
-  month: string,
-  data: { investments?: number; savings?: number }
+  _month: string,
+  _data: Record<string, never>
 ): Promise<void> {
-  await getAmplifyClient().models.MonthlyData.update({
-    id: month,
-    ...(data.investments !== undefined && { investments: data.investments }),
-    ...(data.savings !== undefined && { savings: data.savings }),
-  })
+  // no-op: savingsEntries are not synced to cloud
 }
 
 // ─── Income CRUD ──────────────────────────────────────────────────────────────

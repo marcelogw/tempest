@@ -65,8 +65,7 @@ export class LocalStorageAdapter implements StorageAdapter {
     const monthlyDataList = Object.values(monthlyDataMap).map((md) => ({
       id: md.month,
       month: md.month,
-      investments: md.investments,
-      savings: md.savings,
+      savingsEntries: md.savingsEntries ?? [],
     }))
 
     const incomes = Object.values(monthlyDataMap).flatMap((md) =>

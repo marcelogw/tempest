@@ -25,6 +25,24 @@ npm run test:e2e                # Playwright E2E tests
 ```
 
 Husky pre-commit hook runs lint-staged (ESLint + Prettier) on `*.{ts,tsx}` files automatically.
+The pre-push hook runs `npm run test:coverage` to enforce the 75% coverage threshold.
+
+### Updating dependencies
+
+When adding or bumping any package in `package.json`, **always** regenerate the lock file with:
+
+```bash
+npm install --package-lock-only --ignore-scripts
+```
+
+**Never** rely on a plain `npm install` (with existing `node_modules`) to update the lock file — it only updates what changed and leaves transitive dependencies incomplete, causing `npm ci` to fail in CI with EUSAGE errors.
+
+After regenerating, verify locally before pushing:
+
+```bash
+npm ci --ignore-scripts   # must exit 0
+npm install               # restore node_modules for local dev
+```
 
 ## Architecture
 
@@ -124,6 +142,59 @@ import { render, screen } from '@/__tests__/test-utils'
 ```
 
 E2E tests use Playwright (`test:e2e`); they are excluded from Vitest runs.
+
+#### Mandatory testing rules — apply to every feature
+
+These are non-negotiable. A feature is not done until all of these pass:
+
+1. **Run `npm run quality` and `npm run test` before every push.** Never skip. The pre-commit hook runs `quality` and the pre-push hook runs `test:coverage`, but run them manually before marking work as complete.
+
+2. **Every new component that uses a Radix primitive (Select, Dialog, Sheet, AlertDialog, DropdownMenu) must have at least one render test** that opens/activates the component and asserts it renders without crashing. Radix enforces runtime invariants (e.g. `SelectItem` cannot have `value=""`) that TypeScript does not catch — only a render test will surface them.
+
+   Minimum test pattern:
+
+   ```typescript
+   it('renders without crashing', async () => {
+     render(<MyComponent open={true} ... />)
+     expect(screen.getByRole('dialog')).toBeInTheDocument()
+   })
+   ```
+
+3. **Every new route/screen must have at least one Playwright E2E smoke test** that navigates to the screen, performs the primary user action, and asserts no crash occurs. A crash in production that could have been caught by opening the page in a test is unacceptable.
+
+4. **Store logic extracted into utility files (e.g. `lib/goal-utils.ts`) must have unit tests** covering all branches. Use `vi.setSystemTime()` for any function that calls `new Date()`.
+
+5. **Do not rely on the 75% coverage threshold as a proxy for test completeness.** The threshold only counts files that are imported by at least one test — new files with zero tests are invisible to it. Write tests because the logic requires it, not to satisfy a number.
+
+### UI & Design Rules
+
+#### Before building any new form or modal
+
+1. **Read at least 2 existing similar components first.** For forms: read `expense-form.tsx` and `income-input.tsx`. For dialogs: read `expense-edit-dialog.tsx`. Copy their structure, spacing, and field patterns — do not invent a new layout from scratch.
+
+2. **Use only shadcn/ui primitives.** Never create custom UI components for things shadcn already solves — color pickers, icon selectors, dropdowns, date inputs. Use `Select`, `Popover`, `Command`, `Input`, `Checkbox` from `components/ui/`. Custom primitives produce inconsistent UX and sizing.
+
+3. **Follow these field conventions:**
+   - Currency inputs: `type="number" step="1" min="0"` with `R$` prefix span — never `step="0.01"` (useless micro-increments)
+   - Date/deadline selectors: use a single `<Input type="month">` or constrain `<Select>` options to future dates only — never allow past dates for deadlines
+   - Text inputs that are not login fields: always add `autoComplete="off"` to prevent password managers from hijacking them
+
+#### Visual validation — mandatory before marking UI work as done
+
+4. **Take a Playwright screenshot and review it before pushing.** The AI has no eyes by default — a screenshot closes the feedback loop. Process:
+
+   ```bash
+   # 1. start dev server in background
+   npm run dev &
+   # 2. open the component/screen in the browser via Playwright
+   # 3. take screenshot, review visually
+   # 4. fix issues, repeat until acceptable
+   # 5. kill dev server
+   ```
+
+   Use `npx playwright screenshot` or a quick Playwright script. A form or modal is not done until a screenshot confirms it looks consistent with the rest of the app.
+
+5. **Compare against existing screens.** Before calling UI done, open an existing similar screen (e.g. the expense form) alongside the new one and verify spacing, font sizes, and component sizes are consistent.
 
 ### Styling
 

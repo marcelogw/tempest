@@ -20,8 +20,9 @@ export function MonthlyView() {
     addIncome,
     removeIncome,
     updateIncome,
-    updateInvestments,
-    updateSavings,
+    addSavingsEntry,
+    updateSavingsEntry,
+    removeSavingsEntry,
     addExpense,
     removeExpense,
     updateExpense,
@@ -29,6 +30,7 @@ export function MonthlyView() {
     removeFixedExpenseFromMonth,
     updateFixedExpenseFromMonth,
     monthlyData,
+    goals,
     getInstallmentsForMonth,
     addNote,
     updateNote,
@@ -56,14 +58,11 @@ export function MonthlyView() {
   const handleUpdateExpense = (expense: Expense, makeRecurring?: boolean) => {
     if (expense.type === 'fixed') {
       if (expense.recurringGroupId || makeRecurring) {
-        // Convert to recurring if makeRecurring is true
         const groupId =
           expense.recurringGroupId || `recur_${Math.random().toString(36).substring(2, 9)}`
 
-        // If converting to recurring, first remove the old non-recurring expense
         if (makeRecurring && !expense.recurringGroupId) {
           removeExpense(currentMonth, expense.id, 'fixed')
-          // Then add as new recurring expense
           addFixedExpenseWithPropagation(currentMonth, {
             description: expense.description,
             amount: expense.amount,
@@ -72,7 +71,6 @@ export function MonthlyView() {
             date: expense.date,
           })
         } else {
-          // Update recurring expense from this month onwards
           updateFixedExpenseFromMonth(currentMonth, groupId, {
             description: expense.description,
             amount: expense.amount,
@@ -80,11 +78,9 @@ export function MonthlyView() {
           })
         }
       } else {
-        // Single month edit for non-recurring fixed expense
         updateExpense(currentMonth, expense, 'fixed')
       }
     } else {
-      // Variable expense - single month edit only
       updateExpense(currentMonth, expense, 'variable')
     }
   }
@@ -92,10 +88,8 @@ export function MonthlyView() {
   const handleRemoveFixedExpense = (expenseId: string) => {
     const expense = monthData.fixedExpenses.find((e) => e.id === expenseId)
     if (expense?.recurringGroupId) {
-      // Remove from this month onwards
       removeFixedExpenseFromMonth(currentMonth, expense.recurringGroupId)
     } else {
-      // Remove only from current month
       removeExpense(currentMonth, expenseId, 'fixed')
     }
   }
@@ -134,6 +128,7 @@ export function MonthlyView() {
   ]
 
   const totalIncome = monthData.incomes.reduce((sum, i) => sum + i.amount, 0)
+  const activeGoals = goals.filter((g) => g.status === 'active')
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
@@ -152,8 +147,7 @@ export function MonthlyView() {
           <SummaryCards
             income={totalIncome}
             totalExpenses={totalExpenses}
-            investments={monthData.investments}
-            savings={monthData.savings}
+            savingsEntries={monthData.savingsEntries ?? []}
             previousMonthExpenses={prevMonthTotalExpenses}
           />
 
@@ -161,15 +155,16 @@ export function MonthlyView() {
             <div className="space-y-6 lg:col-span-1">
               <IncomeSection
                 incomes={monthData.incomes}
-                investments={monthData.investments}
-                savings={monthData.savings}
+                savingsEntries={monthData.savingsEntries ?? []}
+                activeGoals={activeGoals}
                 onAddIncome={(income, replicate) => addIncome(currentMonth, income, replicate)}
                 onRemoveIncome={(id) => removeIncome(currentMonth, id)}
                 onUpdateIncome={(income, makeRecurring) =>
                   updateIncome(currentMonth, income, makeRecurring)
                 }
-                onInvestmentsChange={(value) => updateInvestments(currentMonth, value)}
-                onSavingsChange={(value) => updateSavings(currentMonth, value)}
+                onAddEntry={(entry) => addSavingsEntry(currentMonth, entry)}
+                onUpdateEntry={(entry) => updateSavingsEntry(currentMonth, entry)}
+                onRemoveEntry={(entryId) => removeSavingsEntry(currentMonth, entryId)}
               />
               <Installments currentMonth={currentMonth} />
               <CategoryBreakdown expenses={allExpenses} />

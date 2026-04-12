@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -16,20 +16,23 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { TrendingUp, PiggyBank, DollarSign, Plus } from 'lucide-react'
+import { DollarSign, Plus } from 'lucide-react'
 import { IncomeList } from './income-list'
+import { SavingsEntriesSection } from './savings-entries-section'
+import { SavingsEntryFormDialog } from './savings-entry-form-dialog'
 import { formatCurrency } from '@/lib/formatters'
-import { type Income } from '@/lib/expense-store'
+import { type Income, type SavingsEntry, type Goal } from '@/lib/expense-store'
 
 interface IncomeSectionProps {
   incomes: Income[]
-  investments: number
-  savings: number
+  savingsEntries: SavingsEntry[]
+  activeGoals: Goal[]
   onAddIncome: (income: Omit<Income, 'id'>, replicate: boolean) => void
   onRemoveIncome: (id: string) => void
   onUpdateIncome: (income: Income, makeRecurring?: boolean) => void
-  onInvestmentsChange: (value: number) => void
-  onSavingsChange: (value: number) => void
+  onAddEntry: (entry: Omit<SavingsEntry, 'id'>) => void
+  onUpdateEntry: (entry: SavingsEntry) => void
+  onRemoveEntry: (entryId: string) => void
 }
 
 function AddIncomeDialog({
@@ -137,114 +140,70 @@ function AddIncomeDialog({
 
 export function IncomeSection({
   incomes,
-  investments,
-  savings,
+  savingsEntries,
+  activeGoals,
   onAddIncome,
   onRemoveIncome,
   onUpdateIncome,
-  onInvestmentsChange,
-  onSavingsChange,
+  onAddEntry,
+  onUpdateEntry,
+  onRemoveEntry,
 }: IncomeSectionProps) {
   const i = useTranslations()
-  const [investmentsValue, setInvestmentsValue] = useState(investments.toString())
-  const [savingsValue, setSavingsValue] = useState(savings.toString())
-
-  useEffect(() => {
-    setInvestmentsValue(investments.toString())
-  }, [investments])
-
-  useEffect(() => {
-    setSavingsValue(savings.toString())
-  }, [savings])
-
-  const handleInvestmentsBlur = () => {
-    const value = parseFloat(investmentsValue) || 0
-    onInvestmentsChange(value)
-  }
-
-  const handleSavingsBlur = () => {
-    const value = parseFloat(savingsValue) || 0
-    onSavingsChange(value)
-  }
+  const [addEntryOpen, setAddEntryOpen] = useState(false)
+  const [editingEntry, setEditingEntry] = useState<SavingsEntry | null>(null)
 
   const totalIncome = incomes.reduce((sum, income) => sum + income.amount, 0)
 
   return (
-    <Card className="border-border/50 shadow-sm">
-      <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="rounded-md bg-emerald-500/10 p-1.5">
-              <DollarSign className="h-4 w-4 text-emerald-600" />
+    <div className="space-y-4">
+      <Card className="border-border/50 shadow-sm">
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="rounded-md bg-emerald-500/10 p-1.5">
+                <DollarSign className="h-4 w-4 text-emerald-600" />
+              </div>
+              <CardTitle className="text-base font-semibold">{i('ui.income.title')}</CardTitle>
             </div>
-            <CardTitle className="text-base font-semibold">{i('ui.income.title')}</CardTitle>
+            <AddIncomeDialog onSubmit={onAddIncome} i={i} />
           </div>
-          <AddIncomeDialog onSubmit={onAddIncome} i={i} />
-        </div>
-        <div className="flex items-center justify-between pt-2 text-sm">
-          <span className="text-muted-foreground">{incomes.length} itens</span>
-          <span className="font-semibold text-emerald-600 dark:text-emerald-400">
-            {formatCurrency(totalIncome)}
-          </span>
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-6 pt-0">
-        <IncomeList incomes={incomes} onRemove={onRemoveIncome} onUpdate={onUpdateIncome} />
+          <div className="flex items-center justify-between pt-2 text-sm">
+            <span className="text-muted-foreground">{incomes.length} itens</span>
+            <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+              {formatCurrency(totalIncome)}
+            </span>
+          </div>
+        </CardHeader>
+        <CardContent className="pt-0">
+          <IncomeList incomes={incomes} onRemove={onRemoveIncome} onUpdate={onUpdateIncome} />
+        </CardContent>
+      </Card>
 
-        <div className="grid grid-cols-2 gap-3 border-t pt-4">
-          <div className="space-y-2">
-            <Label
-              htmlFor="investments"
-              className="text-muted-foreground flex items-center gap-2 text-sm font-medium"
-            >
-              <TrendingUp className="text-primary h-4 w-4" />
-              Investimentos
-            </Label>
-            <div className="relative">
-              <span className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2">
-                R$
-              </span>
-              <Input
-                id="investments"
-                type="number"
-                min="0"
-                step="0.01"
-                value={investmentsValue}
-                onChange={(e) => setInvestmentsValue(e.target.value)}
-                onBlur={handleInvestmentsBlur}
-                className="pl-10"
-                placeholder="0,00"
-              />
-            </div>
-          </div>
+      <SavingsEntriesSection
+        entries={savingsEntries}
+        activeGoals={activeGoals}
+        onAddClick={() => setAddEntryOpen(true)}
+        onEditEntry={setEditingEntry}
+        onRemove={onRemoveEntry}
+      />
 
-          <div className="space-y-2">
-            <Label
-              htmlFor="savings"
-              className="text-muted-foreground flex items-center gap-2 text-sm font-medium"
-            >
-              <PiggyBank className="text-chart-2 h-4 w-4" />
-              Poupança
-            </Label>
-            <div className="relative">
-              <span className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2">
-                R$
-              </span>
-              <Input
-                id="savings"
-                type="number"
-                min="0"
-                step="0.01"
-                value={savingsValue}
-                onChange={(e) => setSavingsValue(e.target.value)}
-                onBlur={handleSavingsBlur}
-                className="pl-10"
-                placeholder="0,00"
-              />
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+      <SavingsEntryFormDialog
+        open={addEntryOpen}
+        onOpenChange={setAddEntryOpen}
+        onSubmit={onAddEntry}
+        activeGoals={activeGoals}
+      />
+
+      {editingEntry && (
+        <SavingsEntryFormDialog
+          open={editingEntry !== null}
+          onOpenChange={(open) => !open && setEditingEntry(null)}
+          onSubmit={(updates) => onUpdateEntry({ ...editingEntry, ...updates })}
+          entry={editingEntry}
+          activeGoals={activeGoals}
+        />
+      )}
+    </div>
   )
 }

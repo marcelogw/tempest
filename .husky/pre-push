@@ -1,1 +1,12 @@
-npm run test -- --run
+# Verify lock file is in sync with package.json (catches npm ci failures before they hit CI)
+npm install --package-lock-only --ignore-scripts --silent
+if ! git diff --quiet package-lock.json; then
+  echo ""
+  echo "ERROR: package-lock.json is out of sync with package.json."
+  echo "Run: npm install --package-lock-only --ignore-scripts"
+  echo "Then review and commit the updated lock file before pushing."
+  git checkout package-lock.json
+  exit 1
+fi
+
+npm run test:coverage

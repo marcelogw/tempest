@@ -16,6 +16,7 @@ Personal expense management application for tracking income, expenses, investmen
 - **Monthly View** — Detailed income and expense tracking per month
 - **Credit Card Installments** — Multi-month installment tracking across cards
 - **Category Management** — User-configurable categories with drag-to-reorder
+- **Goals & Savings** — Define financial goals with a target amount and optional deadline; track contributions (confirmed or forecast) with a dual-band progress bar; monitor monthly pacing and on-track/behind/overdue status
 - **Workspace Collaboration** — Share your finances with one other person via invite codes
 - **Monthly Notes** — Annotate months with contextual notes: optional monetary value (payable/receivable), event date, and a persistent flag so pending notes carry forward to future months until marked done
 - **Bilingual** — English and Portuguese (Brazil), detected automatically from browser/cookie

@@ -125,6 +125,29 @@ import { render, screen } from '@/__tests__/test-utils'
 
 E2E tests use Playwright (`test:e2e`); they are excluded from Vitest runs.
 
+#### Mandatory testing rules — apply to every feature
+
+These are non-negotiable. A feature is not done until all of these pass:
+
+1. **Run `npm run quality` and `npm run test` before every push.** Never skip. The pre-commit hook runs `quality` and the pre-push hook runs `test:coverage`, but run them manually before marking work as complete.
+
+2. **Every new component that uses a Radix primitive (Select, Dialog, Sheet, AlertDialog, DropdownMenu) must have at least one render test** that opens/activates the component and asserts it renders without crashing. Radix enforces runtime invariants (e.g. `SelectItem` cannot have `value=""`) that TypeScript does not catch — only a render test will surface them.
+
+   Minimum test pattern:
+
+   ```typescript
+   it('renders without crashing', async () => {
+     render(<MyComponent open={true} ... />)
+     expect(screen.getByRole('dialog')).toBeInTheDocument()
+   })
+   ```
+
+3. **Every new route/screen must have at least one Playwright E2E smoke test** that navigates to the screen, performs the primary user action, and asserts no crash occurs. A crash in production that could have been caught by opening the page in a test is unacceptable.
+
+4. **Store logic extracted into utility files (e.g. `lib/goal-utils.ts`) must have unit tests** covering all branches. Use `vi.setSystemTime()` for any function that calls `new Date()`.
+
+5. **Do not rely on the 75% coverage threshold as a proxy for test completeness.** The threshold only counts files that are imported by at least one test — new files with zero tests are invisible to it. Write tests because the logic requires it, not to satisfy a number.
+
 ### Styling
 
 - Tailwind CSS v4 via PostCSS plugin (no `tailwind.config.*` file)

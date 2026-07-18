@@ -5,8 +5,6 @@ import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, getLocale } from 'next-intl/server'
 import { ThemeProvider } from '@/components/theme-provider'
 import { AmplifyProvider } from '@/components/amplify-provider'
-import { DataSourceIndicator } from '@/components/debug/data-source-indicator'
-import { SyncStatusBadge } from '@/components/ui/sync-status-badge'
 import './globals.css'
 
 const inter = Inter({
@@ -98,11 +96,7 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <AmplifyProvider>
-              {children}
-              <DataSourceIndicator />
-              <SyncStatusBadge />
-            </AmplifyProvider>
+            <AmplifyProvider>{children}</AmplifyProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
         <Analytics />

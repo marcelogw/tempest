@@ -83,7 +83,7 @@ export function Installments({ currentMonth, showAllInstallments = false }: Inst
                 size="icon"
                 variant="outline"
                 className="h-8 w-8 bg-transparent"
-                title={i('common.add')}
+                title="Adicionar Parcelamento"
               >
                 <Plus className="h-4 w-4" />
               </Button>

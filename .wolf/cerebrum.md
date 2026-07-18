@@ -15,8 +15,8 @@
 
 ## Do-Not-Repeat
 
-<!-- Mistakes made and corrected. Each entry prevents the same mistake recurring. -->
-<!-- Format: [YYYY-MM-DD] Description of what went wrong and what to do instead. -->
+- [2026-07-18] NUNCA subestime o impacto de alterações na interface (como mudanças simples de texto ou componentes). O projeto possui uma suíte extensa de testes unitários e E2E (Playwright) que cobrem praticamente todos os fluxos. Qualquer modificação nos componentes visuais ou textos pode e vai quebrar seletores de testes.
+- [2026-07-18] SEMPRE trate processos obrigatórios (como linter e testes passando) como verdades absolutas. Não pergunte ao usuário se deve ou não consertar o código para que o linter ou testes passem. Se houver falhas, corrija ativamente.
 
 ## Decision Log
 

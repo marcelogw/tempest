@@ -16,7 +16,7 @@ type WorkspaceGateProps = {
 export function WorkspaceGate({ children }: WorkspaceGateProps) {
   // Zustand persist hydrates asynchronously — block routing decisions until hydration settles
   const [hasHydrated, setHasHydrated] = useState(false)
-  const { isReady } = useAmplify()
+  const { isReady, isConfigured } = useAmplify()
   const { workspaceId, workspaceGroup, setUserSession } = useSyncStore(
     useShallow((s) => ({
       workspaceId: s.workspaceId,
@@ -35,23 +35,35 @@ export function WorkspaceGate({ children }: WorkspaceGateProps) {
     if (!hasHydrated || !isReady) return
 
     // Fetch user info silently to ensure Sidebar has profile data
-    void fetchAuthSession()
-      .then((session) => {
-        if (session.tokens?.idToken) {
-          const email = session.tokens.idToken.payload.email as string
-          const name = (session.tokens.idToken.payload.name as string) || null
-          const picture = (session.tokens.idToken.payload.picture as string) || null
-          setUserSession(email, name, picture)
-        }
-      })
-      .catch(() => {})
+    if (isConfigured) {
+      void fetchAuthSession()
+        .then((session) => {
+          if (session.tokens?.idToken) {
+            const email = session.tokens.idToken.payload.email as string
+            const name = (session.tokens.idToken.payload.name as string) || null
+            const picture = (session.tokens.idToken.payload.picture as string) || null
+            setUserSession(email, name, picture)
+            useSyncStore.getState().setStatus('connected')
+          }
+        })
+        .catch(() => {})
+    }
 
     if (!workspaceId || !workspaceGroup) {
       router.push('/onboarding')
     } else {
       void loadWorkspace(workspaceId, workspaceGroup)
     }
-  }, [hasHydrated, isReady, workspaceId, workspaceGroup, router, loadWorkspace, setUserSession])
+  }, [
+    hasHydrated,
+    isReady,
+    workspaceId,
+    workspaceGroup,
+    router,
+    loadWorkspace,
+    setUserSession,
+    isConfigured,
+  ])
 
   if (!hasHydrated || !isReady || !workspaceId || !workspaceGroup) {
     return (

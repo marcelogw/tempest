@@ -42,19 +42,16 @@ export function AppSidebar({
   onYearChange,
 }: AppSidebarProps) {
   const i = useTranslations()
-  const { userName, userEmail, userPicture } = useSyncStore(
+  const { userName, userPicture } = useSyncStore(
     useShallow((s) => ({
       userName: s.userName,
-      userEmail: s.userEmail,
       userPicture: s.userPicture,
     }))
   )
 
   const { isConfigured } = useAdapterContext()
 
-  const displayName = isConfigured
-    ? userName || (userEmail ? userEmail.split('@')[0] : 'Convidado')
-    : 'Visitante'
+  const displayName = isConfigured ? userName || 'Visitante' : 'Visitante'
 
   const initial = displayName.charAt(0).toUpperCase()
   const displayPicture = isConfigured ? userPicture : null
@@ -154,7 +151,7 @@ export function AppSidebar({
 
         <div className="flex items-center justify-between px-2 py-1 pb-2 group-data-[collapsible=icon]:justify-center">
           <div className="flex items-center gap-2 group-data-[collapsible=icon]:hidden">
-            <Avatar className="h-7 w-7">
+            <Avatar className="h-7 w-7 border-0 ring-0">
               {displayPicture && <AvatarImage src={displayPicture} alt={displayName} />}
               <AvatarFallback className="bg-primary text-primary-foreground text-[10px]">
                 {initial}

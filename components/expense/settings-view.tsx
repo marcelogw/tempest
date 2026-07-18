@@ -39,7 +39,7 @@ export function SettingsView() {
   const { isConfigured } = useAmplify()
   const { deleteYearData, deleteAllData, getAvailableYears } = useExpenseStore()
   const { toast } = useToast()
-  const { setStatus, setUserEmail } = useSyncStore()
+  const { setStatus, setUserSession } = useSyncStore()
   const router = useRouter()
 
   const [inviteDialogOpen, setInviteDialogOpen] = useState(false)
@@ -71,8 +71,10 @@ export function SettingsView() {
       const session = await fetchAuthSession()
       if (session.tokens?.idToken) {
         const email = session.tokens.idToken.payload.email as string
+        const name = (session.tokens.idToken.payload.name as string) || null
+        const picture = (session.tokens.idToken.payload.picture as string) || null
         setStatus('connected')
-        setUserEmail(email)
+        setUserSession(email, name, picture)
       }
     } catch (_error) {
       // Not authenticated, stay disconnected
@@ -80,7 +82,7 @@ export function SettingsView() {
   }
 
   function handleConnect() {
-    router.push('/onboarding')
+    router.push('/auth?from=/settings')
   }
 
   const handleDeleteYear = () => {
@@ -174,7 +176,7 @@ export function SettingsView() {
 
               <div className="space-y-4">
                 {/* Sync Card */}
-                <SyncCard onConnect={handleConnect} />
+                <SyncCard onConnect={handleConnect} isConfigured={isConfigured} />
 
                 {/* Card: Deletar Ano Específico */}
                 <div className="rounded-lg border p-4">

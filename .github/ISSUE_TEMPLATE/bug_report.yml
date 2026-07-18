@@ -1,6 +1,6 @@
 name: Bug report
 description: Something isn't working as expected.
-labels: ["bug"]
+labels: ['bug']
 body:
   - type: textarea
     id: description
@@ -30,6 +30,6 @@ body:
     id: environment
     attributes:
       label: Environment
-      placeholder: "Node 20, Chrome 120, macOS 14"
+      placeholder: 'Node 20, Chrome 120, macOS 14'
     validations:
       required: false

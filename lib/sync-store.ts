@@ -6,6 +6,8 @@ export type SyncStatus = 'disconnected' | 'connected' | 'syncing' | 'error'
 export interface SyncState {
   status: SyncStatus
   userEmail: string | null
+  userName: string | null
+  userPicture: string | null
   errorMessage: string | null
 
   workspaceId: string | null
@@ -13,7 +15,7 @@ export interface SyncState {
   lastSyncedAt: number | null
 
   setStatus: (status: SyncStatus) => void
-  setUserEmail: (email: string | null) => void
+  setUserSession: (email: string | null, name: string | null, picture: string | null) => void
   setErrorMessage: (message: string | null) => void
   setWorkspace: (workspaceId: string, workspaceGroup: string) => void
   setLastSyncedAt: (timestamp: number) => void
@@ -24,6 +26,8 @@ export interface SyncState {
 const initialState = {
   status: 'disconnected' as SyncStatus,
   userEmail: null,
+  userName: null,
+  userPicture: null,
   errorMessage: null,
   workspaceId: null,
   workspaceGroup: null,
@@ -37,7 +41,8 @@ export const useSyncStore = create<SyncState>()(
 
       setStatus: (status) => set({ status }),
 
-      setUserEmail: (userEmail) => set({ userEmail }),
+      setUserSession: (userEmail, userName, userPicture) =>
+        set({ userEmail, userName, userPicture }),
 
       setErrorMessage: (errorMessage) =>
         set({
@@ -53,6 +58,8 @@ export const useSyncStore = create<SyncState>()(
         set({
           status: 'disconnected',
           userEmail: null,
+          userName: null,
+          userPicture: null,
           errorMessage: null,
         }),
 
@@ -62,6 +69,8 @@ export const useSyncStore = create<SyncState>()(
       name: 'tempest-sync-storage',
       partialize: (state) => ({
         userEmail: state.userEmail,
+        userName: state.userName,
+        userPicture: state.userPicture,
         workspaceId: state.workspaceId,
         workspaceGroup: state.workspaceGroup,
         lastSyncedAt: state.lastSyncedAt,

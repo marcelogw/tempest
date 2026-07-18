@@ -12,9 +12,10 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 
 interface SyncCardProps {
   onConnect: () => void
+  isConfigured?: boolean
 }
 
-export function SyncCard({ onConnect }: SyncCardProps) {
+export function SyncCard({ onConnect, isConfigured = true }: SyncCardProps) {
   const i = useTranslations()
   const locale = useLocale()
   const { status, userEmail, lastSyncedAt } = useSyncStore()
@@ -111,13 +112,19 @@ export function SyncCard({ onConnect }: SyncCardProps) {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button onClick={onConnect} className="w-full" size="sm">
-                  <Cloud className="mr-2 h-4 w-4" />
-                  {i('ui.sync.connectAccount')}
-                </Button>
+                <span>
+                  <Button onClick={onConnect} className="w-full" size="sm" disabled={!isConfigured}>
+                    <Cloud className="mr-2 h-4 w-4" />
+                    {i('ui.sync.connectAccount')}
+                  </Button>
+                </span>
               </TooltipTrigger>
               <TooltipContent>
-                <p>{i('ui.sync.loginTooltip')}</p>
+                <p>
+                  {isConfigured
+                    ? i('ui.sync.loginTooltip')
+                    : 'Configure o AWS Amplify no .env.local para habilitar a nuvem.'}
+                </p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

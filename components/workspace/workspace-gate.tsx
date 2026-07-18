@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { fetchAuthSession } from 'aws-amplify/auth'
 import { Loader2 } from 'lucide-react'
 import { useShallow } from 'zustand/react/shallow'
 import { useAmplify } from '@/components/amplify-provider'
@@ -16,8 +17,12 @@ export function WorkspaceGate({ children }: WorkspaceGateProps) {
   // Zustand persist hydrates asynchronously — block routing decisions until hydration settles
   const [hasHydrated, setHasHydrated] = useState(false)
   const { isReady } = useAmplify()
-  const { workspaceId, workspaceGroup } = useSyncStore(
-    useShallow((s) => ({ workspaceId: s.workspaceId, workspaceGroup: s.workspaceGroup }))
+  const { workspaceId, workspaceGroup, setUserSession } = useSyncStore(
+    useShallow((s) => ({
+      workspaceId: s.workspaceId,
+      workspaceGroup: s.workspaceGroup,
+      setUserSession: s.setUserSession,
+    }))
   )
   const loadWorkspace = useExpenseStore((s) => s.loadWorkspace)
   const router = useRouter()
@@ -28,12 +33,25 @@ export function WorkspaceGate({ children }: WorkspaceGateProps) {
 
   useEffect(() => {
     if (!hasHydrated || !isReady) return
+
+    // Fetch user info silently to ensure Sidebar has profile data
+    void fetchAuthSession()
+      .then((session) => {
+        if (session.tokens?.idToken) {
+          const email = session.tokens.idToken.payload.email as string
+          const name = (session.tokens.idToken.payload.name as string) || null
+          const picture = (session.tokens.idToken.payload.picture as string) || null
+          setUserSession(email, name, picture)
+        }
+      })
+      .catch(() => {})
+
     if (!workspaceId || !workspaceGroup) {
       router.push('/onboarding')
     } else {
       void loadWorkspace(workspaceId, workspaceGroup)
     }
-  }, [hasHydrated, isReady, workspaceId, workspaceGroup, router, loadWorkspace])
+  }, [hasHydrated, isReady, workspaceId, workspaceGroup, router, loadWorkspace, setUserSession])
 
   if (!hasHydrated || !isReady || !workspaceId || !workspaceGroup) {
     return (

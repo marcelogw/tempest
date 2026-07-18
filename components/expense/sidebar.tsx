@@ -19,6 +19,10 @@ import {
 import { YearSelector } from './year-selector'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { TempestIconMark } from '@/components/brand/tempest-logo'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { useSyncStore } from '@/lib/sync-store'
+import { useShallow } from 'zustand/react/shallow'
+import { useAdapterContext } from '@/lib/adapters/context'
 
 export type ActiveView = 'dashboard' | 'monthly' | 'categories' | 'cards' | 'goals' | 'settings'
 
@@ -38,6 +42,22 @@ export function AppSidebar({
   onYearChange,
 }: AppSidebarProps) {
   const i = useTranslations()
+  const { userName, userEmail, userPicture } = useSyncStore(
+    useShallow((s) => ({
+      userName: s.userName,
+      userEmail: s.userEmail,
+      userPicture: s.userPicture,
+    }))
+  )
+
+  const { isConfigured } = useAdapterContext()
+
+  const displayName = isConfigured
+    ? userName || (userEmail ? userEmail.split('@')[0] : 'Convidado')
+    : 'Visitante'
+
+  const initial = displayName.charAt(0).toUpperCase()
+  const displayPicture = isConfigured ? userPicture : null
 
   const navItems = [
     {
@@ -117,12 +137,6 @@ export function AppSidebar({
       </SidebarContent>
 
       <SidebarFooter>
-        <div className="flex items-center justify-between px-2 py-1 group-data-[collapsible=icon]:justify-center">
-          <span className="text-sidebar-foreground/80 text-sm font-medium group-data-[collapsible=icon]:hidden">
-            {i('ui.sidebar.theme')}
-          </span>
-          <ThemeToggle />
-        </div>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
@@ -135,6 +149,23 @@ export function AppSidebar({
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
+
+        <SidebarSeparator className="my-2 group-data-[collapsible=icon]:hidden" />
+
+        <div className="flex items-center justify-between px-2 py-1 pb-2 group-data-[collapsible=icon]:justify-center">
+          <div className="flex items-center gap-2 group-data-[collapsible=icon]:hidden">
+            <Avatar className="h-7 w-7">
+              {displayPicture && <AvatarImage src={displayPicture} alt={displayName} />}
+              <AvatarFallback className="bg-primary text-primary-foreground text-[10px]">
+                {initial}
+              </AvatarFallback>
+            </Avatar>
+            <span className="text-sidebar-foreground max-w-[130px] truncate text-sm font-medium">
+              {displayName}
+            </span>
+          </div>
+          <ThemeToggle />
+        </div>
       </SidebarFooter>
 
       <SidebarRail />

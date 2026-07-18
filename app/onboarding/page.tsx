@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { Loader2, Home, Key, AlertCircle } from 'lucide-react'
@@ -13,6 +13,8 @@ import { TempestLogo } from '@/components/brand/tempest-logo'
 import { useSyncStore } from '@/lib/sync-store'
 import { useExpenseStore } from '@/lib/expense-store'
 import { getStorage, getCollaborativeStorage } from '@/lib/adapters/registry'
+import { useAdapterContext } from '@/lib/adapters/context'
+import { fetchAuthSession } from 'aws-amplify/auth'
 
 type View = 'choice' | 'create' | 'join'
 
@@ -110,6 +112,21 @@ export default function OnboardingPage() {
   const [error, setError] = useState('')
   const [workspaceName, setWorkspaceName] = useState('')
   const [inviteCode, setInviteCode] = useState('')
+  const { isConfigured } = useAdapterContext()
+
+  useEffect(() => {
+    if (isConfigured) {
+      fetchAuthSession()
+        .then((session) => {
+          if (!session.tokens?.idToken) {
+            router.replace('/auth?from=/onboarding')
+          }
+        })
+        .catch(() => {
+          router.replace('/auth?from=/onboarding')
+        })
+    }
+  }, [isConfigured, router])
 
   function goBack() {
     setView('choice')

@@ -22,7 +22,7 @@ import { TempestIconMark } from '@/components/brand/tempest-logo'
 
 export type ActiveView = 'dashboard' | 'monthly' | 'categories' | 'cards' | 'goals' | 'settings'
 
-interface AppSidebarProps {
+type AppSidebarProps = {
   activeView: ActiveView
   onViewChange: (view: ActiveView) => void
   currentYear: string

@@ -1,42 +1,43 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { cn } from '@/lib/utils'
+import { LayoutDashboard, Calendar, Shapes, CreditCard, Settings, Target } from 'lucide-react'
 import {
-  LayoutDashboard,
-  Calendar,
-  Shapes,
-  CreditCard,
-  ChevronLeft,
-  ChevronRight,
-  Settings,
-  Target,
-} from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { useState } from 'react'
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarRail,
+  SidebarSeparator,
+} from '@/components/ui/sidebar'
 import { YearSelector } from './year-selector'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { TempestIconMark } from '@/components/brand/tempest-logo'
 
-interface SidebarProps {
-  activeView: 'dashboard' | 'monthly' | 'categories' | 'cards' | 'goals' | 'settings'
-  onViewChange: (
-    view: 'dashboard' | 'monthly' | 'categories' | 'cards' | 'goals' | 'settings'
-  ) => void
+export type ActiveView = 'dashboard' | 'monthly' | 'categories' | 'cards' | 'goals' | 'settings'
+
+type AppSidebarProps = {
+  activeView: ActiveView
+  onViewChange: (view: ActiveView) => void
   currentYear: string
   availableYears: string[]
   onYearChange: (year: string) => void
 }
 
-export function Sidebar({
+export function AppSidebar({
   activeView,
   onViewChange,
   currentYear,
   availableYears,
   onYearChange,
-}: SidebarProps) {
+}: AppSidebarProps) {
   const i = useTranslations()
-  const [collapsed, setCollapsed] = useState(false)
 
   const navItems = [
     {
@@ -67,97 +68,76 @@ export function Sidebar({
   ]
 
   return (
-    <aside
-      className={cn(
-        'bg-sidebar text-sidebar-foreground border-sidebar-border flex flex-col border-r transition-all duration-300',
-        collapsed ? 'w-16' : 'w-64'
-      )}
-    >
-      <div className="border-sidebar-border flex items-center justify-between border-b p-4">
-        {!collapsed && (
-          <div className="flex items-center gap-2">
-            <TempestIconMark size={32} />
-            <span className="text-lg font-bold" style={{ fontFamily: 'var(--font-heading)' }}>
-              Tempest
-            </span>
-          </div>
-        )}
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setCollapsed(!collapsed)}
-          className="text-sidebar-foreground hover:bg-sidebar-accent"
-        >
-          {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-        </Button>
-      </div>
-
-      {/* Seção de Ano */}
-      {!collapsed && (
-        <div className="border-sidebar-border border-b p-4">
-          <p className="text-sidebar-foreground/60 px-1 py-2 text-xs font-medium tracking-wider uppercase">
-            {i('ui.sidebar.period')}
-          </p>
-          <YearSelector
-            currentYear={currentYear}
-            availableYears={availableYears}
-            onYearChange={onYearChange}
-          />
+    <Sidebar collapsible="icon">
+      <SidebarHeader>
+        <div className="flex items-center gap-2 px-2 py-1 group-data-[collapsible=icon]:justify-center">
+          <TempestIconMark size={28} />
+          <span
+            className="text-lg font-bold group-data-[collapsible=icon]:hidden"
+            style={{ fontFamily: 'var(--font-heading)' }}
+          >
+            Tempest
+          </span>
         </div>
-      )}
+      </SidebarHeader>
 
-      <nav className="flex-1 p-2">
-        <div className="space-y-1">
-          {!collapsed && (
-            <p className="text-sidebar-foreground/60 px-3 py-2 text-xs font-medium tracking-wider uppercase">
-              {i('ui.sidebar.navigation')}
-            </p>
-          )}
-          {navItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => onViewChange(item.id)}
-              className={cn(
-                'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
-                activeView === item.id
-                  ? 'bg-sidebar-primary text-sidebar-primary-foreground'
-                  : 'text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
-              )}
+      <SidebarContent>
+        <SidebarGroup className="group-data-[collapsible=icon]:hidden">
+          <SidebarGroupLabel>{i('ui.sidebar.period')}</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <YearSelector
+              currentYear={currentYear}
+              availableYears={availableYears}
+              onYearChange={onYearChange}
+            />
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarSeparator className="group-data-[collapsible=icon]:hidden" />
+
+        <SidebarGroup>
+          <SidebarGroupLabel>{i('ui.sidebar.navigation')}</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {navItems.map((item) => (
+                <SidebarMenuItem key={item.id}>
+                  <SidebarMenuButton
+                    isActive={activeView === item.id}
+                    tooltip={item.label}
+                    onClick={() => onViewChange(item.id)}
+                  >
+                    <item.icon />
+                    <span>{item.label}</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+
+      <SidebarFooter>
+        <div className="flex items-center justify-between px-2 py-1 group-data-[collapsible=icon]:justify-center">
+          <span className="text-sidebar-foreground/80 text-sm font-medium group-data-[collapsible=icon]:hidden">
+            {i('ui.sidebar.theme')}
+          </span>
+          <ThemeToggle />
+        </div>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              isActive={activeView === 'settings'}
+              tooltip={i('ui.sidebar.settings')}
+              onClick={() => onViewChange('settings')}
             >
-              <item.icon className="h-5 w-5 flex-shrink-0" />
-              {!collapsed && <span>{item.label}</span>}
-            </button>
-          ))}
-        </div>
-      </nav>
+              <Settings />
+              <span>{i('ui.sidebar.settings')}</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
 
-      {/* Configurações (bottom) */}
-      <div className="border-sidebar-border space-y-1 border-t p-2">
-        {!collapsed ? (
-          <div className="flex items-center justify-between px-3 py-2">
-            <span className="text-sidebar-foreground/80 text-sm font-medium">
-              {i('ui.sidebar.theme')}
-            </span>
-            <ThemeToggle />
-          </div>
-        ) : (
-          <div className="flex items-center justify-center py-2">
-            <ThemeToggle />
-          </div>
-        )}
-        <button
-          onClick={() => onViewChange('settings')}
-          className={cn(
-            'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
-            activeView === 'settings'
-              ? 'bg-sidebar-primary text-sidebar-primary-foreground'
-              : 'text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
-          )}
-        >
-          <Settings className="h-5 w-5 flex-shrink-0" />
-          {!collapsed && <span>{i('ui.sidebar.settings')}</span>}
-        </button>
-      </div>
-    </aside>
+      <SidebarRail />
+    </Sidebar>
   )
 }

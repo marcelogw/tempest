@@ -68,9 +68,13 @@ function AddIncomeDialog({
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button size="sm" variant="outline" className="gap-1.5 bg-transparent">
+        <Button
+          size="icon"
+          variant="outline"
+          className="h-8 w-8 bg-transparent"
+          title={i('common.add')}
+        >
           <Plus className="h-4 w-4" />
-          {i('common.add')}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

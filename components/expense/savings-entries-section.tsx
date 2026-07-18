@@ -46,13 +46,13 @@ export function SavingsEntriesSection({
             )}
           </div>
           <Button
-            size="sm"
+            size="icon"
             variant="outline"
-            className="h-7 bg-transparent text-xs"
+            className="h-8 w-8 bg-transparent"
             onClick={onAddClick}
+            title={i('savings.add')}
           >
-            <Icons.Plus className="mr-1 h-3 w-3" />
-            {i('savings.add')}
+            <Icons.Plus className="h-4 w-4" />
           </Button>
         </div>
         {entries.length > 0 && (

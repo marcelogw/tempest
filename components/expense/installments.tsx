@@ -79,9 +79,13 @@ export function Installments({ currentMonth, showAllInstallments = false }: Inst
           </CardTitle>
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-              <Button size="sm" variant="outline" className="h-7 bg-transparent text-xs">
-                <Plus className="mr-1 h-3 w-3" />
-                {i('common.add')}
+              <Button
+                size="icon"
+                variant="outline"
+                className="h-8 w-8 bg-transparent"
+                title={i('common.add')}
+              >
+                <Plus className="h-4 w-4" />
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">

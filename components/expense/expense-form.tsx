@@ -66,9 +66,13 @@ export function ExpenseForm({ type, onSubmit, currentMonth }: ExpenseFormProps) 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" variant="outline" className="gap-1.5 bg-transparent">
+        <Button
+          size="icon"
+          variant="outline"
+          className="h-8 w-8 bg-transparent"
+          title={`Adicionar Despesa ${type === 'fixed' ? 'Fixa' : 'Variável'}`}
+        >
           <Icons.Plus className="h-4 w-4" />
-          Adicionar {type === 'fixed' ? 'Fixa' : 'Variavel'}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

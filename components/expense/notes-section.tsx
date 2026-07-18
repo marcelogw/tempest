@@ -63,13 +63,13 @@ export function NotesSection({
               )}
             </div>
             <Button
-              size="sm"
+              size="icon"
               variant="outline"
-              className="h-7 bg-transparent text-xs"
+              className="h-8 w-8 bg-transparent"
               onClick={() => setAddDialogOpen(true)}
+              title={i('notes.add')}
             >
-              <Plus className="mr-1 h-3 w-3" />
-              {i('notes.add')}
+              <Plus className="h-4 w-4" />
             </Button>
           </div>
         </CardHeader>

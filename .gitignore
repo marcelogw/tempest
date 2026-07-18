@@ -44,3 +44,12 @@ amplifyconfiguration*
 # scratch / session artifacts
 *.log
 *.diff
+
+# claude code local overrides (per-developer, not shared)
+.claude/settings.local.json
+
+# openwolf ephemeral runtime state (regenerates every session)
+.wolf/_scan-state.json
+.wolf/cron-state.json
+.wolf/hooks/_session.json
+.wolf/token-ledger.json

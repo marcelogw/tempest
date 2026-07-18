@@ -75,6 +75,9 @@ export default tseslint.config(
       'components/ui/**', // shadcn/ui - não modificar
       'hooks/use-toast.ts', // shadcn/ui toast hook - código gerado
       'hooks/use-mobile.ts', // shadcn/ui mobile hook - código gerado
+      '.wolf/**', // openwolf runtime - fora do tsconfig do app
+      '.opencode/**', // opencode plugin - fora do tsconfig do app
+      '.codex/**', // codex config - fora do tsconfig do app
     ],
   }
 )

@@ -31,3 +31,8 @@ next-env.d.ts
 
 # UI components (external)
 components/ui
+
+# vendor tool output (openwolf / opencode / codex)
+.wolf
+.opencode
+.codex

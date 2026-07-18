@@ -1,0 +1,7015 @@
+{
+  "version": 1,
+  "meta": {
+    "lastScanned": "2026-07-18T15:32:05.833Z",
+    "fileCount": 356,
+    "hits": 0,
+    "misses": 0,
+    "renderedHash": "bffe60618190b8a2058bdf61b76a500fb87cac0cb59fb83f5bc91af7fe695af3",
+    "storeUpdatedAt": "2026-07-18T15:32:05.835Z"
+  },
+  "files": {
+    "__tests__/adapters/config.test.ts": {
+      "description": "Declares consoleSpy",
+      "tokens": 611,
+      "hash": "4a4002f14d7fa452",
+      "size": 2137,
+      "mtimeMs": 1772305236122.4016,
+      "updatedAt": "2026-07-18T15:32:05.742Z",
+      "source": "scan"
+    },
+    "__tests__/adapters/local/local-storage-adapter.test.ts": {
+      "description": "Declares mockSetWorkspace",
+      "tokens": 3873,
+      "hash": "0aa1fb2f82bcb0f3",
+      "size": 14035,
+      "mtimeMs": 1784386524873.3496,
+      "updatedAt": "2026-07-18T15:32:05.743Z",
+      "source": "scan"
+    },
+    "__tests__/adapters/local/no-auth-adapter.test.ts": {
+      "description": "Declares adapter",
+      "tokens": 209,
+      "hash": "56f3d23a585a3bbc",
+      "size": 730,
+      "mtimeMs": 1772305250418.585,
+      "updatedAt": "2026-07-18T15:32:05.743Z",
+      "source": "scan"
+    },
+    "__tests__/adapters/registry.test.ts": {
+      "description": "Registry uses module-level state. vi.resetModules() + dynamic import per describe",
+      "tokens": 800,
+      "hash": "0c464654bbb1c7e1",
+      "size": 2800,
+      "mtimeMs": 1772305245370.5203,
+      "updatedAt": "2026-07-18T15:32:05.744Z",
+      "source": "scan"
+    },
+    "__tests__/components/app-shell.test.tsx": {
+      "description": "Presentational leaves, not what this test targets (the shadcn Sidebar's Sheet/Tooltip primitives).",
+      "tokens": 527,
+      "hash": "379c20717774052a",
+      "size": 1842,
+      "mtimeMs": 1784387591038.7178,
+      "updatedAt": "2026-07-18T15:32:05.744Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "mockMatchMedia",
+          "kind": "fn",
+          "startLine": 15,
+          "endLine": 65,
+          "tokens": 376
+        }
+      ]
+    },
+    "__tests__/components/expense/month-selector.test.tsx": {
+      "description": "mockOnMonthChange",
+      "tokens": 3514,
+      "hash": "8d1cad98a6e68dc6",
+      "size": 12398,
+      "mtimeMs": 1771775178410.414,
+      "updatedAt": "2026-07-18T15:32:05.745Z",
+      "source": "scan"
+    },
+    "__tests__/components/expense-edit-dialog.test.tsx": {
+      "description": "mockOnSubmit",
+      "tokens": 3361,
+      "hash": "d7e4c216eceb8e3d",
+      "size": 11771,
+      "mtimeMs": 1771775178410.414,
+      "updatedAt": "2026-07-18T15:32:05.746Z",
+      "source": "scan"
+    },
+    "__tests__/store/cloud-sync-branches.test.ts": {
+      "description": "Tests that exercise the cloud-sync branches (if workspaceGroup / if workspaceGroup && workspaceId)",
+      "tokens": 2580,
+      "hash": "62195c39eb07527f",
+      "size": 9037,
+      "mtimeMs": 1772197246360.1394,
+      "updatedAt": "2026-07-18T15:32:05.746Z",
+      "source": "scan"
+    },
+    "__tests__/store/credit-cards.test.ts": {
+      "description": "Declares state",
+      "tokens": 4064,
+      "hash": "e751f710241d1bc2",
+      "size": 14238,
+      "mtimeMs": 1770264340774.6902,
+      "updatedAt": "2026-07-18T15:32:05.747Z",
+      "source": "scan"
+    },
+    "__tests__/store/expenses.test.ts": {
+      "description": "Declares state",
+      "tokens": 3833,
+      "hash": "16d9c95e82896147",
+      "size": 13415,
+      "mtimeMs": 1772197246415.1404,
+      "updatedAt": "2026-07-18T15:32:05.747Z",
+      "source": "scan"
+    },
+    "__tests__/store/goals.test.ts": {
+      "description": "Declares goalId",
+      "tokens": 2712,
+      "hash": "279fade2f89572ea",
+      "size": 9491,
+      "mtimeMs": 1784386524873.3496,
+      "updatedAt": "2026-07-18T15:32:05.748Z",
+      "source": "scan"
+    },
+    "__tests__/store/income.test.ts": {
+      "description": "Declares monthData",
+      "tokens": 1734,
+      "hash": "6f1542c660a92489",
+      "size": 6083,
+      "mtimeMs": 1772196743436.7598,
+      "updatedAt": "2026-07-18T15:32:05.748Z",
+      "source": "scan"
+    },
+    "__tests__/store/installments.test.ts": {
+      "description": "Declares state",
+      "tokens": 2744,
+      "hash": "e009ec92d463f85e",
+      "size": 9607,
+      "mtimeMs": 1770264340774.6902,
+      "updatedAt": "2026-07-18T15:32:05.748Z",
+      "source": "scan"
+    },
+    "__tests__/store/month-logic.test.ts": {
+      "description": "Declares state",
+      "tokens": 3107,
+      "hash": "36ba66759ccdc7fc",
+      "size": 10877,
+      "mtimeMs": 1784386524873.3496,
+      "updatedAt": "2026-07-18T15:32:05.749Z",
+      "source": "scan"
+    },
+    "__tests__/store/notes.test.ts": {
+      "description": "Declares ids",
+      "tokens": 2017,
+      "hash": "393872e00b350577",
+      "size": 7063,
+      "mtimeMs": 1775614373031.603,
+      "updatedAt": "2026-07-18T15:32:05.749Z",
+      "source": "scan"
+    },
+    "__tests__/store/recurring-expenses.test.ts": {
+      "description": "Declares monthData",
+      "tokens": 4848,
+      "hash": "6676d0c625a71eba",
+      "size": 16967,
+      "mtimeMs": 1770142590838.7825,
+      "updatedAt": "2026-07-18T15:32:05.750Z",
+      "source": "scan"
+    },
+    "__tests__/store/savings-entries.test.ts": {
+      "description": "Declares monthData",
+      "tokens": 2237,
+      "hash": "ffa002bd1f5adeba",
+      "size": 7831,
+      "mtimeMs": 1784386524873.3496,
+      "updatedAt": "2026-07-18T15:32:05.750Z",
+      "source": "scan"
+    },
+    "__tests__/store/store-utilities.test.ts": {
+      "description": "Declares mockFetchWorkspaceData",
+      "tokens": 4276,
+      "hash": "560b225d7df54d4a",
+      "size": 14969,
+      "mtimeMs": 1784386524873.3496,
+      "updatedAt": "2026-07-18T15:32:05.751Z",
+      "source": "scan"
+    },
+    "__tests__/test-utils.tsx": {
+      "description": "Mock messages for testing - Portuguese (pt) to match test expectations",
+      "tokens": 713,
+      "hash": "3fbc831c3a62f0c7",
+      "size": 2508,
+      "mtimeMs": 1771775319681.626,
+      "updatedAt": "2026-07-18T15:32:05.751Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "AllTheProvidersProps",
+          "kind": "section",
+          "startLine": 70,
+          "endLine": 75,
+          "tokens": 34
+        },
+        {
+          "name": "AllTheProviders",
+          "kind": "fn",
+          "startLine": 76,
+          "endLine": 87,
+          "tokens": 69
+        },
+        {
+          "name": "customRender",
+          "kind": "fn",
+          "startLine": 88,
+          "endLine": 112,
+          "tokens": 161
+        }
+      ]
+    },
+    "__tests__/utils/formatting.test.ts": {
+      "description": "Declares groceries",
+      "tokens": 1666,
+      "hash": "765c663af0ba1df4",
+      "size": 5832,
+      "mtimeMs": 1772998539019.2405,
+      "updatedAt": "2026-07-18T15:32:05.751Z",
+      "source": "scan"
+    },
+    ".agent/skills/tempest-code-review/SKILL.md": {
+      "description": "Code Review Skill (Tempest)",
+      "tokens": 1260,
+      "hash": "7cc3cddb9735211f",
+      "size": 5181,
+      "mtimeMs": 1784387824938.173,
+      "updatedAt": "2026-07-18T15:32:05.752Z",
+      "source": "scan"
+    },
+    ".agent/skills/tempest-coder/SKILL.md": {
+      "description": "Coder Skill (Tempest)",
+      "tokens": 1272,
+      "hash": "59a88968a9a1d641",
+      "size": 5199,
+      "mtimeMs": 1784387858450.5278,
+      "updatedAt": "2026-07-18T15:32:05.752Z",
+      "source": "scan"
+    },
+    ".agent/skills/tempest-tech-lead/SKILL.md": {
+      "description": "Tech Lead Skill (Tempest)",
+      "tokens": 1089,
+      "hash": "e82b64f9298ede71",
+      "size": 4489,
+      "mtimeMs": 1784387840257.3352,
+      "updatedAt": "2026-07-18T15:32:05.752Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/amplify-tempest-kinloth-sandbox-e7ddf1c6ef.assets.json": {
+      "description": "",
+      "tokens": 15705,
+      "hash": "7f623ef345c5ba35",
+      "size": 54967,
+      "mtimeMs": 1770401386443.1155,
+      "updatedAt": "2026-07-18T15:32:05.753Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/amplify-tempest-kinloth-sandbox-e7ddf1c6ef.template.json": {
+      "description": "",
+      "tokens": 3816,
+      "hash": "970157e79866a236",
+      "size": 13353,
+      "mtimeMs": 1770401386443.1155,
+      "updatedAt": "2026-07-18T15:32:05.753Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/amplifytempestkinlothsandboxe7ddf1c6efauthED95E2A8.nested.template.json": {
+      "description": "",
+      "tokens": 6490,
+      "hash": "fe460f8764578315",
+      "size": 22713,
+      "mtimeMs": 1770401386338.1152,
+      "updatedAt": "2026-07-18T15:32:05.754Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/amplifytempestkinlothsandboxe7ddf1c6efdataamplifyDataAmplifyTableManagerAA97EF9A.nested.template.json": {
+      "description": "",
+      "tokens": 4774,
+      "hash": "62a9ad9498dffa5f",
+      "size": 16708,
+      "mtimeMs": 1770401386365.1152,
+      "updatedAt": "2026-07-18T15:32:05.754Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/amplifytempestkinlothsandboxe7ddf1c6efdataamplifyDataCategory2CE58D26.nested.template.json": {
+      "description": "",
+      "tokens": 21720,
+      "hash": "462f5d1735288eec",
+      "size": 76017,
+      "mtimeMs": 1770401386374.1152,
+      "updatedAt": "2026-07-18T15:32:05.755Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/amplifytempestkinlothsandboxe7ddf1c6efdataamplifyDataConnectionStack6C5A0635.nested.template.json": {
+      "description": "",
+      "tokens": 19106,
+      "hash": "5fcb6fafaad38ed6",
+      "size": 66869,
+      "mtimeMs": 1770401386430.1155,
+      "updatedAt": "2026-07-18T15:32:05.756Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/amplifytempestkinlothsandboxe7ddf1c6efdataamplifyDataCreditCardDC571D05.nested.template.json": {
+      "description": "",
+      "tokens": 21894,
+      "hash": "b074742091cb8c03",
+      "size": 76629,
+      "mtimeMs": 1770401386384.1152,
+      "updatedAt": "2026-07-18T15:32:05.756Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/amplifytempestkinlothsandboxe7ddf1c6efdataamplifyDataExpense357ADE2F.nested.template.json": {
+      "description": "",
+      "tokens": 21871,
+      "hash": "c6d609ec73571e70",
+      "size": 76548,
+      "mtimeMs": 1770401386412.1155,
+      "updatedAt": "2026-07-18T15:32:05.757Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/amplifytempestkinlothsandboxe7ddf1c6efdataamplifyDataIncome88164AC9.nested.template.json": {
+      "description": "",
+      "tokens": 21394,
+      "hash": "d282f0a6fdf715f1",
+      "size": 74876,
+      "mtimeMs": 1770401386403.1155,
+      "updatedAt": "2026-07-18T15:32:05.758Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/amplifytempestkinlothsandboxe7ddf1c6efdataamplifyDataInstallmentC33ED550.nested.template.json": {
+      "description": "",
+      "tokens": 21834,
+      "hash": "65583116fc3d1e8b",
+      "size": 76416,
+      "mtimeMs": 1770401386422.1155,
+      "updatedAt": "2026-07-18T15:32:05.759Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/amplifytempestkinlothsandboxe7ddf1c6efdataamplifyDataMonthlyData65CDFA7B.nested.template.json": {
+      "description": "",
+      "tokens": 21978,
+      "hash": "2c739fad30aa85ed",
+      "size": 76923,
+      "mtimeMs": 1770401386393.1155,
+      "updatedAt": "2026-07-18T15:32:05.759Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/amplifytempestkinlothsandboxe7ddf1c6efdataD8D2B670.nested.template.json": {
+      "description": "",
+      "tokens": 18278,
+      "hash": "5e3b36c321e4b5af",
+      "size": 63971,
+      "mtimeMs": 1770401386439.1155,
+      "updatedAt": "2026-07-18T15:32:05.760Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.02a15a456a4c84a7b2428b83550ee95a8fa503c3f6b08d85574847ea252fbeea.vtl": {
+      "description": "if( $ctx.stash.deniedField )",
+      "tokens": 228,
+      "hash": "39fc491c8e3d97c7",
+      "size": 854,
+      "mtimeMs": 1770313796109.1702,
+      "updatedAt": "2026-07-18T15:32:05.760Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.0309b89d01b40f0d451afb958b1f471bbfcc2f7979d4a1d4da139ade67533102.vtl": {
+      "description": "if( $ctx.stash.deniedField )",
+      "tokens": 519,
+      "hash": "647d73f1838ddcd3",
+      "size": 1943,
+      "mtimeMs": 1770313796102.17,
+      "updatedAt": "2026-07-18T15:32:05.760Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.041534e5fd916595f752318f161512d7c7f83b9f2cf32d0f0be381c12253ff68.vtl": {
+      "description": "",
+      "tokens": 14,
+      "hash": "71abe0cb4162ab9a",
+      "size": 51,
+      "mtimeMs": 1770313796114.1702,
+      "updatedAt": "2026-07-18T15:32:05.761Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.064303962e481067b44300212516363b99aaee539b6bafaf756fdd83ff0b60f0.vtl": {
+      "description": "# [Start] Parse owner field auth for Get. **",
+      "tokens": 229,
+      "hash": "c99ee39fd2d02502",
+      "size": 858,
+      "mtimeMs": 1770313796114.1702,
+      "updatedAt": "2026-07-18T15:32:05.761Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.06764d5fd013c0332f4c6377b353b2f4180c627b7285b078dadaaca293213263.vtl": {
+      "description": "# [Start] Setting \"isSystem\" to default value of \"false\". **",
+      "tokens": 113,
+      "hash": "2cbc0530a4662510",
+      "size": 422,
+      "mtimeMs": 1770313796017.169,
+      "updatedAt": "2026-07-18T15:32:05.761Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.06db846fd14e6fc371f22b12b5545ba8e2dbfeda85d8c8d586c71c282166657b.vtl": {
+      "description": "# [Start] Initialization default values. **",
+      "tokens": 94,
+      "hash": "0140a28b1c5d13ee",
+      "size": 350,
+      "mtimeMs": 1770313796019.169,
+      "updatedAt": "2026-07-18T15:32:05.761Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.07a90cc3efdfc34da22208dcd9d211f06f5b0e01b21e778edc7c3966b1f61d57/cfn-response.js": {
+      "description": "url: submitResponse, safeHandler, redactDataFromPayload",
+      "tokens": 772,
+      "hash": "24ebbb32c96424eb",
+      "size": 2700,
+      "mtimeMs": 1770324886032.7737,
+      "updatedAt": "2026-07-18T15:32:05.762Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.07a90cc3efdfc34da22208dcd9d211f06f5b0e01b21e778edc7c3966b1f61d57/consts.js": {
+      "description": "",
+      "tokens": 196,
+      "hash": "6aa13b6c5bfd2956",
+      "size": 685,
+      "mtimeMs": 1770324886032.7737,
+      "updatedAt": "2026-07-18T15:32:05.762Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.07a90cc3efdfc34da22208dcd9d211f06f5b0e01b21e778edc7c3966b1f61d57/framework.js": {
+      "description": "cfnResponse: onEvent, isComplete, onTimeout + 3 more",
+      "tokens": 1313,
+      "hash": "370eb812f84af488",
+      "size": 4593,
+      "mtimeMs": 1770324886032.7737,
+      "updatedAt": "2026-07-18T15:32:05.762Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.07a90cc3efdfc34da22208dcd9d211f06f5b0e01b21e778edc7c3966b1f61d57/outbound.js": {
+      "description": "https: defaultHttpRequest, defaultStartExecution, defaultInvokeFunction",
+      "tokens": 369,
+      "hash": "1d15588302cd9333",
+      "size": 1289,
+      "mtimeMs": 1770324886033.7737,
+      "updatedAt": "2026-07-18T15:32:05.762Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.07a90cc3efdfc34da22208dcd9d211f06f5b0e01b21e778edc7c3966b1f61d57/util.js": {
+      "description": "getEnv: log, withRetries, sleep, parseJsonPayload",
+      "tokens": 282,
+      "hash": "1b4d9d603ba7645d",
+      "size": 985,
+      "mtimeMs": 1770324886033.7737,
+      "updatedAt": "2026-07-18T15:32:05.762Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.08f4d557693d96c1a4efba0f9dc91330e4b19772fd5477c156468843e3d9cb5e.vtl": {
+      "description": "# [Start] Get Request template. **",
+      "tokens": 323,
+      "hash": "e89cfb26233f4707",
+      "size": 1208,
+      "mtimeMs": 1770313796011.169,
+      "updatedAt": "2026-07-18T15:32:05.763Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.0c4bf965cfbfb2eab5a56fcfec8159cce3dcb760920efcfa5f1c3f77f70c6999.vtl": {
+      "description": "# [Start] Authorization Steps. **",
+      "tokens": 762,
+      "hash": "e533759cfcd374f6",
+      "size": 2856,
+      "mtimeMs": 1770313796066.1694,
+      "updatedAt": "2026-07-18T15:32:05.763Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.0f335c92f6b10569fbb06cfe8442ebbefad9bf926f217e0b6b334729aef965f4.vtl": {
+      "description": "if( $ctx.stash.deniedField )",
+      "tokens": 226,
+      "hash": "235a022cdcc82aa1",
+      "size": 846,
+      "mtimeMs": 1770313796113.1702,
+      "updatedAt": "2026-07-18T15:32:05.763Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.193d15932c53c8ce411249ccd48170bf1e53c7e68177355e4e75cad4b0cb32cb.vtl": {
+      "description": "# [Start] Create Request template. **",
+      "tokens": 599,
+      "hash": "29f25b4d61dc1b1f",
+      "size": 2244,
+      "mtimeMs": 1770313796035.1692,
+      "updatedAt": "2026-07-18T15:32:05.764Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.1f5fed297da9c32ae3af922bf3a38ccf23b956078887d16891ec06c20c64722c.vtl": {
+      "description": "# [Start] Get Request template. **",
+      "tokens": 106,
+      "hash": "6e162a95640c4a8a",
+      "size": 394,
+      "mtimeMs": 1770313796020.169,
+      "updatedAt": "2026-07-18T15:32:05.764Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.239a70505f3931a1501db899b4d9b1cfb753555434692cf171733218fbcc9513.vtl": {
+      "description": "# [Start] Authorization Steps. **",
+      "tokens": 727,
+      "hash": "8077f2248d24bc81",
+      "size": 2724,
+      "mtimeMs": 1770313796091.17,
+      "updatedAt": "2026-07-18T15:32:05.765Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.273b9ced0b989619be61211bc3258bd04ab25e31d2c9c949010e025be365e61e.vtl": {
+      "description": "if( $ctx.stash.deniedField )",
+      "tokens": 520,
+      "hash": "0744e71d46a2126d",
+      "size": 1949,
+      "mtimeMs": 1770313796106.17,
+      "updatedAt": "2026-07-18T15:32:05.765Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.2bd7a17ac26a9db2f6e390d98cb1099bf8ac470b9a8996e36636ab5910b3e098.vtl": {
+      "description": "# [Start] Create Request template. **",
+      "tokens": 598,
+      "hash": "82312d765de2cd13",
+      "size": 2242,
+      "mtimeMs": 1770313796018.169,
+      "updatedAt": "2026-07-18T15:32:05.765Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.3423a042b818e31c1e34a19d6689ab2e5f9b70fcbe9e71df66f241b20a200bd9/index.py": {
+      "description": "handler, cfn_error, sanitize_message, s3_deploy + 3 more",
+      "tokens": 4947,
+      "hash": "52df59c68d1b8e7c",
+      "size": 17312,
+      "mtimeMs": 1770313796171.171,
+      "updatedAt": "2026-07-18T15:32:05.766Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "handler",
+          "kind": "fn",
+          "startLine": 38,
+          "endLine": 159,
+          "tokens": 1783
+        },
+        {
+          "name": "sanitize_message",
+          "kind": "fn",
+          "startLine": 160,
+          "endLine": 173,
+          "tokens": 152
+        },
+        {
+          "name": "s3_deploy",
+          "kind": "fn",
+          "startLine": 174,
+          "endLine": 233,
+          "tokens": 693
+        },
+        {
+          "name": "cloudfront_invalidate",
+          "kind": "fn",
+          "startLine": 234,
+          "endLine": 260,
+          "tokens": 339
+        },
+        {
+          "name": "create_metadata_args",
+          "kind": "fn",
+          "startLine": 261,
+          "endLine": 278,
+          "tokens": 264
+        },
+        {
+          "name": "aws_command",
+          "kind": "fn",
+          "startLine": 279,
+          "endLine": 285,
+          "tokens": 86
+        },
+        {
+          "name": "cfn_send",
+          "kind": "fn",
+          "startLine": 286,
+          "endLine": 319,
+          "tokens": 400
+        },
+        {
+          "name": "bucket_owned",
+          "kind": "fn",
+          "startLine": 320,
+          "endLine": 334,
+          "tokens": 140
+        },
+        {
+          "name": "extract_and_replace_markers",
+          "kind": "fn",
+          "startLine": 335,
+          "endLine": 344,
+          "tokens": 117
+        },
+        {
+          "name": "prepare_json_safe_markers",
+          "kind": "fn",
+          "startLine": 345,
+          "endLine": 357,
+          "tokens": 168
+        },
+        {
+          "name": "replace_markers",
+          "kind": "fn",
+          "startLine": 358,
+          "endLine": 382,
+          "tokens": 280
+        },
+        {
+          "name": "replace_markers_in_json",
+          "kind": "fn",
+          "startLine": 383,
+          "endLine": 407,
+          "tokens": 300
+        }
+      ]
+    },
+    ".amplify/artifacts/cdk.out/asset.38af1ab0d078d0e65e7b48d62b60530278b09fb4433bed25287315fdd4094b61.vtl": {
+      "description": "# [Start] Authorization Steps. **",
+      "tokens": 773,
+      "hash": "3dda1807ac0ae00b",
+      "size": 2896,
+      "mtimeMs": 1770313796093.17,
+      "updatedAt": "2026-07-18T15:32:05.766Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.3b6d810ef43cdbd93ef462c40b0df0328b89e04f1473a4f82f1178da1f1d5aa0.vtl": {
+      "description": "# [Start] Authorization Steps. **",
+      "tokens": 797,
+      "hash": "746b18fdd64fb672",
+      "size": 2986,
+      "mtimeMs": 1770313796024.169,
+      "updatedAt": "2026-07-18T15:32:05.767Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.431c85179da41c1e6119ed98d2b85e53af57e37e10c2c5bd158001f67acc38d5.vtl": {
+      "description": "# [Start] Authorization Steps. **",
+      "tokens": 746,
+      "hash": "2c17eada70f84dfa",
+      "size": 2795,
+      "mtimeMs": 1770313796052.1694,
+      "updatedAt": "2026-07-18T15:32:05.767Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.43d0dfe2b982f0d0b9631541639632276341452eb31a045df63650396a896328.vtl": {
+      "description": "# [Start] Create Request template. **",
+      "tokens": 598,
+      "hash": "f91fac8a9e46887f",
+      "size": 2240,
+      "mtimeMs": 1770313796065.1694,
+      "updatedAt": "2026-07-18T15:32:05.767Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.474bf0776ec2164a13191d1a0a9e057154931e4918fea5086f49850d02a5371b.vtl": {
+      "description": "# [Start] Mutation Update resolver. **",
+      "tokens": 1166,
+      "hash": "0c6a3d9ed1d168b9",
+      "size": 4371,
+      "mtimeMs": 1770313796021.169,
+      "updatedAt": "2026-07-18T15:32:05.767Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.49e7a1f2fb4c809b82bed6b0242a2a3bcfa2c5276ebd2539ff330fee36f8fe18.vtl": {
+      "description": "if( $ctx.error )",
+      "tokens": 94,
+      "hash": "8950a48d5218497a",
+      "size": 349,
+      "mtimeMs": 1770313796102.17,
+      "updatedAt": "2026-07-18T15:32:05.767Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.4c6a2d29f01c6091bd1d9afe16e5849d456c96f17c3b215938c8067399532719.vtl": {
+      "description": "# [Start] Get Response template. **",
+      "tokens": 102,
+      "hash": "3f59bdf6ce29bb86",
+      "size": 381,
+      "mtimeMs": 1770313796012.169,
+      "updatedAt": "2026-07-18T15:32:05.767Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.4dadba439767e319a75e68c56b09dcfc19a40f0355ace48b28d600b7aac34e79/model-schema.graphql": {
+      "description": "GraphQL: types: Category, CreditCard, MonthlyData, Income",
+      "tokens": 494,
+      "hash": "dc8cb842169a9c3b",
+      "size": 1850,
+      "mtimeMs": 1770313796173.171,
+      "updatedAt": "2026-07-18T15:32:05.768Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.4f7907d1209a2c9953a0c053df402c634e359546d70c7cc5c2e8e21ea734880f.vtl": {
+      "description": "# [Start] Delete Request template. **",
+      "tokens": 493,
+      "hash": "c7125e4d9d034396",
+      "size": 1847,
+      "mtimeMs": 1770313796023.169,
+      "updatedAt": "2026-07-18T15:32:05.768Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.5206157ed7867c8027c62c19be360247ef34834ed7d44ddc104730d0cc803b79.vtl": {
+      "description": "if( $ctx.stash.deniedField )",
+      "tokens": 520,
+      "hash": "34d8719cb5b64a3d",
+      "size": 1948,
+      "mtimeMs": 1770313796104.17,
+      "updatedAt": "2026-07-18T15:32:05.768Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.530adcefd87d75e21527ec766de1959420d88c5ea3eca5e4ddc801e8de45d83b.vtl": {
+      "description": "if( $ctx.stash.deniedField )",
+      "tokens": 230,
+      "hash": "eb76acc4ce7b3bc9",
+      "size": 860,
+      "mtimeMs": 1770313796110.1702,
+      "updatedAt": "2026-07-18T15:32:05.768Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.5f9325ebc33eb5fb242ff1a3160ffd93aee2f503bca6a6c9f4ad129760ce1123.vtl": {
+      "description": "# [Start] Authorization Steps. **",
+      "tokens": 747,
+      "hash": "4369decbce923c92",
+      "size": 2799,
+      "mtimeMs": 1770313796037.1692,
+      "updatedAt": "2026-07-18T15:32:05.769Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.68d2037655e3a63d1a9c4e8c85daf68671cc29f9ff766217b9fcc598887c6ad2.vtl": {
+      "description": "# [Start] Create Request template. **",
+      "tokens": 599,
+      "hash": "33adaab354926ef2",
+      "size": 2245,
+      "mtimeMs": 1770313796092.17,
+      "updatedAt": "2026-07-18T15:32:05.769Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.6ae80345c27f9e79047c5805f9bd026742e9541e92f4e209e0bb4923f6111122.graphql": {
+      "description": "GraphQL: types: Category, CreditCard, MonthlyData, Income",
+      "tokens": 5705,
+      "hash": "e014f5af95bed68a",
+      "size": 21391,
+      "mtimeMs": 1770313796415.1736,
+      "updatedAt": "2026-07-18T15:32:05.769Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.6b25c9b572c67e0f7ad41cb8019a90825f3db4b02a0a15b837c7a82dcb302060.vtl": {
+      "description": "# [Start] Authorization Steps. **",
+      "tokens": 484,
+      "hash": "7188164d50306564",
+      "size": 1813,
+      "mtimeMs": 1770313796009.169,
+      "updatedAt": "2026-07-18T15:32:05.769Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.6b3a2ea84b5b5979c168000d74b93600f6a826622343b4459ee77c1c3b74ffba/modelIntrospectionSchema.json": {
+      "description": "",
+      "tokens": 7334,
+      "hash": "a06ab40b07967a02",
+      "size": 25667,
+      "mtimeMs": 1770313796182.171,
+      "updatedAt": "2026-07-18T15:32:05.770Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.77425c64c246af0e8c59996b1759e15e54ff2b916c191705b2fad81ba3753ba4.vtl": {
+      "description": "# [Start] Authorization Steps. **",
+      "tokens": 713,
+      "hash": "6a95613b95d43b40",
+      "size": 2673,
+      "mtimeMs": 1770313796017.169,
+      "updatedAt": "2026-07-18T15:32:05.770Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.867fb7d7eb8e4127b6d0136b82c5c3f74a52eb410297086859986f8e7e4b02aa.vtl": {
+      "description": "# [Start] Authorization Steps. **",
+      "tokens": 413,
+      "hash": "55f556d8b09fec9d",
+      "size": 1547,
+      "mtimeMs": 1770313796022.169,
+      "updatedAt": "2026-07-18T15:32:05.770Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.8743e5b0249668b33cf9050ff842b12c715be4661ad92d2bddd3e77cb44d98e4.vtl": {
+      "description": "# [Start] Authorization Steps. **",
+      "tokens": 710,
+      "hash": "5810c1ec8797367b",
+      "size": 2660,
+      "mtimeMs": 1770313796050.1694,
+      "updatedAt": "2026-07-18T15:32:05.771Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.97ab1fb7f7bd4c3f918842604ca1ae6a7cb114df258c9e4fa0f3eb4e5339cb8a.vtl": {
+      "description": "# [Start] Authorization Steps. **",
+      "tokens": 751,
+      "hash": "0babe56c27676551",
+      "size": 2816,
+      "mtimeMs": 1770313796077.1697,
+      "updatedAt": "2026-07-18T15:32:05.771Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.9fcbe070ecd3023c5bf5b966fa9584757db9762eef123bad0820bd87591b2174.vtl": {
+      "description": "# [Start] List Request. **",
+      "tokens": 479,
+      "hash": "d465836395626ef0",
+      "size": 1794,
+      "mtimeMs": 1770313796014.169,
+      "updatedAt": "2026-07-18T15:32:05.771Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.a096c064c4168f72aef670ba24ebcef8ca03f2864809e732fc70cd5520c55bc7/index.js": {
+      "description": "Convert a stack name to a BackendIdentifier",
+      "tokens": 209255,
+      "hash": "b4ee68286c139056",
+      "size": 732398,
+      "mtimeMs": 1770324885925.7725,
+      "updatedAt": "2026-07-18T15:32:05.776Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.a183ddccbd956316c38ef97177b8f088ef0826f62023323f5ae6053d348ccffc.vtl": {
+      "description": "# [Start] Initialization default values. **",
+      "tokens": 127,
+      "hash": "0b21ad5c230ec3fd",
+      "size": 475,
+      "mtimeMs": 1770313796016.169,
+      "updatedAt": "2026-07-18T15:32:05.776Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.af13c36d3940aff38fc2fae1ebd5af3597efc9b77e66336be78d45431fc75fa5.vtl": {
+      "description": "if( $ctx.stash.deniedField )",
+      "tokens": 520,
+      "hash": "f53d0633270678ad",
+      "size": 1949,
+      "mtimeMs": 1770313796107.17,
+      "updatedAt": "2026-07-18T15:32:05.776Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.b74d6a5aa8611ebead30a6aa8d58b61683e6d65c01e3b82cc2f6244beb8afc4e.vtl": {
+      "description": "# [Start] Setting \"order\" to default value of \"0\". **",
+      "tokens": 54,
+      "hash": "42663f2814600e5e",
+      "size": 200,
+      "mtimeMs": 1770313796034.1692,
+      "updatedAt": "2026-07-18T15:32:05.776Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl": {
+      "description": "# [Start] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "tokens": 101,
+      "hash": "cef4ef4aa3f3f97c",
+      "size": 378,
+      "mtimeMs": 1770313796010.169,
+      "updatedAt": "2026-07-18T15:32:05.777Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.c8f7517714236f8de8180682bb28062727e614cc192ba0277210a71c8e285571.vtl": {
+      "description": "# [Start] Authorization Steps. **",
+      "tokens": 811,
+      "hash": "a39af5460869d711",
+      "size": 3038,
+      "mtimeMs": 1770313796080.1697,
+      "updatedAt": "2026-07-18T15:32:05.777Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.cc01911d0269d4080ea57505dc445dfc315ef7ad85d3d9d4ea1357858bff451d.vtl": {
+      "description": "# [Start] ResponseTemplate. **",
+      "tokens": 46,
+      "hash": "54f3cee8f80896a9",
+      "size": 169,
+      "mtimeMs": 1770313796015.169,
+      "updatedAt": "2026-07-18T15:32:05.777Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.d228936eb3dadca7581e390486d1c593bf28e09c2411efdce7f728e0c30f0dfd.vtl": {
+      "description": "# [Start] Authorization Steps. **",
+      "tokens": 710,
+      "hash": "c5868f26ad61b32d",
+      "size": 2662,
+      "mtimeMs": 1770313796034.1692,
+      "updatedAt": "2026-07-18T15:32:05.777Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.d278223147c1222c5beddd70dc465db3bc205849b458499722f2a1c10ab901ec.vtl": {
+      "description": "# [Start] Create Request template. **",
+      "tokens": 599,
+      "hash": "93a699797fdb3a8a",
+      "size": 2245,
+      "mtimeMs": 1770313796051.1694,
+      "updatedAt": "2026-07-18T15:32:05.777Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.d69b10e051dd29f8ab942904290efd9f228b6a9e56341eeffd114ba5d0ab80b2.vtl": {
+      "description": "# [Start] Setting \"investments\" to default value of \"0\". **",
+      "tokens": 115,
+      "hash": "357adce6ed500f7c",
+      "size": 430,
+      "mtimeMs": 1770313796049.1694,
+      "updatedAt": "2026-07-18T15:32:05.777Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.d93611dca70c178d77b1a4c37d837804654d130af6ed41494edf2a38dd838ce6.vtl": {
+      "description": "# [Start] Check if subscriptions is protected. **",
+      "tokens": 538,
+      "hash": "50ba95f1359e29a8",
+      "size": 2015,
+      "mtimeMs": 1770313796101.17,
+      "updatedAt": "2026-07-18T15:32:05.778Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.d98000392a5e5baccac30e4c051b151ac9ed510a6e9002113909a23cd617fd1b.vtl": {
+      "description": "if( $ctx.stash.deniedField )",
+      "tokens": 230,
+      "hash": "0a5b8a00d550cab4",
+      "size": 860,
+      "mtimeMs": 1770313796108.17,
+      "updatedAt": "2026-07-18T15:32:05.778Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.dcb70e4856bc9a423e02b8b9e9c2ab3f71479784572d4c04a02d1f5b61a9f9ac.vtl": {
+      "description": "if( $ctx.error )",
+      "tokens": 148,
+      "hash": "7ceb3f0dd74b81ed",
+      "size": 555,
+      "mtimeMs": 1770313796108.17,
+      "updatedAt": "2026-07-18T15:32:05.778Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.e0cff47fb007f0bbf2a4e43ca256d6aa7ec109821769fd79fa7c5e83f0e7f9fc.vtl": {
+      "description": "# [Start] Subscription Response template. **",
+      "tokens": 67,
+      "hash": "a95a848d61227d22",
+      "size": 249,
+      "mtimeMs": 1770313796026.169,
+      "updatedAt": "2026-07-18T15:32:05.778Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.e61e0890c9b2c915d3415f4f5aa1e885fe39a6c816270b92f75753773a0668f2.vtl": {
+      "description": "if( $ctx.stash.deniedField )",
+      "tokens": 519,
+      "hash": "d6f5e91911512e73",
+      "size": 1945,
+      "mtimeMs": 1770313796103.17,
+      "updatedAt": "2026-07-18T15:32:05.778Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.e90bb23a6ffad9d2f2eab20d639343341571b9ee35597de7f19a744ebe44db28.vtl": {
+      "description": "# [Start] Authorization Steps. **",
+      "tokens": 721,
+      "hash": "f6c1944199fd387a",
+      "size": 2702,
+      "mtimeMs": 1770313796064.1694,
+      "updatedAt": "2026-07-18T15:32:05.778Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.ebe39f0d385ca7747fe0cc17b587d5360e4714c4a16aac1e2115f5e81c8bed81.vtl": {
+      "description": "# [Start] Create Request template. **",
+      "tokens": 598,
+      "hash": "07c32f828cc78fdc",
+      "size": 2241,
+      "mtimeMs": 1770313796078.1697,
+      "updatedAt": "2026-07-18T15:32:05.778Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.f2c5bec0e463cae18d0bf683be5923ae6bd676a06af1a994bdfa076a66ac07d6/amplify-table-manager-handler.d.ts.map": {
+      "description": "",
+      "tokens": 423,
+      "hash": "10a55d57b67a4330",
+      "size": 1586,
+      "mtimeMs": 1770313795898.1675,
+      "updatedAt": "2026-07-18T15:32:05.779Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.f2c5bec0e463cae18d0bf683be5923ae6bd676a06af1a994bdfa076a66ac07d6/amplify-table-manager-handler.js": {
+      "description": "client_dynamodb_1: onEventHandler, isCompleteHandler",
+      "tokens": 13212,
+      "hash": "4f5589b3eb5bb964",
+      "size": 46239,
+      "mtimeMs": 1770313795898.1675,
+      "updatedAt": "2026-07-18T15:32:05.782Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "getLambdaTags",
+          "kind": "fn",
+          "startLine": 43,
+          "endLine": 58,
+          "tokens": 155
+        },
+        {
+          "name": "getTableTags",
+          "kind": "fn",
+          "startLine": 59,
+          "endLine": 64,
+          "tokens": 77
+        },
+        {
+          "name": "onEventHandler",
+          "kind": "fn",
+          "startLine": 65,
+          "endLine": 88,
+          "tokens": 319
+        },
+        {
+          "name": "isCompleteHandler",
+          "kind": "fn",
+          "startLine": 89,
+          "endLine": 109,
+          "tokens": 248
+        },
+        {
+          "name": "processOnEvent",
+          "kind": "fn",
+          "startLine": 110,
+          "endLine": 281,
+          "tokens": 2855
+        },
+        {
+          "name": "processIsComplete",
+          "kind": "fn",
+          "startLine": 282,
+          "endLine": 344,
+          "tokens": 919
+        },
+        {
+          "name": "replaceTable",
+          "kind": "fn",
+          "startLine": 345,
+          "endLine": 367,
+          "tokens": 297
+        },
+        {
+          "name": "createResponseEvent",
+          "kind": "fn",
+          "startLine": 368,
+          "endLine": 382,
+          "tokens": 247
+        },
+        {
+          "name": "defaultPhysicalResourceId",
+          "kind": "fn",
+          "startLine": 383,
+          "endLine": 393,
+          "tokens": 97
+        },
+        {
+          "name": "getNextAtomicUpdate",
+          "kind": "fn",
+          "startLine": 394,
+          "endLine": 436,
+          "tokens": 895
+        },
+        {
+          "name": "getNextGSIUpdate",
+          "kind": "fn",
+          "startLine": 437,
+          "endLine": 531,
+          "tokens": 1425
+        },
+        {
+          "name": "getStreamUpdate",
+          "kind": "fn",
+          "startLine": 532,
+          "endLine": 561,
+          "tokens": 526
+        },
+        {
+          "name": "getSseUpdate",
+          "kind": "fn",
+          "startLine": 562,
+          "endLine": 598,
+          "tokens": 392
+        },
+        {
+          "name": "requiresTagsUpdate",
+          "kind": "fn",
+          "startLine": 599,
+          "endLine": 619,
+          "tokens": 198
+        },
+        {
+          "name": "getDeletionProtectionUpdate",
+          "kind": "fn",
+          "startLine": 620,
+          "endLine": 635,
+          "tokens": 200
+        },
+        {
+          "name": "getTtlUpdate",
+          "kind": "fn",
+          "startLine": 636,
+          "endLine": 671,
+          "tokens": 383
+        },
+        {
+          "name": "getPointInTimeRecoveryUpdate",
+          "kind": "fn",
+          "startLine": 672,
+          "endLine": 701,
+          "tokens": 326
+        },
+        {
+          "name": "extractTableInputFromEvent",
+          "kind": "fn",
+          "startLine": 702,
+          "endLine": 712,
+          "tokens": 134
+        },
+        {
+          "name": "extractOldTableInputFromEvent",
+          "kind": "fn",
+          "startLine": 713,
+          "endLine": 719,
+          "tokens": 94
+        },
+        {
+          "name": "parsePropertiesToDynamoDBInput",
+          "kind": "fn",
+          "startLine": 720,
+          "endLine": 722,
+          "tokens": 36
+        },
+        {
+          "name": "usePascalCaseForObjectKeys",
+          "kind": "fn",
+          "startLine": 723,
+          "endLine": 741,
+          "tokens": 209
+        },
+        {
+          "name": "convertStringToBooleanOrNumber",
+          "kind": "fn",
+          "startLine": 742,
+          "endLine": 770,
+          "tokens": 314
+        },
+        {
+          "name": "removeUndefinedAttributes",
+          "kind": "fn",
+          "startLine": 771,
+          "endLine": 784,
+          "tokens": 115
+        },
+        {
+          "name": "toCreateTableInput",
+          "kind": "fn",
+          "startLine": 785,
+          "endLine": 805,
+          "tokens": 260
+        },
+        {
+          "name": "createNewTable",
+          "kind": "fn",
+          "startLine": 806,
+          "endLine": 812,
+          "tokens": 108
+        },
+        {
+          "name": "doesTableExist",
+          "kind": "fn",
+          "startLine": 813,
+          "endLine": 824,
+          "tokens": 89
+        },
+        {
+          "name": "isTableReady",
+          "kind": "fn",
+          "startLine": 825,
+          "endLine": 837,
+          "tokens": 161
+        },
+        {
+          "name": "isProjectionModified",
+          "kind": "fn",
+          "startLine": 838,
+          "endLine": 850,
+          "tokens": 184
+        },
+        {
+          "name": "isKeySchemaModified",
+          "kind": "fn",
+          "startLine": 851,
+          "endLine": 865,
+          "tokens": 307
+        },
+        {
+          "name": "getTypeModifiedAttributes",
+          "kind": "fn",
+          "startLine": 866,
+          "endLine": 954,
+          "tokens": 1028
+        }
+      ]
+    },
+    ".amplify/artifacts/cdk.out/asset.f2c5bec0e463cae18d0bf683be5923ae6bd676a06af1a994bdfa076a66ac07d6/amplify-table-manager-handler.js.map": {
+      "description": "",
+      "tokens": 8962,
+      "hash": "f720e81520fbd969",
+      "size": 33604,
+      "mtimeMs": 1770313795898.1675,
+      "updatedAt": "2026-07-18T15:32:05.782Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.f2c5bec0e463cae18d0bf683be5923ae6bd676a06af1a994bdfa076a66ac07d6/cfn-response.d.ts.map": {
+      "description": "",
+      "tokens": 222,
+      "hash": "47073a475f23c88b",
+      "size": 829,
+      "mtimeMs": 1770313795898.1675,
+      "updatedAt": "2026-07-18T15:32:05.782Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.f2c5bec0e463cae18d0bf683be5923ae6bd676a06af1a994bdfa076a66ac07d6/cfn-response.js": {
+      "description": "url: submitResponse, safeHandler",
+      "tokens": 1136,
+      "hash": "eec4c5185bed3042",
+      "size": 3973,
+      "mtimeMs": 1770313795898.1675,
+      "updatedAt": "2026-07-18T15:32:05.782Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "submitResponse",
+          "kind": "fn",
+          "startLine": 32,
+          "endLine": 60,
+          "tokens": 293
+        },
+        {
+          "name": "safeHandler",
+          "kind": "fn",
+          "startLine": 61,
+          "endLine": 91,
+          "tokens": 366
+        },
+        {
+          "name": "Retry",
+          "kind": "class",
+          "startLine": 92,
+          "endLine": 95,
+          "tokens": 27
+        }
+      ]
+    },
+    ".amplify/artifacts/cdk.out/asset.f2c5bec0e463cae18d0bf683be5923ae6bd676a06af1a994bdfa076a66ac07d6/cfn-response.js.map": {
+      "description": "",
+      "tokens": 565,
+      "hash": "81106e22ced3db4f",
+      "size": 2117,
+      "mtimeMs": 1770313795898.1675,
+      "updatedAt": "2026-07-18T15:32:05.782Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.f2c5bec0e463cae18d0bf683be5923ae6bd676a06af1a994bdfa076a66ac07d6/import-table.d.ts.map": {
+      "description": "",
+      "tokens": 191,
+      "hash": "fae1050036871ecd",
+      "size": 714,
+      "mtimeMs": 1770313795899.1675,
+      "updatedAt": "2026-07-18T15:32:05.782Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.f2c5bec0e463cae18d0bf683be5923ae6bd676a06af1a994bdfa076a66ac07d6/import-table.js": {
+      "description": "Declares lodash_isequal_1",
+      "tokens": 3351,
+      "hash": "e9cdffd00afa143d",
+      "size": 11728,
+      "mtimeMs": 1770313795899.1675,
+      "updatedAt": "2026-07-18T15:32:05.783Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "importTable",
+          "kind": "fn",
+          "startLine": 9,
+          "endLine": 32,
+          "tokens": 360
+        },
+        {
+          "name": "validateImportedTableProperties",
+          "kind": "fn",
+          "startLine": 33,
+          "endLine": 54,
+          "tokens": 586
+        },
+        {
+          "name": "getExpectedTableProperties",
+          "kind": "fn",
+          "startLine": 55,
+          "endLine": 67,
+          "tokens": 220
+        },
+        {
+          "name": "getExpectedAttributeDefinitions",
+          "kind": "fn",
+          "startLine": 68,
+          "endLine": 70,
+          "tokens": 34
+        },
+        {
+          "name": "getExpectedKeySchema",
+          "kind": "fn",
+          "startLine": 71,
+          "endLine": 73,
+          "tokens": 27
+        },
+        {
+          "name": "getExpectedGlobalSecondaryIndexes",
+          "kind": "fn",
+          "startLine": 74,
+          "endLine": 90,
+          "tokens": 170
+        },
+        {
+          "name": "getExpectedBillingModeSummary",
+          "kind": "fn",
+          "startLine": 91,
+          "endLine": 95,
+          "tokens": 39
+        },
+        {
+          "name": "getExpectedStreamSpecification",
+          "kind": "fn",
+          "startLine": 96,
+          "endLine": 98,
+          "tokens": 33
+        },
+        {
+          "name": "getExpectedProvisionedThroughput",
+          "kind": "fn",
+          "startLine": 99,
+          "endLine": 101,
+          "tokens": 49
+        },
+        {
+          "name": "getExpectedSSEDescription",
+          "kind": "fn",
+          "startLine": 102,
+          "endLine": 109,
+          "tokens": 85
+        },
+        {
+          "name": "getExpectedDeletionProtectionEnabled",
+          "kind": "fn",
+          "startLine": 110,
+          "endLine": 112,
+          "tokens": 39
+        },
+        {
+          "name": "getImportedTableComparisonProperties",
+          "kind": "fn",
+          "startLine": 113,
+          "endLine": 125,
+          "tokens": 233
+        },
+        {
+          "name": "getAttributeDefinitionsForComparison",
+          "kind": "fn",
+          "startLine": 126,
+          "endLine": 132,
+          "tokens": 95
+        },
+        {
+          "name": "getKeySchemaForComparison",
+          "kind": "fn",
+          "startLine": 133,
+          "endLine": 139,
+          "tokens": 71
+        },
+        {
+          "name": "getGlobalSecondaryIndexesForComparison",
+          "kind": "fn",
+          "startLine": 140,
+          "endLine": 170,
+          "tokens": 379
+        },
+        {
+          "name": "getBillingModeSummaryForComparison",
+          "kind": "fn",
+          "startLine": 171,
+          "endLine": 177,
+          "tokens": 64
+        },
+        {
+          "name": "getProvisionedThroughputForComparison",
+          "kind": "fn",
+          "startLine": 178,
+          "endLine": 185,
+          "tokens": 96
+        },
+        {
+          "name": "getStreamSpecificationForComparison",
+          "kind": "fn",
+          "startLine": 186,
+          "endLine": 194,
+          "tokens": 120
+        },
+        {
+          "name": "getSSEDescriptionForComparison",
+          "kind": "fn",
+          "startLine": 195,
+          "endLine": 201,
+          "tokens": 59
+        },
+        {
+          "name": "getDeletionProtectionEnabledForComparison",
+          "kind": "fn",
+          "startLine": 202,
+          "endLine": 204,
+          "tokens": 36
+        },
+        {
+          "name": "sanitizeTableProperties",
+          "kind": "fn",
+          "startLine": 205,
+          "endLine": 225,
+          "tokens": 406
+        }
+      ]
+    },
+    ".amplify/artifacts/cdk.out/asset.f2c5bec0e463cae18d0bf683be5923ae6bd676a06af1a994bdfa076a66ac07d6/import-table.js.map": {
+      "description": "",
+      "tokens": 2118,
+      "hash": "1ca46919e862e596",
+      "size": 7940,
+      "mtimeMs": 1770313795899.1675,
+      "updatedAt": "2026-07-18T15:32:05.783Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.f2c5bec0e463cae18d0bf683be5923ae6bd676a06af1a994bdfa076a66ac07d6/outbound.d.ts.map": {
+      "description": "",
+      "tokens": 130,
+      "hash": "9978e71e98ea2bbc",
+      "size": 487,
+      "mtimeMs": 1770313795900.1675,
+      "updatedAt": "2026-07-18T15:32:05.783Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.f2c5bec0e463cae18d0bf683be5923ae6bd676a06af1a994bdfa076a66ac07d6/outbound.js": {
+      "description": "https: defaultHttpRequest, defaultStartExecution",
+      "tokens": 582,
+      "hash": "b90b918a165aa2b8",
+      "size": 2034,
+      "mtimeMs": 1770313795900.1675,
+      "updatedAt": "2026-07-18T15:32:05.783Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "defaultHttpRequest",
+          "kind": "fn",
+          "startLine": 33,
+          "endLine": 46,
+          "tokens": 106
+        },
+        {
+          "name": "defaultStartExecution",
+          "kind": "fn",
+          "startLine": 47,
+          "endLine": 55,
+          "tokens": 80
+        }
+      ]
+    },
+    ".amplify/artifacts/cdk.out/asset.f2c5bec0e463cae18d0bf683be5923ae6bd676a06af1a994bdfa076a66ac07d6/outbound.js.map": {
+      "description": "",
+      "tokens": 261,
+      "hash": "f4fd574e6ba0a8e6",
+      "size": 978,
+      "mtimeMs": 1770313795900.1675,
+      "updatedAt": "2026-07-18T15:32:05.783Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.f2c5bec0e463cae18d0bf683be5923ae6bd676a06af1a994bdfa076a66ac07d6/util.d.ts.map": {
+      "description": "",
+      "tokens": 155,
+      "hash": "fed7080ce732bf6d",
+      "size": 581,
+      "mtimeMs": 1770313795900.1675,
+      "updatedAt": "2026-07-18T15:32:05.783Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.f2c5bec0e463cae18d0bf683be5923ae6bd676a06af1a994bdfa076a66ac07d6/util.js": {
+      "description": "getEnv: withRetries, sleep",
+      "tokens": 349,
+      "hash": "8b76cf9d863a66e3",
+      "size": 1219,
+      "mtimeMs": 1770313795900.1675,
+      "updatedAt": "2026-07-18T15:32:05.783Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.f2c5bec0e463cae18d0bf683be5923ae6bd676a06af1a994bdfa076a66ac07d6/util.js.map": {
+      "description": "",
+      "tokens": 356,
+      "hash": "f2655811492cb945",
+      "size": 1335,
+      "mtimeMs": 1770313795901.1675,
+      "updatedAt": "2026-07-18T15:32:05.783Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.f4a52b72209a9dfa197b5e7367a5c378c5bb86de6e29ddd9e48b49a3fe54b249.vtl": {
+      "description": "# [Start] ResponseTemplate. **",
+      "tokens": 60,
+      "hash": "6483ee775c028018",
+      "size": 222,
+      "mtimeMs": 1770313796019.169,
+      "updatedAt": "2026-07-18T15:32:05.784Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6/index.js": {
+      "description": "R: k, u, D + 9 more",
+      "tokens": 1258,
+      "hash": "5fa9af527230cbfc",
+      "size": 4403,
+      "mtimeMs": 1770313796126.1702,
+      "updatedAt": "2026-07-18T15:32:05.784Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.fdb3eab04bf5334e10f336b071027e1aaf8e13bf375a44bd6d9c082352a6da9b.vtl": {
+      "description": "# [Start] Authorization Steps. **",
+      "tokens": 753,
+      "hash": "5c396601622cead7",
+      "size": 2821,
+      "mtimeMs": 1770313796020.169,
+      "updatedAt": "2026-07-18T15:32:05.784Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/asset.fe3c43ada4b9d681a5e2312663ef7a73386424d73b73e51f8e2e9d4b50f7c502.vtl": {
+      "description": "# [Start] Subscription Request template. **",
+      "tokens": 40,
+      "hash": "7d4c412d7cb73a01",
+      "size": 148,
+      "mtimeMs": 1770313796025.169,
+      "updatedAt": "2026-07-18T15:32:05.784Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/cdk.out": {
+      "description": "",
+      "tokens": 6,
+      "hash": "2803c1dc1c6511c4",
+      "size": 20,
+      "mtimeMs": 1770401386893.1165,
+      "updatedAt": "2026-07-18T15:32:05.784Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/manifest.json": {
+      "description": "",
+      "tokens": 67849,
+      "hash": "5b01e7928d67caac",
+      "size": 237471,
+      "mtimeMs": 1770401386892.1165,
+      "updatedAt": "2026-07-18T15:32:05.785Z",
+      "source": "scan"
+    },
+    ".amplify/artifacts/cdk.out/tree.json": {
+      "description": "",
+      "tokens": 249351,
+      "hash": "21de8a63dd86d5d7",
+      "size": 872727,
+      "mtimeMs": 1770401386516.1157,
+      "updatedAt": "2026-07-18T15:32:05.789Z",
+      "source": "scan"
+    },
+    ".amplify/generated/env/accept-invite.ts": {
+      "description": "This stub exists for local TypeScript compilation only.",
+      "tokens": 126,
+      "hash": "09b1ce6b0bc62c1d",
+      "size": 441,
+      "mtimeMs": 1771785137027.5056,
+      "updatedAt": "2026-07-18T15:32:05.790Z",
+      "source": "scan"
+    },
+    ".amplify/generated/env/create-workspace.ts": {
+      "description": "This stub exists for local TypeScript compilation only.",
+      "tokens": 126,
+      "hash": "09b1ce6b0bc62c1d",
+      "size": 441,
+      "mtimeMs": 1771785137024.5054,
+      "updatedAt": "2026-07-18T15:32:05.790Z",
+      "source": "scan"
+    },
+    ".amplify/generated/env/generate-invite-code.ts": {
+      "description": "This stub exists for local TypeScript compilation only.",
+      "tokens": 126,
+      "hash": "09b1ce6b0bc62c1d",
+      "size": 441,
+      "mtimeMs": 1771785137026.5054,
+      "updatedAt": "2026-07-18T15:32:05.790Z",
+      "source": "scan"
+    },
+    ".claude/commands/reframe.md": {
+      "description": "Mode: migrate [framework]",
+      "tokens": 551,
+      "hash": "17a75695be5d4629",
+      "size": 2221,
+      "mtimeMs": 1784388725730.8481,
+      "updatedAt": "2026-07-18T15:32:05.790Z",
+      "source": "scan"
+    },
+    ".claude/commands/security-audit.md": {
+      "description": "Layer 1 — Dependencies",
+      "tokens": 510,
+      "hash": "e6f7e0b7337c9c86",
+      "size": 2060,
+      "mtimeMs": 1784388725730.8481,
+      "updatedAt": "2026-07-18T15:32:05.790Z",
+      "source": "scan"
+    },
+    ".claude/rules/openwolf.md": {
+      "description": "",
+      "tokens": 328,
+      "hash": "6d735b2c1c54a916",
+      "size": 1323,
+      "mtimeMs": 1784388725724.8481,
+      "updatedAt": "2026-07-18T15:32:05.790Z",
+      "source": "scan"
+    },
+    ".claude/settings.json": {
+      "description": "",
+      "tokens": 514,
+      "hash": "f68759bb50af5ee4",
+      "size": 1799,
+      "mtimeMs": 1784388725724.8481,
+      "updatedAt": "2026-07-18T15:32:05.790Z",
+      "source": "scan"
+    },
+    ".claude/settings.local.json": {
+      "description": "",
+      "tokens": 152,
+      "hash": "7f4e4882b8b950fb",
+      "size": 530,
+      "mtimeMs": 1784387296124.6995,
+      "updatedAt": "2026-07-18T15:32:05.790Z",
+      "source": "scan"
+    },
+    ".codex/config.toml": {
+      "description": "",
+      "tokens": 7,
+      "hash": "d37497c327812159",
+      "size": 24,
+      "mtimeMs": 1784388725729.8481,
+      "updatedAt": "2026-07-18T15:32:05.790Z",
+      "source": "scan"
+    },
+    ".codex/hooks.json": {
+      "description": "",
+      "tokens": 655,
+      "hash": "48eb3020dceee7be",
+      "size": 2292,
+      "mtimeMs": 1784388725729.8481,
+      "updatedAt": "2026-07-18T15:32:05.791Z",
+      "source": "scan"
+    },
+    ".codex/prompts/reframe.md": {
+      "description": "Mode: migrate [framework]",
+      "tokens": 551,
+      "hash": "17a75695be5d4629",
+      "size": 2221,
+      "mtimeMs": 1784388725731.8481,
+      "updatedAt": "2026-07-18T15:32:05.791Z",
+      "source": "scan"
+    },
+    ".codex/prompts/security-audit.md": {
+      "description": "Layer 1 — Dependencies",
+      "tokens": 510,
+      "hash": "e6f7e0b7337c9c86",
+      "size": 2060,
+      "mtimeMs": 1784388725731.8481,
+      "updatedAt": "2026-07-18T15:32:05.791Z",
+      "source": "scan"
+    },
+    ".github/ISSUE_TEMPLATE/bug_report.yml": {
+      "description": "",
+      "tokens": 238,
+      "hash": "e33045cb92f75607",
+      "size": 831,
+      "mtimeMs": 1772299263502.8499,
+      "updatedAt": "2026-07-18T15:32:05.791Z",
+      "source": "scan"
+    },
+    ".github/ISSUE_TEMPLATE/config.yml": {
+      "description": "",
+      "tokens": 8,
+      "hash": "1f103c6a9dd07cd1",
+      "size": 28,
+      "mtimeMs": 1772299270351.951,
+      "updatedAt": "2026-07-18T15:32:05.791Z",
+      "source": "scan"
+    },
+    ".github/ISSUE_TEMPLATE/feature_request.yml": {
+      "description": "",
+      "tokens": 195,
+      "hash": "df821a9a28216d2a",
+      "size": 680,
+      "mtimeMs": 1772299267358.9067,
+      "updatedAt": "2026-07-18T15:32:05.791Z",
+      "source": "scan"
+    },
+    ".github/pull_request_template.md": {
+      "description": "Summary",
+      "tokens": 220,
+      "hash": "16d6e4d90f53714f",
+      "size": 883,
+      "mtimeMs": 1784386524872.3496,
+      "updatedAt": "2026-07-18T15:32:05.791Z",
+      "source": "scan"
+    },
+    ".github/workflows/e2e.yml": {
+      "description": "CI: E2E",
+      "tokens": 277,
+      "hash": "7aeb0e05a1b341bb",
+      "size": 968,
+      "mtimeMs": 1784386524872.3496,
+      "updatedAt": "2026-07-18T15:32:05.792Z",
+      "source": "scan"
+    },
+    ".github/workflows/quality.yml": {
+      "description": "CI: Quality",
+      "tokens": 217,
+      "hash": "300ab3f300d7a7c7",
+      "size": 758,
+      "mtimeMs": 1784386524872.3496,
+      "updatedAt": "2026-07-18T15:32:05.792Z",
+      "source": "scan"
+    },
+    ".github/workflows/test.yml": {
+      "description": "CI: Tests",
+      "tokens": 191,
+      "hash": "0c8249ffb477b296",
+      "size": 666,
+      "mtimeMs": 1784386524872.3496,
+      "updatedAt": "2026-07-18T15:32:05.792Z",
+      "source": "scan"
+    },
+    ".gitignore": {
+      "description": "Git ignore rules",
+      "tokens": 141,
+      "hash": "7705d0078901b1ba",
+      "size": 526,
+      "mtimeMs": 1772996450510.4502,
+      "updatedAt": "2026-07-18T15:32:05.792Z",
+      "source": "scan"
+    },
+    ".husky/_/.gitignore": {
+      "description": "Git ignore rules",
+      "tokens": 1,
+      "hash": "684888c0ebb17f37",
+      "size": 1,
+      "mtimeMs": 1776021001603.532,
+      "updatedAt": "2026-07-18T15:32:05.792Z",
+      "source": "scan"
+    },
+    ".husky/_/applypatch-msg": {
+      "description": "",
+      "tokens": 11,
+      "hash": "34fe496008be71d8",
+      "size": 39,
+      "mtimeMs": 1776021001604.532,
+      "updatedAt": "2026-07-18T15:32:05.792Z",
+      "source": "scan"
+    },
+    ".husky/_/commit-msg": {
+      "description": "",
+      "tokens": 11,
+      "hash": "34fe496008be71d8",
+      "size": 39,
+      "mtimeMs": 1776021001604.532,
+      "updatedAt": "2026-07-18T15:32:05.793Z",
+      "source": "scan"
+    },
+    ".husky/_/h": {
+      "description": "",
+      "tokens": 147,
+      "hash": "70200b200ca709b0",
+      "size": 551,
+      "mtimeMs": 1776021001604.532,
+      "updatedAt": "2026-07-18T15:32:05.793Z",
+      "source": "scan"
+    },
+    ".husky/_/husky.sh": {
+      "description": "",
+      "tokens": 46,
+      "hash": "21122903fca7209a",
+      "size": 160,
+      "mtimeMs": 1776021001605.532,
+      "updatedAt": "2026-07-18T15:32:05.793Z",
+      "source": "scan"
+    },
+    ".husky/_/post-applypatch": {
+      "description": "",
+      "tokens": 11,
+      "hash": "34fe496008be71d8",
+      "size": 39,
+      "mtimeMs": 1776021001604.532,
+      "updatedAt": "2026-07-18T15:32:05.793Z",
+      "source": "scan"
+    },
+    ".husky/_/post-checkout": {
+      "description": "",
+      "tokens": 11,
+      "hash": "34fe496008be71d8",
+      "size": 39,
+      "mtimeMs": 1776021001604.532,
+      "updatedAt": "2026-07-18T15:32:05.793Z",
+      "source": "scan"
+    },
+    ".husky/_/post-commit": {
+      "description": "",
+      "tokens": 11,
+      "hash": "34fe496008be71d8",
+      "size": 39,
+      "mtimeMs": 1776021001604.532,
+      "updatedAt": "2026-07-18T15:32:05.793Z",
+      "source": "scan"
+    },
+    ".husky/_/post-merge": {
+      "description": "",
+      "tokens": 11,
+      "hash": "34fe496008be71d8",
+      "size": 39,
+      "mtimeMs": 1776021001604.532,
+      "updatedAt": "2026-07-18T15:32:05.793Z",
+      "source": "scan"
+    },
+    ".husky/_/post-rewrite": {
+      "description": "",
+      "tokens": 11,
+      "hash": "34fe496008be71d8",
+      "size": 39,
+      "mtimeMs": 1776021001604.532,
+      "updatedAt": "2026-07-18T15:32:05.793Z",
+      "source": "scan"
+    },
+    ".husky/_/pre-applypatch": {
+      "description": "",
+      "tokens": 11,
+      "hash": "34fe496008be71d8",
+      "size": 39,
+      "mtimeMs": 1776021001604.532,
+      "updatedAt": "2026-07-18T15:32:05.793Z",
+      "source": "scan"
+    },
+    ".husky/_/pre-auto-gc": {
+      "description": "",
+      "tokens": 11,
+      "hash": "34fe496008be71d8",
+      "size": 39,
+      "mtimeMs": 1776021001605.532,
+      "updatedAt": "2026-07-18T15:32:05.793Z",
+      "source": "scan"
+    },
+    ".husky/_/pre-commit": {
+      "description": "",
+      "tokens": 11,
+      "hash": "34fe496008be71d8",
+      "size": 39,
+      "mtimeMs": 1776021001604.532,
+      "updatedAt": "2026-07-18T15:32:05.794Z",
+      "source": "scan"
+    },
+    ".husky/_/pre-merge-commit": {
+      "description": "",
+      "tokens": 11,
+      "hash": "34fe496008be71d8",
+      "size": 39,
+      "mtimeMs": 1776021001604.532,
+      "updatedAt": "2026-07-18T15:32:05.794Z",
+      "source": "scan"
+    },
+    ".husky/_/pre-push": {
+      "description": "",
+      "tokens": 11,
+      "hash": "34fe496008be71d8",
+      "size": 39,
+      "mtimeMs": 1776021001605.532,
+      "updatedAt": "2026-07-18T15:32:05.794Z",
+      "source": "scan"
+    },
+    ".husky/_/pre-rebase": {
+      "description": "",
+      "tokens": 11,
+      "hash": "34fe496008be71d8",
+      "size": 39,
+      "mtimeMs": 1776021001604.532,
+      "updatedAt": "2026-07-18T15:32:05.794Z",
+      "source": "scan"
+    },
+    ".husky/_/prepare-commit-msg": {
+      "description": "",
+      "tokens": 11,
+      "hash": "34fe496008be71d8",
+      "size": 39,
+      "mtimeMs": 1776021001604.532,
+      "updatedAt": "2026-07-18T15:32:05.794Z",
+      "source": "scan"
+    },
+    ".husky/pre-commit": {
+      "description": "",
+      "tokens": 5,
+      "hash": "b75f95a6e587aec9",
+      "size": 16,
+      "mtimeMs": 1772306258568.5288,
+      "updatedAt": "2026-07-18T15:32:05.794Z",
+      "source": "scan"
+    },
+    ".husky/pre-push": {
+      "description": "Verify lock file is in sync with package.json (catches npm ci failures before they hit CI)",
+      "tokens": 127,
+      "hash": "a3f762f77418b54e",
+      "size": 476,
+      "mtimeMs": 1784386524872.3496,
+      "updatedAt": "2026-07-18T15:32:05.794Z",
+      "source": "scan"
+    },
+    ".mcp.json": {
+      "description": "",
+      "tokens": 86,
+      "hash": "a8f335c08e1ca06c",
+      "size": 298,
+      "mtimeMs": 1784386524873.3496,
+      "updatedAt": "2026-07-18T15:32:05.794Z",
+      "source": "scan"
+    },
+    ".opencode/command/reframe.md": {
+      "description": "Mode: migrate [framework]",
+      "tokens": 551,
+      "hash": "17a75695be5d4629",
+      "size": 2221,
+      "mtimeMs": 1784388725731.8481,
+      "updatedAt": "2026-07-18T15:32:05.794Z",
+      "source": "scan"
+    },
+    ".opencode/command/security-audit.md": {
+      "description": "Layer 1 — Dependencies",
+      "tokens": 510,
+      "hash": "e6f7e0b7337c9c86",
+      "size": 2060,
+      "mtimeMs": 1784388725731.8481,
+      "updatedAt": "2026-07-18T15:32:05.794Z",
+      "source": "scan"
+    },
+    ".opencode/plugin/openwolf/anatomy.ts": {
+      "description": "Exports parseAnatomy, serializeAnatomy, extractDescription, STORE_FILE + 12 more",
+      "tokens": 2922,
+      "hash": "de2a14445289179f",
+      "size": 10257,
+      "mtimeMs": 1784388725729.8481,
+      "updatedAt": "2026-07-18T15:32:05.795Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "parseAnatomy",
+          "kind": "fn",
+          "startLine": 5,
+          "endLine": 28,
+          "tokens": 207
+        },
+        {
+          "name": "serializeAnatomy",
+          "kind": "fn",
+          "startLine": 29,
+          "endLine": 53,
+          "tokens": 240
+        },
+        {
+          "name": "extractDescription",
+          "kind": "fn",
+          "startLine": 54,
+          "endLine": 106,
+          "tokens": 577
+        },
+        {
+          "name": "sha256",
+          "kind": "fn",
+          "startLine": 107,
+          "endLine": 110,
+          "tokens": 33
+        },
+        {
+          "name": "StoreFileEntry",
+          "kind": "section",
+          "startLine": 111,
+          "endLine": 121,
+          "tokens": 83
+        },
+        {
+          "name": "AnatomyStoreData",
+          "kind": "section",
+          "startLine": 122,
+          "endLine": 127,
+          "tokens": 63
+        },
+        {
+          "name": "newStore",
+          "kind": "fn",
+          "startLine": 128,
+          "endLine": 132,
+          "tokens": 64
+        },
+        {
+          "name": "loadStore",
+          "kind": "fn",
+          "startLine": 133,
+          "endLine": 142,
+          "tokens": 92
+        },
+        {
+          "name": "saveStore",
+          "kind": "fn",
+          "startLine": 143,
+          "endLine": 157,
+          "tokens": 162
+        },
+        {
+          "name": "renderStore",
+          "kind": "fn",
+          "startLine": 158,
+          "endLine": 188,
+          "tokens": 380
+        },
+        {
+          "name": "renderToFile",
+          "kind": "fn",
+          "startLine": 189,
+          "endLine": 202,
+          "tokens": 146
+        },
+        {
+          "name": "importFromMarkdown",
+          "kind": "fn",
+          "startLine": 203,
+          "endLine": 227,
+          "tokens": 305
+        },
+        {
+          "name": "loadStoreReconciled",
+          "kind": "fn",
+          "startLine": 228,
+          "endLine": 240,
+          "tokens": 137
+        },
+        {
+          "name": "lockSleep",
+          "kind": "fn",
+          "startLine": 241,
+          "endLine": 244,
+          "tokens": 31
+        },
+        {
+          "name": "withAnatomyLock",
+          "kind": "fn",
+          "startLine": 245,
+          "endLine": 276,
+          "tokens": 373
+        }
+      ]
+    },
+    ".opencode/plugin/openwolf/fs.ts": {
+      "description": "Exports getWolfDir, wolfDirExists, readJSON, writeJSON + 6 more",
+      "tokens": 538,
+      "hash": "0193b1022c8e098b",
+      "size": 1881,
+      "mtimeMs": 1784388725729.8481,
+      "updatedAt": "2026-07-18T15:32:05.795Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "getWolfDir",
+          "kind": "fn",
+          "startLine": 5,
+          "endLine": 8,
+          "tokens": 28
+        },
+        {
+          "name": "wolfDirExists",
+          "kind": "fn",
+          "startLine": 9,
+          "endLine": 12,
+          "tokens": 31
+        },
+        {
+          "name": "readJSON",
+          "kind": "fn",
+          "startLine": 13,
+          "endLine": 20,
+          "tokens": 50
+        },
+        {
+          "name": "writeJSON",
+          "kind": "fn",
+          "startLine": 21,
+          "endLine": 33,
+          "tokens": 144
+        },
+        {
+          "name": "readMarkdown",
+          "kind": "fn",
+          "startLine": 34,
+          "endLine": 41,
+          "tokens": 41
+        },
+        {
+          "name": "appendMarkdown",
+          "kind": "fn",
+          "startLine": 42,
+          "endLine": 47,
+          "tokens": 64
+        },
+        {
+          "name": "timeShort",
+          "kind": "fn",
+          "startLine": 48,
+          "endLine": 52,
+          "tokens": 46
+        },
+        {
+          "name": "timestamp",
+          "kind": "fn",
+          "startLine": 53,
+          "endLine": 56,
+          "tokens": 22
+        },
+        {
+          "name": "normalizePath",
+          "kind": "fn",
+          "startLine": 57,
+          "endLine": 60,
+          "tokens": 24
+        },
+        {
+          "name": "estimateTokens",
+          "kind": "fn",
+          "startLine": 61,
+          "endLine": 64,
+          "tokens": 60
+        }
+      ]
+    },
+    ".opencode/plugin/openwolf/index.ts": {
+      "description": "Exports OpenWolf",
+      "tokens": 1081,
+      "hash": "5044a1f76c74f535",
+      "size": 3782,
+      "mtimeMs": 1784388725729.8481,
+      "updatedAt": "2026-07-18T15:32:05.795Z",
+      "source": "scan"
+    },
+    ".opencode/plugin/openwolf/post-read.ts": {
+      "description": "Exports handlePostRead",
+      "tokens": 629,
+      "hash": "1bc80c56ad0cfd32",
+      "size": 2200,
+      "mtimeMs": 1784388725729.8481,
+      "updatedAt": "2026-07-18T15:32:05.795Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "handlePostRead",
+          "kind": "fn",
+          "startLine": 7,
+          "endLine": 57,
+          "tokens": 553
+        }
+      ]
+    },
+    ".opencode/plugin/openwolf/post-write.ts": {
+      "description": "Exports handlePostWrite, summarizeEdit, autoDetectBugFix, detectFixPattern",
+      "tokens": 3226,
+      "hash": "02ba6ccd8d82475c",
+      "size": 11300,
+      "mtimeMs": 1784388725729.8481,
+      "updatedAt": "2026-07-18T15:32:05.796Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "handlePostWrite",
+          "kind": "fn",
+          "startLine": 8,
+          "endLine": 39,
+          "tokens": 302
+        },
+        {
+          "name": "updateAnatomy",
+          "kind": "fn",
+          "startLine": 40,
+          "endLine": 86,
+          "tokens": 473
+        },
+        {
+          "name": "appendToMemory",
+          "kind": "fn",
+          "startLine": 87,
+          "endLine": 114,
+          "tokens": 302
+        },
+        {
+          "name": "trackSession",
+          "kind": "fn",
+          "startLine": 115,
+          "endLine": 150,
+          "tokens": 338
+        },
+        {
+          "name": "summarizeEdit",
+          "kind": "fn",
+          "startLine": 151,
+          "endLine": 184,
+          "tokens": 471
+        },
+        {
+          "name": "autoDetectBugFix",
+          "kind": "fn",
+          "startLine": 185,
+          "endLine": 228,
+          "tokens": 523
+        },
+        {
+          "name": "detectFixPattern",
+          "kind": "fn",
+          "startLine": 229,
+          "endLine": 265,
+          "tokens": 610
+        },
+        {
+          "name": "extractChangedLines",
+          "kind": "fn",
+          "startLine": 266,
+          "endLine": 270,
+          "tokens": 88
+        }
+      ]
+    },
+    ".opencode/plugin/openwolf/pre-read.ts": {
+      "description": "Exports handlePreRead",
+      "tokens": 685,
+      "hash": "88c051b64b073c6a",
+      "size": 2401,
+      "mtimeMs": 1784388725729.8481,
+      "updatedAt": "2026-07-18T15:32:05.796Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "handlePreRead",
+          "kind": "fn",
+          "startLine": 7,
+          "endLine": 63,
+          "tokens": 613
+        }
+      ]
+    },
+    ".opencode/plugin/openwolf/pre-write.ts": {
+      "description": "Exports handlePreWrite",
+      "tokens": 1167,
+      "hash": "c3b34d216601e76f",
+      "size": 4092,
+      "mtimeMs": 1784388725729.8481,
+      "updatedAt": "2026-07-18T15:32:05.796Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "tokenize",
+          "kind": "fn",
+          "startLine": 14,
+          "endLine": 21,
+          "tokens": 63
+        },
+        {
+          "name": "handlePreWrite",
+          "kind": "fn",
+          "startLine": 22,
+          "endLine": 35,
+          "tokens": 132
+        },
+        {
+          "name": "checkCerebrum",
+          "kind": "fn",
+          "startLine": 36,
+          "endLine": 65,
+          "tokens": 369
+        },
+        {
+          "name": "BugEntry",
+          "kind": "section",
+          "startLine": 66,
+          "endLine": 74,
+          "tokens": 37
+        },
+        {
+          "name": "checkBugLog",
+          "kind": "fn",
+          "startLine": 75,
+          "endLine": 105,
+          "tokens": 399
+        }
+      ]
+    },
+    ".opencode/plugin/openwolf/session.ts": {
+      "description": "Exports getSessionState, setSessionState, deleteSession, handleSessionStart",
+      "tokens": 952,
+      "hash": "dda2df097f6d5874",
+      "size": 3340,
+      "mtimeMs": 1784388725730.8481,
+      "updatedAt": "2026-07-18T15:32:05.796Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "getSessionState",
+          "kind": "fn",
+          "startLine": 8,
+          "endLine": 11,
+          "tokens": 33
+        },
+        {
+          "name": "setSessionState",
+          "kind": "fn",
+          "startLine": 12,
+          "endLine": 15,
+          "tokens": 33
+        },
+        {
+          "name": "deleteSession",
+          "kind": "fn",
+          "startLine": 16,
+          "endLine": 19,
+          "tokens": 26
+        },
+        {
+          "name": "handleSessionStart",
+          "kind": "fn",
+          "startLine": 20,
+          "endLine": 89,
+          "tokens": 783
+        }
+      ]
+    },
+    ".opencode/plugin/openwolf/stop.ts": {
+      "description": "Exports handleStop",
+      "tokens": 1444,
+      "hash": "5f8633a3904ee5ce",
+      "size": 5057,
+      "mtimeMs": 1784388725730.8481,
+      "updatedAt": "2026-07-18T15:32:05.796Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "handleStop",
+          "kind": "fn",
+          "startLine": 6,
+          "endLine": 35,
+          "tokens": 262
+        },
+        {
+          "name": "checkForMissingBugLogs",
+          "kind": "fn",
+          "startLine": 36,
+          "endLine": 50,
+          "tokens": 165
+        },
+        {
+          "name": "buildLedgerEntry",
+          "kind": "fn",
+          "startLine": 51,
+          "endLine": 114,
+          "tokens": 743
+        },
+        {
+          "name": "appendSessionSummary",
+          "kind": "fn",
+          "startLine": 115,
+          "endLine": 126,
+          "tokens": 218
+        }
+      ]
+    },
+    ".opencode/plugin/openwolf/types.ts": {
+      "description": "Exports FileRead, FileWrite, SessionState, PartialSessionState + 2 more",
+      "tokens": 217,
+      "hash": "47f4dfb03abf55f9",
+      "size": 757,
+      "mtimeMs": 1784388725730.8481,
+      "updatedAt": "2026-07-18T15:32:05.796Z",
+      "source": "scan"
+    },
+    ".opencode/plugin/openwolf.ts": {
+      "description": "OpenWolf plugin entry — installed by `openwolf init --agent opencode`.",
+      "tokens": 74,
+      "hash": "a29f91aadb9a324d",
+      "size": 261,
+      "mtimeMs": 1784388725730.8481,
+      "updatedAt": "2026-07-18T15:32:05.796Z",
+      "source": "scan"
+    },
+    ".prettierignore": {
+      "description": "Build outputs",
+      "tokens": 95,
+      "hash": "fd3c8f6749a4ad49",
+      "size": 353,
+      "mtimeMs": 1769967700791.286,
+      "updatedAt": "2026-07-18T15:32:05.796Z",
+      "source": "scan"
+    },
+    ".prettierrc.json": {
+      "description": "Prettier configuration",
+      "tokens": 71,
+      "hash": "254892070537c3ba",
+      "size": 247,
+      "mtimeMs": 1769967700791.286,
+      "updatedAt": "2026-07-18T15:32:05.796Z",
+      "source": "scan"
+    },
+    ".serena/.gitignore": {
+      "description": "Git ignore rules",
+      "tokens": 2,
+      "hash": "fbfced411cdffce5",
+      "size": 7,
+      "mtimeMs": 1769968278692.752,
+      "updatedAt": "2026-07-18T15:32:05.797Z",
+      "source": "scan"
+    },
+    ".serena/cache/typescript/raw_document_symbols.pkl": {
+      "description": "",
+      "tokens": 206296,
+      "hash": "0a95a6c3a77bc7fb",
+      "size": 775718,
+      "mtimeMs": 1770331531989.9326,
+      "updatedAt": "2026-07-18T15:32:05.802Z",
+      "source": "scan"
+    },
+    ".serena/project.yml": {
+      "description": "the name by which the project can be referenced within Serena/when chatting with the LLM.",
+      "tokens": 2751,
+      "hash": "1675fd8e111b036b",
+      "size": 9630,
+      "mtimeMs": 1783560216236.874,
+      "updatedAt": "2026-07-18T15:32:05.802Z",
+      "source": "scan"
+    },
+    "AGENTS.md": {
+      "description": "OpenWolf",
+      "tokens": 68,
+      "hash": "8c90778623bf50ac",
+      "size": 271,
+      "mtimeMs": 1784388725729.8481,
+      "updatedAt": "2026-07-18T15:32:05.803Z",
+      "source": "scan"
+    },
+    "amplify/auth/resource.ts": {
+      "description": "Define and configure your auth resource",
+      "tokens": 187,
+      "hash": "52ee646444196876",
+      "size": 652,
+      "mtimeMs": 1770330527447.8142,
+      "updatedAt": "2026-07-18T15:32:05.803Z",
+      "source": "scan"
+    },
+    "amplify/backend.ts": {
+      "description": "Declares backend",
+      "tokens": 630,
+      "hash": "8bb1dba51137397f",
+      "size": 2202,
+      "mtimeMs": 1772079217653.2124,
+      "updatedAt": "2026-07-18T15:32:05.803Z",
+      "source": "scan"
+    },
+    "amplify/data/resource.ts": {
+      "description": "Tempest - Personal Finance Management Schema",
+      "tokens": 2564,
+      "hash": "9f1cd473647667af",
+      "size": 9248,
+      "mtimeMs": 1784386524873.3496,
+      "updatedAt": "2026-07-18T15:32:05.803Z",
+      "source": "scan"
+    },
+    "amplify/functions/accept-invite/handler.ts": {
+      "description": "Exports handler",
+      "tokens": 947,
+      "hash": "363f03d83f28ed5f",
+      "size": 3316,
+      "mtimeMs": 1772080095459.636,
+      "updatedAt": "2026-07-18T15:32:05.803Z",
+      "source": "scan"
+    },
+    "amplify/functions/accept-invite/resource.ts": {
+      "description": "Exports acceptInviteFn",
+      "tokens": 45,
+      "hash": "dde0d33cfbd82c5d",
+      "size": 155,
+      "mtimeMs": 1771784555742.665,
+      "updatedAt": "2026-07-18T15:32:05.803Z",
+      "source": "scan"
+    },
+    "amplify/functions/create-workspace/handler.ts": {
+      "description": "Exports handler",
+      "tokens": 1214,
+      "hash": "765e430c8aaed6ff",
+      "size": 4250,
+      "mtimeMs": 1772080573918.962,
+      "updatedAt": "2026-07-18T15:32:05.804Z",
+      "source": "scan"
+    },
+    "amplify/functions/create-workspace/resource.ts": {
+      "description": "Exports createWorkspaceFn",
+      "tokens": 46,
+      "hash": "47b4f2fee05e50f4",
+      "size": 161,
+      "mtimeMs": 1771784551304.615,
+      "updatedAt": "2026-07-18T15:32:05.804Z",
+      "source": "scan"
+    },
+    "amplify/functions/generate-invite-code/handler.ts": {
+      "description": "Exports handler",
+      "tokens": 756,
+      "hash": "8fc896640b973689",
+      "size": 2643,
+      "mtimeMs": 1771786757240.2256,
+      "updatedAt": "2026-07-18T15:32:05.804Z",
+      "source": "scan"
+    },
+    "amplify/functions/generate-invite-code/resource.ts": {
+      "description": "Exports generateInviteCodeFn",
+      "tokens": 48,
+      "hash": "3de8a6078acfb3cb",
+      "size": 168,
+      "mtimeMs": 1771784553595.6409,
+      "updatedAt": "2026-07-18T15:32:05.804Z",
+      "source": "scan"
+    },
+    "amplify/functions/remove-member/handler.ts": {
+      "description": "Exports handler",
+      "tokens": 618,
+      "hash": "f27d03bc874d21c2",
+      "size": 2160,
+      "mtimeMs": 1772079460576.302,
+      "updatedAt": "2026-07-18T15:32:05.804Z",
+      "source": "scan"
+    },
+    "amplify/functions/remove-member/resource.ts": {
+      "description": "Exports removeMemberFn",
+      "tokens": 43,
+      "hash": "d28dbfc4f0c786da",
+      "size": 150,
+      "mtimeMs": 1772079190280.428,
+      "updatedAt": "2026-07-18T15:32:05.804Z",
+      "source": "scan"
+    },
+    "amplify/functions/shared/avatar.ts": {
+      "description": "Exports hashAvatarColor",
+      "tokens": 116,
+      "hash": "ca4682b42c3a21da",
+      "size": 403,
+      "mtimeMs": 1772080079816.6091,
+      "updatedAt": "2026-07-18T15:32:05.804Z",
+      "source": "scan"
+    },
+    "amplify/package.json": {
+      "description": "Node.js package manifest",
+      "tokens": 7,
+      "hash": "3ca9d4afd2142508",
+      "size": 23,
+      "mtimeMs": 1770300893210.5479,
+      "updatedAt": "2026-07-18T15:32:05.804Z",
+      "source": "scan"
+    },
+    "amplify/tsconfig.json": {
+      "description": "TypeScript configuration",
+      "tokens": 96,
+      "hash": "b20a7627c986ad75",
+      "size": 335,
+      "mtimeMs": 1770300893220.5479,
+      "updatedAt": "2026-07-18T15:32:05.804Z",
+      "source": "scan"
+    },
+    "amplify_outputs.json": {
+      "description": "",
+      "tokens": 5,
+      "hash": "25d269e05e8aae00",
+      "size": 16,
+      "mtimeMs": 1776010933336.2498,
+      "updatedAt": "2026-07-18T15:32:05.805Z",
+      "source": "scan"
+    },
+    "app/auth/callback/page.tsx": {
+      "description": "OAuth Callback Page",
+      "tokens": 569,
+      "hash": "fa2d84ae107c8c16",
+      "size": 1993,
+      "mtimeMs": 1772077504341.4583,
+      "updatedAt": "2026-07-18T15:32:05.805Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "CallbackContent",
+          "kind": "fn",
+          "startLine": 19,
+          "endLine": 52,
+          "tokens": 296
+        },
+        {
+          "name": "AuthCallbackPage",
+          "kind": "fn",
+          "startLine": 53,
+          "endLine": 69,
+          "tokens": 127
+        }
+      ]
+    },
+    "app/auth/page.tsx": {
+      "description": "AuthPageContent — uses useRouter, useSearchParams",
+      "tokens": 224,
+      "hash": "17ca9b6ce1027fbe",
+      "size": 784,
+      "mtimeMs": 1772078155663.266,
+      "updatedAt": "2026-07-18T15:32:05.805Z",
+      "source": "scan"
+    },
+    "app/brand/page.tsx": {
+      "description": "metadata",
+      "tokens": 95,
+      "hash": "50f88a4bbc9ca3b3",
+      "size": 330,
+      "mtimeMs": 1770435476989.4675,
+      "updatedAt": "2026-07-18T15:32:05.805Z",
+      "source": "scan"
+    },
+    "app/globals.css": {
+      "description": "Styles: 19 rules, 122 vars, 4 animations, 1 layers",
+      "tokens": 1982,
+      "hash": "75988305b64de59d",
+      "size": 6937,
+      "mtimeMs": 1771885176346.645,
+      "updatedAt": "2026-07-18T15:32:05.805Z",
+      "source": "scan"
+    },
+    "app/invite/[inviteId]/page.tsx": {
+      "description": "InvitePage — uses useRouter, useState",
+      "tokens": 759,
+      "hash": "5b4e35b119178535",
+      "size": 2654,
+      "mtimeMs": 1772077931678.8652,
+      "updatedAt": "2026-07-18T15:32:05.806Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "InvitePage",
+          "kind": "fn",
+          "startLine": 15,
+          "endLine": 78,
+          "tokens": 581
+        }
+      ]
+    },
+    "app/layout.tsx": {
+      "description": "inter",
+      "tokens": 777,
+      "hash": "6dd9a14fccbf18bd",
+      "size": 2719,
+      "mtimeMs": 1784386524874.3496,
+      "updatedAt": "2026-07-18T15:32:05.806Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "generateMetadata",
+          "kind": "fn",
+          "startLine": 23,
+          "endLine": 81,
+          "tokens": 405
+        },
+        {
+          "name": "RootLayout",
+          "kind": "fn",
+          "startLine": 82,
+          "endLine": 107,
+          "tokens": 191
+        }
+      ]
+    },
+    "app/onboarding/page.tsx": {
+      "description": "WorkspaceForm — renders form — uses useRouter, useState",
+      "tokens": 1974,
+      "hash": "8e6421de1c8ec0fb",
+      "size": 6908,
+      "mtimeMs": 1772304129176.5232,
+      "updatedAt": "2026-07-18T15:32:05.806Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "WorkspaceForm",
+          "kind": "fn",
+          "startLine": 34,
+          "endLine": 101,
+          "tokens": 464
+        },
+        {
+          "name": "OnboardingPage",
+          "kind": "fn",
+          "startLine": 102,
+          "endLine": 227,
+          "tokens": 1195
+        }
+      ]
+    },
+    "app/page.tsx": {
+      "description": "ExpenseManagementApp",
+      "tokens": 501,
+      "hash": "61e235028ee973dd",
+      "size": 1752,
+      "mtimeMs": 1784386820422.1914,
+      "updatedAt": "2026-07-18T15:32:05.806Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "ExpenseManagementApp",
+          "kind": "fn",
+          "startLine": 16,
+          "endLine": 43,
+          "tokens": 288
+        }
+      ]
+    },
+    "app/settings/page.tsx": {
+      "description": "SettingsPage — uses useRouter",
+      "tokens": 324,
+      "hash": "e02b0290d24ad0fd",
+      "size": 1131,
+      "mtimeMs": 1784386820422.1914,
+      "updatedAt": "2026-07-18T15:32:05.806Z",
+      "source": "scan"
+    },
+    "CLAUDE.md": {
+      "description": "OpenWolf",
+      "tokens": 3117,
+      "hash": "3308549b38e56f97",
+      "size": 12551,
+      "mtimeMs": 1784388725724.8481,
+      "updatedAt": "2026-07-18T15:32:05.806Z",
+      "source": "scan"
+    },
+    "components/amplify-provider.tsx": {
+      "description": "",
+      "tokens": 37,
+      "hash": "b451c1482fe9c2ca",
+      "size": 128,
+      "mtimeMs": 1772302723728.598,
+      "updatedAt": "2026-07-18T15:32:05.806Z",
+      "source": "scan"
+    },
+    "components/auth/auth-form.tsx": {
+      "description": "AuthForm — renders form — uses useState",
+      "tokens": 2846,
+      "hash": "f6e270daea419d02",
+      "size": 10002,
+      "mtimeMs": 1772302577936.7385,
+      "updatedAt": "2026-07-18T15:32:05.807Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "AuthForm",
+          "kind": "fn",
+          "startLine": 21,
+          "endLine": 292,
+          "tokens": 2630
+        }
+      ]
+    },
+    "components/brand/brand-showcase.tsx": {
+      "description": "brandColors",
+      "tokens": 4350,
+      "hash": "baf2b861c4c72b60",
+      "size": 15226,
+      "mtimeMs": 1771885176483.6462,
+      "updatedAt": "2026-07-18T15:32:05.807Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "BrandShowcase",
+          "kind": "fn",
+          "startLine": 46,
+          "endLine": 382,
+          "tokens": 3795
+        },
+        {
+          "name": "SectionTitle",
+          "kind": "fn",
+          "startLine": 383,
+          "endLine": 396,
+          "tokens": 105
+        },
+        {
+          "name": "BrandValueCard",
+          "kind": "fn",
+          "startLine": 397,
+          "endLine": 421,
+          "tokens": 157
+        }
+      ]
+    },
+    "components/brand/tempest-logo.tsx": {
+      "description": "sizeMap",
+      "tokens": 1908,
+      "hash": "57d77aab340b197d",
+      "size": 6678,
+      "mtimeMs": 1771885176515.6465,
+      "updatedAt": "2026-07-18T15:32:05.807Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "TempestLogoProps",
+          "kind": "section",
+          "startLine": 5,
+          "endLine": 20,
+          "tokens": 132
+        },
+        {
+          "name": "TempestLogo",
+          "kind": "fn",
+          "startLine": 21,
+          "endLine": 195,
+          "tokens": 1368
+        },
+        {
+          "name": "TempestIconMark",
+          "kind": "fn",
+          "startLine": 196,
+          "endLine": 247,
+          "tokens": 395
+        }
+      ]
+    },
+    "components/expense/app-shell.tsx": {
+      "description": "AppShell",
+      "tokens": 302,
+      "hash": "96eb94ce8c7be910",
+      "size": 1055,
+      "mtimeMs": 1784387581076.6143,
+      "updatedAt": "2026-07-18T15:32:05.808Z",
+      "source": "scan"
+    },
+    "components/expense/categories-view.tsx": {
+      "description": "SortableCategoryCard — uses useState, useMemo",
+      "tokens": 3005,
+      "hash": "54b4db80827b8138",
+      "size": 10515,
+      "mtimeMs": 1771775331951.6443,
+      "updatedAt": "2026-07-18T15:32:05.808Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "SortableCategoryCard",
+          "kind": "fn",
+          "startLine": 54,
+          "endLine": 162,
+          "tokens": 1027
+        },
+        {
+          "name": "CategoriesView",
+          "kind": "fn",
+          "startLine": 163,
+          "endLine": 330,
+          "tokens": 1600
+        }
+      ]
+    },
+    "components/expense/category-breakdown.tsx": {
+      "description": "CategoryBreakdown",
+      "tokens": 998,
+      "hash": "87674ea99ffe7ad8",
+      "size": 3490,
+      "mtimeMs": 1772998605233.0461,
+      "updatedAt": "2026-07-18T15:32:05.808Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "CategoryBreakdownProps",
+          "kind": "section",
+          "startLine": 15,
+          "endLine": 18,
+          "tokens": 17
+        },
+        {
+          "name": "CategoryBreakdown",
+          "kind": "fn",
+          "startLine": 19,
+          "endLine": 94,
+          "tokens": 868
+        }
+      ]
+    },
+    "components/expense/category-form-dialog.tsx": {
+      "description": "CategoryFormDialog — renders form, modal — uses useState, useEffect",
+      "tokens": 1350,
+      "hash": "41a76d72e36c0830",
+      "size": 4723,
+      "mtimeMs": 1771775178411.414,
+      "updatedAt": "2026-07-18T15:32:05.809Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "CategoryFormDialog",
+          "kind": "fn",
+          "startLine": 30,
+          "endLine": 149,
+          "tokens": 1100
+        }
+      ]
+    },
+    "components/expense/color-selector.tsx": {
+      "description": "ColorSelector",
+      "tokens": 403,
+      "hash": "485d3bcbeba251cd",
+      "size": 1408,
+      "mtimeMs": 1771775178411.414,
+      "updatedAt": "2026-07-18T15:32:05.809Z",
+      "source": "scan"
+    },
+    "components/expense/credit-card-form-dialog.tsx": {
+      "description": "CreditCardFormDialog — renders form, modal — uses useState, useEffect",
+      "tokens": 1656,
+      "hash": "a6b29d083de5e37b",
+      "size": 5794,
+      "mtimeMs": 1772998511647.9067,
+      "updatedAt": "2026-07-18T15:32:05.809Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "CreditCardFormDialog",
+          "kind": "fn",
+          "startLine": 28,
+          "endLine": 183,
+          "tokens": 1447
+        }
+      ]
+    },
+    "components/expense/credit-cards-view.tsx": {
+      "description": "SortableCreditCardCard — uses useState, useMemo",
+      "tokens": 5293,
+      "hash": "4c2c034e6898fc3f",
+      "size": 18524,
+      "mtimeMs": 1772998511645.9067,
+      "updatedAt": "2026-07-18T15:32:05.809Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "SortableCreditCardCard",
+          "kind": "fn",
+          "startLine": 65,
+          "endLine": 174,
+          "tokens": 1062
+        },
+        {
+          "name": "CreditCardsView",
+          "kind": "fn",
+          "startLine": 175,
+          "endLine": 500,
+          "tokens": 3750
+        }
+      ]
+    },
+    "components/expense/dashboard-skeleton.tsx": {
+      "description": "DashboardSkeleton — renders chart",
+      "tokens": 1026,
+      "hash": "4ac90f6e4089edc8",
+      "size": 3589,
+      "mtimeMs": 1770142591083.7856,
+      "updatedAt": "2026-07-18T15:32:05.809Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "DashboardSkeleton",
+          "kind": "fn",
+          "startLine": 4,
+          "endLine": 91,
+          "tokens": 991
+        }
+      ]
+    },
+    "components/expense/dashboard-view.tsx": {
+      "description": "DashboardView — renders chart — uses useState, useEffect, useMemo",
+      "tokens": 9152,
+      "hash": "c133af0a8e0885ea",
+      "size": 32030,
+      "mtimeMs": 1784386524874.3496,
+      "updatedAt": "2026-07-18T15:32:05.810Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "DashboardView",
+          "kind": "fn",
+          "startLine": 46,
+          "endLine": 718,
+          "tokens": 8901
+        }
+      ]
+    },
+    "components/expense/expense-edit-dialog.tsx": {
+      "description": "ExpenseEditDialog — renders form, modal — uses useState, useEffect",
+      "tokens": 1747,
+      "hash": "893636cfb07fd3d1",
+      "size": 6119,
+      "mtimeMs": 1771775178412.414,
+      "updatedAt": "2026-07-18T15:32:05.810Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "ExpenseEditDialogProps",
+          "kind": "section",
+          "startLine": 28,
+          "endLine": 36,
+          "tokens": 66
+        },
+        {
+          "name": "ExpenseEditDialog",
+          "kind": "fn",
+          "startLine": 37,
+          "endLine": 187,
+          "tokens": 1476
+        }
+      ]
+    },
+    "components/expense/expense-form.tsx": {
+      "description": "ExpenseForm — renders form, modal — uses useState",
+      "tokens": 1377,
+      "hash": "3acde6cf7a7002ba",
+      "size": 4818,
+      "mtimeMs": 1771775178413.414,
+      "updatedAt": "2026-07-18T15:32:05.810Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "ExpenseFormProps",
+          "kind": "section",
+          "startLine": 28,
+          "endLine": 39,
+          "tokens": 69
+        },
+        {
+          "name": "ExpenseForm",
+          "kind": "fn",
+          "startLine": 40,
+          "endLine": 150,
+          "tokens": 1114
+        }
+      ]
+    },
+    "components/expense/expense-list.tsx": {
+      "description": "ExpenseList — renders chart",
+      "tokens": 1732,
+      "hash": "c3b89ba08ba68972",
+      "size": 6059,
+      "mtimeMs": 1772998511641.9065,
+      "updatedAt": "2026-07-18T15:32:05.810Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "ExpenseListProps",
+          "kind": "section",
+          "startLine": 16,
+          "endLine": 25,
+          "tokens": 76
+        },
+        {
+          "name": "ExpenseList",
+          "kind": "fn",
+          "startLine": 26,
+          "endLine": 150,
+          "tokens": 1464
+        }
+      ]
+    },
+    "components/expense/goal-card.tsx": {
+      "description": "GoalCard",
+      "tokens": 1738,
+      "hash": "cda6bb4458e053a1",
+      "size": 6080,
+      "mtimeMs": 1784386524874.3496,
+      "updatedAt": "2026-07-18T15:32:05.810Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "GoalCardProps",
+          "kind": "section",
+          "startLine": 28,
+          "endLine": 37,
+          "tokens": 54
+        },
+        {
+          "name": "GoalCard",
+          "kind": "fn",
+          "startLine": 38,
+          "endLine": 169,
+          "tokens": 1458
+        }
+      ]
+    },
+    "components/expense/goal-detail-sheet.tsx": {
+      "description": "GoalDetailSheet — uses useState",
+      "tokens": 2790,
+      "hash": "97f4ee5587e023cd",
+      "size": 9764,
+      "mtimeMs": 1784386524874.3496,
+      "updatedAt": "2026-07-18T15:32:05.810Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "GoalDetailSheetProps",
+          "kind": "section",
+          "startLine": 33,
+          "endLine": 45,
+          "tokens": 97
+        },
+        {
+          "name": "GoalDetailSheet",
+          "kind": "fn",
+          "startLine": 46,
+          "endLine": 257,
+          "tokens": 2412
+        }
+      ]
+    },
+    "components/expense/goal-form-dialog.tsx": {
+      "description": "GOAL_ICONS — renders form, modal — uses useState, useEffect",
+      "tokens": 2338,
+      "hash": "85e9c777ca242c51",
+      "size": 8181,
+      "mtimeMs": 1784386524874.3496,
+      "updatedAt": "2026-07-18T15:32:05.811Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "GoalFormDialog",
+          "kind": "fn",
+          "startLine": 82,
+          "endLine": 266,
+          "tokens": 1905
+        }
+      ]
+    },
+    "components/expense/goal-progress-bar.tsx": {
+      "description": "GoalProgressBar",
+      "tokens": 265,
+      "hash": "fe2df40bf4f82bb0",
+      "size": 926,
+      "mtimeMs": 1784386524874.3496,
+      "updatedAt": "2026-07-18T15:32:05.811Z",
+      "source": "scan"
+    },
+    "components/expense/goals-view.tsx": {
+      "description": "GoalsView — uses useState",
+      "tokens": 1780,
+      "hash": "7a730a3bf8543b4e",
+      "size": 6228,
+      "mtimeMs": 1784386524874.3496,
+      "updatedAt": "2026-07-18T15:32:05.811Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "GoalsView",
+          "kind": "fn",
+          "startLine": 13,
+          "endLine": 164,
+          "tokens": 1632
+        }
+      ]
+    },
+    "components/expense/icon-selector.tsx": {
+      "description": "CATEGORY_ICONS — uses useState",
+      "tokens": 1214,
+      "hash": "ed1969368059a375",
+      "size": 4249,
+      "mtimeMs": 1771775178413.414,
+      "updatedAt": "2026-07-18T15:32:05.811Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "IconSelector",
+          "kind": "fn",
+          "startLine": 103,
+          "endLine": 176,
+          "tokens": 759
+        }
+      ]
+    },
+    "components/expense/income-input.tsx": {
+      "description": "AddIncomeDialog — renders form, modal — uses useState",
+      "tokens": 2038,
+      "hash": "0062a0d0aa1337a3",
+      "size": 7133,
+      "mtimeMs": 1784386524874.3496,
+      "updatedAt": "2026-07-18T15:32:05.811Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "IncomeSectionProps",
+          "kind": "section",
+          "startLine": 26,
+          "endLine": 37,
+          "tokens": 124
+        },
+        {
+          "name": "AddIncomeDialog",
+          "kind": "fn",
+          "startLine": 38,
+          "endLine": 140,
+          "tokens": 1006
+        },
+        {
+          "name": "IncomeSection",
+          "kind": "fn",
+          "startLine": 141,
+          "endLine": 210,
+          "tokens": 659
+        }
+      ]
+    },
+    "components/expense/income-list.tsx": {
+      "description": "IncomeList — renders form, modal — uses useState",
+      "tokens": 1987,
+      "hash": "e870cc84bef6b420",
+      "size": 6953,
+      "mtimeMs": 1772998511637.9065,
+      "updatedAt": "2026-07-18T15:32:05.811Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "IncomeListProps",
+          "kind": "section",
+          "startLine": 22,
+          "endLine": 27,
+          "tokens": 42
+        },
+        {
+          "name": "IncomeList",
+          "kind": "fn",
+          "startLine": 28,
+          "endLine": 184,
+          "tokens": 1767
+        }
+      ]
+    },
+    "components/expense/installments.tsx": {
+      "description": "Installments — renders form, modal — uses useState",
+      "tokens": 3039,
+      "hash": "51a88e470fcccb1f",
+      "size": 10636,
+      "mtimeMs": 1772998511640.9065,
+      "updatedAt": "2026-07-18T15:32:05.811Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "InstallmentsProps",
+          "kind": "section",
+          "startLine": 27,
+          "endLine": 31,
+          "tokens": 25
+        },
+        {
+          "name": "Installments",
+          "kind": "fn",
+          "startLine": 32,
+          "endLine": 273,
+          "tokens": 2811
+        }
+      ]
+    },
+    "components/expense/month-selector.tsx": {
+      "description": "MonthSelector",
+      "tokens": 1182,
+      "hash": "63ad44b800444fdb",
+      "size": 4136,
+      "mtimeMs": 1771775178414.414,
+      "updatedAt": "2026-07-18T15:32:05.811Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "MonthSelectorProps",
+          "kind": "section",
+          "startLine": 14,
+          "endLine": 18,
+          "tokens": 28
+        },
+        {
+          "name": "MonthSelector",
+          "kind": "fn",
+          "startLine": 19,
+          "endLine": 133,
+          "tokens": 1075
+        }
+      ]
+    },
+    "components/expense/monthly-view.tsx": {
+      "description": "MonthlyView — uses useEffect",
+      "tokens": 2164,
+      "hash": "2995ca9b5d9db8c9",
+      "size": 7571,
+      "mtimeMs": 1784386524874.3496,
+      "updatedAt": "2026-07-18T15:32:05.812Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "MonthlyView",
+          "kind": "fn",
+          "startLine": 14,
+          "endLine": 209,
+          "tokens": 2013
+        }
+      ]
+    },
+    "components/expense/note-form-dialog.tsx": {
+      "description": "NoteFormDialog — renders form, modal — uses useState, useEffect",
+      "tokens": 1740,
+      "hash": "987ff5af0d03b73f",
+      "size": 6089,
+      "mtimeMs": 1775688404064.2122,
+      "updatedAt": "2026-07-18T15:32:05.812Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "NoteFormDialogProps",
+          "kind": "section",
+          "startLine": 21,
+          "endLine": 28,
+          "tokens": 54
+        },
+        {
+          "name": "NoteFormDialog",
+          "kind": "fn",
+          "startLine": 29,
+          "endLine": 186,
+          "tokens": 1514
+        }
+      ]
+    },
+    "components/expense/notes-section.tsx": {
+      "description": "NotesSection — uses useState",
+      "tokens": 2637,
+      "hash": "43389376a89bdcf8",
+      "size": 9229,
+      "mtimeMs": 1775688789559.1663,
+      "updatedAt": "2026-07-18T15:32:05.812Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "NotesSectionProps",
+          "kind": "section",
+          "startLine": 25,
+          "endLine": 32,
+          "tokens": 70
+        },
+        {
+          "name": "NotesSection",
+          "kind": "fn",
+          "startLine": 33,
+          "endLine": 232,
+          "tokens": 2365
+        }
+      ]
+    },
+    "components/expense/savings-entries-section.tsx": {
+      "description": "SavingsEntriesSection",
+      "tokens": 1644,
+      "hash": "ccd355784c213e6a",
+      "size": 5755,
+      "mtimeMs": 1784386524874.3496,
+      "updatedAt": "2026-07-18T15:32:05.812Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "SavingsEntriesSectionProps",
+          "kind": "section",
+          "startLine": 13,
+          "endLine": 20,
+          "tokens": 57
+        },
+        {
+          "name": "SavingsEntriesSection",
+          "kind": "fn",
+          "startLine": 21,
+          "endLine": 151,
+          "tokens": 1454
+        }
+      ]
+    },
+    "components/expense/savings-entry-form-dialog.tsx": {
+      "description": "SavingsEntryFormDialog — renders form, modal — uses useState, useEffect",
+      "tokens": 1870,
+      "hash": "813f89b6cd995092",
+      "size": 6545,
+      "mtimeMs": 1784386524874.3496,
+      "updatedAt": "2026-07-18T15:32:05.812Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "SavingsEntryFormDialogProps",
+          "kind": "section",
+          "startLine": 27,
+          "endLine": 34,
+          "tokens": 57
+        },
+        {
+          "name": "SavingsEntryFormDialog",
+          "kind": "fn",
+          "startLine": 35,
+          "endLine": 205,
+          "tokens": 1621
+        }
+      ]
+    },
+    "components/expense/settings-view.tsx": {
+      "description": "SettingsView — uses useRouter, useState, useEffect",
+      "tokens": 3696,
+      "hash": "76cf8a0d7c8372f2",
+      "size": 12970,
+      "mtimeMs": 1772079333835.3518,
+      "updatedAt": "2026-07-18T15:32:05.812Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "SettingsView",
+          "kind": "fn",
+          "startLine": 36,
+          "endLine": 324,
+          "tokens": 3375
+        }
+      ]
+    },
+    "components/expense/sidebar.tsx": {
+      "description": "AppSidebar",
+      "tokens": 1172,
+      "hash": "bfaa6ffdabc7d37f",
+      "size": 4099,
+      "mtimeMs": 1784387581077.6143,
+      "updatedAt": "2026-07-18T15:32:05.812Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "AppSidebar",
+          "kind": "fn",
+          "startLine": 33,
+          "endLine": 144,
+          "tokens": 926
+        }
+      ]
+    },
+    "components/expense/summary-cards.tsx": {
+      "description": "SummaryCards",
+      "tokens": 1308,
+      "hash": "cd81fbd5b2366a4d",
+      "size": 4578,
+      "mtimeMs": 1784386524875.3496,
+      "updatedAt": "2026-07-18T15:32:05.813Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "SummaryCardsProps",
+          "kind": "section",
+          "startLine": 18,
+          "endLine": 24,
+          "tokens": 40
+        },
+        {
+          "name": "SummaryCards",
+          "kind": "fn",
+          "startLine": 25,
+          "endLine": 145,
+          "tokens": 1158
+        }
+      ]
+    },
+    "components/expense/sync-card.tsx": {
+      "description": "SyncCard — uses useState, useEffect",
+      "tokens": 1455,
+      "hash": "b28347f68ebe42a8",
+      "size": 5091,
+      "mtimeMs": 1772075563978.0615,
+      "updatedAt": "2026-07-18T15:32:05.813Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "SyncCardProps",
+          "kind": "section",
+          "startLine": 13,
+          "endLine": 16,
+          "tokens": 15
+        },
+        {
+          "name": "SyncCard",
+          "kind": "fn",
+          "startLine": 17,
+          "endLine": 160,
+          "tokens": 1285
+        }
+      ]
+    },
+    "components/expense/year-selector.tsx": {
+      "description": "YearSelector",
+      "tokens": 464,
+      "hash": "e57880dfe0a899af",
+      "size": 1624,
+      "mtimeMs": 1769967700793.286,
+      "updatedAt": "2026-07-18T15:32:05.813Z",
+      "source": "scan"
+    },
+    "components/theme-provider.tsx": {
+      "description": "ThemeProvider",
+      "tokens": 82,
+      "hash": "fe1aec561ba0f20d",
+      "size": 287,
+      "mtimeMs": 1769967700793.286,
+      "updatedAt": "2026-07-18T15:32:05.813Z",
+      "source": "scan"
+    },
+    "components/theme-toggle.tsx": {
+      "description": "ThemeToggle",
+      "tokens": 337,
+      "hash": "92e73095a4870b2e",
+      "size": 1179,
+      "mtimeMs": 1771885176941.65,
+      "updatedAt": "2026-07-18T15:32:05.813Z",
+      "source": "scan"
+    },
+    "components/ui/accordion.tsx": {
+      "description": "Accordion",
+      "tokens": 587,
+      "hash": "789b258bfc80b22f",
+      "size": 2054,
+      "mtimeMs": 1769967700793.286,
+      "updatedAt": "2026-07-18T15:32:05.813Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "Accordion",
+          "kind": "fn",
+          "startLine": 9,
+          "endLine": 14,
+          "tokens": 47
+        },
+        {
+          "name": "AccordionItem",
+          "kind": "fn",
+          "startLine": 15,
+          "endLine": 27,
+          "tokens": 78
+        },
+        {
+          "name": "AccordionTrigger",
+          "kind": "fn",
+          "startLine": 28,
+          "endLine": 49,
+          "tokens": 256
+        },
+        {
+          "name": "AccordionContent",
+          "kind": "fn",
+          "startLine": 50,
+          "endLine": 67,
+          "tokens": 152
+        }
+      ]
+    },
+    "components/ui/alert-dialog.tsx": {
+      "description": "AlertDialog",
+      "tokens": 1105,
+      "hash": "8181c7be76533bb5",
+      "size": 3867,
+      "mtimeMs": 1769967700794.286,
+      "updatedAt": "2026-07-18T15:32:05.813Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "AlertDialog",
+          "kind": "fn",
+          "startLine": 9,
+          "endLine": 14,
+          "tokens": 50
+        },
+        {
+          "name": "AlertDialogTrigger",
+          "kind": "fn",
+          "startLine": 15,
+          "endLine": 22,
+          "tokens": 58
+        },
+        {
+          "name": "AlertDialogPortal",
+          "kind": "fn",
+          "startLine": 23,
+          "endLine": 30,
+          "tokens": 57
+        },
+        {
+          "name": "AlertDialogOverlay",
+          "kind": "fn",
+          "startLine": 31,
+          "endLine": 46,
+          "tokens": 127
+        },
+        {
+          "name": "AlertDialogContent",
+          "kind": "fn",
+          "startLine": 47,
+          "endLine": 65,
+          "tokens": 215
+        },
+        {
+          "name": "AlertDialogHeader",
+          "kind": "fn",
+          "startLine": 66,
+          "endLine": 78,
+          "tokens": 73
+        },
+        {
+          "name": "AlertDialogFooter",
+          "kind": "fn",
+          "startLine": 79,
+          "endLine": 94,
+          "tokens": 83
+        },
+        {
+          "name": "AlertDialogTitle",
+          "kind": "fn",
+          "startLine": 95,
+          "endLine": 107,
+          "tokens": 81
+        },
+        {
+          "name": "AlertDialogDescription",
+          "kind": "fn",
+          "startLine": 108,
+          "endLine": 120,
+          "tokens": 90
+        },
+        {
+          "name": "AlertDialogAction",
+          "kind": "fn",
+          "startLine": 121,
+          "endLine": 132,
+          "tokens": 69
+        },
+        {
+          "name": "AlertDialogCancel",
+          "kind": "fn",
+          "startLine": 133,
+          "endLine": 158,
+          "tokens": 145
+        }
+      ]
+    },
+    "components/ui/alert.tsx": {
+      "description": "alertVariants",
+      "tokens": 462,
+      "hash": "dce4f80f612a7938",
+      "size": 1617,
+      "mtimeMs": 1769967700794.286,
+      "updatedAt": "2026-07-18T15:32:05.813Z",
+      "source": "scan"
+    },
+    "components/ui/aspect-ratio.tsx": {
+      "description": "AspectRatio",
+      "tokens": 80,
+      "hash": "09035a9c5b8211ff",
+      "size": 280,
+      "mtimeMs": 1769967700794.286,
+      "updatedAt": "2026-07-18T15:32:05.813Z",
+      "source": "scan"
+    },
+    "components/ui/avatar.tsx": {
+      "description": "Avatar",
+      "tokens": 314,
+      "hash": "9effa6f9decfeb62",
+      "size": 1099,
+      "mtimeMs": 1769967700794.286,
+      "updatedAt": "2026-07-18T15:32:05.813Z",
+      "source": "scan"
+    },
+    "components/ui/badge.tsx": {
+      "description": "badgeVariants",
+      "tokens": 467,
+      "hash": "92dfe1cb7278ffac",
+      "size": 1632,
+      "mtimeMs": 1769967700794.286,
+      "updatedAt": "2026-07-18T15:32:05.813Z",
+      "source": "scan"
+    },
+    "components/ui/breadcrumb.tsx": {
+      "description": "Breadcrumb",
+      "tokens": 674,
+      "hash": "801c5fac01248e8e",
+      "size": 2358,
+      "mtimeMs": 1769967700794.286,
+      "updatedAt": "2026-07-18T15:32:05.813Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "Breadcrumb",
+          "kind": "fn",
+          "startLine": 7,
+          "endLine": 10,
+          "tokens": 41
+        },
+        {
+          "name": "BreadcrumbList",
+          "kind": "fn",
+          "startLine": 11,
+          "endLine": 23,
+          "tokens": 89
+        },
+        {
+          "name": "BreadcrumbItem",
+          "kind": "fn",
+          "startLine": 24,
+          "endLine": 33,
+          "tokens": 66
+        },
+        {
+          "name": "BreadcrumbLink",
+          "kind": "fn",
+          "startLine": 34,
+          "endLine": 51,
+          "tokens": 91
+        },
+        {
+          "name": "BreadcrumbPage",
+          "kind": "fn",
+          "startLine": 52,
+          "endLine": 64,
+          "tokens": 86
+        },
+        {
+          "name": "BreadcrumbSeparator",
+          "kind": "fn",
+          "startLine": 65,
+          "endLine": 82,
+          "tokens": 97
+        },
+        {
+          "name": "BreadcrumbEllipsis",
+          "kind": "fn",
+          "startLine": 83,
+          "endLine": 110,
+          "tokens": 156
+        }
+      ]
+    },
+    "components/ui/button-group.tsx": {
+      "description": "buttonGroupVariants",
+      "tokens": 632,
+      "hash": "07203100cedafa78",
+      "size": 2212,
+      "mtimeMs": 1769967700794.286,
+      "updatedAt": "2026-07-18T15:32:05.814Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "ButtonGroup",
+          "kind": "fn",
+          "startLine": 24,
+          "endLine": 39,
+          "tokens": 99
+        },
+        {
+          "name": "ButtonGroupText",
+          "kind": "fn",
+          "startLine": 40,
+          "endLine": 59,
+          "tokens": 124
+        },
+        {
+          "name": "ButtonGroupSeparator",
+          "kind": "fn",
+          "startLine": 60,
+          "endLine": 84,
+          "tokens": 138
+        }
+      ]
+    },
+    "components/ui/button.tsx": {
+      "description": "buttonVariants",
+      "tokens": 613,
+      "hash": "7cb96ee534dedef7",
+      "size": 2143,
+      "mtimeMs": 1769967700794.286,
+      "updatedAt": "2026-07-18T15:32:05.814Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "Button",
+          "kind": "fn",
+          "startLine": 39,
+          "endLine": 61,
+          "tokens": 117
+        }
+      ]
+    },
+    "components/ui/calendar.tsx": {
+      "description": "Calendar — uses useEffect",
+      "tokens": 2194,
+      "hash": "11b817aaa791d8eb",
+      "size": 7679,
+      "mtimeMs": 1769967700794.286,
+      "updatedAt": "2026-07-18T15:32:05.814Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "Calendar",
+          "kind": "fn",
+          "startLine": 14,
+          "endLine": 174,
+          "tokens": 1592
+        },
+        {
+          "name": "CalendarDayButton",
+          "kind": "fn",
+          "startLine": 175,
+          "endLine": 214,
+          "tokens": 513
+        }
+      ]
+    },
+    "components/ui/card.tsx": {
+      "description": "Card",
+      "tokens": 569,
+      "hash": "541ffffc9e653306",
+      "size": 1990,
+      "mtimeMs": 1769967700794.286,
+      "updatedAt": "2026-07-18T15:32:05.814Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "Card",
+          "kind": "fn",
+          "startLine": 5,
+          "endLine": 17,
+          "tokens": 82
+        },
+        {
+          "name": "CardHeader",
+          "kind": "fn",
+          "startLine": 18,
+          "endLine": 30,
+          "tokens": 106
+        },
+        {
+          "name": "CardTitle",
+          "kind": "fn",
+          "startLine": 31,
+          "endLine": 40,
+          "tokens": 62
+        },
+        {
+          "name": "CardDescription",
+          "kind": "fn",
+          "startLine": 41,
+          "endLine": 50,
+          "tokens": 66
+        },
+        {
+          "name": "CardAction",
+          "kind": "fn",
+          "startLine": 51,
+          "endLine": 63,
+          "tokens": 80
+        },
+        {
+          "name": "CardContent",
+          "kind": "fn",
+          "startLine": 64,
+          "endLine": 73,
+          "tokens": 57
+        },
+        {
+          "name": "CardFooter",
+          "kind": "fn",
+          "startLine": 74,
+          "endLine": 93,
+          "tokens": 98
+        }
+      ]
+    },
+    "components/ui/carousel.tsx": {
+      "description": "CarouselContext — uses useContext, useState, useCallback, useEffect",
+      "tokens": 1590,
+      "hash": "67237a35be1473c2",
+      "size": 5562,
+      "mtimeMs": 1769967700794.286,
+      "updatedAt": "2026-07-18T15:32:05.814Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "useCarousel",
+          "kind": "fn",
+          "startLine": 35,
+          "endLine": 44,
+          "tokens": 55
+        },
+        {
+          "name": "Carousel",
+          "kind": "fn",
+          "startLine": 45,
+          "endLine": 134,
+          "tokens": 577
+        },
+        {
+          "name": "CarouselContent",
+          "kind": "fn",
+          "startLine": 135,
+          "endLine": 155,
+          "tokens": 130
+        },
+        {
+          "name": "CarouselItem",
+          "kind": "fn",
+          "startLine": 156,
+          "endLine": 173,
+          "tokens": 116
+        },
+        {
+          "name": "CarouselPrevious",
+          "kind": "fn",
+          "startLine": 174,
+          "endLine": 203,
+          "tokens": 204
+        },
+        {
+          "name": "CarouselNext",
+          "kind": "fn",
+          "startLine": 204,
+          "endLine": 242,
+          "tokens": 235
+        }
+      ]
+    },
+    "components/ui/chart.tsx": {
+      "description": "THEMES — renders chart — uses useContext, useMemo",
+      "tokens": 2796,
+      "hash": "0d1015da32cad5bc",
+      "size": 9786,
+      "mtimeMs": 1769967700794.286,
+      "updatedAt": "2026-07-18T15:32:05.814Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "useChart",
+          "kind": "fn",
+          "startLine": 27,
+          "endLine": 36,
+          "tokens": 54
+        },
+        {
+          "name": "ChartContainer",
+          "kind": "fn",
+          "startLine": 37,
+          "endLine": 71,
+          "tokens": 412
+        },
+        {
+          "name": "ChartStyle",
+          "kind": "fn",
+          "startLine": 72,
+          "endLine": 106,
+          "tokens": 216
+        },
+        {
+          "name": "ChartTooltipContent",
+          "kind": "fn",
+          "startLine": 107,
+          "endLine": 252,
+          "tokens": 1278
+        },
+        {
+          "name": "ChartLegendContent",
+          "kind": "fn",
+          "startLine": 253,
+          "endLine": 307,
+          "tokens": 381
+        },
+        {
+          "name": "getPayloadConfigFromPayload",
+          "kind": "fn",
+          "startLine": 308,
+          "endLine": 354,
+          "tokens": 292
+        }
+      ]
+    },
+    "components/ui/checkbox.tsx": {
+      "description": "Checkbox",
+      "tokens": 351,
+      "hash": "f4629326151cdb4f",
+      "size": 1227,
+      "mtimeMs": 1769967700794.286,
+      "updatedAt": "2026-07-18T15:32:05.814Z",
+      "source": "scan"
+    },
+    "components/ui/collapsible.tsx": {
+      "description": "Collapsible",
+      "tokens": 229,
+      "hash": "89d052508dd671fd",
+      "size": 800,
+      "mtimeMs": 1769967700794.286,
+      "updatedAt": "2026-07-18T15:32:05.814Z",
+      "source": "scan"
+    },
+    "components/ui/command.tsx": {
+      "description": "Command — renders modal",
+      "tokens": 1379,
+      "hash": "803aa420db417023",
+      "size": 4824,
+      "mtimeMs": 1769967700794.286,
+      "updatedAt": "2026-07-18T15:32:05.815Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "Command",
+          "kind": "fn",
+          "startLine": 16,
+          "endLine": 31,
+          "tokens": 96
+        },
+        {
+          "name": "CommandDialog",
+          "kind": "fn",
+          "startLine": 32,
+          "endLine": 62,
+          "tokens": 330
+        },
+        {
+          "name": "CommandInput",
+          "kind": "fn",
+          "startLine": 63,
+          "endLine": 84,
+          "tokens": 178
+        },
+        {
+          "name": "CommandList",
+          "kind": "fn",
+          "startLine": 85,
+          "endLine": 100,
+          "tokens": 93
+        },
+        {
+          "name": "CommandEmpty",
+          "kind": "fn",
+          "startLine": 101,
+          "endLine": 112,
+          "tokens": 68
+        },
+        {
+          "name": "CommandGroup",
+          "kind": "fn",
+          "startLine": 113,
+          "endLine": 128,
+          "tokens": 138
+        },
+        {
+          "name": "CommandSeparator",
+          "kind": "fn",
+          "startLine": 129,
+          "endLine": 141,
+          "tokens": 80
+        },
+        {
+          "name": "CommandItem",
+          "kind": "fn",
+          "startLine": 142,
+          "endLine": 157,
+          "tokens": 186
+        },
+        {
+          "name": "CommandShortcut",
+          "kind": "fn",
+          "startLine": 158,
+          "endLine": 185,
+          "tokens": 127
+        }
+      ]
+    },
+    "components/ui/context-menu.tsx": {
+      "description": "ContextMenu",
+      "tokens": 2367,
+      "hash": "ef3f8b668e7abee8",
+      "size": 8282,
+      "mtimeMs": 1769967700794.286,
+      "updatedAt": "2026-07-18T15:32:05.815Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "ContextMenu",
+          "kind": "fn",
+          "startLine": 9,
+          "endLine": 14,
+          "tokens": 50
+        },
+        {
+          "name": "ContextMenuTrigger",
+          "kind": "fn",
+          "startLine": 15,
+          "endLine": 22,
+          "tokens": 58
+        },
+        {
+          "name": "ContextMenuGroup",
+          "kind": "fn",
+          "startLine": 23,
+          "endLine": 30,
+          "tokens": 56
+        },
+        {
+          "name": "ContextMenuPortal",
+          "kind": "fn",
+          "startLine": 31,
+          "endLine": 38,
+          "tokens": 57
+        },
+        {
+          "name": "ContextMenuSub",
+          "kind": "fn",
+          "startLine": 39,
+          "endLine": 44,
+          "tokens": 51
+        },
+        {
+          "name": "ContextMenuRadioGroup",
+          "kind": "fn",
+          "startLine": 45,
+          "endLine": 55,
+          "tokens": 67
+        },
+        {
+          "name": "ContextMenuSubTrigger",
+          "kind": "fn",
+          "startLine": 56,
+          "endLine": 79,
+          "tokens": 239
+        },
+        {
+          "name": "ContextMenuSubContent",
+          "kind": "fn",
+          "startLine": 80,
+          "endLine": 95,
+          "tokens": 228
+        },
+        {
+          "name": "ContextMenuContent",
+          "kind": "fn",
+          "startLine": 96,
+          "endLine": 113,
+          "tokens": 270
+        },
+        {
+          "name": "ContextMenuItem",
+          "kind": "fn",
+          "startLine": 114,
+          "endLine": 136,
+          "tokens": 300
+        },
+        {
+          "name": "ContextMenuCheckboxItem",
+          "kind": "fn",
+          "startLine": 137,
+          "endLine": 162,
+          "tokens": 277
+        },
+        {
+          "name": "ContextMenuRadioItem",
+          "kind": "fn",
+          "startLine": 163,
+          "endLine": 186,
+          "tokens": 267
+        },
+        {
+          "name": "ContextMenuLabel",
+          "kind": "fn",
+          "startLine": 187,
+          "endLine": 206,
+          "tokens": 117
+        },
+        {
+          "name": "ContextMenuSeparator",
+          "kind": "fn",
+          "startLine": 207,
+          "endLine": 219,
+          "tokens": 86
+        },
+        {
+          "name": "ContextMenuShortcut",
+          "kind": "fn",
+          "startLine": 220,
+          "endLine": 253,
+          "tokens": 182
+        }
+      ]
+    },
+    "components/ui/dialog.tsx": {
+      "description": "Dialog — renders modal",
+      "tokens": 1139,
+      "hash": "2341f5d3379758c9",
+      "size": 3985,
+      "mtimeMs": 1769967700794.286,
+      "updatedAt": "2026-07-18T15:32:05.815Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "Dialog",
+          "kind": "fn",
+          "startLine": 9,
+          "endLine": 14,
+          "tokens": 44
+        },
+        {
+          "name": "DialogTrigger",
+          "kind": "fn",
+          "startLine": 15,
+          "endLine": 20,
+          "tokens": 50
+        },
+        {
+          "name": "DialogPortal",
+          "kind": "fn",
+          "startLine": 21,
+          "endLine": 26,
+          "tokens": 48
+        },
+        {
+          "name": "DialogClose",
+          "kind": "fn",
+          "startLine": 27,
+          "endLine": 32,
+          "tokens": 47
+        },
+        {
+          "name": "DialogOverlay",
+          "kind": "fn",
+          "startLine": 33,
+          "endLine": 48,
+          "tokens": 121
+        },
+        {
+          "name": "DialogContent",
+          "kind": "fn",
+          "startLine": 49,
+          "endLine": 82,
+          "tokens": 421
+        },
+        {
+          "name": "DialogHeader",
+          "kind": "fn",
+          "startLine": 83,
+          "endLine": 92,
+          "tokens": 69
+        },
+        {
+          "name": "DialogFooter",
+          "kind": "fn",
+          "startLine": 93,
+          "endLine": 105,
+          "tokens": 79
+        },
+        {
+          "name": "DialogTitle",
+          "kind": "fn",
+          "startLine": 106,
+          "endLine": 118,
+          "tokens": 78
+        },
+        {
+          "name": "DialogDescription",
+          "kind": "fn",
+          "startLine": 119,
+          "endLine": 144,
+          "tokens": 133
+        }
+      ]
+    },
+    "components/ui/drawer.tsx": {
+      "description": "Drawer — renders modal",
+      "tokens": 1217,
+      "hash": "e62592bd1cea50ad",
+      "size": 4258,
+      "mtimeMs": 1769967700795.286,
+      "updatedAt": "2026-07-18T15:32:05.815Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "Drawer",
+          "kind": "fn",
+          "startLine": 8,
+          "endLine": 13,
+          "tokens": 44
+        },
+        {
+          "name": "DrawerTrigger",
+          "kind": "fn",
+          "startLine": 14,
+          "endLine": 19,
+          "tokens": 50
+        },
+        {
+          "name": "DrawerPortal",
+          "kind": "fn",
+          "startLine": 20,
+          "endLine": 25,
+          "tokens": 48
+        },
+        {
+          "name": "DrawerClose",
+          "kind": "fn",
+          "startLine": 26,
+          "endLine": 31,
+          "tokens": 47
+        },
+        {
+          "name": "DrawerOverlay",
+          "kind": "fn",
+          "startLine": 32,
+          "endLine": 47,
+          "tokens": 121
+        },
+        {
+          "name": "DrawerContent",
+          "kind": "fn",
+          "startLine": 48,
+          "endLine": 74,
+          "tokens": 480
+        },
+        {
+          "name": "DrawerHeader",
+          "kind": "fn",
+          "startLine": 75,
+          "endLine": 87,
+          "tokens": 116
+        },
+        {
+          "name": "DrawerFooter",
+          "kind": "fn",
+          "startLine": 88,
+          "endLine": 97,
+          "tokens": 65
+        },
+        {
+          "name": "DrawerTitle",
+          "kind": "fn",
+          "startLine": 98,
+          "endLine": 110,
+          "tokens": 77
+        },
+        {
+          "name": "DrawerDescription",
+          "kind": "fn",
+          "startLine": 111,
+          "endLine": 136,
+          "tokens": 133
+        }
+      ]
+    },
+    "components/ui/dropdown-menu.tsx": {
+      "description": "DropdownMenu",
+      "tokens": 2410,
+      "hash": "3124a8b0edfe9040",
+      "size": 8432,
+      "mtimeMs": 1769967700795.286,
+      "updatedAt": "2026-07-18T15:32:05.815Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "DropdownMenu",
+          "kind": "fn",
+          "startLine": 9,
+          "endLine": 14,
+          "tokens": 51
+        },
+        {
+          "name": "DropdownMenuPortal",
+          "kind": "fn",
+          "startLine": 15,
+          "endLine": 22,
+          "tokens": 58
+        },
+        {
+          "name": "DropdownMenuTrigger",
+          "kind": "fn",
+          "startLine": 23,
+          "endLine": 33,
+          "tokens": 64
+        },
+        {
+          "name": "DropdownMenuContent",
+          "kind": "fn",
+          "startLine": 34,
+          "endLine": 53,
+          "tokens": 286
+        },
+        {
+          "name": "DropdownMenuGroup",
+          "kind": "fn",
+          "startLine": 54,
+          "endLine": 61,
+          "tokens": 57
+        },
+        {
+          "name": "DropdownMenuItem",
+          "kind": "fn",
+          "startLine": 62,
+          "endLine": 84,
+          "tokens": 301
+        },
+        {
+          "name": "DropdownMenuCheckboxItem",
+          "kind": "fn",
+          "startLine": 85,
+          "endLine": 110,
+          "tokens": 279
+        },
+        {
+          "name": "DropdownMenuRadioGroup",
+          "kind": "fn",
+          "startLine": 111,
+          "endLine": 121,
+          "tokens": 68
+        },
+        {
+          "name": "DropdownMenuRadioItem",
+          "kind": "fn",
+          "startLine": 122,
+          "endLine": 145,
+          "tokens": 269
+        },
+        {
+          "name": "DropdownMenuLabel",
+          "kind": "fn",
+          "startLine": 146,
+          "endLine": 165,
+          "tokens": 114
+        },
+        {
+          "name": "DropdownMenuSeparator",
+          "kind": "fn",
+          "startLine": 166,
+          "endLine": 178,
+          "tokens": 88
+        },
+        {
+          "name": "DropdownMenuShortcut",
+          "kind": "fn",
+          "startLine": 179,
+          "endLine": 194,
+          "tokens": 85
+        },
+        {
+          "name": "DropdownMenuSub",
+          "kind": "fn",
+          "startLine": 195,
+          "endLine": 200,
+          "tokens": 52
+        },
+        {
+          "name": "DropdownMenuSubTrigger",
+          "kind": "fn",
+          "startLine": 201,
+          "endLine": 224,
+          "tokens": 244
+        },
+        {
+          "name": "DropdownMenuSubContent",
+          "kind": "fn",
+          "startLine": 225,
+          "endLine": 258,
+          "tokens": 332
+        }
+      ]
+    },
+    "components/ui/empty.tsx": {
+      "description": "Empty",
+      "tokens": 686,
+      "hash": "c9828acce9044690",
+      "size": 2401,
+      "mtimeMs": 1769967700795.286,
+      "updatedAt": "2026-07-18T15:32:05.815Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "Empty",
+          "kind": "fn",
+          "startLine": 5,
+          "endLine": 17,
+          "tokens": 95
+        },
+        {
+          "name": "EmptyHeader",
+          "kind": "fn",
+          "startLine": 18,
+          "endLine": 45,
+          "tokens": 198
+        },
+        {
+          "name": "EmptyMedia",
+          "kind": "fn",
+          "startLine": 46,
+          "endLine": 60,
+          "tokens": 91
+        },
+        {
+          "name": "EmptyTitle",
+          "kind": "fn",
+          "startLine": 61,
+          "endLine": 70,
+          "tokens": 65
+        },
+        {
+          "name": "EmptyDescription",
+          "kind": "fn",
+          "startLine": 71,
+          "endLine": 83,
+          "tokens": 95
+        },
+        {
+          "name": "EmptyContent",
+          "kind": "fn",
+          "startLine": 84,
+          "endLine": 105,
+          "tokens": 114
+        }
+      ]
+    },
+    "components/ui/field.tsx": {
+      "description": "FieldSet — uses useMemo",
+      "tokens": 1730,
+      "hash": "c80fb0dc554855fd",
+      "size": 6055,
+      "mtimeMs": 1769967700795.286,
+      "updatedAt": "2026-07-18T15:32:05.815Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "FieldSet",
+          "kind": "fn",
+          "startLine": 10,
+          "endLine": 23,
+          "tokens": 95
+        },
+        {
+          "name": "FieldLegend",
+          "kind": "fn",
+          "startLine": 24,
+          "endLine": 43,
+          "tokens": 119
+        },
+        {
+          "name": "FieldGroup",
+          "kind": "fn",
+          "startLine": 44,
+          "endLine": 80,
+          "tokens": 369
+        },
+        {
+          "name": "Field",
+          "kind": "fn",
+          "startLine": 81,
+          "endLine": 96,
+          "tokens": 96
+        },
+        {
+          "name": "FieldContent",
+          "kind": "fn",
+          "startLine": 97,
+          "endLine": 109,
+          "tokens": 81
+        },
+        {
+          "name": "FieldLabel",
+          "kind": "fn",
+          "startLine": 110,
+          "endLine": 127,
+          "tokens": 184
+        },
+        {
+          "name": "FieldTitle",
+          "kind": "fn",
+          "startLine": 128,
+          "endLine": 140,
+          "tokens": 93
+        },
+        {
+          "name": "FieldDescription",
+          "kind": "fn",
+          "startLine": 141,
+          "endLine": 155,
+          "tokens": 141
+        },
+        {
+          "name": "FieldSeparator",
+          "kind": "fn",
+          "startLine": 156,
+          "endLine": 185,
+          "tokens": 194
+        },
+        {
+          "name": "FieldError",
+          "kind": "fn",
+          "startLine": 186,
+          "endLine": 245,
+          "tokens": 290
+        }
+      ]
+    },
+    "components/ui/form.tsx": {
+      "description": "Form — renders form — uses useContext",
+      "tokens": 1075,
+      "hash": "e308b9b592b4c898",
+      "size": 3761,
+      "mtimeMs": 1769967700795.286,
+      "updatedAt": "2026-07-18T15:32:05.816Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "useFormField",
+          "kind": "fn",
+          "startLine": 45,
+          "endLine": 75,
+          "tokens": 228
+        },
+        {
+          "name": "FormItem",
+          "kind": "fn",
+          "startLine": 76,
+          "endLine": 89,
+          "tokens": 90
+        },
+        {
+          "name": "FormLabel",
+          "kind": "fn",
+          "startLine": 90,
+          "endLine": 106,
+          "tokens": 101
+        },
+        {
+          "name": "FormControl",
+          "kind": "fn",
+          "startLine": 107,
+          "endLine": 124,
+          "tokens": 121
+        },
+        {
+          "name": "FormDescription",
+          "kind": "fn",
+          "startLine": 125,
+          "endLine": 137,
+          "tokens": 87
+        },
+        {
+          "name": "FormMessage",
+          "kind": "fn",
+          "startLine": 138,
+          "endLine": 168,
+          "tokens": 154
+        }
+      ]
+    },
+    "components/ui/hover-card.tsx": {
+      "description": "HoverCard",
+      "tokens": 438,
+      "hash": "3a05918eaf743659",
+      "size": 1533,
+      "mtimeMs": 1769967700795.286,
+      "updatedAt": "2026-07-18T15:32:05.816Z",
+      "source": "scan"
+    },
+    "components/ui/input-group.tsx": {
+      "description": "InputGroup",
+      "tokens": 1438,
+      "hash": "9214c077d8d25333",
+      "size": 5031,
+      "mtimeMs": 1769967700795.286,
+      "updatedAt": "2026-07-18T15:32:05.816Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "InputGroup",
+          "kind": "fn",
+          "startLine": 10,
+          "endLine": 58,
+          "tokens": 622
+        },
+        {
+          "name": "InputGroupAddon",
+          "kind": "fn",
+          "startLine": 59,
+          "endLine": 98,
+          "tokens": 304
+        },
+        {
+          "name": "InputGroupButton",
+          "kind": "fn",
+          "startLine": 99,
+          "endLine": 117,
+          "tokens": 114
+        },
+        {
+          "name": "InputGroupText",
+          "kind": "fn",
+          "startLine": 118,
+          "endLine": 129,
+          "tokens": 89
+        },
+        {
+          "name": "InputGroupInput",
+          "kind": "fn",
+          "startLine": 130,
+          "endLine": 145,
+          "tokens": 96
+        },
+        {
+          "name": "InputGroupTextarea",
+          "kind": "fn",
+          "startLine": 146,
+          "endLine": 170,
+          "tokens": 139
+        }
+      ]
+    },
+    "components/ui/input-otp.tsx": {
+      "description": "InputOTP — uses useContext",
+      "tokens": 645,
+      "hash": "6a046b50c82c5546",
+      "size": 2256,
+      "mtimeMs": 1769967700795.286,
+      "updatedAt": "2026-07-18T15:32:05.816Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "InputOTP",
+          "kind": "fn",
+          "startLine": 9,
+          "endLine": 28,
+          "tokens": 120
+        },
+        {
+          "name": "InputOTPGroup",
+          "kind": "fn",
+          "startLine": 29,
+          "endLine": 38,
+          "tokens": 62
+        },
+        {
+          "name": "InputOTPSlot",
+          "kind": "fn",
+          "startLine": 39,
+          "endLine": 68,
+          "tokens": 339
+        },
+        {
+          "name": "InputOTPSeparator",
+          "kind": "fn",
+          "startLine": 69,
+          "endLine": 78,
+          "tokens": 74
+        }
+      ]
+    },
+    "components/ui/input.tsx": {
+      "description": "Input",
+      "tokens": 276,
+      "hash": "b67dea8a8d35c004",
+      "size": 963,
+      "mtimeMs": 1769967700795.286,
+      "updatedAt": "2026-07-18T15:32:05.816Z",
+      "source": "scan"
+    },
+    "components/ui/item.tsx": {
+      "description": "ItemGroup",
+      "tokens": 1287,
+      "hash": "c4f50ecab61ee022",
+      "size": 4503,
+      "mtimeMs": 1769967700795.286,
+      "updatedAt": "2026-07-18T15:32:05.816Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "ItemGroup",
+          "kind": "fn",
+          "startLine": 8,
+          "endLine": 18,
+          "tokens": 68
+        },
+        {
+          "name": "ItemSeparator",
+          "kind": "fn",
+          "startLine": 19,
+          "endLine": 53,
+          "tokens": 247
+        },
+        {
+          "name": "Item",
+          "kind": "fn",
+          "startLine": 54,
+          "endLine": 90,
+          "tokens": 286
+        },
+        {
+          "name": "ItemMedia",
+          "kind": "fn",
+          "startLine": 91,
+          "endLine": 105,
+          "tokens": 90
+        },
+        {
+          "name": "ItemContent",
+          "kind": "fn",
+          "startLine": 106,
+          "endLine": 118,
+          "tokens": 82
+        },
+        {
+          "name": "ItemTitle",
+          "kind": "fn",
+          "startLine": 119,
+          "endLine": 131,
+          "tokens": 80
+        },
+        {
+          "name": "ItemDescription",
+          "kind": "fn",
+          "startLine": 132,
+          "endLine": 145,
+          "tokens": 110
+        },
+        {
+          "name": "ItemActions",
+          "kind": "fn",
+          "startLine": 146,
+          "endLine": 155,
+          "tokens": 62
+        },
+        {
+          "name": "ItemHeader",
+          "kind": "fn",
+          "startLine": 156,
+          "endLine": 168,
+          "tokens": 77
+        },
+        {
+          "name": "ItemFooter",
+          "kind": "fn",
+          "startLine": 169,
+          "endLine": 194,
+          "tokens": 120
+        }
+      ]
+    },
+    "components/ui/kbd.tsx": {
+      "description": "Kbd",
+      "tokens": 247,
+      "hash": "3e346d9b84a0e2cb",
+      "size": 863,
+      "mtimeMs": 1769967700795.286,
+      "updatedAt": "2026-07-18T15:32:05.816Z",
+      "source": "scan"
+    },
+    "components/ui/label.tsx": {
+      "description": "Label",
+      "tokens": 175,
+      "hash": "dfd466a53a86f0bd",
+      "size": 612,
+      "mtimeMs": 1769967700795.286,
+      "updatedAt": "2026-07-18T15:32:05.816Z",
+      "source": "scan"
+    },
+    "components/ui/menubar.tsx": {
+      "description": "Menubar",
+      "tokens": 2402,
+      "hash": "da0313c01c8aedd7",
+      "size": 8404,
+      "mtimeMs": 1769967700795.286,
+      "updatedAt": "2026-07-18T15:32:05.816Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "Menubar",
+          "kind": "fn",
+          "startLine": 9,
+          "endLine": 24,
+          "tokens": 94
+        },
+        {
+          "name": "MenubarMenu",
+          "kind": "fn",
+          "startLine": 25,
+          "endLine": 30,
+          "tokens": 47
+        },
+        {
+          "name": "MenubarGroup",
+          "kind": "fn",
+          "startLine": 31,
+          "endLine": 36,
+          "tokens": 48
+        },
+        {
+          "name": "MenubarPortal",
+          "kind": "fn",
+          "startLine": 37,
+          "endLine": 42,
+          "tokens": 50
+        },
+        {
+          "name": "MenubarRadioGroup",
+          "kind": "fn",
+          "startLine": 43,
+          "endLine": 50,
+          "tokens": 57
+        },
+        {
+          "name": "MenubarTrigger",
+          "kind": "fn",
+          "startLine": 51,
+          "endLine": 66,
+          "tokens": 136
+        },
+        {
+          "name": "MenubarContent",
+          "kind": "fn",
+          "startLine": 67,
+          "endLine": 90,
+          "tokens": 267
+        },
+        {
+          "name": "MenubarItem",
+          "kind": "fn",
+          "startLine": 91,
+          "endLine": 113,
+          "tokens": 295
+        },
+        {
+          "name": "MenubarCheckboxItem",
+          "kind": "fn",
+          "startLine": 114,
+          "endLine": 139,
+          "tokens": 269
+        },
+        {
+          "name": "MenubarRadioItem",
+          "kind": "fn",
+          "startLine": 140,
+          "endLine": 163,
+          "tokens": 259
+        },
+        {
+          "name": "MenubarLabel",
+          "kind": "fn",
+          "startLine": 164,
+          "endLine": 183,
+          "tokens": 108
+        },
+        {
+          "name": "MenubarSeparator",
+          "kind": "fn",
+          "startLine": 184,
+          "endLine": 196,
+          "tokens": 82
+        },
+        {
+          "name": "MenubarShortcut",
+          "kind": "fn",
+          "startLine": 197,
+          "endLine": 212,
+          "tokens": 82
+        },
+        {
+          "name": "MenubarSub",
+          "kind": "fn",
+          "startLine": 213,
+          "endLine": 218,
+          "tokens": 46
+        },
+        {
+          "name": "MenubarSubTrigger",
+          "kind": "fn",
+          "startLine": 219,
+          "endLine": 242,
+          "tokens": 196
+        },
+        {
+          "name": "MenubarSubContent",
+          "kind": "fn",
+          "startLine": 243,
+          "endLine": 277,
+          "tokens": 307
+        }
+      ]
+    },
+    "components/ui/navigation-menu.tsx": {
+      "description": "NavigationMenu",
+      "tokens": 1901,
+      "hash": "39bd2c3d7086a76e",
+      "size": 6651,
+      "mtimeMs": 1769967700795.286,
+      "updatedAt": "2026-07-18T15:32:05.817Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "NavigationMenu",
+          "kind": "fn",
+          "startLine": 8,
+          "endLine": 31,
+          "tokens": 158
+        },
+        {
+          "name": "NavigationMenuList",
+          "kind": "fn",
+          "startLine": 32,
+          "endLine": 47,
+          "tokens": 102
+        },
+        {
+          "name": "NavigationMenuItem",
+          "kind": "fn",
+          "startLine": 48,
+          "endLine": 64,
+          "tokens": 238
+        },
+        {
+          "name": "NavigationMenuTrigger",
+          "kind": "fn",
+          "startLine": 65,
+          "endLine": 84,
+          "tokens": 159
+        },
+        {
+          "name": "NavigationMenuContent",
+          "kind": "fn",
+          "startLine": 85,
+          "endLine": 101,
+          "tokens": 491
+        },
+        {
+          "name": "NavigationMenuViewport",
+          "kind": "fn",
+          "startLine": 102,
+          "endLine": 121,
+          "tokens": 220
+        },
+        {
+          "name": "NavigationMenuLink",
+          "kind": "fn",
+          "startLine": 122,
+          "endLine": 137,
+          "tokens": 218
+        },
+        {
+          "name": "NavigationMenuIndicator",
+          "kind": "fn",
+          "startLine": 138,
+          "endLine": 167,
+          "tokens": 248
+        }
+      ]
+    },
+    "components/ui/pagination.tsx": {
+      "description": "Pagination",
+      "tokens": 776,
+      "hash": "c0306e3325a10c73",
+      "size": 2713,
+      "mtimeMs": 1769967700795.286,
+      "updatedAt": "2026-07-18T15:32:05.817Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "Pagination",
+          "kind": "fn",
+          "startLine": 11,
+          "endLine": 22,
+          "tokens": 80
+        },
+        {
+          "name": "PaginationContent",
+          "kind": "fn",
+          "startLine": 23,
+          "endLine": 35,
+          "tokens": 69
+        },
+        {
+          "name": "PaginationItem",
+          "kind": "fn",
+          "startLine": 36,
+          "endLine": 44,
+          "tokens": 75
+        },
+        {
+          "name": "PaginationLink",
+          "kind": "fn",
+          "startLine": 45,
+          "endLine": 67,
+          "tokens": 120
+        },
+        {
+          "name": "PaginationPrevious",
+          "kind": "fn",
+          "startLine": 68,
+          "endLine": 84,
+          "tokens": 111
+        },
+        {
+          "name": "PaginationNext",
+          "kind": "fn",
+          "startLine": 85,
+          "endLine": 101,
+          "tokens": 108
+        },
+        {
+          "name": "PaginationEllipsis",
+          "kind": "fn",
+          "startLine": 102,
+          "endLine": 128,
+          "tokens": 150
+        }
+      ]
+    },
+    "components/ui/popover.tsx": {
+      "description": "Popover",
+      "tokens": 468,
+      "hash": "50b93b8af040517d",
+      "size": 1636,
+      "mtimeMs": 1769967700795.286,
+      "updatedAt": "2026-07-18T15:32:05.817Z",
+      "source": "scan"
+    },
+    "components/ui/progress.tsx": {
+      "description": "Progress",
+      "tokens": 212,
+      "hash": "d48446fe6380e0fb",
+      "size": 741,
+      "mtimeMs": 1769967700796.286,
+      "updatedAt": "2026-07-18T15:32:05.817Z",
+      "source": "scan"
+    },
+    "components/ui/radio-group.tsx": {
+      "description": "RadioGroup",
+      "tokens": 420,
+      "hash": "9a91313aaed0e835",
+      "size": 1467,
+      "mtimeMs": 1769967700796.286,
+      "updatedAt": "2026-07-18T15:32:05.817Z",
+      "source": "scan"
+    },
+    "components/ui/resizable.tsx": {
+      "description": "ResizablePanelGroup",
+      "tokens": 580,
+      "hash": "8f96f309d60fb87c",
+      "size": 2030,
+      "mtimeMs": 1769967700796.286,
+      "updatedAt": "2026-07-18T15:32:05.817Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "ResizablePanelGroup",
+          "kind": "fn",
+          "startLine": 9,
+          "endLine": 24,
+          "tokens": 104
+        },
+        {
+          "name": "ResizablePanel",
+          "kind": "fn",
+          "startLine": 25,
+          "endLine": 30,
+          "tokens": 51
+        },
+        {
+          "name": "ResizableHandle",
+          "kind": "fn",
+          "startLine": 31,
+          "endLine": 57,
+          "tokens": 372
+        }
+      ]
+    },
+    "components/ui/scroll-area.tsx": {
+      "description": "ScrollArea",
+      "tokens": 471,
+      "hash": "4d19b093a1663568",
+      "size": 1646,
+      "mtimeMs": 1769967700796.286,
+      "updatedAt": "2026-07-18T15:32:05.817Z",
+      "source": "scan"
+    },
+    "components/ui/select.tsx": {
+      "description": "Select",
+      "tokens": 1789,
+      "hash": "e2b4198bbf3968ea",
+      "size": 6259,
+      "mtimeMs": 1769967700796.286,
+      "updatedAt": "2026-07-18T15:32:05.817Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "Select",
+          "kind": "fn",
+          "startLine": 9,
+          "endLine": 14,
+          "tokens": 44
+        },
+        {
+          "name": "SelectGroup",
+          "kind": "fn",
+          "startLine": 15,
+          "endLine": 20,
+          "tokens": 47
+        },
+        {
+          "name": "SelectValue",
+          "kind": "fn",
+          "startLine": 21,
+          "endLine": 26,
+          "tokens": 47
+        },
+        {
+          "name": "SelectTrigger",
+          "kind": "fn",
+          "startLine": 27,
+          "endLine": 52,
+          "tokens": 384
+        },
+        {
+          "name": "SelectContent",
+          "kind": "fn",
+          "startLine": 53,
+          "endLine": 87,
+          "tokens": 445
+        },
+        {
+          "name": "SelectLabel",
+          "kind": "fn",
+          "startLine": 88,
+          "endLine": 100,
+          "tokens": 80
+        },
+        {
+          "name": "SelectItem",
+          "kind": "fn",
+          "startLine": 101,
+          "endLine": 124,
+          "tokens": 291
+        },
+        {
+          "name": "SelectSeparator",
+          "kind": "fn",
+          "startLine": 125,
+          "endLine": 137,
+          "tokens": 86
+        },
+        {
+          "name": "SelectScrollUpButton",
+          "kind": "fn",
+          "startLine": 138,
+          "endLine": 155,
+          "tokens": 124
+        },
+        {
+          "name": "SelectScrollDownButton",
+          "kind": "fn",
+          "startLine": 156,
+          "endLine": 186,
+          "tokens": 180
+        }
+      ]
+    },
+    "components/ui/separator.tsx": {
+      "description": "Separator",
+      "tokens": 200,
+      "hash": "96ef29b5aa9a169f",
+      "size": 700,
+      "mtimeMs": 1769967700796.286,
+      "updatedAt": "2026-07-18T15:32:05.817Z",
+      "source": "scan"
+    },
+    "components/ui/sheet.tsx": {
+      "description": "Sheet",
+      "tokens": 1170,
+      "hash": "647b61de5cb1f53e",
+      "size": 4092,
+      "mtimeMs": 1769967700796.286,
+      "updatedAt": "2026-07-18T15:32:05.817Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "Sheet",
+          "kind": "fn",
+          "startLine": 9,
+          "endLine": 12,
+          "tokens": 42
+        },
+        {
+          "name": "SheetTrigger",
+          "kind": "fn",
+          "startLine": 13,
+          "endLine": 18,
+          "tokens": 48
+        },
+        {
+          "name": "SheetClose",
+          "kind": "fn",
+          "startLine": 19,
+          "endLine": 24,
+          "tokens": 46
+        },
+        {
+          "name": "SheetPortal",
+          "kind": "fn",
+          "startLine": 25,
+          "endLine": 30,
+          "tokens": 47
+        },
+        {
+          "name": "SheetOverlay",
+          "kind": "fn",
+          "startLine": 31,
+          "endLine": 46,
+          "tokens": 120
+        },
+        {
+          "name": "SheetContent",
+          "kind": "fn",
+          "startLine": 47,
+          "endLine": 83,
+          "tokens": 494
+        },
+        {
+          "name": "SheetHeader",
+          "kind": "fn",
+          "startLine": 84,
+          "endLine": 93,
+          "tokens": 63
+        },
+        {
+          "name": "SheetFooter",
+          "kind": "fn",
+          "startLine": 94,
+          "endLine": 103,
+          "tokens": 65
+        },
+        {
+          "name": "SheetTitle",
+          "kind": "fn",
+          "startLine": 104,
+          "endLine": 116,
+          "tokens": 76
+        },
+        {
+          "name": "SheetDescription",
+          "kind": "fn",
+          "startLine": 117,
+          "endLine": 140,
+          "tokens": 120
+        }
+      ]
+    },
+    "components/ui/sidebar.tsx": {
+      "description": "SIDEBAR_COOKIE_NAME — uses useContext, useState, useCallback, useEffect",
+      "tokens": 6186,
+      "hash": "1bdf187549f043a8",
+      "size": 21649,
+      "mtimeMs": 1769967700796.286,
+      "updatedAt": "2026-07-18T15:32:05.818Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "useSidebar",
+          "kind": "fn",
+          "startLine": 47,
+          "endLine": 55,
+          "tokens": 55
+        },
+        {
+          "name": "SidebarProvider",
+          "kind": "fn",
+          "startLine": 56,
+          "endLine": 153,
+          "tokens": 813
+        },
+        {
+          "name": "Sidebar",
+          "kind": "fn",
+          "startLine": 154,
+          "endLine": 255,
+          "tokens": 1006
+        },
+        {
+          "name": "SidebarTrigger",
+          "kind": "fn",
+          "startLine": 256,
+          "endLine": 281,
+          "tokens": 149
+        },
+        {
+          "name": "SidebarRail",
+          "kind": "fn",
+          "startLine": 282,
+          "endLine": 306,
+          "tokens": 332
+        },
+        {
+          "name": "SidebarInset",
+          "kind": "fn",
+          "startLine": 307,
+          "endLine": 320,
+          "tokens": 141
+        },
+        {
+          "name": "SidebarInput",
+          "kind": "fn",
+          "startLine": 321,
+          "endLine": 334,
+          "tokens": 78
+        },
+        {
+          "name": "SidebarHeader",
+          "kind": "fn",
+          "startLine": 335,
+          "endLine": 345,
+          "tokens": 72
+        },
+        {
+          "name": "SidebarFooter",
+          "kind": "fn",
+          "startLine": 346,
+          "endLine": 356,
+          "tokens": 72
+        },
+        {
+          "name": "SidebarSeparator",
+          "kind": "fn",
+          "startLine": 357,
+          "endLine": 370,
+          "tokens": 82
+        },
+        {
+          "name": "SidebarContent",
+          "kind": "fn",
+          "startLine": 371,
+          "endLine": 384,
+          "tokens": 100
+        },
+        {
+          "name": "SidebarGroup",
+          "kind": "fn",
+          "startLine": 385,
+          "endLine": 395,
+          "tokens": 76
+        },
+        {
+          "name": "SidebarGroupLabel",
+          "kind": "fn",
+          "startLine": 396,
+          "endLine": 416,
+          "tokens": 192
+        },
+        {
+          "name": "SidebarGroupAction",
+          "kind": "fn",
+          "startLine": 417,
+          "endLine": 439,
+          "tokens": 231
+        },
+        {
+          "name": "SidebarGroupContent",
+          "kind": "fn",
+          "startLine": 440,
+          "endLine": 453,
+          "tokens": 76
+        },
+        {
+          "name": "SidebarMenu",
+          "kind": "fn",
+          "startLine": 454,
+          "endLine": 464,
+          "tokens": 72
+        },
+        {
+          "name": "SidebarMenuItem",
+          "kind": "fn",
+          "startLine": 465,
+          "endLine": 497,
+          "tokens": 482
+        },
+        {
+          "name": "SidebarMenuButton",
+          "kind": "fn",
+          "startLine": 498,
+          "endLine": 547,
+          "tokens": 305
+        },
+        {
+          "name": "SidebarMenuAction",
+          "kind": "fn",
+          "startLine": 548,
+          "endLine": 579,
+          "tokens": 367
+        },
+        {
+          "name": "SidebarMenuBadge",
+          "kind": "fn",
+          "startLine": 580,
+          "endLine": 601,
+          "tokens": 220
+        },
+        {
+          "name": "SidebarMenuSkeleton",
+          "kind": "fn",
+          "startLine": 602,
+          "endLine": 639,
+          "tokens": 248
+        },
+        {
+          "name": "SidebarMenuSub",
+          "kind": "fn",
+          "startLine": 640,
+          "endLine": 654,
+          "tokens": 114
+        },
+        {
+          "name": "SidebarMenuSubItem",
+          "kind": "fn",
+          "startLine": 655,
+          "endLine": 668,
+          "tokens": 79
+        },
+        {
+          "name": "SidebarMenuSubButton",
+          "kind": "fn",
+          "startLine": 669,
+          "endLine": 727,
+          "tokens": 474
+        }
+      ]
+    },
+    "components/ui/skeleton.tsx": {
+      "description": "Skeleton",
+      "tokens": 79,
+      "hash": "c3005a6a39bd1aae",
+      "size": 276,
+      "mtimeMs": 1769967700796.286,
+      "updatedAt": "2026-07-18T15:32:05.818Z",
+      "source": "scan"
+    },
+    "components/ui/slider.tsx": {
+      "description": "Slider — uses useMemo",
+      "tokens": 569,
+      "hash": "0d000a7ec98386e5",
+      "size": 1990,
+      "mtimeMs": 1769967700796.286,
+      "updatedAt": "2026-07-18T15:32:05.818Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "Slider",
+          "kind": "fn",
+          "startLine": 8,
+          "endLine": 64,
+          "tokens": 530
+        }
+      ]
+    },
+    "components/ui/sonner.tsx": {
+      "description": "Toaster",
+      "tokens": 162,
+      "hash": "5f2418e3437ab5fc",
+      "size": 564,
+      "mtimeMs": 1769967700796.286,
+      "updatedAt": "2026-07-18T15:32:05.818Z",
+      "source": "scan"
+    },
+    "components/ui/spinner.tsx": {
+      "description": "Spinner",
+      "tokens": 95,
+      "hash": "006b673fb9c6922a",
+      "size": 331,
+      "mtimeMs": 1769967700796.286,
+      "updatedAt": "2026-07-18T15:32:05.818Z",
+      "source": "scan"
+    },
+    "components/ui/switch.tsx": {
+      "description": "Switch",
+      "tokens": 336,
+      "hash": "6d89650a8b947424",
+      "size": 1174,
+      "mtimeMs": 1769967700796.286,
+      "updatedAt": "2026-07-18T15:32:05.818Z",
+      "source": "scan"
+    },
+    "components/ui/table.tsx": {
+      "description": "Table — renders table",
+      "tokens": 701,
+      "hash": "7e4ec95a993de8b2",
+      "size": 2452,
+      "mtimeMs": 1769967700796.286,
+      "updatedAt": "2026-07-18T15:32:05.818Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "Table",
+          "kind": "fn",
+          "startLine": 7,
+          "endLine": 21,
+          "tokens": 96
+        },
+        {
+          "name": "TableHeader",
+          "kind": "fn",
+          "startLine": 22,
+          "endLine": 31,
+          "tokens": 61
+        },
+        {
+          "name": "TableBody",
+          "kind": "fn",
+          "startLine": 32,
+          "endLine": 41,
+          "tokens": 63
+        },
+        {
+          "name": "TableFooter",
+          "kind": "fn",
+          "startLine": 42,
+          "endLine": 54,
+          "tokens": 80
+        },
+        {
+          "name": "TableRow",
+          "kind": "fn",
+          "startLine": 55,
+          "endLine": 67,
+          "tokens": 82
+        },
+        {
+          "name": "TableHead",
+          "kind": "fn",
+          "startLine": 68,
+          "endLine": 80,
+          "tokens": 103
+        },
+        {
+          "name": "TableCell",
+          "kind": "fn",
+          "startLine": 81,
+          "endLine": 93,
+          "tokens": 90
+        },
+        {
+          "name": "TableCaption",
+          "kind": "fn",
+          "startLine": 94,
+          "endLine": 117,
+          "tokens": 103
+        }
+      ]
+    },
+    "components/ui/tabs.tsx": {
+      "description": "Tabs",
+      "tokens": 564,
+      "hash": "23cc67b5360458de",
+      "size": 1971,
+      "mtimeMs": 1769967700796.286,
+      "updatedAt": "2026-07-18T15:32:05.818Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "Tabs",
+          "kind": "fn",
+          "startLine": 8,
+          "endLine": 20,
+          "tokens": 68
+        },
+        {
+          "name": "TabsList",
+          "kind": "fn",
+          "startLine": 21,
+          "endLine": 36,
+          "tokens": 101
+        },
+        {
+          "name": "TabsTrigger",
+          "kind": "fn",
+          "startLine": 37,
+          "endLine": 52,
+          "tokens": 268
+        },
+        {
+          "name": "TabsContent",
+          "kind": "fn",
+          "startLine": 53,
+          "endLine": 67,
+          "tokens": 89
+        }
+      ]
+    },
+    "components/ui/textarea.tsx": {
+      "description": "Textarea",
+      "tokens": 218,
+      "hash": "cf31ce99f03ac69f",
+      "size": 760,
+      "mtimeMs": 1769967700796.286,
+      "updatedAt": "2026-07-18T15:32:05.818Z",
+      "source": "scan"
+    },
+    "components/ui/toast.tsx": {
+      "description": "ToastProvider",
+      "tokens": 1390,
+      "hash": "37ee2f94a1c5df7a",
+      "size": 4863,
+      "mtimeMs": 1769967700797.286,
+      "updatedAt": "2026-07-18T15:32:05.818Z",
+      "source": "scan"
+    },
+    "components/ui/toaster.tsx": {
+      "description": "Toaster",
+      "tokens": 225,
+      "hash": "2dfd19d81413d2ed",
+      "size": 786,
+      "mtimeMs": 1769967700797.286,
+      "updatedAt": "2026-07-18T15:32:05.819Z",
+      "source": "scan"
+    },
+    "components/ui/toggle-group.tsx": {
+      "description": "ToggleGroupContext — uses useContext",
+      "tokens": 551,
+      "hash": "4e725b44cc99b172",
+      "size": 1927,
+      "mtimeMs": 1769967700797.286,
+      "updatedAt": "2026-07-18T15:32:05.819Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "ToggleGroup",
+          "kind": "fn",
+          "startLine": 17,
+          "endLine": 42,
+          "tokens": 181
+        },
+        {
+          "name": "ToggleGroupItem",
+          "kind": "fn",
+          "startLine": 43,
+          "endLine": 74,
+          "tokens": 256
+        }
+      ]
+    },
+    "components/ui/toggle.tsx": {
+      "description": "toggleVariants",
+      "tokens": 449,
+      "hash": "80a93a384850d9fd",
+      "size": 1571,
+      "mtimeMs": 1769967700797.286,
+      "updatedAt": "2026-07-18T15:32:05.819Z",
+      "source": "scan"
+    },
+    "components/ui/tooltip.tsx": {
+      "description": "TooltipProvider",
+      "tokens": 541,
+      "hash": "b620f27ccc82ec77",
+      "size": 1893,
+      "mtimeMs": 1769967700797.286,
+      "updatedAt": "2026-07-18T15:32:05.819Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "TooltipProvider",
+          "kind": "fn",
+          "startLine": 8,
+          "endLine": 20,
+          "tokens": 76
+        },
+        {
+          "name": "Tooltip",
+          "kind": "fn",
+          "startLine": 21,
+          "endLine": 30,
+          "tokens": 61
+        },
+        {
+          "name": "TooltipTrigger",
+          "kind": "fn",
+          "startLine": 31,
+          "endLine": 36,
+          "tokens": 51
+        },
+        {
+          "name": "TooltipContent",
+          "kind": "fn",
+          "startLine": 37,
+          "endLine": 62,
+          "tokens": 314
+        }
+      ]
+    },
+    "components/ui/use-mobile.tsx": {
+      "description": "MOBILE_BREAKPOINT — uses useEffect",
+      "tokens": 162,
+      "hash": "1b43441b273aa21c",
+      "size": 565,
+      "mtimeMs": 1769967700797.286,
+      "updatedAt": "2026-07-18T15:32:05.819Z",
+      "source": "scan"
+    },
+    "components/ui/use-toast.ts": {
+      "description": "Exports reducer",
+      "tokens": 1128,
+      "hash": "3b5f8c9c5257f1cf",
+      "size": 3945,
+      "mtimeMs": 1769967700797.286,
+      "updatedAt": "2026-07-18T15:32:05.819Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "genId",
+          "kind": "fn",
+          "startLine": 27,
+          "endLine": 51,
+          "tokens": 138
+        },
+        {
+          "name": "State",
+          "kind": "section",
+          "startLine": 52,
+          "endLine": 57,
+          "tokens": 34
+        },
+        {
+          "name": "addToRemoveQueue",
+          "kind": "fn",
+          "startLine": 58,
+          "endLine": 132,
+          "tokens": 482
+        },
+        {
+          "name": "dispatch",
+          "kind": "fn",
+          "startLine": 133,
+          "endLine": 141,
+          "tokens": 54
+        },
+        {
+          "name": "toast",
+          "kind": "fn",
+          "startLine": 142,
+          "endLine": 170,
+          "tokens": 140
+        },
+        {
+          "name": "useToast",
+          "kind": "fn",
+          "startLine": 171,
+          "endLine": 192,
+          "tokens": 128
+        }
+      ]
+    },
+    "components/workspace/invite-dialog.tsx": {
+      "description": "InviteDialog — renders modal — uses useState, useEffect",
+      "tokens": 997,
+      "hash": "417d5f768dca1a69",
+      "size": 3489,
+      "mtimeMs": 1772304135542.5994,
+      "updatedAt": "2026-07-18T15:32:05.819Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "InviteDialog",
+          "kind": "fn",
+          "startLine": 20,
+          "endLine": 106,
+          "tokens": 806
+        }
+      ]
+    },
+    "components/workspace/members-list.tsx": {
+      "description": "Avatar — uses useState, useEffect",
+      "tokens": 1635,
+      "hash": "a5ea54d9767c3870",
+      "size": 5722,
+      "mtimeMs": 1772304141016.665,
+      "updatedAt": "2026-07-18T15:32:05.819Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "Avatar",
+          "kind": "fn",
+          "startLine": 30,
+          "endLine": 46,
+          "tokens": 127
+        },
+        {
+          "name": "MembersList",
+          "kind": "fn",
+          "startLine": 47,
+          "endLine": 180,
+          "tokens": 1286
+        }
+      ]
+    },
+    "components/workspace/workspace-gate.tsx": {
+      "description": "WorkspaceGate — uses useState, useRouter, useEffect",
+      "tokens": 400,
+      "hash": "6f30a7b5091f976e",
+      "size": 1400,
+      "mtimeMs": 1772219977078.1372,
+      "updatedAt": "2026-07-18T15:32:05.819Z",
+      "source": "scan"
+    },
+    "components.json": {
+      "description": "",
+      "tokens": 122,
+      "hash": "060762649713523e",
+      "size": 427,
+      "mtimeMs": 1769967700792.286,
+      "updatedAt": "2026-07-18T15:32:05.819Z",
+      "source": "scan"
+    },
+    "CONTRIBUTING.md": {
+      "description": "Contributing to Tempest",
+      "tokens": 916,
+      "hash": "7e91309c06ddf799",
+      "size": 3671,
+      "mtimeMs": 1772999035437.2458,
+      "updatedAt": "2026-07-18T15:32:05.819Z",
+      "source": "scan"
+    },
+    "docs/e2e-best-practices.md": {
+      "description": "Diretrizes e Boas Práticas para Testes E2E (Playwright)",
+      "tokens": 680,
+      "hash": "4ce4fe2489a1d516",
+      "size": 2761,
+      "mtimeMs": 1769971852673.1868,
+      "updatedAt": "2026-07-18T15:32:05.820Z",
+      "source": "scan"
+    },
+    "docs/migration-cloud-workspace.md": {
+      "description": "Plano de Migração: Cloud-Only + Workspace",
+      "tokens": 3112,
+      "hash": "f9cac1efdd79321b",
+      "size": 12721,
+      "mtimeMs": 1771885177004.6504,
+      "updatedAt": "2026-07-18T15:32:05.820Z",
+      "source": "scan"
+    },
+    "e2e/credit-cards.spec.ts": {
+      "description": "Declares toRemove",
+      "tokens": 3779,
+      "hash": "8e0aa3e1a46d2740",
+      "size": 13270,
+      "mtimeMs": 1772219070863.8074,
+      "updatedAt": "2026-07-18T15:32:05.820Z",
+      "source": "scan"
+    },
+    "e2e/dashboard.spec.ts": {
+      "description": "Declares yearSelector",
+      "tokens": 1765,
+      "hash": "c979d3804b9aa094",
+      "size": 6185,
+      "mtimeMs": 1772219070862.8074,
+      "updatedAt": "2026-07-18T15:32:05.820Z",
+      "source": "scan"
+    },
+    "e2e/expenses.spec.ts": {
+      "description": "Declares addButton",
+      "tokens": 1498,
+      "hash": "7e8279b2d8784a78",
+      "size": 5244,
+      "mtimeMs": 1772219070863.8074,
+      "updatedAt": "2026-07-18T15:32:05.820Z",
+      "source": "scan"
+    },
+    "e2e/income-replication.spec.ts": {
+      "description": "Declares row",
+      "tokens": 1252,
+      "hash": "70da4b28579ab06a",
+      "size": 4397,
+      "mtimeMs": 1772219070863.8074,
+      "updatedAt": "2026-07-18T15:32:05.821Z",
+      "source": "scan"
+    },
+    "e2e/navigation.spec.ts": {
+      "description": "Declares yearSelector",
+      "tokens": 1200,
+      "hash": "976b05e8f86ca0c2",
+      "size": 4200,
+      "mtimeMs": 1772219070862.8074,
+      "updatedAt": "2026-07-18T15:32:05.821Z",
+      "source": "scan"
+    },
+    "e2e/setup/storage-state.json": {
+      "description": "",
+      "tokens": 1044,
+      "hash": "6e2c16e371a2ef8a",
+      "size": 3659,
+      "mtimeMs": 1772229100343.089,
+      "updatedAt": "2026-07-18T15:32:05.821Z",
+      "source": "scan"
+    },
+    "eslint.config.mjs": {
+      "description": "ESLint flat configuration",
+      "tokens": 532,
+      "hash": "8b4bb506c0a6e550",
+      "size": 2000,
+      "mtimeMs": 1772217251719.711,
+      "updatedAt": "2026-07-18T15:32:05.821Z",
+      "source": "scan"
+    },
+    "GEMINI.md": {
+      "description": "OpenWolf",
+      "tokens": 68,
+      "hash": "8c90778623bf50ac",
+      "size": 271,
+      "mtimeMs": 1784388725730.8481,
+      "updatedAt": "2026-07-18T15:32:05.821Z",
+      "source": "scan"
+    },
+    "hooks/use-mobile.ts": {
+      "description": "Exports useIsMobile",
+      "tokens": 162,
+      "hash": "1b43441b273aa21c",
+      "size": 565,
+      "mtimeMs": 1769967700797.286,
+      "updatedAt": "2026-07-18T15:32:05.821Z",
+      "source": "scan"
+    },
+    "hooks/use-toast.ts": {
+      "description": "Exports reducer",
+      "tokens": 1122,
+      "hash": "6a7d59e585418fda",
+      "size": 3926,
+      "mtimeMs": 1769967700797.286,
+      "updatedAt": "2026-07-18T15:32:05.821Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "genId",
+          "kind": "fn",
+          "startLine": 27,
+          "endLine": 51,
+          "tokens": 138
+        },
+        {
+          "name": "State",
+          "kind": "section",
+          "startLine": 52,
+          "endLine": 57,
+          "tokens": 34
+        },
+        {
+          "name": "addToRemoveQueue",
+          "kind": "fn",
+          "startLine": 58,
+          "endLine": 130,
+          "tokens": 477
+        },
+        {
+          "name": "dispatch",
+          "kind": "fn",
+          "startLine": 131,
+          "endLine": 139,
+          "tokens": 54
+        },
+        {
+          "name": "toast",
+          "kind": "fn",
+          "startLine": 140,
+          "endLine": 168,
+          "tokens": 140
+        },
+        {
+          "name": "useToast",
+          "kind": "fn",
+          "startLine": 169,
+          "endLine": 190,
+          "tokens": 128
+        }
+      ]
+    },
+    "i18n/request.ts": {
+      "description": "API routes: GET (2 endpoints)",
+      "tokens": 219,
+      "hash": "0f8f6399c54d5ac4",
+      "size": 766,
+      "mtimeMs": 1771775405845.7551,
+      "updatedAt": "2026-07-18T15:32:05.821Z",
+      "source": "scan"
+    },
+    "i18n/routing.ts": {
+      "description": "Exports routing",
+      "tokens": 165,
+      "hash": "0efc63245d603316",
+      "size": 577,
+      "mtimeMs": 1771775178415.414,
+      "updatedAt": "2026-07-18T15:32:05.822Z",
+      "source": "scan"
+    },
+    "lib/adapters/amplify/amplify-auth-adapter.ts": {
+      "description": "Exports AmplifyAuthAdapter",
+      "tokens": 330,
+      "hash": "b81b735f794fc2bf",
+      "size": 1152,
+      "mtimeMs": 1772302862202.3848,
+      "updatedAt": "2026-07-18T15:32:05.822Z",
+      "source": "scan"
+    },
+    "lib/adapters/amplify/amplify-storage-adapter.ts": {
+      "description": "Exports AmplifyStorageAdapter",
+      "tokens": 1395,
+      "hash": "90a4ecb03d72ef3a",
+      "size": 4881,
+      "mtimeMs": 1775613557329.1885,
+      "updatedAt": "2026-07-18T15:32:05.822Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "AmplifyStorageAdapter",
+          "kind": "class",
+          "startLine": 21,
+          "endLine": 155,
+          "tokens": 1254
+        }
+      ]
+    },
+    "lib/adapters/auth-adapter.ts": {
+      "description": "Exports AuthAdapter",
+      "tokens": 61,
+      "hash": "0d20c4dfa9c5548e",
+      "size": 212,
+      "mtimeMs": 1772302414878.6953,
+      "updatedAt": "2026-07-18T15:32:05.822Z",
+      "source": "scan"
+    },
+    "lib/adapters/config.ts": {
+      "description": "Exports AdapterConfig, loadConfig",
+      "tokens": 347,
+      "hash": "aea4f0a2cf0d490b",
+      "size": 1214,
+      "mtimeMs": 1772302421485.777,
+      "updatedAt": "2026-07-18T15:32:05.823Z",
+      "source": "scan"
+    },
+    "lib/adapters/context.tsx": {
+      "description": "AdapterContext — uses useContext, useState, useEffect",
+      "tokens": 365,
+      "hash": "2508132daa918aed",
+      "size": 1275,
+      "mtimeMs": 1772302771268.2092,
+      "updatedAt": "2026-07-18T15:32:05.823Z",
+      "source": "scan"
+    },
+    "lib/adapters/factory.ts": {
+      "description": "Exports createAdapters",
+      "tokens": 225,
+      "hash": "2711c28558ae3dbc",
+      "size": 787,
+      "mtimeMs": 1772302484408.561,
+      "updatedAt": "2026-07-18T15:32:05.823Z",
+      "source": "scan"
+    },
+    "lib/adapters/local/local-storage-adapter.ts": {
+      "description": "Exports LocalStorageAdapter",
+      "tokens": 1860,
+      "hash": "d8f580cfa7477bad",
+      "size": 6509,
+      "mtimeMs": 1784386524875.3496,
+      "updatedAt": "2026-07-18T15:32:05.823Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "LocalStorageAdapter",
+          "kind": "class",
+          "startLine": 20,
+          "endLine": 247,
+          "tokens": 1745
+        }
+      ]
+    },
+    "lib/adapters/local/no-auth-adapter.ts": {
+      "description": "Exports NoAuthAdapter",
+      "tokens": 133,
+      "hash": "75b7895e37edd9f3",
+      "size": 464,
+      "mtimeMs": 1772302775149.2593,
+      "updatedAt": "2026-07-18T15:32:05.823Z",
+      "source": "scan"
+    },
+    "lib/adapters/registry.ts": {
+      "description": "Exports setAdapters, getStorage, getCollaborativeStorage, getAuth",
+      "tokens": 296,
+      "hash": "efd708ae75c17ccf",
+      "size": 1033,
+      "mtimeMs": 1772304115578.3606,
+      "updatedAt": "2026-07-18T15:32:05.823Z",
+      "source": "scan"
+    },
+    "lib/adapters/storage-adapter.ts": {
+      "description": "Exports StorageAdapter, CollaborativeStorageAdapter",
+      "tokens": 600,
+      "hash": "f3d2bcac4ecc44e1",
+      "size": 2099,
+      "mtimeMs": 1775613432131.2246,
+      "updatedAt": "2026-07-18T15:32:05.823Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "StorageAdapter",
+          "kind": "section",
+          "startLine": 17,
+          "endLine": 54,
+          "tokens": 450
+        },
+        {
+          "name": "CollaborativeStorageAdapter",
+          "kind": "section",
+          "startLine": 55,
+          "endLine": 60,
+          "tokens": 77
+        }
+      ]
+    },
+    "lib/adapters/types.ts": {
+      "description": "Exports WorkspaceData, Session, UserProfile, Workspace + 10 more",
+      "tokens": 952,
+      "hash": "cb90a1f8abd6030f",
+      "size": 3330,
+      "mtimeMs": 1784386524875.3496,
+      "updatedAt": "2026-07-18T15:32:05.823Z",
+      "source": "scan"
+    },
+    "lib/amplify-config.ts": {
+      "description": "Configure AWS Amplify for client-side usage",
+      "tokens": 346,
+      "hash": "80e87ac6c40773d9",
+      "size": 1216,
+      "mtimeMs": 1784386524875.3496,
+      "updatedAt": "2026-07-18T15:32:05.823Z",
+      "source": "scan"
+    },
+    "lib/expense-store.ts": {
+      "description": "Exports CategoryIcon, Category, ExpenseCategory, CreditCard + 10 more",
+      "tokens": 17576,
+      "hash": "76544f2ab3e76b76",
+      "size": 61527,
+      "mtimeMs": 1784386524875.3496,
+      "updatedAt": "2026-07-18T15:32:05.824Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "Expense",
+          "kind": "section",
+          "startLine": 45,
+          "endLine": 55,
+          "tokens": 83
+        },
+        {
+          "name": "Installment",
+          "kind": "section",
+          "startLine": 56,
+          "endLine": 64,
+          "tokens": 63
+        },
+        {
+          "name": "Income",
+          "kind": "section",
+          "startLine": 65,
+          "endLine": 71,
+          "tokens": 31
+        },
+        {
+          "name": "Note",
+          "kind": "section",
+          "startLine": 72,
+          "endLine": 105,
+          "tokens": 266
+        },
+        {
+          "name": "MonthlyData",
+          "kind": "section",
+          "startLine": 106,
+          "endLine": 205,
+          "tokens": 585
+        },
+        {
+          "name": "ExpenseStore",
+          "kind": "section",
+          "startLine": 206,
+          "endLine": 286,
+          "tokens": 1097
+        },
+        {
+          "name": "generateRecurringGroupId",
+          "kind": "fn",
+          "startLine": 287,
+          "endLine": 477,
+          "tokens": 1547
+        },
+        {
+          "name": "getCurrentMonth",
+          "kind": "fn",
+          "startLine": 478,
+          "endLine": 517,
+          "tokens": 494
+        },
+        {
+          "name": "shouldUseSampleData",
+          "kind": "fn",
+          "startLine": 518,
+          "endLine": 1888,
+          "tokens": 12993
+        }
+      ]
+    },
+    "lib/formatters.ts": {
+      "description": "Locale-aware formatting utilities",
+      "tokens": 748,
+      "hash": "39f5f4c6a822228f",
+      "size": 2617,
+      "mtimeMs": 1772998605281.0469,
+      "updatedAt": "2026-07-18T15:32:05.824Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "formatCurrency",
+          "kind": "fn",
+          "startLine": 19,
+          "endLine": 39,
+          "tokens": 159
+        },
+        {
+          "name": "formatShortCurrency",
+          "kind": "fn",
+          "startLine": 40,
+          "endLine": 72,
+          "tokens": 221
+        },
+        {
+          "name": "formatNumber",
+          "kind": "fn",
+          "startLine": 73,
+          "endLine": 88,
+          "tokens": 134
+        },
+        {
+          "name": "formatPercentage",
+          "kind": "fn",
+          "startLine": 89,
+          "endLine": 100,
+          "tokens": 82
+        }
+      ]
+    },
+    "lib/goal-utils.ts": {
+      "description": "Exports GoalDisplayStatus, getConfirmedTotal, getPendingTotal, getProgressPercent + 2 more",
+      "tokens": 741,
+      "hash": "d67c8774cfe304dc",
+      "size": 2592,
+      "mtimeMs": 1784386524875.3496,
+      "updatedAt": "2026-07-18T15:32:05.824Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "getConfirmedTotal",
+          "kind": "fn",
+          "startLine": 6,
+          "endLine": 11,
+          "tokens": 60
+        },
+        {
+          "name": "getPendingTotal",
+          "kind": "fn",
+          "startLine": 12,
+          "endLine": 17,
+          "tokens": 60
+        },
+        {
+          "name": "getProgressPercent",
+          "kind": "fn",
+          "startLine": 18,
+          "endLine": 23,
+          "tokens": 71
+        },
+        {
+          "name": "getMonthlyNeeded",
+          "kind": "fn",
+          "startLine": 24,
+          "endLine": 38,
+          "tokens": 157
+        },
+        {
+          "name": "getGoalStatus",
+          "kind": "fn",
+          "startLine": 39,
+          "endLine": 69,
+          "tokens": 338
+        }
+      ]
+    },
+    "lib/hooks/use-workspace-sync.ts": {
+      "description": "Exports useWorkspaceSync",
+      "tokens": 119,
+      "hash": "eab8e19286466aff",
+      "size": 414,
+      "mtimeMs": 1771884440327.9915,
+      "updatedAt": "2026-07-18T15:32:05.824Z",
+      "source": "scan"
+    },
+    "lib/lambda-client.ts": {
+      "description": "Exports generateInviteCode, removeMember, createWorkspace, acceptInvite",
+      "tokens": 508,
+      "hash": "1512d1ca77c87261",
+      "size": 1775,
+      "mtimeMs": 1772079255281.293,
+      "updatedAt": "2026-07-18T15:32:05.824Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "generateInviteCode",
+          "kind": "fn",
+          "startLine": 3,
+          "endLine": 15,
+          "tokens": 134
+        },
+        {
+          "name": "removeMember",
+          "kind": "fn",
+          "startLine": 16,
+          "endLine": 24,
+          "tokens": 95
+        },
+        {
+          "name": "createWorkspace",
+          "kind": "fn",
+          "startLine": 25,
+          "endLine": 37,
+          "tokens": 121
+        },
+        {
+          "name": "acceptInvite",
+          "kind": "fn",
+          "startLine": 38,
+          "endLine": 54,
+          "tokens": 142
+        }
+      ]
+    },
+    "lib/locale-cookie.ts": {
+      "description": "Server-side: Read locale from Next.js cookies()",
+      "tokens": 621,
+      "hash": "50247d675fb1d556",
+      "size": 2172,
+      "mtimeMs": 1771775405954.7554,
+      "updatedAt": "2026-07-18T15:32:05.824Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "getLocaleFromCookie",
+          "kind": "fn",
+          "startLine": 12,
+          "endLine": 19,
+          "tokens": 67
+        },
+        {
+          "name": "setLocaleCookie",
+          "kind": "fn",
+          "startLine": 20,
+          "endLine": 29,
+          "tokens": 84
+        },
+        {
+          "name": "getLocaleFromHeaders",
+          "kind": "fn",
+          "startLine": 30,
+          "endLine": 52,
+          "tokens": 180
+        },
+        {
+          "name": "getDefaultLocale",
+          "kind": "fn",
+          "startLine": 53,
+          "endLine": 59,
+          "tokens": 38
+        },
+        {
+          "name": "initializeLocaleFromStorage",
+          "kind": "fn",
+          "startLine": 60,
+          "endLine": 71,
+          "tokens": 95
+        },
+        {
+          "name": "isValidLocale",
+          "kind": "fn",
+          "startLine": 72,
+          "endLine": 78,
+          "tokens": 61
+        }
+      ]
+    },
+    "lib/migrations.ts": {
+      "description": "Data Migration System for localStorage",
+      "tokens": 1923,
+      "hash": "7353140496bf3fb2",
+      "size": 6736,
+      "mtimeMs": 1784386524875.3496,
+      "updatedAt": "2026-07-18T15:32:05.825Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "runMigrations",
+          "kind": "fn",
+          "startLine": 161,
+          "endLine": 194,
+          "tokens": 282
+        },
+        {
+          "name": "needsMigration",
+          "kind": "fn",
+          "startLine": 195,
+          "endLine": 207,
+          "tokens": 99
+        },
+        {
+          "name": "createBackup",
+          "kind": "fn",
+          "startLine": 208,
+          "endLine": 224,
+          "tokens": 145
+        },
+        {
+          "name": "cleanupOldBackups",
+          "kind": "fn",
+          "startLine": 225,
+          "endLine": 241,
+          "tokens": 144
+        }
+      ]
+    },
+    "lib/sync-store.ts": {
+      "description": "Exports SyncStatus, SyncState, useSyncStore",
+      "tokens": 514,
+      "hash": "e0d3636fc2dff7b0",
+      "size": 1798,
+      "mtimeMs": 1771885177325.653,
+      "updatedAt": "2026-07-18T15:32:05.825Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "SyncState",
+          "kind": "section",
+          "startLine": 6,
+          "endLine": 72,
+          "tokens": 470
+        }
+      ]
+    },
+    "lib/use-amplify-data.ts": {
+      "description": "Get a typed Amplify Data client for CRUD operations",
+      "tokens": 228,
+      "hash": "3e570ece8d1af8ee",
+      "size": 798,
+      "mtimeMs": 1770333508628.4578,
+      "updatedAt": "2026-07-18T15:32:05.825Z",
+      "source": "scan"
+    },
+    "lib/utils.ts": {
+      "description": "Exports cn",
+      "tokens": 48,
+      "hash": "e46429536f43f591",
+      "size": 166,
+      "mtimeMs": 1769967700797.286,
+      "updatedAt": "2026-07-18T15:32:05.825Z",
+      "source": "scan"
+    },
+    "lib/validations.ts": {
+      "description": "Expense form validation schema",
+      "tokens": 728,
+      "hash": "579280281f2290ff",
+      "size": 2583,
+      "mtimeMs": 1770142301177.0667,
+      "updatedAt": "2026-07-18T15:32:05.825Z",
+      "source": "scan"
+    },
+    "lib/workspace-client.ts": {
+      "description": "Singleton Amplify client",
+      "tokens": 4458,
+      "hash": "6203345b87623f07",
+      "size": 17083,
+      "mtimeMs": 1784386524875.3496,
+      "updatedAt": "2026-07-18T15:32:05.825Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "getAmplifyClient",
+          "kind": "fn",
+          "startLine": 8,
+          "endLine": 152,
+          "tokens": 924
+        },
+        {
+          "name": "fetchAll",
+          "kind": "fn",
+          "startLine": 153,
+          "endLine": 173,
+          "tokens": 161
+        },
+        {
+          "name": "fetchWorkspaceData",
+          "kind": "fn",
+          "startLine": 174,
+          "endLine": 354,
+          "tokens": 1337
+        },
+        {
+          "name": "createCategory",
+          "kind": "fn",
+          "startLine": 355,
+          "endLine": 367,
+          "tokens": 103
+        },
+        {
+          "name": "updateCategory",
+          "kind": "fn",
+          "startLine": 368,
+          "endLine": 377,
+          "tokens": 122
+        },
+        {
+          "name": "deleteCategory",
+          "kind": "fn",
+          "startLine": 378,
+          "endLine": 383,
+          "tokens": 64
+        },
+        {
+          "name": "createCreditCard",
+          "kind": "fn",
+          "startLine": 384,
+          "endLine": 395,
+          "tokens": 94
+        },
+        {
+          "name": "updateCreditCard",
+          "kind": "fn",
+          "startLine": 396,
+          "endLine": 408,
+          "tokens": 126
+        },
+        {
+          "name": "deleteCreditCard",
+          "kind": "fn",
+          "startLine": 409,
+          "endLine": 414,
+          "tokens": 65
+        },
+        {
+          "name": "createMonthlyData",
+          "kind": "fn",
+          "startLine": 415,
+          "endLine": 424,
+          "tokens": 103
+        },
+        {
+          "name": "updateMonthlyData",
+          "kind": "fn",
+          "startLine": 425,
+          "endLine": 433,
+          "tokens": 70
+        },
+        {
+          "name": "createIncome",
+          "kind": "fn",
+          "startLine": 434,
+          "endLine": 444,
+          "tokens": 98
+        },
+        {
+          "name": "updateIncome",
+          "kind": "fn",
+          "startLine": 445,
+          "endLine": 452,
+          "tokens": 86
+        },
+        {
+          "name": "deleteIncome",
+          "kind": "fn",
+          "startLine": 453,
+          "endLine": 458,
+          "tokens": 59
+        },
+        {
+          "name": "createExpense",
+          "kind": "fn",
+          "startLine": 459,
+          "endLine": 473,
+          "tokens": 136
+        },
+        {
+          "name": "updateExpense",
+          "kind": "fn",
+          "startLine": 474,
+          "endLine": 483,
+          "tokens": 124
+        },
+        {
+          "name": "deleteExpense",
+          "kind": "fn",
+          "startLine": 484,
+          "endLine": 489,
+          "tokens": 60
+        },
+        {
+          "name": "createInstallment",
+          "kind": "fn",
+          "startLine": 490,
+          "endLine": 501,
+          "tokens": 109
+        },
+        {
+          "name": "deleteInstallment",
+          "kind": "fn",
+          "startLine": 502,
+          "endLine": 507,
+          "tokens": 62
+        },
+        {
+          "name": "createNote",
+          "kind": "fn",
+          "startLine": 508,
+          "endLine": 522,
+          "tokens": 127
+        },
+        {
+          "name": "updateNote",
+          "kind": "fn",
+          "startLine": 523,
+          "endLine": 534,
+          "tokens": 163
+        },
+        {
+          "name": "deleteNote",
+          "kind": "fn",
+          "startLine": 535,
+          "endLine": 540,
+          "tokens": 58
+        },
+        {
+          "name": "getWorkspaceLastActivity",
+          "kind": "fn",
+          "startLine": 541,
+          "endLine": 546,
+          "tokens": 77
+        },
+        {
+          "name": "touchWorkspaceActivity",
+          "kind": "fn",
+          "startLine": 547,
+          "endLine": 553,
+          "tokens": 60
+        }
+      ]
+    },
+    "lib/write-queue.ts": {
+      "description": "Exports WriteModel, WriteOp, PendingWrite, enqueue + 4 more",
+      "tokens": 1440,
+      "hash": "99adf753975c6871",
+      "size": 5039,
+      "mtimeMs": 1775613477298.5242,
+      "updatedAt": "2026-07-18T15:32:05.825Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "readQueue",
+          "kind": "fn",
+          "startLine": 31,
+          "endLine": 39,
+          "tokens": 53
+        },
+        {
+          "name": "saveQueue",
+          "kind": "fn",
+          "startLine": 40,
+          "endLine": 43,
+          "tokens": 32
+        },
+        {
+          "name": "enqueue",
+          "kind": "fn",
+          "startLine": 44,
+          "endLine": 54,
+          "tokens": 70
+        },
+        {
+          "name": "getPendingCount",
+          "kind": "fn",
+          "startLine": 55,
+          "endLine": 58,
+          "tokens": 22
+        },
+        {
+          "name": "processQueue",
+          "kind": "fn",
+          "startLine": 59,
+          "endLine": 83,
+          "tokens": 206
+        },
+        {
+          "name": "dispatch",
+          "kind": "fn",
+          "startLine": 84,
+          "endLine": 164,
+          "tokens": 735
+        },
+        {
+          "name": "startBackgroundProcessor",
+          "kind": "fn",
+          "startLine": 165,
+          "endLine": 179,
+          "tokens": 100
+        },
+        {
+          "name": "stopBackgroundProcessor",
+          "kind": "fn",
+          "startLine": 180,
+          "endLine": 186,
+          "tokens": 46
+        }
+      ]
+    },
+    "LICENSE": {
+      "description": "Project license",
+      "tokens": 288,
+      "hash": "8cf6d328534fc255",
+      "size": 1077,
+      "mtimeMs": 1769967700791.286,
+      "updatedAt": "2026-07-18T15:32:05.825Z",
+      "source": "scan"
+    },
+    "messages/en.json": {
+      "description": "",
+      "tokens": 6452,
+      "hash": "62b541a521b0b56b",
+      "size": 22594,
+      "mtimeMs": 1784386524876.3496,
+      "updatedAt": "2026-07-18T15:32:05.825Z",
+      "source": "scan"
+    },
+    "messages/pt.json": {
+      "description": "",
+      "tokens": 6832,
+      "hash": "d21c40e16f42eb86",
+      "size": 24231,
+      "mtimeMs": 1784386524876.3496,
+      "updatedAt": "2026-07-18T15:32:05.826Z",
+      "source": "scan"
+    },
+    "next-env.d.ts": {
+      "description": "/ <reference types=\"next\" />",
+      "tokens": 72,
+      "hash": "7ad303e40d4fddf4",
+      "size": 251,
+      "mtimeMs": 1784387037679.1736,
+      "updatedAt": "2026-07-18T15:32:05.826Z",
+      "source": "scan"
+    },
+    "next.config.mjs": {
+      "description": "Next.js configuration",
+      "tokens": 408,
+      "hash": "dd2174e6809f9a6c",
+      "size": 1529,
+      "mtimeMs": 1772302501111.7705,
+      "updatedAt": "2026-07-18T15:32:05.826Z",
+      "source": "scan"
+    },
+    "package.json": {
+      "description": "Node.js package manifest",
+      "tokens": 1428,
+      "hash": "d17beab05692b26d",
+      "size": 4998,
+      "mtimeMs": 1776016690239.6729,
+      "updatedAt": "2026-07-18T15:32:05.826Z",
+      "source": "scan"
+    },
+    "playwright-report/index.html": {
+      "description": "Playwright Test Report",
+      "tokens": 146133,
+      "hash": "52ee5a626de805f8",
+      "size": 548264,
+      "mtimeMs": 1770330073904.1558,
+      "updatedAt": "2026-07-18T15:32:05.829Z",
+      "source": "scan"
+    },
+    "playwright.config.ts": {
+      "description": "Playwright test configuration",
+      "tokens": 204,
+      "hash": "72ca7d9682eee069",
+      "size": 714,
+      "mtimeMs": 1772229537269.659,
+      "updatedAt": "2026-07-18T15:32:05.829Z",
+      "source": "scan"
+    },
+    "postcss.config.mjs": {
+      "description": "Declares config",
+      "tokens": 39,
+      "hash": "54b5708e687b8c9e",
+      "size": 144,
+      "mtimeMs": 1769967700799.286,
+      "updatedAt": "2026-07-18T15:32:05.829Z",
+      "source": "scan"
+    },
+    "proxy.ts": {
+      "description": "Lazily loaded Amplify server runner — null when amplify_outputs.json is absent",
+      "tokens": 956,
+      "hash": "efc8ec36b250dddc",
+      "size": 3350,
+      "mtimeMs": 1784386524880.3496,
+      "updatedAt": "2026-07-18T15:32:05.829Z",
+      "source": "scan",
+      "symbols": [
+        {
+          "name": "isPublicRoute",
+          "kind": "fn",
+          "startLine": 36,
+          "endLine": 39,
+          "tokens": 36
+        },
+        {
+          "name": "resolveLocale",
+          "kind": "fn",
+          "startLine": 40,
+          "endLine": 46,
+          "tokens": 76
+        },
+        {
+          "name": "proxy",
+          "kind": "fn",
+          "startLine": 47,
+          "endLine": 100,
+          "tokens": 465
+        }
+      ]
+    },
+    "README.md": {
+      "description": "Project documentation",
+      "tokens": 1282,
+      "hash": "b0419338b118df45",
+      "size": 5168,
+      "mtimeMs": 1784386524873.3496,
+      "updatedAt": "2026-07-18T15:32:05.829Z",
+      "source": "scan"
+    },
+    "SECURITY.md": {
+      "description": "Security Policy",
+      "tokens": 365,
+      "hash": "10bdd4891efa909a",
+      "size": 1463,
+      "mtimeMs": 1772999035448.2458,
+      "updatedAt": "2026-07-18T15:32:05.829Z",
+      "source": "scan"
+    },
+    "styles/globals.css": {
+      "description": "Styles: 6 rules, 103 vars, 1 layers",
+      "tokens": 1244,
+      "hash": "7f30dbe34b65246e",
+      "size": 4353,
+      "mtimeMs": 1769967700800.286,
+      "updatedAt": "2026-07-18T15:32:05.830Z",
+      "source": "scan"
+    },
+    "tempest.config.yml": {
+      "description": "tempest.config.yml",
+      "tokens": 166,
+      "hash": "e8914c58aa3330d1",
+      "size": 587,
+      "mtimeMs": 1772302390364.3923,
+      "updatedAt": "2026-07-18T15:32:05.830Z",
+      "source": "scan"
+    },
+    "test-results/.last-run.json": {
+      "description": "",
+      "tokens": 13,
+      "hash": "91d1c43004802cd4",
+      "size": 45,
+      "mtimeMs": 1772229384634.0684,
+      "updatedAt": "2026-07-18T15:32:05.830Z",
+      "source": "scan"
+    },
+    "tsconfig.json": {
+      "description": "TypeScript configuration",
+      "tokens": 191,
+      "hash": "aa921f666178ec8e",
+      "size": 668,
+      "mtimeMs": 1771785050712.466,
+      "updatedAt": "2026-07-18T15:32:05.830Z",
+      "source": "scan"
+    },
+    "vitest.config.ts": {
+      "description": "Vitest test configuration",
+      "tokens": 441,
+      "hash": "be58b9bf574a29b1",
+      "size": 1542,
+      "mtimeMs": 1776013079674.572,
+      "updatedAt": "2026-07-18T15:32:05.830Z",
+      "source": "scan"
+    },
+    "vitest.setup.ts": {
+      "description": "Mock ResizeObserver for Radix UI components",
+      "tokens": 86,
+      "hash": "20807d58b2617299",
+      "size": 300,
+      "mtimeMs": 1769967700800.286,
+      "updatedAt": "2026-07-18T15:32:05.830Z",
+      "source": "scan"
+    }
+  }
+}

@@ -1,7 +1,7 @@
 'use client'
 
 import { Suspense } from 'react'
-import { Sidebar } from '@/components/expense/sidebar'
+import { AppShell } from '@/components/expense/app-shell'
 import { SettingsView } from '@/components/expense/settings-view'
 import { useExpenseStore } from '@/lib/expense-store'
 import { useRouter } from 'next/navigation'
@@ -15,16 +15,13 @@ export default function SettingsPage() {
 
   return (
     <WorkspaceGate>
-      <div className="bg-background flex h-screen">
-        <Sidebar
-          activeView="settings"
-          onViewChange={(_view) => {
-            router.push('/')
-          }}
-          currentYear={currentYear}
-          availableYears={availableYears}
-          onYearChange={setCurrentYear}
-        />
+      <AppShell
+        activeView="settings"
+        onViewChange={() => router.push('/')}
+        currentYear={currentYear}
+        availableYears={availableYears}
+        onYearChange={setCurrentYear}
+      >
         <Suspense
           fallback={
             <div className="flex flex-1 items-center justify-center">
@@ -34,7 +31,7 @@ export default function SettingsPage() {
         >
           <SettingsView />
         </Suspense>
-      </div>
+      </AppShell>
     </WorkspaceGate>
   )
 }

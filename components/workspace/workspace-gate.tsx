@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Loader2 } from 'lucide-react'
 import { useShallow } from 'zustand/react/shallow'
+import { useAmplify } from '@/components/amplify-provider'
 import { useSyncStore } from '@/lib/sync-store'
 import { useExpenseStore } from '@/lib/expense-store'
 
@@ -14,6 +15,7 @@ type WorkspaceGateProps = {
 export function WorkspaceGate({ children }: WorkspaceGateProps) {
   // Zustand persist hydrates asynchronously — block routing decisions until hydration settles
   const [hasHydrated, setHasHydrated] = useState(false)
+  const { isReady } = useAmplify()
   const { workspaceId, workspaceGroup } = useSyncStore(
     useShallow((s) => ({ workspaceId: s.workspaceId, workspaceGroup: s.workspaceGroup }))
   )
@@ -25,15 +27,15 @@ export function WorkspaceGate({ children }: WorkspaceGateProps) {
   }, [])
 
   useEffect(() => {
-    if (!hasHydrated) return
+    if (!hasHydrated || !isReady) return
     if (!workspaceId || !workspaceGroup) {
       router.push('/onboarding')
     } else {
       void loadWorkspace(workspaceId, workspaceGroup)
     }
-  }, [hasHydrated, workspaceId, workspaceGroup, router, loadWorkspace])
+  }, [hasHydrated, isReady, workspaceId, workspaceGroup, router, loadWorkspace])
 
-  if (!hasHydrated || !workspaceId || !workspaceGroup) {
+  if (!hasHydrated || !isReady || !workspaceId || !workspaceGroup) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <Loader2 className="text-primary h-8 w-8 animate-spin" />

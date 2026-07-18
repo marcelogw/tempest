@@ -9,7 +9,7 @@ test.describe('Expense Management', () => {
 
   test('should add fixed expense', async ({ page }) => {
     // Click "Add Fixed"
-    const addButton = page.locator('button:has-text("Adicionar Fixa")')
+    const addButton = page.locator('button[title="Adicionar Despesa Fixa"]')
     await addButton.click()
 
     // Wait for form to appear
@@ -35,7 +35,7 @@ test.describe('Expense Management', () => {
     }
 
     // Click add variable expense
-    const addButton = page.locator('button:has-text("Adicionar Variavel")')
+    const addButton = page.locator('button[title="Adicionar Despesa Variável"]')
     await addButton.click()
 
     // Wait for form
@@ -55,7 +55,7 @@ test.describe('Expense Management', () => {
 
   test('should show expense in list after adding', async ({ page }) => {
     // Add an expense
-    const addButton = page.locator('button:has-text("Adicionar Fixa")')
+    const addButton = page.locator('button[title="Adicionar Despesa Fixa"]')
     await addButton.click()
 
     await page.waitForSelector('input[id="description"]', { state: 'visible' })
@@ -74,7 +74,7 @@ test.describe('Expense Management', () => {
 
   test('should delete expense', async ({ page }) => {
     // First add an expense to delete
-    const addButton = page.locator('button:has-text("Adicionar Fixa")')
+    const addButton = page.locator('button[title="Adicionar Despesa Fixa"]')
     await addButton.click()
 
     await page.waitForSelector('input[id="description"]', { state: 'visible' })
@@ -111,28 +111,27 @@ test.describe('Installment Management', () => {
 
   test('should add installment purchase', async ({ page }) => {
     // Look for add installment button
-    const installmentButton = page.locator(
-      'button:has-text("Parcelamento"), button:has-text("Adicionar Parcelamento")'
-    )
+    const installmentButton = page.locator('button[title="Adicionar Parcelamento"]')
 
     if (await installmentButton.isVisible({ timeout: 2000 })) {
       await installmentButton.click()
 
-      // Fill installment data
-      await page.waitForSelector('input[name="name"], input[placeholder*="Nome"]')
-      await page.fill('input[name="name"], input[placeholder*="Nome"]', 'Notebook Dell')
-      await page.fill('input[name="totalInstallments"], input[placeholder*="Parcelas"]', '12')
-      await page.fill('input[name="amountPerInstallment"], input[type="number"]', '300')
+      await page.waitForSelector('input[id="installment-name"]', { state: 'visible' })
+      await page.fill('input[id="installment-name"]', 'Notebook Dell')
+      await page.fill('input[id="installments"]', '12')
+      await page.fill('input[id="amount"]', '300')
 
       // Select card if there's a dropdown
-      const cardSelect = page.locator('select[name="card"], button:has-text("Selecione")')
-      if (await cardSelect.isVisible()) {
-        await cardSelect.click()
-        await page.click('[role="option"]:has-text("Nubank")').catch(() => {})
+      const cardSelect = page.locator('div[role="dialog"] button[role="combobox"]').first()
+      if ((await cardSelect.isVisible()) && (await cardSelect.isEnabled())) {
+        await cardSelect.click({ force: true })
+        await page
+          .click('[role="option"]:first-child', { force: true, timeout: 1000 })
+          .catch(() => {})
       }
 
       // Save
-      await page.click('button:has-text("Salvar"), button:has-text("Adicionar")')
+      await page.locator('div[role="dialog"] button[type="submit"]').click({ force: true })
 
       // Verify
       await expect(page.locator('text=Notebook Dell')).toBeVisible({ timeout: 5000 })

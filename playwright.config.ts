@@ -9,7 +9,7 @@ export default defineConfig({
   timeout: process.env.CI ? 20000 : 30000,
   reporter: 'html',
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:3005',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     storageState: 'e2e/setup/storage-state.json',
@@ -23,8 +23,8 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: process.env.CI ? 'npm run start' : 'npm run dev',
-    url: 'http://localhost:3000',
-    reuseExistingServer: !process.env.CI,
+    command: 'npm run build && npm run start -- -p 3005',
+    url: 'http://localhost:3005',
+    reuseExistingServer: false,
   },
 })

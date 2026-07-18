@@ -116,7 +116,9 @@ test.describe('Data Persistence', () => {
     if (await targetYearOption.isVisible({ timeout: 1000 })) {
       await targetYearOption.click()
     } else {
-      await yearSelector.locator('button').first().click()
+      await page.keyboard.press('Escape') // Close the dropdown
+      await page.waitForTimeout(100) // Wait for overlay to disappear
+      await yearSelector.locator('button').first().click({ force: true })
     }
 
     // Wait for state to update
@@ -126,6 +128,9 @@ test.describe('Data Persistence', () => {
 
     // Reload
     await page.reload()
+
+    // Wait for hydration by waiting for dashboard cards
+    await page.waitForSelector('[data-slot="card"]')
 
     // Verify it was kept
     await expect(yearSelector).toContainText(selectedYear || targetYear.toString())
@@ -166,7 +171,7 @@ test.describe('Data Persistence', () => {
     await page.waitForSelector('[data-testid="month-selector"]')
 
     // Add expense
-    const addButton = page.locator('button:has-text("Adicionar Fixa")')
+    const addButton = page.locator('button[title="Adicionar Despesa Fixa"]')
     await addButton.click()
 
     await page.waitForSelector('input[id="description"]', { state: 'visible' })

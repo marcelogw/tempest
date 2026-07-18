@@ -4,6 +4,14 @@ import userEvent from '@testing-library/user-event'
 import { AppShell } from '@/components/expense/app-shell'
 import ptMessages from '@/messages/pt.json'
 
+// Presentational leaves, not what this test targets (the shadcn Sidebar's Sheet/Tooltip primitives).
+vi.mock('@/components/brand/tempest-logo', () => ({
+  TempestIconMark: () => null,
+}))
+vi.mock('@/components/theme-toggle', () => ({
+  ThemeToggle: () => null,
+}))
+
 function mockMatchMedia(isMobile: boolean) {
   window.innerWidth = isMobile ? 375 : 1024
   window.matchMedia = vi.fn().mockImplementation((query: string) => ({

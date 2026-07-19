@@ -207,18 +207,17 @@ describe('MonthSelector', () => {
       expect(mockOnMonthChange.mock.calls[0][0]).toMatch(/^\d{4}-\d{2}$/)
     })
 
-    it('Teste 15: handleMonthSelect é chamado com o valor correto', () => {
-      // Testamos a lógica interna de mudança de mês
-      // A interação com o dropdown Radix UI é testada em E2E
-      const { rerender } = render(
-        <MonthSelector currentMonth="2026-01" onMonthChange={mockOnMonthChange} />
-      )
+    it('Teste 15: handleMonthSelect é chamado com o valor correto', async () => {
+      const user = userEvent.setup()
+      render(<MonthSelector currentMonth="2026-01" onMonthChange={mockOnMonthChange} />)
 
-      // Simular mudança para março via prop (como se o dropdown tivesse sido usado)
-      rerender(<MonthSelector currentMonth="2026-03" onMonthChange={mockOnMonthChange} />)
+      const trigger = screen.getByRole('combobox')
+      await user.click(trigger)
 
-      // Verificar que o display mostra março
-      expect(screen.getByText(/março/i)).toBeInTheDocument()
+      const option = await screen.findByRole('option', { name: /março/i })
+      await user.click(option)
+
+      expect(mockOnMonthChange).toHaveBeenCalledWith('2026-03')
     })
 
     it('Teste 16: Ano é preservado quando mês muda', () => {

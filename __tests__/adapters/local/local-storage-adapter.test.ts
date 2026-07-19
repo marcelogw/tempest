@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { LocalStorageAdapter } from '@/lib/adapters/local/local-storage-adapter'
 import { useExpenseStore } from '@/lib/expense-store'
@@ -51,6 +52,17 @@ describe('LocalStorageAdapter', () => {
       await adapter.configure()
       // Malformed JSON → hasWorkspace stays false → calls setWorkspace
       expect(mockSetWorkspace).toHaveBeenCalledWith('local', 'local')
+    })
+
+    it('returns early when window is undefined', async () => {
+      const originalWindow = global.window
+      // @ts-ignore
+      delete (global as any).window
+
+      await adapter.configure()
+
+      expect(mockSetWorkspace).not.toHaveBeenCalled()
+      global.window = originalWindow
     })
   })
 
@@ -134,6 +146,21 @@ describe('LocalStorageAdapter', () => {
         id: '2025-01',
         month: '2025-01',
       })
+    })
+
+    it('handles undefined arrays in monthly data', async () => {
+      useExpenseStore.setState({
+        ...emptyStoreState,
+        monthlyData: {
+          '2025-01': {
+            month: '2025-01',
+          } as any,
+        },
+      })
+      const data = await adapter.fetchWorkspaceData('local')
+      expect(data.monthlyDataList[0].savingsEntries).toEqual([])
+      expect(data.expenses).toEqual([])
+      expect(data.incomes).toEqual([])
     })
 
     it('maps incomes from all months', async () => {

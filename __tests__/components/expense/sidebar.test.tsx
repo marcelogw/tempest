@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call */
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { AppSidebar } from '@/components/expense/sidebar'
 import { SidebarProvider } from '@/components/ui/sidebar'
@@ -41,6 +42,15 @@ vi.mock('@/hooks/use-mobile', () => ({
   useIsMobile: () => false,
 }))
 
+vi.mock('@/components/ui/avatar', async (importOriginal) => {
+  const actual = await importOriginal<any>()
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  return {
+    ...actual,
+    AvatarImage: ({ src, alt }: any) => <img src={src} alt={alt} data-testid="avatar-image" />,
+  }
+})
+
 describe('Sidebar', () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -69,11 +79,15 @@ describe('Sidebar', () => {
     expect(screen.getByText('Visitante')).toBeInTheDocument()
   })
 
-  it('renders user info when authenticated', () => {
+  it('renders user info and picture when authenticated', () => {
     vi.mocked(useSyncStore).mockImplementation((selector: any) =>
       selector
-        ? selector({ userName: 'teste@example.com', workspaceId: 'cloud-id' })
-        : { userName: 'teste@example.com', workspaceId: 'cloud-id' }
+        ? selector({
+            userName: 'teste@example.com',
+            userPicture: 'avatar.png',
+            workspaceId: 'cloud-id',
+          })
+        : { userName: 'teste@example.com', userPicture: 'avatar.png', workspaceId: 'cloud-id' }
     )
 
     render(
@@ -88,8 +102,69 @@ describe('Sidebar', () => {
       </SidebarProvider>
     )
 
-    // Capitalized first letter of email
-    expect(screen.getByText('T')).toBeInTheDocument()
+    // Capitalized first letter of email (fallback) might still render, but AvatarImage should be present.
+    // We can just check that the displayName is rendered
     expect(screen.getByText('teste@example.com')).toBeInTheDocument()
+
+    // Check if AvatarImage is rendered by checking the alt text
+    const avatarImg = screen.getByAltText('teste@example.com')
+    expect(avatarImg).toBeInTheDocument()
+    expect(avatarImg).toHaveAttribute('src', 'avatar.png')
+  })
+
+  it('calls onViewChange when a nav item is clicked', async () => {
+    vi.mocked(useSyncStore).mockImplementation((selector: any) =>
+      selector
+        ? selector({ userName: null, workspaceId: 'local' })
+        : { userName: null, workspaceId: 'local' }
+    )
+
+    const onViewChangeMock = vi.fn()
+    const user = userEvent.setup()
+
+    render(
+      <SidebarProvider>
+        <AppSidebar
+          activeView="dashboard"
+          onViewChange={onViewChangeMock}
+          currentYear="2026"
+          availableYears={['2026']}
+          onYearChange={() => {}}
+        />
+      </SidebarProvider>
+    )
+
+    const button = screen.getByText('ui.sidebar.monthlyView')
+    await user.click(button)
+
+    expect(onViewChangeMock).toHaveBeenCalledWith('monthly')
+  })
+
+  it('calls onViewChange when settings is clicked', async () => {
+    vi.mocked(useSyncStore).mockImplementation((selector: any) =>
+      selector
+        ? selector({ userName: null, workspaceId: 'local' })
+        : { userName: null, workspaceId: 'local' }
+    )
+
+    const onViewChangeMock = vi.fn()
+    const user = userEvent.setup()
+
+    render(
+      <SidebarProvider>
+        <AppSidebar
+          activeView="dashboard"
+          onViewChange={onViewChangeMock}
+          currentYear="2026"
+          availableYears={['2026']}
+          onYearChange={() => {}}
+        />
+      </SidebarProvider>
+    )
+
+    const button = screen.getByText('ui.sidebar.settings')
+    await user.click(button)
+
+    expect(onViewChangeMock).toHaveBeenCalledWith('settings')
   })
 })

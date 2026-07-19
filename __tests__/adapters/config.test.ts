@@ -15,6 +15,14 @@ describe('loadConfig', () => {
     expect(loadConfig()).toEqual({ storage: 'local', auth: 'none' })
   })
 
+  it('defaults to local/none when env variables are missing', () => {
+    vi.stubEnv('NEXT_PUBLIC_TEMPEST_STORAGE', '')
+    vi.stubEnv('NEXT_PUBLIC_TEMPEST_AUTH', '')
+    delete process.env.NEXT_PUBLIC_TEMPEST_STORAGE
+    delete process.env.NEXT_PUBLIC_TEMPEST_AUTH
+    expect(loadConfig()).toEqual({ storage: 'local', auth: 'none' })
+  })
+
   it('returns amplify/amplify for amplify + amplify combination', () => {
     vi.stubEnv('NEXT_PUBLIC_TEMPEST_STORAGE', 'amplify')
     vi.stubEnv('NEXT_PUBLIC_TEMPEST_AUTH', 'amplify')
@@ -52,5 +60,12 @@ describe('loadConfig', () => {
     vi.stubEnv('NEXT_PUBLIC_TEMPEST_AUTH', 'amplify')
     loadConfig()
     expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('AmplifyStorageAdapter'))
+  })
+
+  it('logs AmplifyAuthAdapter for amplify auth mode', () => {
+    vi.stubEnv('NEXT_PUBLIC_TEMPEST_STORAGE', 'amplify')
+    vi.stubEnv('NEXT_PUBLIC_TEMPEST_AUTH', 'amplify')
+    loadConfig()
+    expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('AmplifyAuthAdapter'))
   })
 })

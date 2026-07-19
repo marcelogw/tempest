@@ -12,17 +12,28 @@ describe('TempestLogo', () => {
   })
 
   it('renders icon variant', () => {
-    const { container } = render(<TempestLogo variant="icon" />)
+    const { container } = render(<TempestLogo variant="icon" animated className="custom-class" />)
     const svg = container.querySelector('svg')
     expect(svg).toBeInTheDocument()
     expect(svg).toHaveAttribute('width', '48')
+    expect(svg).toHaveClass('tempest-logo-animated', 'custom-class')
+    expect(container.querySelector('g.tempest-swirl')).toBeInTheDocument()
+  })
+
+  it('renders icon variant not animated', () => {
+    const { container } = render(<TempestLogo variant="icon" />)
+    const g = container.querySelector('g')
+    expect(g).not.toHaveClass('tempest-swirl')
   })
 
   it('renders wordmark variant', () => {
-    const { container } = render(<TempestLogo variant="wordmark" />)
+    const { container } = render(
+      <TempestLogo variant="wordmark" animated className="custom-class" />
+    )
     const svg = container.querySelector('svg')
     expect(svg).toBeInTheDocument()
     expect(svg).toHaveAttribute('width', '172')
+    expect(svg).toHaveClass('tempest-logo-animated', 'custom-class')
   })
 
   it('renders animated and different color schemes', () => {

@@ -13,6 +13,8 @@
 | 12:50 | Wrote migration guide | docs/migration/*.md (7 files) | ~23k tokens of spec; all cross-refs validated | ~25k |
 | 13:05 | Formatted docs with repo prettier style | docs/migration/*.md | Clean; embedded code matches semi:false/singleQuote | ~1k |
 | 13:10 | Updated OpenWolf context | .wolf/{STATUS,anatomy,cerebrum,memory}.md | STATUS.md filled (was an empty template) | ~3k |
+| 13:12 | Opened draft PR #18 | — | CI red on all 3 jobs at `npm ci` | ~2k |
+| 13:15 | Diagnosed + fixed lock drift (EUSAGE, @smithy/*) | package-lock.json | 7+/7-; typecheck+lint+format+324 tests pass | ~6k |
 
 ### Session summary
 

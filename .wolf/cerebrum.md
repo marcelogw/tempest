@@ -83,6 +83,12 @@
   coverage in a directory listing.
 - [2026-07-26] Before claiming a module is used, `grep` for its importers. Before claiming a
   bug exists, reproduce it.
+- [2026-07-26] **A red CI on a docs-only PR is probably not the PR.** `npm ci` failed with
+  EUSAGE on transitive `@smithy/*` caret ranges. Check whether the failure reproduces on a
+  clean checkout of the base commit *before* assuming your diff caused it — here the base had
+  last passed a week earlier and the drift came from the registry, not the repo. Fix with
+  `npm install --package-lock-only --ignore-scripts` (per CLAUDE.md), never a plain
+  `npm install`.
 
 ## Decision Log
 

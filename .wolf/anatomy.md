@@ -929,6 +929,26 @@
 - `e2e-best-practices.md` — Diretrizes e Boas Práticas para Testes E2E (Playwright) (~680 tok)
 - `migration-cloud-workspace.md` — Plano de Migração: Cloud-Only + Workspace (~3112 tok)
 
+## docs/migration/
+
+> Guide for rebuilding Tempest as a new clean open-source app (new brand, same features).
+> Written for AI-executed incremental migration. Entry point is README.md.
+
+- `README.md` — Index, the three rules, per-session protocol. Read first, every session (~1105 tok)
+- `01-target-architecture.md` — 7 ADRs: Vite+React SPA over Next.js, views→routes, local-first
+  with no cloud abstraction, store split by domain, money as integer cents, enforced i18n,
+  OSS day zero. Includes dependency keep/add/drop table (~3576 tok)
+- `02-feature-inventory.md` — 15 features (F-01..F-15) with behaviour, edge cases, required
+  changes, old-code refs and pitfall links. F-15 (cloud) is deferred (~5337 tok)
+- `03-domain-model.md` — Canonical types, branded primitives, rule-based recurrence model,
+  store shape, 10 invariants, old→new import map incl. recurrence reconstruction (~2634 tok)
+- `04-pitfalls.md` — 24 verified defects (P-01..P-24) with evidence, line refs and required
+  behaviour. P-13/P-21/P-10 are live wrong-number bugs (~5365 tok)
+- `05-phase-plan.md` — Living state. Phases 0-10, dependency order, per-phase checklists and
+  exit criteria. Phase 10 (cloud) blocked pending design doc (~3085 tok)
+- `06-quality-bar.md` — Definition of done, test layers, pitfall regression tests, i18n and UI
+  rules, PR checklist, anti-pattern table (~2208 tok)
+
 ## e2e/
 
 - `credit-cards.spec.ts` — Declares toRemove (~3779 tok)

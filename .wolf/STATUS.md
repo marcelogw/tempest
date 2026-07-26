@@ -30,6 +30,8 @@ belongs to — never deferred to a cleanup pass.
   - `04-pitfalls.md` — 24 verified defects (P-01..P-24) with evidence
   - `05-phase-plan.md` — phases 0-10, **this is living state, tick tasks there**
   - `06-quality-bar.md` — definition of done
+  - `07-agent-tooling.md` — agent toolchain: hooks/lint enforcement, OpenWolf, kanban-md,
+    Ponytail, design-system skill, Playwright MCP, TDD policy
 - Cross-references validated: 24/24 pitfalls, 15/15 features, 7/7 ADRs, no dead links
 - Stack decision made and closed: **Vite + React 19 + TanStack Router (SPA/PWA)**
 

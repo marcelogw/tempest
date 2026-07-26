@@ -111,6 +111,14 @@
   cliff, the 25-writes-per-action fan-out, and most of the store's size. (03-domain-model)
 - [2026-07-26] **Views become real routes** with month/year as URL search params, so deep
   links, the back button, and reload-in-place all work. (ADR-002)
+- [2026-07-26] **Agent toolchain for the new repo decided** (`07-agent-tooling.md`), on the
+  principle "a skill advises, a hook enforces". Enforcement (hooks + lint + CI) installs
+  before any convenience tool. TDD applies to `domain/` only — pure functions with a spec
+  that already exists in `06` — and never to UI, where the design is discovered visually.
+  Keep OpenWolf but force `STATUS.md` updates with a `Stop` hook; kanban-md only if agents
+  run in parallel; Ponytail only with `domain/` and tests excluded, since "write less code"
+  fights the quality bar. Playwright MCP over Chrome DevTools MCP — same browser stack as
+  the existing E2E suite.
 - [2026-07-26] Migration docs in `docs/migration/`, in **English**, structured for AI
   consumption: numbered docs, stable IDs (F-xx features, P-xx pitfalls, ADR-xxx decisions),
   and `05-phase-plan.md` as the single living state file.

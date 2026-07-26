@@ -948,6 +948,10 @@
   exit criteria. Phase 10 (cloud) blocked pending design doc (~3085 tok)
 - `06-quality-bar.md` — Definition of done, test layers, pitfall regression tests, i18n and UI
   rules, PR checklist, anti-pattern table (~2208 tok)
+- `07-agent-tooling.md` — Agent toolchain for the new repo, organised as "a skill advises, a
+  hook enforces". 5 layers: enforcement (hooks/lint/CI), context+tasks (OpenWolf, kanban-md,
+  Ponytail), design-system enforcement, visual verification (Playwright MCP), TDD policy
+  (TDD in domain/, test-after in UI). Includes a what-NOT-to-install list (~2400 tok)
 
 ## e2e/
 

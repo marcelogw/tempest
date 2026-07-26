@@ -37,6 +37,17 @@ A feature is done when **every** box is ticked. Not most.
 | **Component**          | Rendering, interaction, a11y                                      | Testing Library through the custom i18n render wrapper. Query by role and label, never by class. |
 | **E2E** (Playwright)   | One primary flow per route                                        | `data-testid` selectors only — never user-visible text (→ **P-23**).                             |
 
+### When tests get written
+
+**TDD in `domain/`, test-after in the UI.** Full reasoning in
+[`07-agent-tooling.md`](./07-agent-tooling.md) Layer 5.
+
+- **`domain/`** — pure functions, no mocks, and the spec already exists (the pitfall table
+  below is a ready-made list of failing tests). Write them red first. Enforced by a hook:
+  a Write to `domain/x.ts` is rejected when `domain/x.test.ts` does not exist.
+- **UI** — the design is discovered visually, so tests-first is guaranteed rework. The cycle
+  is `build → screenshot → review → render test → E2E smoke`.
+
 ### Non-negotiable rules
 
 1. **A number rendered to the user is covered by a unit test.** Three of the worst bugs in

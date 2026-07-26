@@ -24,9 +24,11 @@ sessions, without losing quality or context between them.
 | 04  | [`04-pitfalls.md`](./04-pitfalls.md)                       | Before migrating a feature — check its entries. Non-negotiable. |
 | 05  | [`05-phase-plan.md`](./05-phase-plan.md)                   | Start of every session, to know what phase you are in.          |
 | 06  | [`06-quality-bar.md`](./06-quality-bar.md)                 | Before opening a PR. Definition of done.                        |
+| 07  | [`07-agent-tooling.md`](./07-agent-tooling.md)             | Once, when setting up the repo. Then only when adding a tool.   |
 
 **Minimum read for one feature migration:** this README → the feature's section in `02` →
 its listed entries in `04` → `06`. That is roughly 400 lines, not the whole guide.
+`07` is setup-time only — it is not part of the per-feature read path.
 
 ---
 

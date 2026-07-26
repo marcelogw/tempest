@@ -67,10 +67,25 @@ ships to CI.
 - [ ] `README`, `CONTRIBUTING`, `LICENSE`, `CODE_OF_CONDUCT`, issue/PR templates
 - [ ] App shell: sidebar, navigation, theme toggle, year selector
 
+**Agent tooling** — full rationale in [`07-agent-tooling.md`](./07-agent-tooling.md).
+Install the enforcement layer **before** the convenience layer.
+
+- [ ] Hook: block hardcoded colour literals on Edit/Write → `07` Layer 1
+- [ ] Hook: block hand-written files in `components/ui/` (shadcn CLI only)
+- [ ] Hook: `Stop` fails when a code-changing session left `STATUS.md` untouched
+- [ ] Lint: no hex / arbitrary Tailwind values outside the token file
+- [ ] Lint: no bare `.sort()`/`.reverse()`/`.splice()` on selector output → **P-09**
+- [ ] Lint: no `new Date(<string>)` anywhere → **P-13**
+- [ ] Design-system project skill, versioned in the repo (build with `skill-creator`)
+- [ ] OpenWolf initialised — `STATUS.md` filled in, not left as a template
+- [ ] Playwright MCP wired up for screenshot review → `07` Layer 4
+
 **Exit criteria**
 `npm install && npm run dev` works on a clean clone with no accounts or env vars.
 `npm run quality && npm run test && npm run test:e2e` are green in CI.
 Every route is reachable by URL, back/forward works, a reload keeps you on the same screen.
+The enforcement layer is **proven, not assumed**: a deliberate hardcoded hex and a
+deliberate `.skip` are both rejected before the phase is ticked.
 
 ---
 

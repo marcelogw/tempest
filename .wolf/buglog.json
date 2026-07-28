@@ -1,4 +1,77 @@
 {
   "version": 1,
-  "bugs": []
+  "bugs": [
+    {
+      "id": "bug-001",
+      "timestamp": "2026-07-26T13:00:00Z",
+      "error_message": "Dashboard chart month labels are off by one month, and the Monthly view 'vs previous month' figure compares against two months ago, in any negative-offset timezone (e.g. America/Sao_Paulo).",
+      "file": "components/expense/dashboard-view.tsx:77-78, components/expense/monthly-view.tsx:98-100",
+      "root_cause": "new Date('YYYY-MM-01') parses a date-only ISO string as UTC per ECMA-262, while toLocaleDateString and getMonth()/getFullYear() read local time. In UTC-3 the local date falls on the last day of the previous month. Reproduced: label for 2026-07 renders 'jun.'; previousMonth('2026-07') returns '2026-05'. The store's own helpers (getMonthDiff, getMonthFromOffset) are correct because they use the local constructor new Date(y, m-1, 1).",
+      "fix": "NOT FIXED IN THIS REPO — documented as pitfall P-13 in docs/migration/04-pitfalls.md. Required fix: never construct a Date from a string; parse to numeric parts and use new Date(year, month - 1, day). Run the test suite under TZ='America/Sao_Paulo' so it cannot regress.",
+      "tags": ["timezone", "date-parsing", "utc", "dashboard", "wrong-numbers", "P-13"],
+      "related_bugs": ["bug-002"],
+      "occurrences": 1,
+      "last_seen": "2026-07-26T13:00:00Z"
+    },
+    {
+      "id": "bug-002",
+      "timestamp": "2026-07-26T13:00:00Z",
+      "error_message": "Month-over-month expense change percentage is inflated for any user with an active installment plan.",
+      "file": "components/expense/monthly-view.tsx:102-118",
+      "root_cause": "The current month's total includes installments (fixed + variable + installmentsTotal, lines 115-118) while the previous month's baseline excludes them (lines 102-105). The percentage divides an installment-inclusive number by an installment-exclusive one.",
+      "fix": "NOT FIXED IN THIS REPO — documented as pitfall P-21 in docs/migration/04-pitfalls.md. Required fix: one monthExpenseTotal(month) function in the domain layer, called for both sides of the comparison. Regression test: identical months containing installments must report 0% change.",
+      "tags": ["calculation", "installments", "wrong-numbers", "monthly-view", "P-21"],
+      "related_bugs": ["bug-001", "bug-003"],
+      "occurrences": 1,
+      "last_seen": "2026-07-26T13:00:00Z"
+    },
+    {
+      "id": "bug-003",
+      "timestamp": "2026-07-26T13:00:00Z",
+      "error_message": "Installments are never counted under the 'installment' category — they all fall into 'other' in the dashboard pie chart, the category averages grid, and the monthly category breakdown.",
+      "file": "lib/expense-store.ts:501-505",
+      "root_cause": "mapInstallmentsToExpenses defaults its categoryId parameter to the Portuguese string 'parcelamento'. That ID was renamed to 'installment' by the v1->v2 migration (lib/migrations.ts:51) and DEFAULT_CATEGORIES defines 'installment' (lib/expense-store.ts:191). No category with ID 'parcelamento' exists post-migration, so every projected installment falls through the category fallback to SYSTEM_CATEGORY_ID. Both call sites (dashboard-view.tsx:114, monthly-view.tsx:121) use the default.",
+      "fix": "NOT FIXED IN THIS REPO — documented as pitfall P-10 in docs/migration/04-pitfalls.md. Required fix: no magic-string defaults for IDs; reference the exported constant and make the parameter required so a rename cannot leave a stale literal behind.",
+      "tags": ["categories", "installments", "migration-drift", "magic-string", "wrong-numbers", "P-10"],
+      "related_bugs": ["bug-002"],
+      "occurrences": 1,
+      "last_seen": "2026-07-26T13:00:00Z"
+    },
+    {
+      "id": "bug-004",
+      "timestamp": "2026-07-26T13:00:00Z",
+      "error_message": "A user with the app in English cannot delete their data. They follow the instruction 'Type DELETE ALL', type it exactly, and the confirm button stays disabled with no explanation.",
+      "file": "components/expense/settings-view.tsx:102, components/expense/settings-view.tsx:315",
+      "root_cause": "The confirmation gate compares against the hardcoded Portuguese literal 'DELETAR TUDO', while the instruction and placeholder shown to the user come from i18n — messages/en.json renders them as 'Type DELETE ALL'. The compared phrase and the requested phrase come from different sources.",
+      "fix": "NOT FIXED IN THIS REPO — documented as pitfall P-05 in docs/migration/04-pitfalls.md. Required fix: any phrase that is compared must come from the same message catalogue that instructs the user. Better still, drop the typed-phrase gate in favour of requiring an export first. Regression test: the destructive-confirmation E2E flow must pass in both locales.",
+      "tags": ["i18n", "settings", "blocked-user", "data-deletion", "P-05"],
+      "related_bugs": ["bug-005"],
+      "occurrences": 1,
+      "last_seen": "2026-07-26T13:00:00Z"
+    },
+    {
+      "id": "bug-005",
+      "timestamp": "2026-07-26T13:00:00Z",
+      "error_message": "'Delete all data' does not delete custom categories or credit cards, although the confirmation dialog explicitly lists both as things that will be permanently deleted.",
+      "file": "lib/expense-store.ts:1706-1715",
+      "root_cause": "deleteAllData resets only monthlyData, installments, notes, goals, currentMonth and currentYear. The categories and creditCards slices are left untouched, while the dialog renders ui.settings.allCategories and ui.settings.allCreditCards among the items to be destroyed (settings-view.tsx:291-294).",
+      "fix": "NOT FIXED IN THIS REPO — documented as pitfall P-22 in docs/migration/04-pitfalls.md. Required fix: reset every store slice to its initial state (categories back to the 11 defaults, cards empty), with a test asserting the post-condition field by field so copy and code cannot drift apart again.",
+      "tags": ["settings", "data-deletion", "copy-vs-behaviour", "P-22"],
+      "related_bugs": ["bug-004"],
+      "occurrences": 1,
+      "last_seen": "2026-07-26T13:00:00Z"
+    },
+    {
+      "id": "bug-006",
+      "timestamp": "2026-07-26T13:10:00Z",
+      "error_message": "npm error code EUSAGE — `npm ci` can only install packages when your package.json and package-lock.json are in sync. Invalid: lock file's @smithy/uuid@1.3.10 does not satisfy @smithy/uuid@1.3.14. Invalid: lock file's @smithy/core@3.29.5 does not satisfy @smithy/core@3.30.0",
+      "file": "package-lock.json",
+      "root_cause": "Every requirement on @smithy/core and @smithy/uuid in the tree is a caret range (^3.22.0, ^3.23.2, ^1.1.0 etc.) coming from transitive AWS SDK / Amplify dependencies. The lock pinned 3.29.5 and 1.3.10, but newer releases (3.30.0, 1.3.14) satisfy those ranges, so npm re-resolves and rejects the lock as out of sync. Time-dependent, not commit-dependent: main last passed CI on 2026-07-19 at the same base commit (c2bc8989) and the failure appeared later without any repo change. Reproduced on a clean checkout, so it was not caused by the branch it surfaced on.",
+      "fix": "Regenerated the lock with the procedure documented in CLAUDE.md: `npm install --package-lock-only --ignore-scripts`. Result was minimal — package.json untouched, zero packages added or removed, only the two transitive bumps (@smithy/core 3.29.5->3.30.0, @smithy/uuid 1.3.10->1.3.14), 7 insertions / 7 deletions. Verified after the change: npm ci --ignore-scripts exit 0, npm run typecheck pass, npm run lint pass, npm run format:check pass, npx vitest run 27 files / 324 tests all passing.",
+      "tags": ["ci", "npm", "package-lock", "EUSAGE", "aws-sdk", "smithy", "dependency-drift"],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-07-26T13:10:00Z"
+    }
+  ]
 }
